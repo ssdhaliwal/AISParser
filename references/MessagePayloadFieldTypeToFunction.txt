@@ -1,0 +1,30 @@
+u	Unsigned integer
+	unsigned_integer_decoder
+
+U	Unsigned integer with scale - renders as float, suffix is decimal places
+	unsigned_float_decoder
+	
+i	Signed integer
+	integer_decoder
+	
+I	Signed integer with scale - renders as float, suffix is decimal places
+	integer_decoder
+	float_decoder
+	
+b	Boolean
+	boolean_decoder
+
+e	Enumerated type (controlled vocabulary)
+	unsigned_integer_decoder
+
+x	Spare or reserved bit
+
+t	String (packed six-bit ASCII)
+
+d	Data (uninterpreted binary)
+
+a	Array boundary, numeric suffix is maximum array size. ^ before suffix means preceding fields is the length. Following fields are repeated to end of message
+
+
+687039
+7:52		7:542
