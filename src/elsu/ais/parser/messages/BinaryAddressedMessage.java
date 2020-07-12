@@ -3,49 +3,51 @@ package elsu.ais.parser.messages;
 import java.util.*;
 
 import elsu.ais.parser.AISMessage;
+import elsu.ais.parser.resources.PayloadBlock;
 
 public class BinaryAddressedMessage extends AISMessage {
 
 	public static AISMessage fromAISMessage(AISMessage aisMessage, String messageBits) {
 		BinaryAddressedMessage binaryMessage = new BinaryAddressedMessage();
-		
+
 		binaryMessage.setRawMessage(aisMessage.getRawMessage());
 		binaryMessage.setBinaryMessage(aisMessage.getBinaryMessage());
 		binaryMessage.setEncodedMessage(aisMessage.getEncodedMessage());
 		binaryMessage.setErrorMessage(aisMessage.getErrorMessage());
 
 		binaryMessage.parseMessage(messageBits);
-		
+
 		return binaryMessage;
 	}
-	
+
 	public BinaryAddressedMessage() {
 		initialize();
 	}
 
 	private void initialize() {
-		ArrayList<_PayloadBlock> messageBlocks = getMessageBlock();
-		
-		messageBlocks.add(new _PayloadBlock(0, 5, 6, "Message Type", "type", "u", "Constant: 6"));
-		messageBlocks.add(new _PayloadBlock(6, 7, 2, "Repeat Indicator", "repeat", "u", "As in Common Navigation Block"));
-		messageBlocks.add(new _PayloadBlock(8, 37, 30, "Source MMSI", "mmsi", "u", "9 decimal digits"));
-		messageBlocks.add(new _PayloadBlock(38, 39, 2, "Sequence Number", "seqno", "u", "Unsigned integer 0-3"));
-		messageBlocks.add(new _PayloadBlock(40, 69, 30, "Destination MMSI", "dest_mmsi", "u", "9 decimal digits"));
-		messageBlocks.add(new _PayloadBlock(70, 70, 1, "Retransmit flag", "retransmit", "b", "0 = no retransmit (default) 1 = retransmitted"));
-		messageBlocks.add(new _PayloadBlock(71, 71, 1, "Spare", "", "x", "Not used"));
-		messageBlocks.add(new _PayloadBlock(72, 81, 10, "Designated Area Code", "dac", "u", "Unsigned integer"));
-		messageBlocks.add(new _PayloadBlock(82, 87, 6, "Functional ID", "fid", "u", "Unsigned integer"));
-		messageBlocks.add(new _PayloadBlock(88, -1, 920, "Data", "data", "d", "Binary data May be shorter than 920 bits."));
+		messageBlocks.add(new PayloadBlock(0, 5, 6, "Message Type", "type", "u", "Constant: 6"));
+		messageBlocks
+				.add(new PayloadBlock(6, 7, 2, "Repeat Indicator", "repeat", "u", "As in Common Navigation Block"));
+		messageBlocks.add(new PayloadBlock(8, 37, 30, "Source MMSI", "mmsi", "u", "9 decimal digits"));
+		messageBlocks.add(new PayloadBlock(38, 39, 2, "Sequence Number", "seqno", "u", "Unsigned integer 0-3"));
+		messageBlocks.add(new PayloadBlock(40, 69, 30, "Destination MMSI", "dest_mmsi", "u", "9 decimal digits"));
+		messageBlocks.add(new PayloadBlock(70, 70, 1, "Retransmit flag", "retransmit", "b",
+				"0 = no retransmit (default) 1 = retransmitted"));
+		messageBlocks.add(new PayloadBlock(71, 71, 1, "Spare", "", "x", "Not used"));
+		messageBlocks.add(new PayloadBlock(72, 81, 10, "Designated Area Code", "dac", "u", "Unsigned integer"));
+		messageBlocks.add(new PayloadBlock(82, 87, 6, "Functional ID", "fid", "u", "Unsigned integer"));
+		messageBlocks
+				.add(new PayloadBlock(88, -1, 920, "Data", "data", "d", "Binary data May be shorter than 920 bits."));
 	}
 
 	public void parseMessage(String message) {
-		for (_PayloadBlock block : getMessageBlock()) {
+		for (PayloadBlock block : messageBlocks) {
 			if (block.getEnd() == -1) {
 				block.setBits(message.substring(block.getStart(), message.length()));
 			} else {
 				block.setBits(message.substring(block.getStart(), block.getEnd() + 1));
 			}
-			
+
 			switch (block.getStart()) {
 			case 0:
 				setType(AISMessage.unsigned_integer_decoder(block.getBits()));
@@ -77,11 +79,11 @@ public class BinaryAddressedMessage extends AISMessage {
 			}
 		}
 	}
-	
+
 	@Override
 	public String toString() {
 		StringBuilder buffer = new StringBuilder();
-		
+
 		buffer.append("{ \"BinaryAddressedMessage\": {");
 		buffer.append("\"type\":" + getType());
 		buffer.append(", \"repeat\":" + getRepeat());
@@ -94,14 +96,14 @@ public class BinaryAddressedMessage extends AISMessage {
 		buffer.append(", \"data_bits\":\"" + getData() + "\"");
 		buffer.append(", \"data_raw\":\"" + getDataRaw() + "\"");
 		buffer.append("}}");
-		
+
 		return buffer.toString();
 	}
 
 	public int getType() {
 		return type;
 	}
-	
+
 	public void setType(int type) {
 		this.type = type;
 	}
@@ -165,7 +167,7 @@ public class BinaryAddressedMessage extends AISMessage {
 	public String getData() {
 		return data;
 	}
-	
+
 	public String getDataRaw() {
 		return data_raw;
 	}

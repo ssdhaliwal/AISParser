@@ -3,61 +3,62 @@ package elsu.ais.parser.messages;
 import java.util.*;
 
 import elsu.ais.parser.AISMessage;
-import elsu.ais.parser.lookups.LookupValues;
+import elsu.ais.parser.resources.LookupValues;
+import elsu.ais.parser.resources.PayloadBlock;
 
 public class StaticAndVoyageRelatedData extends AISMessage {
 
 	public static AISMessage fromAISMessage(AISMessage aisMessage, String messageBits) {
 		StaticAndVoyageRelatedData voyageReport = new StaticAndVoyageRelatedData();
-		
+
 		voyageReport.setRawMessage(aisMessage.getRawMessage());
 		voyageReport.setBinaryMessage(aisMessage.getBinaryMessage());
 		voyageReport.setEncodedMessage(aisMessage.getEncodedMessage());
 		voyageReport.setErrorMessage(aisMessage.getErrorMessage());
 
 		voyageReport.parseMessage(messageBits);
-		
+
 		return voyageReport;
 	}
-	
+
 	public StaticAndVoyageRelatedData() {
 		initialize();
 	}
 
 	private void initialize() {
-		ArrayList<_PayloadBlock> messageBlocks = getMessageBlock();
-		
-		messageBlocks.add(new _PayloadBlock(0, 5, 6, "Message Type", "type", "u", "Constant: 5"));
-		messageBlocks.add(new _PayloadBlock(6, 7, 2, "Repeat Indicator", "repeat", "u", "Message repeat count"));
-		messageBlocks.add(new _PayloadBlock(8, 37, 30, "MMSI", "mmsi", "u", "9 digits"));
-		messageBlocks.add(new _PayloadBlock(38, 39, 2, "AIS Version", "ais_version", "u", "0=[ITU1371], 1-3 = future editions"));
-		messageBlocks.add(new _PayloadBlock(40, 69, 30, "IMO Number", "imo", "u", "IMO ship ID number"));
-		messageBlocks.add(new _PayloadBlock(70, 111, 42, "Call Sign", "callsign", "t", "7 six-bit characters"));
-		messageBlocks.add(new _PayloadBlock(112, 231, 120, "Vessel Name", "shipname", "t", "20 six-bit characters"));
-		messageBlocks.add(new _PayloadBlock(232, 239, 8, "Ship Type", "shiptype", "e", "See \"Codes for Ship Type\""));
-		messageBlocks.add(new _PayloadBlock(240, 248, 9, "Dimension to Bow", "to_bow", "u", "Meters"));
-		messageBlocks.add(new _PayloadBlock(249, 257, 9, "Dimension to Stern", "to_stern", "u", "Meters"));
-		messageBlocks.add(new _PayloadBlock(258, 263, 6, "Dimension to Port", "to_port", "u", "Meters"));
-		messageBlocks.add(new _PayloadBlock(264, 269, 6, "Dimension to Starboard", "to_starboard", "u", "Meters"));
-		messageBlocks.add(new _PayloadBlock(270, 273, 4, "Position Fix Type", "epfd", "e", "See \"EPFD Fix Types\""));
-		messageBlocks.add(new _PayloadBlock(274, 277, 4, "ETA month (UTC)", "month", "u", "1-12, 0=N/A (default)"));
-		messageBlocks.add(new _PayloadBlock(278, 282, 5, "ETA day (UTC)", "day", "u", "1-31, 0=N/A (default)"));
-		messageBlocks.add(new _PayloadBlock(283, 287, 5, "ETA hour (UTC)", "hour", "u", "0-23, 24=N/A (default)"));
-		messageBlocks.add(new _PayloadBlock(288, 293, 6, "ETA minute (UTC)", "minute", "u", "0-59, 60=N/A (default)"));
-		messageBlocks.add(new _PayloadBlock(294, 301, 8, "Draught", "draught", "U1", "Meters/10"));
-		messageBlocks.add(new _PayloadBlock(302, 421, 120, "Destination", "destination", "t", "20 6-bit characters"));
-		messageBlocks.add(new _PayloadBlock(422, 422, 1, "DTE", "dte", "b", "0=Data terminal ready, 1=Not ready (default)."));
-		messageBlocks.add(new _PayloadBlock(423, 423, 1, "Spare", "", "x", "Not used"));
+		messageBlocks.add(new PayloadBlock(0, 5, 6, "Message Type", "type", "u", "Constant: 5"));
+		messageBlocks.add(new PayloadBlock(6, 7, 2, "Repeat Indicator", "repeat", "u", "Message repeat count"));
+		messageBlocks.add(new PayloadBlock(8, 37, 30, "MMSI", "mmsi", "u", "9 digits"));
+		messageBlocks.add(
+				new PayloadBlock(38, 39, 2, "AIS Version", "ais_version", "u", "0=[ITU1371], 1-3 = future editions"));
+		messageBlocks.add(new PayloadBlock(40, 69, 30, "IMO Number", "imo", "u", "IMO ship ID number"));
+		messageBlocks.add(new PayloadBlock(70, 111, 42, "Call Sign", "callsign", "t", "7 six-bit characters"));
+		messageBlocks.add(new PayloadBlock(112, 231, 120, "Vessel Name", "shipname", "t", "20 six-bit characters"));
+		messageBlocks.add(new PayloadBlock(232, 239, 8, "Ship Type", "shiptype", "e", "See \"Codes for Ship Type\""));
+		messageBlocks.add(new PayloadBlock(240, 248, 9, "Dimension to Bow", "to_bow", "u", "Meters"));
+		messageBlocks.add(new PayloadBlock(249, 257, 9, "Dimension to Stern", "to_stern", "u", "Meters"));
+		messageBlocks.add(new PayloadBlock(258, 263, 6, "Dimension to Port", "to_port", "u", "Meters"));
+		messageBlocks.add(new PayloadBlock(264, 269, 6, "Dimension to Starboard", "to_starboard", "u", "Meters"));
+		messageBlocks.add(new PayloadBlock(270, 273, 4, "Position Fix Type", "epfd", "e", "See \"EPFD Fix Types\""));
+		messageBlocks.add(new PayloadBlock(274, 277, 4, "ETA month (UTC)", "month", "u", "1-12, 0=N/A (default)"));
+		messageBlocks.add(new PayloadBlock(278, 282, 5, "ETA day (UTC)", "day", "u", "1-31, 0=N/A (default)"));
+		messageBlocks.add(new PayloadBlock(283, 287, 5, "ETA hour (UTC)", "hour", "u", "0-23, 24=N/A (default)"));
+		messageBlocks.add(new PayloadBlock(288, 293, 6, "ETA minute (UTC)", "minute", "u", "0-59, 60=N/A (default)"));
+		messageBlocks.add(new PayloadBlock(294, 301, 8, "Draught", "draught", "U1", "Meters/10"));
+		messageBlocks.add(new PayloadBlock(302, 421, 120, "Destination", "destination", "t", "20 6-bit characters"));
+		messageBlocks.add(
+				new PayloadBlock(422, 422, 1, "DTE", "dte", "b", "0=Data terminal ready, 1=Not ready (default)."));
+		messageBlocks.add(new PayloadBlock(423, 423, 1, "Spare", "", "x", "Not used"));
 	}
 
 	public void parseMessage(String message) {
-		for (_PayloadBlock block : getMessageBlock()) {
+		for (PayloadBlock block : messageBlocks) {
 			if (block.getEnd() == -1) {
 				block.setBits(message.substring(block.getStart(), message.length()));
 			} else {
 				block.setBits(message.substring(block.getStart(), block.getEnd() + 1));
 			}
-			
+
 			switch (block.getStart()) {
 			case 0:
 				setType(AISMessage.unsigned_integer_decoder(block.getBits()));
@@ -122,11 +123,11 @@ public class StaticAndVoyageRelatedData extends AISMessage {
 			}
 		}
 	}
-	
+
 	@Override
 	public String toString() {
 		StringBuilder buffer = new StringBuilder();
-		
+
 		buffer.append("{ \"StaticAndVoyageRelatedData\": {");
 		buffer.append("\"type\":" + getType());
 		buffer.append(", \"repeat\":" + getRepeat());
@@ -140,7 +141,7 @@ public class StaticAndVoyageRelatedData extends AISMessage {
 		buffer.append(", \"to_stern\":" + getToStern());
 		buffer.append(", \"to_port\":" + getToPort());
 		buffer.append(", \"to_starboard\":" + getToStarboard());
-		buffer.append(", \"epfd\":\"" + getEpfd() + "/" + LookupValues.getEPFDFixType(getEpfd())+ "\"");
+		buffer.append(", \"epfd\":\"" + getEpfd() + "/" + LookupValues.getEPFDFixType(getEpfd()) + "\"");
 		buffer.append(", \"month\":" + getMonth());
 		buffer.append(", \"hour\":" + getHour());
 		buffer.append(", \"day\":" + getDay());
@@ -149,14 +150,14 @@ public class StaticAndVoyageRelatedData extends AISMessage {
 		buffer.append(", \"destination\":\"" + getDestination().trim() + "\"");
 		buffer.append(", \"dte\":" + isDte());
 		buffer.append("}}");
-		
+
 		return buffer.toString();
 	}
 
 	public int getType() {
 		return type;
 	}
-	
+
 	public void setType(int type) {
 		this.type = type;
 	}

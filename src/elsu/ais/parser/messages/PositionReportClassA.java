@@ -3,65 +3,59 @@ package elsu.ais.parser.messages;
 import java.util.*;
 
 import elsu.ais.parser.AISMessage;
-import elsu.ais.parser.lookups.LookupValues;
+import elsu.ais.parser.messages.dataparser.CommunicationState;
+import elsu.ais.parser.resources.LookupValues;
+import elsu.ais.parser.resources.PayloadBlock;
 
 public class PositionReportClassA extends AISMessage {
 
 	public static AISMessage fromAISMessage(AISMessage aisMessage, String messageBits) {
 		PositionReportClassA positionReport = new PositionReportClassA();
-		
+
 		positionReport.setRawMessage(aisMessage.getRawMessage());
 		positionReport.setBinaryMessage(aisMessage.getBinaryMessage());
 		positionReport.setEncodedMessage(aisMessage.getEncodedMessage());
 		positionReport.setErrorMessage(aisMessage.getErrorMessage());
 
 		positionReport.parseMessage(messageBits);
-		
+
 		return positionReport;
 	}
-	
+
 	public PositionReportClassA() {
 		initialize();
 	}
 
 	private void initialize() {
-		ArrayList<_PayloadBlock> messageBlocks = getMessageBlock();
-		
-		messageBlocks.add(new _PayloadBlock(0, 5, 6, "Message Type", "type", "u", "Constant: 1-3"));
-		messageBlocks
-				.add(new _PayloadBlock(6, 7, 2, "Repeat Indicator", "repeat", "u", "Message repeat count"));
-		messageBlocks.add(new _PayloadBlock(8, 37, 30, "MMSI", "mmsi", "u", "9 decimal digits"));
-		messageBlocks.add(
-				new _PayloadBlock(38, 41, 4, "Navigation Status", "status", "e", "See Navigation Status"));
-		messageBlocks.add(new _PayloadBlock(42, 49, 8, "Rate of Turn (ROT)", "turn", "I3", "See below"));
-		messageBlocks
-				.add(new _PayloadBlock(50, 59, 10, "Speed Over Ground (SOG)", "speed", "U1", "See below"));
-		messageBlocks.add(new _PayloadBlock(60, 60, 1, "Position Accuracy", "accuracy", "b", "See below"));
-		messageBlocks
-				.add(new _PayloadBlock(61, 88, 28, "Longitude", "lon", "I4", "Minutes/10000 (see below)"));
-		messageBlocks
-				.add(new _PayloadBlock(89, 115, 27, "Latitude", "lat", "I4", "Minutes/10000 (see below)"));
-		messageBlocks.add(new _PayloadBlock(116, 127, 12, "Course Over Ground (COG)", "course", "U1",
+		messageBlocks.add(new PayloadBlock(0, 5, 6, "Message Type", "type", "u", "Constant: 1-3"));
+		messageBlocks.add(new PayloadBlock(6, 7, 2, "Repeat Indicator", "repeat", "u", "Message repeat count"));
+		messageBlocks.add(new PayloadBlock(8, 37, 30, "MMSI", "mmsi", "u", "9 decimal digits"));
+		messageBlocks.add(new PayloadBlock(38, 41, 4, "Navigation Status", "status", "e", "See Navigation Status"));
+		messageBlocks.add(new PayloadBlock(42, 49, 8, "Rate of Turn (ROT)", "turn", "I3", "See below"));
+		messageBlocks.add(new PayloadBlock(50, 59, 10, "Speed Over Ground (SOG)", "speed", "U1", "See below"));
+		messageBlocks.add(new PayloadBlock(60, 60, 1, "Position Accuracy", "accuracy", "b", "See below"));
+		messageBlocks.add(new PayloadBlock(61, 88, 28, "Longitude", "lon", "I4", "Minutes/10000 (see below)"));
+		messageBlocks.add(new PayloadBlock(89, 115, 27, "Latitude", "lat", "I4", "Minutes/10000 (see below)"));
+		messageBlocks.add(new PayloadBlock(116, 127, 12, "Course Over Ground (COG)", "course", "U1",
 				"Relative to true north, to 0.1 degree precision"));
-		messageBlocks.add(new _PayloadBlock(128, 136, 9, "True Heading (HDG)", "heading", "u",
+		messageBlocks.add(new PayloadBlock(128, 136, 9, "True Heading (HDG)", "heading", "u",
 				"0 to 359 degrees, 511 = not available."));
+		messageBlocks.add(new PayloadBlock(137, 142, 6, "Time Stamp", "second", "u", "Second of UTC timestamp"));
 		messageBlocks
-				.add(new _PayloadBlock(137, 142, 6, "Time Stamp", "second", "u", "Second of UTC timestamp"));
-		messageBlocks.add(new _PayloadBlock(143, 144, 2, "Maneuver Indicator", "maneuver", "e",
-				"See Maneuver Indicator"));
-		messageBlocks.add(new _PayloadBlock(145, 147, 3, "Spare", "", "x", "Not used"));
-		messageBlocks.add(new _PayloadBlock(148, 148, 1, "RAIM flag", "raim", "b", "See below"));
-		messageBlocks.add(new _PayloadBlock(149, 167, 19, "Radio status", "radio", "u", "See below"));
+				.add(new PayloadBlock(143, 144, 2, "Maneuver Indicator", "maneuver", "e", "See Maneuver Indicator"));
+		messageBlocks.add(new PayloadBlock(145, 147, 3, "Spare", "", "x", "Not used"));
+		messageBlocks.add(new PayloadBlock(148, 148, 1, "RAIM flag", "raim", "b", "See below"));
+		messageBlocks.add(new PayloadBlock(149, 167, 19, "Radio status", "radio", "u", "See below"));
 	}
 
 	public void parseMessage(String message) {
-		for (_PayloadBlock block : getMessageBlock()) {
+		for (PayloadBlock block : messageBlocks) {
 			if (block.getEnd() == -1) {
 				block.setBits(message.substring(block.getStart(), message.length()));
 			} else {
 				block.setBits(message.substring(block.getStart(), block.getEnd() + 1));
 			}
-			
+
 			switch (block.getStart()) {
 			case 0:
 				setType(AISMessage.unsigned_integer_decoder(block.getBits()));
@@ -107,16 +101,17 @@ public class PositionReportClassA extends AISMessage {
 				break;
 			case 149:
 				setRadio(AISMessage.unsigned_integer_decoder(block.getBits()));
+				setCommState(block.getBits());
 				break;
 			}
 		}
 	}
-	
+
 	@Override
 	public String toString() {
 		StringBuilder buffer = new StringBuilder();
-		
-		buffer.append("{ \"CLASSAPositionReport\": {");
+
+		buffer.append("{ \"PositionReportClassA\": {");
 		buffer.append("\"transponder\":" + getTransponderType());
 		buffer.append(", \"type\":" + getType());
 		buffer.append(", \"repeat\":" + getRepeat());
@@ -130,22 +125,25 @@ public class PositionReportClassA extends AISMessage {
 		buffer.append(", \"course\":" + getCourse());
 		buffer.append(", \"heading\":" + getHeading());
 		buffer.append(", \"second\":" + getSecond());
-		buffer.append(", \"maneuver\":\"" + getManeuver() + "/" + LookupValues.getManeuverIndicator(getManeuver()) + "\"");
+		buffer.append(
+				", \"maneuver\":\"" + getManeuver() + "/" + LookupValues.getManeuverIndicator(getManeuver()) + "\"");
 		buffer.append(", \"raim\":" + isRaim());
 		buffer.append(", \"radio\":" + getRadio());
+		buffer.append(", \"commState\":" + getCommState().toString());
+		buffer.append(", \"commtech\":\"" + LookupValues.getCommunicationTechnology(getType()) + "\"");
 		buffer.append("}}");
-		
+
 		return buffer.toString();
 	}
 
 	public String getTransponderType() {
 		return "A";
 	}
-	
+
 	public int getType() {
 		return type;
 	}
-	
+
 	public void setType(int type) {
 		this.type = type;
 	}
@@ -261,6 +259,14 @@ public class PositionReportClassA extends AISMessage {
 	public void setRadio(int radio) {
 		this.radio = radio;
 	}
+	
+	public CommunicationState getCommState() {
+		return commState;
+	}
+	
+	private void setCommState(String bits) {
+		commState = CommunicationState.fromPayload(bits);
+	}
 
 	private int type = 0;
 	private int repeat = 0;
@@ -277,4 +283,5 @@ public class PositionReportClassA extends AISMessage {
 	private int maneuver = 0;
 	private boolean raim = false;
 	private int radio = 0;
+	private CommunicationState commState = null;
 }

@@ -3,46 +3,47 @@ package elsu.ais.parser.messages;
 import java.util.*;
 
 import elsu.ais.parser.AISMessage;
+import elsu.ais.parser.resources.PayloadBlock;
 
 public class BinaryBroadCastMessage extends AISMessage {
 
 	public static AISMessage fromAISMessage(AISMessage aisMessage, String messageBits) {
 		BinaryBroadCastMessage binaryMessage = new BinaryBroadCastMessage();
-		
+
 		binaryMessage.setRawMessage(aisMessage.getRawMessage());
 		binaryMessage.setBinaryMessage(aisMessage.getBinaryMessage());
 		binaryMessage.setEncodedMessage(aisMessage.getEncodedMessage());
 		binaryMessage.setErrorMessage(aisMessage.getErrorMessage());
 
 		binaryMessage.parseMessage(messageBits);
-		
+
 		return binaryMessage;
 	}
-	
+
 	public BinaryBroadCastMessage() {
 		initialize();
 	}
 
 	private void initialize() {
-		ArrayList<_PayloadBlock> messageBlocks = getMessageBlock();
-		
-		messageBlocks.add(new _PayloadBlock(0, 5, 6, "Message Type", "type", "u", "Constant: 8"));
-		messageBlocks.add(new _PayloadBlock(6, 7, 2, "Repeat Indicator", "repeat", "u", "As in Common Navigation Block"));
-		messageBlocks.add(new _PayloadBlock(8, 37, 30, "Source MMSI", "mmsi", "u", "9 decimal digits"));
-		messageBlocks.add(new _PayloadBlock(38, 39, 2, "Spare", "", "x", "Not used"));
-		messageBlocks.add(new _PayloadBlock(40, 49, 10, "Designated Area Code", "dac", "u", "Unsigned integer"));
-		messageBlocks.add(new _PayloadBlock(50, 55, 6, "Functional ID", "fid", "u", "Unsigned integer"));
-		messageBlocks.add(new _PayloadBlock(56, -1, 952, "Data", "data", "d", "Binary data, May be shorter than 952 bits."));
+		messageBlocks.add(new PayloadBlock(0, 5, 6, "Message Type", "type", "u", "Constant: 8"));
+		messageBlocks
+				.add(new PayloadBlock(6, 7, 2, "Repeat Indicator", "repeat", "u", "As in Common Navigation Block"));
+		messageBlocks.add(new PayloadBlock(8, 37, 30, "Source MMSI", "mmsi", "u", "9 decimal digits"));
+		messageBlocks.add(new PayloadBlock(38, 39, 2, "Spare", "", "x", "Not used"));
+		messageBlocks.add(new PayloadBlock(40, 49, 10, "Designated Area Code", "dac", "u", "Unsigned integer"));
+		messageBlocks.add(new PayloadBlock(50, 55, 6, "Functional ID", "fid", "u", "Unsigned integer"));
+		messageBlocks
+				.add(new PayloadBlock(56, -1, 952, "Data", "data", "d", "Binary data, May be shorter than 952 bits."));
 	}
-	
+
 	public void parseMessage(String message) {
-		for (_PayloadBlock block : getMessageBlock()) {
+		for (PayloadBlock block : messageBlocks) {
 			if (block.getEnd() == -1) {
 				block.setBits(message.substring(block.getStart(), message.length()));
 			} else {
 				block.setBits(message.substring(block.getStart(), block.getEnd() + 1));
 			}
-			
+
 			switch (block.getStart()) {
 			case 0:
 				setType(AISMessage.unsigned_integer_decoder(block.getBits()));
@@ -65,7 +66,7 @@ public class BinaryBroadCastMessage extends AISMessage {
 			}
 		}
 	}
-	
+
 	public void parseMessage(BinaryBroadCastMessage message) {
 		this.type = message.getType();
 		this.repeat = message.getRepeat();
@@ -75,11 +76,11 @@ public class BinaryBroadCastMessage extends AISMessage {
 		this.data = message.getData();
 		this.data_raw = message.getDataRaw();
 	}
-	
+
 	@Override
 	public String toString() {
 		StringBuilder buffer = new StringBuilder();
-		
+
 		buffer.append("{ \"BinaryBroadCastMessage\": {");
 		buffer.append("\"type\":" + getType());
 		buffer.append(", \"repeat\":" + getRepeat());
@@ -89,14 +90,14 @@ public class BinaryBroadCastMessage extends AISMessage {
 		buffer.append(", \"data_bits\":\"" + getData() + "\"");
 		buffer.append(", \"data_raw\":\"" + getDataRaw() + "\"");
 		buffer.append("}}");
-		
+
 		return buffer.toString();
 	}
 
 	public int getType() {
 		return type;
 	}
-	
+
 	public void setType(int type) {
 		this.type = type;
 	}
@@ -136,7 +137,7 @@ public class BinaryBroadCastMessage extends AISMessage {
 	public String getData() {
 		return data;
 	}
-	
+
 	public String getDataRaw() {
 		return data_raw;
 	}

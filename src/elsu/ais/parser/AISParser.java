@@ -5,6 +5,7 @@ import java.util.*;
 
 import elsu.ais.parser.messages.*;
 import elsu.ais.parser.messages.dataparser.Type8_Dac1_Fid11;
+import elsu.ais.parser.resources.AISMessageDecoders;
 import elsu.common.*;
 import elsu.support.*;
 
@@ -16,7 +17,7 @@ public class AISParser {
 
 		BufferedReader reader = null;
 		try {
-			
+
 			// InputStream (is) must be set and initialized before
 			reader = new BufferedReader(new InputStreamReader(stream));
 
@@ -35,62 +36,74 @@ public class AISParser {
 					AISMessage message = AISMessage.fromString(line);
 					message = processMessages("BCS1", message);
 					messageBits = "";
-					
+
 					if (message != null) {
 						messageBits = message.getBinaryMessage();
 					}
-					
+
 					if (messageBits.length() > 0) {
-						msgNumber = AISDecoder.getMessageNumber(messageBits);
-						// System.out.println(message.getRawMessage() + "/" + msgNumber);					
+						msgNumber = AISMessageDecoders.getMessageNumber(messageBits);
+						System.out.println(message.getRawMessage() + "/" + msgNumber);
+						System.out.println(message.getBinaryMessage() + "/" + msgNumber);
 						// String encoded = AISDecoder.encodeMessagePayload(aisMessage);
 						switch (msgNumber) {
 						case 1:
 						case 2:
 						case 3:
-							decodedMessage = PositionReportClassA.fromAISMessage((AISMessage)message, messageBits);
+							decodedMessage = PositionReportClassA.fromAISMessage((AISMessage) message, messageBits);
 							System.out.println(decodedMessage.toString());
 							break;
 						case 4:
-							decodedMessage = BaseStationReport.fromAISMessage((AISMessage)message, messageBits);
-							System.out.println(decodedMessage.toString());
+							decodedMessage = BaseStationReport.fromAISMessage((AISMessage) message, messageBits);
+							// System.out.println(decodedMessage.toString());
 							break;
 						case 5:
-							decodedMessage = StaticAndVoyageRelatedData.fromAISMessage((AISMessage)message, messageBits);
-							System.out.println(decodedMessage.toString());
+							decodedMessage = StaticAndVoyageRelatedData.fromAISMessage((AISMessage) message,
+									messageBits);
+							// System.out.println(decodedMessage.toString());
 							break;
 						case 6:
-							decodedMessage = BinaryAddressedMessage.fromAISMessage((AISMessage)message, messageBits);
-							System.out.println(decodedMessage.toString());
+							decodedMessage = BinaryAddressedMessage.fromAISMessage((AISMessage) message, messageBits);
+							// System.out.println(decodedMessage.toString());
 							break;
 						case 8:
-							decodedMessage = BinaryBroadCastMessage.fromAISMessage((AISMessage)message, messageBits);
+							decodedMessage = BinaryBroadCastMessage.fromAISMessage((AISMessage) message, messageBits);
 							// System.out.println(decodedMessage.toString());
-							
-							if (((BinaryBroadCastMessage)decodedMessage).getDac() == 1 &&
-									((BinaryBroadCastMessage)decodedMessage).getFid() == 11) {	
-								Type8_Dac1_Fid11 tdf = (Type8_Dac1_Fid11)Type8_Dac1_Fid11.fromAISMessage(decodedMessage, messageBits);
-								System.out.println(tdf.toString());
-							}
+
+							// if (((BinaryBroadCastMessage) decodedMessage).getDac() == 1
+							// 		&& ((BinaryBroadCastMessage) decodedMessage).getFid() == 11) {
+							// 	Type8_Dac1_Fid11 tdf = (Type8_Dac1_Fid11) Type8_Dac1_Fid11
+							// 			.fromAISMessage(decodedMessage, messageBits);
+							// 	System.out.println(tdf.toString());
+							// }
 							break;
 						case 18:
-							decodedMessage = StandardClassBCSPositionReport.fromAISMessage((AISMessage)message, messageBits);
-							System.out.println(decodedMessage.toString());
+							decodedMessage = StandardClassBCSPositionReport.fromAISMessage((AISMessage) message,
+									messageBits);
+							// System.out.println(decodedMessage.toString());
+							break;
+						case 19:
+							decodedMessage = ExtendedClassBCSPositionReport.fromAISMessage((AISMessage) message,
+									messageBits);
+							// System.out.println(decodedMessage.toString());
 							break;
 						case 21:
-							decodedMessage = AidToNavigationReport.fromAISMessage((AISMessage)message, messageBits);
-							System.out.println(decodedMessage.toString());
+							decodedMessage = AidToNavigationReport.fromAISMessage((AISMessage) message, messageBits);
+							// System.out.println(decodedMessage.toString());
 							break;
 						case 24:
-							decodedMessage = StaticDataReport.fromAISMessage((AISMessage)message, messageBits);
+							decodedMessage = StaticDataReport.fromAISMessage((AISMessage) message, messageBits);
 							// System.out.println(decodedMessage.toString());
-							if (((StaticDataReport)decodedMessage).getPartno() == 0) {
-								StaticDataReportPartA sdrPartA = (StaticDataReportPartA)StaticDataReportPartA.fromAISMessage(decodedMessage, messageBits);
-								System.out.println(sdrPartA);
-							} else if (((StaticDataReport)decodedMessage).getPartno() == 1) {
-								StaticDataReportPartB sdrPartB = (StaticDataReportPartB)StaticDataReportPartB.fromAISMessage(decodedMessage, messageBits);
-								System.out.println(sdrPartB);
-							}
+							
+							// if (((StaticDataReport) decodedMessage).getPartno() == 0) {
+							// 	StaticDataReportPartA sdrPartA = (StaticDataReportPartA) StaticDataReportPartA
+							// 			.fromAISMessage(decodedMessage, messageBits);
+							// 	System.out.println(sdrPartA);
+							// } else if (((StaticDataReport) decodedMessage).getPartno() == 1) {
+							// 	StaticDataReportPartB sdrPartB = (StaticDataReportPartB) StaticDataReportPartB
+							// 			.fromAISMessage(decodedMessage, messageBits);
+							// 	System.out.println(sdrPartB);
+							// }
 							break;
 						default:
 							System.out.println(message.getRawMessage() + "/" + msgNumber);
@@ -98,7 +111,7 @@ public class AISParser {
 					}
 				} catch (Exception ex) {
 					messageFragments.clear();
-					System.out.println("!ERROR!; " + ex.getMessage());
+					System.out.println("!ERROR!; " + ex.getMessage() + ", \n" + line);
 				}
 			}
 		} catch (Exception ex) {
@@ -125,21 +138,22 @@ public class AISParser {
 
 	private AISMessage processMessages(String source, AISMessage message) throws Exception {
 		AISMessage result = null;
-			
+
 		int numberOfFragments = message.getNumberOfFragments();
 		if (numberOfFragments <= 0) {
 			messageFragments.clear();
 			throw new Exception("number of fragments is invalid; " + message.getRawMessage());
 		} else if (numberOfFragments == 1) {
-			// System.out.println("unfragmented message; " + message.getRawMessage());
+			// System.out.println("unfragmented message; " +
+			// message.getRawMessage());
 			messageFragments.add(message);
-			result = AISDecoder.decodeMessagePayload(messageFragments);
+			result = AISMessageDecoders.decodeMessagePayload(messageFragments);
 			messageFragments.clear();
-			
+
 			return result;
 		} else {
 			int fragmentNumber = message.getFragmentNumber();
-			
+
 			if (fragmentNumber < 0) {
 				messageFragments.clear();
 				throw new Exception("fragmentNumber is invalid; " + message.getRawMessage());
@@ -152,16 +166,17 @@ public class AISParser {
 					throw new Exception("fragmentNumber is not in sequence; " + message.getRawMessage());
 				} else {
 					messageFragments.add(message);
-					
+
 					if (numberOfFragments == messageFragments.size()) {
 						// System.out.println("fragmented message; ");
 						// for(AISMessage fragment : messageFragments) {
-						// 	System.out.println(" == " + fragment.getRawMessage());
+						// System.out.println(" == " +
+						// fragment.getRawMessage());
 						// }
 
-						result = AISDecoder.decodeMessagePayload(messageFragments);
+						result = AISMessageDecoders.decodeMessagePayload(messageFragments);
 						messageFragments.clear();
-						
+
 						return result;
 					} else {
 						return result;
@@ -170,7 +185,7 @@ public class AISParser {
 			}
 		}
 	}
-	
+
 	public static void main(String[] args) throws Exception {
 		ConfigLoader config = null;
 		try {
@@ -178,10 +193,10 @@ public class AISParser {
 		} catch (Exception ex) {
 			throw new Exception("config resource not found: config/app.config");
 		}
-		
+
 		AISParser aisparser = new AISParser();
 		String path, fileIn, fileOut;
-		
+
 		if (args.length != 3) {
 			throw new Exception("invalid arguments: java -jar AISParser.jar path file-in file-out");
 		} else {
@@ -189,10 +204,10 @@ public class AISParser {
 			fileIn = args[1];
 			fileOut = args[2];
 		}
-		
+
 		try {
 			File initialFile = new File(path + "/" + fileIn);
-			InputStream targetStream = new FileInputStream(initialFile);			
+			InputStream targetStream = new FileInputStream(initialFile);
 			aisparser.parseMessageFile(config, targetStream, path + "/" + fileOut);
 		} catch (Exception ex) {
 			System.out.println(ex.getMessage());

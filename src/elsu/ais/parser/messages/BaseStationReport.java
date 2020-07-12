@@ -3,56 +3,57 @@ package elsu.ais.parser.messages;
 import java.util.*;
 
 import elsu.ais.parser.AISMessage;
-import elsu.ais.parser.lookups.LookupValues;
+import elsu.ais.parser.resources.LookupValues;
+import elsu.ais.parser.resources.PayloadBlock;
 
 public class BaseStationReport extends AISMessage {
 
 	public static AISMessage fromAISMessage(AISMessage aisMessage, String messageBits) {
 		BaseStationReport stationReport = new BaseStationReport();
-		
+
 		stationReport.setRawMessage(aisMessage.getRawMessage());
 		stationReport.setBinaryMessage(aisMessage.getBinaryMessage());
 		stationReport.setEncodedMessage(aisMessage.getEncodedMessage());
 		stationReport.setErrorMessage(aisMessage.getErrorMessage());
 
 		stationReport.parseMessage(messageBits);
-		
+
 		return stationReport;
 	}
-	
+
 	public BaseStationReport() {
 		initialize();
 	}
 
 	private void initialize() {
-		ArrayList<_PayloadBlock> messageBlocks = getMessageBlock();
-		
-		messageBlocks.add(new _PayloadBlock(0, 5, 6, "Message Type", "type", "u", "Constant: 4"));
-		messageBlocks.add(new _PayloadBlock(6, 7, 2, "Repeat Indicator", "repeat", "u", "As in Common Navigation Block"));
-		messageBlocks.add(new _PayloadBlock(8, 37, 30, "MMSI", "mmsi", "u", "9 decimal digits"));
-		messageBlocks.add(new _PayloadBlock(38, 51, 14, "Year (UTC)", "year", "u", "UTC, 1-9999, 0 = N/A (default)"));
-		messageBlocks.add(new _PayloadBlock(52, 55, 4, "Month (UTC)", "month", "u", "1-12; 0 = N/A (default)"));
-		messageBlocks.add(new _PayloadBlock(56, 60, 5, "Day (UTC)", "day", "u", "1-31; 0 = N/A (default)"));
-		messageBlocks.add(new _PayloadBlock(61, 65, 5, "Hour (UTC)", "hour", "u", "0-23; 24 = N/A (default)"));
-		messageBlocks.add(new _PayloadBlock(66, 71, 6, "Minute (UTC)", "minute", "u", "0-59; 60 = N/A (default)"));
-		messageBlocks.add(new _PayloadBlock(72, 77, 6, "Second (UTC)", "second", "u", "0-59; 60 = N/A (default)"));
-		messageBlocks.add(new _PayloadBlock(78, 78, 1, "Fix quality", "accuracy", "b", "As in Common Navigation Block"));
-		messageBlocks.add(new _PayloadBlock(79, 106, 28, "Longitude", "lon", "I4", "As in Common Navigation Block"));
-		messageBlocks.add(new _PayloadBlock(107, 133, 27, "Latitude", "lat", "I4", "As in Common Navigation Block"));
-		messageBlocks.add(new _PayloadBlock(134, 137, 4, "Type of EPFD", "epfd", "e", "See \"EPFD Fix Types\""));
-		messageBlocks.add(new _PayloadBlock(138, 147, 10, "Spare", "", "x", "Not used"));
-		messageBlocks.add(new _PayloadBlock(148, 148, 1, "RAIM flag", "raim", "b", "As for common navigation block"));
-		messageBlocks.add(new _PayloadBlock(149, 167, 19, "SOTDMA state", "radio", "u", "As in same bits for Type 1"));
+		messageBlocks.add(new PayloadBlock(0, 5, 6, "Message Type", "type", "u", "Constant: 4"));
+		messageBlocks
+				.add(new PayloadBlock(6, 7, 2, "Repeat Indicator", "repeat", "u", "As in Common Navigation Block"));
+		messageBlocks.add(new PayloadBlock(8, 37, 30, "MMSI", "mmsi", "u", "9 decimal digits"));
+		messageBlocks.add(new PayloadBlock(38, 51, 14, "Year (UTC)", "year", "u", "UTC, 1-9999, 0 = N/A (default)"));
+		messageBlocks.add(new PayloadBlock(52, 55, 4, "Month (UTC)", "month", "u", "1-12; 0 = N/A (default)"));
+		messageBlocks.add(new PayloadBlock(56, 60, 5, "Day (UTC)", "day", "u", "1-31; 0 = N/A (default)"));
+		messageBlocks.add(new PayloadBlock(61, 65, 5, "Hour (UTC)", "hour", "u", "0-23; 24 = N/A (default)"));
+		messageBlocks.add(new PayloadBlock(66, 71, 6, "Minute (UTC)", "minute", "u", "0-59; 60 = N/A (default)"));
+		messageBlocks.add(new PayloadBlock(72, 77, 6, "Second (UTC)", "second", "u", "0-59; 60 = N/A (default)"));
+		messageBlocks
+				.add(new PayloadBlock(78, 78, 1, "Fix quality", "accuracy", "b", "As in Common Navigation Block"));
+		messageBlocks.add(new PayloadBlock(79, 106, 28, "Longitude", "lon", "I4", "As in Common Navigation Block"));
+		messageBlocks.add(new PayloadBlock(107, 133, 27, "Latitude", "lat", "I4", "As in Common Navigation Block"));
+		messageBlocks.add(new PayloadBlock(134, 137, 4, "Type of EPFD", "epfd", "e", "See \"EPFD Fix Types\""));
+		messageBlocks.add(new PayloadBlock(138, 147, 10, "Spare", "", "x", "Not used"));
+		messageBlocks.add(new PayloadBlock(148, 148, 1, "RAIM flag", "raim", "b", "As for common navigation block"));
+		messageBlocks.add(new PayloadBlock(149, 167, 19, "SOTDMA state", "radio", "u", "As in same bits for Type 1"));
 	}
 
 	public void parseMessage(String message) {
-		for (_PayloadBlock block : getMessageBlock()) {
+		for (PayloadBlock block : messageBlocks) {
 			if (block.getEnd() == -1) {
 				block.setBits(message.substring(block.getStart(), message.length()));
 			} else {
 				block.setBits(message.substring(block.getStart(), block.getEnd() + 1));
 			}
-			
+
 			switch (block.getStart()) {
 			case 0:
 				setType(AISMessage.unsigned_integer_decoder(block.getBits()));
@@ -104,11 +105,11 @@ public class BaseStationReport extends AISMessage {
 			}
 		}
 	}
-	
+
 	@Override
 	public String toString() {
 		StringBuilder buffer = new StringBuilder();
-		
+
 		buffer.append("{ \"BaseStationReport\": {");
 		buffer.append("\"type\":" + getType());
 		buffer.append(", \"repeat\":" + getRepeat());
@@ -126,14 +127,14 @@ public class BaseStationReport extends AISMessage {
 		buffer.append(", \"raim\":" + isRaim());
 		buffer.append(", \"radio\":" + getRadio());
 		buffer.append("}}");
-		
+
 		return buffer.toString();
 	}
-	
+
 	public int getType() {
 		return type;
 	}
-	
+
 	public void setType(int type) {
 		this.type = type;
 	}

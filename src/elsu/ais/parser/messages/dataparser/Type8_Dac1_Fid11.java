@@ -4,25 +4,25 @@ import java.util.ArrayList;
 
 import elsu.ais.parser.AISMessage;
 import elsu.ais.parser.messages.BinaryBroadCastMessage;
-import elsu.ais.parser.messages._PayloadBlock;
+import elsu.ais.parser.resources.PayloadBlock;
 
 public class Type8_Dac1_Fid11 extends BinaryBroadCastMessage {
 
 	public static AISMessage fromAISMessage(AISMessage aisMessage, String messageBits) {
 		Type8_Dac1_Fid11 binaryMessage = new Type8_Dac1_Fid11();
-		
+
 		binaryMessage.setRawMessage(aisMessage.getRawMessage());
 		binaryMessage.setBinaryMessage(aisMessage.getBinaryMessage());
 		binaryMessage.setEncodedMessage(aisMessage.getEncodedMessage());
 		binaryMessage.setErrorMessage(aisMessage.getErrorMessage());
 
 		if (aisMessage instanceof BinaryBroadCastMessage) {
-			binaryMessage.parseMessage((BinaryBroadCastMessage)aisMessage);
+			binaryMessage.parseMessage((BinaryBroadCastMessage) aisMessage);
 		} else {
-			((BinaryBroadCastMessage)binaryMessage).parseMessage(messageBits);
+			((BinaryBroadCastMessage) binaryMessage).parseMessage(messageBits);
 		}
 		binaryMessage.parseMessage(messageBits);
-		
+
 		return binaryMessage;
 	}
 
@@ -31,56 +31,85 @@ public class Type8_Dac1_Fid11 extends BinaryBroadCastMessage {
 	}
 
 	private void initialize() {
-		ArrayList<_PayloadBlock> messageBlocks = getMessageBlock();
-		messageBlocks.clear();
-		
-		messageBlocks.add(new _PayloadBlock(56, 79, 24, "Latitude", "lat", "I3", "Unit = minutes * 0.001, 0x7FFFFF = N/A (default), E positive, W negative."));
-		messageBlocks.add(new _PayloadBlock(80, 104, 25, "Longitude", "lon", "I3", "Unit = minutes * 0.001, 0xFFFFFF = N/A (default), N positive, S negative."));
-		messageBlocks.add(new _PayloadBlock(105, 109, 5, "Day (UTC)", "day", "u", "1-31, 31=N/A (default)"));
-		messageBlocks.add(new _PayloadBlock(110, 114, 5, "Hour (UTC)", "hour", "u", "0-23, 31=N/A (default)"));
-		messageBlocks.add(new _PayloadBlock(115, 120, 6, "Minute (UTC)", "minute", "u", "0-59, 63=N/A (default)"));
-		messageBlocks.add(new _PayloadBlock(121, 127, 7, "Average Wind Speed", "wspeed", "u", "10-min avg wind speed, knots, 127 = N/A (default)."));
-		messageBlocks.add(new _PayloadBlock(128, 134, 7, "Gust Speed", "wgust", "u", "10-min max wind speed, knots, 127 = N/A (default)."));
-		messageBlocks.add(new _PayloadBlock(135, 143, 9, "Wind Direction", "wdir", "u", "0-359, degrees from true north 511 = N/A (default)"));
-		messageBlocks.add(new _PayloadBlock(144, 152, 9, "Wind Gust Direction", "wgustdir", "u", "0-359, degrees from true north 511 = N/A (default)"));
-		messageBlocks.add(new _PayloadBlock(153, 163, 11, "Air Temperature", "temperature", "u", "Dry bulb temp: 0.1 deg C -60.0 to +60.0, 2047 = N/A (default),"));
-		messageBlocks.add(new _PayloadBlock(164, 170, 7, "Relative Humidity", "humidity", "u", "0-100%, units of 1%, 127 = N/A (default)."));
-		messageBlocks.add(new _PayloadBlock(171, 180, 10, "Dew Point", "dewpoint", "u", "-20.0 to +50.0: 0.1 deg C, 1023 = N/A (default),"));
-		messageBlocks.add(new _PayloadBlock(181, 189, 9, "Air Pressure", "pressure", "u", "800-1200hPa: units 1hPa, 511 = N/A (default)."));
-		messageBlocks.add(new _PayloadBlock(190, 191, 2, "Pressure Tendency", "pressuretend", "e", "0 = steady, 1 = decreasing, 2 = increasing, 3 - N/A (default)."));
-		messageBlocks.add(new _PayloadBlock(192, 199, 8, "Horiz. Visibility", "visibility", "U1", "0-25.0, units of 0.1nm 255 = N/A (default)"));
-		messageBlocks.add(new _PayloadBlock(200, 208, 9, "Water Level", "waterlevel", "I1", "-10.0 to +30.0 in 0.1m, 511 = N/A (default)."));
-		messageBlocks.add(new _PayloadBlock(209, 210, 2, "Water Level Trend", "leveltrend", "e", "0 = steady, 1 = decreasing, 2 = increasing, 3 - N/A (default)."));
-		messageBlocks.add(new _PayloadBlock(211, 218, 8, "Surface Current Speed", "cspeed", "U1", "0.0-25.0 knots: units 0.1 knot"));
-		messageBlocks.add(new _PayloadBlock(219, 227, 9, "Surface Current Direction", "cdir", "u", "0-359: deg from true north, 511 = N/A (default)"));
-		messageBlocks.add(new _PayloadBlock(228, 235, 8, "Current Speed #2", "cspeed2", "U1", "0.0-25.0 in units of 0.1 knot, 255 = N/A (default)."));
-		messageBlocks.add(new _PayloadBlock(236, 244, 9, "Current Direction #2", "cdir2", "u", "0-359: deg. fom true north, 511 = N/A (default)"));
-		messageBlocks.add(new _PayloadBlock(245, 249, 5, "Measurement Depth #2", "cdepth2", "U1", "0-30m down: units 0.1m, 31 = N/A (default)."));
-		messageBlocks.add(new _PayloadBlock(250, 257, 8, "Current Speed #3", "cspeed3", "U1", "0.0-25.0: units of 0.1 knot, 255 = N/A (default)."));
-		messageBlocks.add(new _PayloadBlock(258, 266, 9, "Current Direction #3", "cdir3", "u", "0-359: degrees fom true north, 511 = N/A (default)."));
-		messageBlocks.add(new _PayloadBlock(267, 271, 5, "Measurement Depth #3", "cdepth3", "U1", "0-30m down: units 0.1m, 31 = N/A (default)."));
-		messageBlocks.add(new _PayloadBlock(272, 279, 8, "Wave height", "waveheight", "U1", "0-25m: units of 0.1m, 255 = N/A (default)."));
-		messageBlocks.add(new _PayloadBlock(280, 285, 6, "Wave period", "waveperiod", "u", "Seconds 0-60: 63 = N/A (default)."));
-		messageBlocks.add(new _PayloadBlock(286, 294, 9, "Wave direction", "wavedir", "u", "0-359: deg. ffom true north, 511 = N/A (default)."));
-		messageBlocks.add(new _PayloadBlock(295, 302, 8, "Swell height", "swellheight", "U1", "0-25m: units of 0.1m 255 = N/A (default)."));
-		messageBlocks.add(new _PayloadBlock(303, 308, 6, "Swell period", "swellperiod", "u", "Seconds 0-60: 63 = N/A (default)."));
-		messageBlocks.add(new _PayloadBlock(309, 317, 9, "Swell direction", "swelldir", "u", "0-359: deg. fom true north, 511 = N/A (default)."));
-		messageBlocks.add(new _PayloadBlock(318, 321, 4, "Sea state", "seastate", "e", "See \"Beaufort Scale\""));
-		messageBlocks.add(new _PayloadBlock(322, 331, 10, "Water Temperature", "watertemp", "U1", "-10.0 to 50.0: units 0.1 C, 1023 = N/A (default)."));
-		messageBlocks.add(new _PayloadBlock(332, 334, 3, "Precipitation", "preciptype", "e", "See \"Precipitation Types\""));
-		messageBlocks.add(new _PayloadBlock(335, 343, 9, "Salinity", "salinity", "U1", "0.0-50.0%: units 0.1%, 511 = N/A (default)"));
-		messageBlocks.add(new _PayloadBlock(344, 345, 2, "Ice", "ice", "e", "0 = No 1 = Yes 2 = (reserved for future use) 3 = not available = default"));
-		messageBlocks.add(new _PayloadBlock(346, 351, 6, "Spare", "", "x", "Not used"));
+		messageBlocks.add(new PayloadBlock(56, 79, 24, "Latitude", "lat", "I3",
+				"Unit = minutes * 0.001, 0x7FFFFF = N/A (default), E positive, W negative."));
+		messageBlocks.add(new PayloadBlock(80, 104, 25, "Longitude", "lon", "I3",
+				"Unit = minutes * 0.001, 0xFFFFFF = N/A (default), N positive, S negative."));
+		messageBlocks.add(new PayloadBlock(105, 109, 5, "Day (UTC)", "day", "u", "1-31, 31=N/A (default)"));
+		messageBlocks.add(new PayloadBlock(110, 114, 5, "Hour (UTC)", "hour", "u", "0-23, 31=N/A (default)"));
+		messageBlocks.add(new PayloadBlock(115, 120, 6, "Minute (UTC)", "minute", "u", "0-59, 63=N/A (default)"));
+		messageBlocks.add(new PayloadBlock(121, 127, 7, "Average Wind Speed", "wspeed", "u",
+				"10-min avg wind speed, knots, 127 = N/A (default)."));
+		messageBlocks.add(new PayloadBlock(128, 134, 7, "Gust Speed", "wgust", "u",
+				"10-min max wind speed, knots, 127 = N/A (default)."));
+		messageBlocks.add(new PayloadBlock(135, 143, 9, "Wind Direction", "wdir", "u",
+				"0-359, degrees from true north 511 = N/A (default)"));
+		messageBlocks.add(new PayloadBlock(144, 152, 9, "Wind Gust Direction", "wgustdir", "u",
+				"0-359, degrees from true north 511 = N/A (default)"));
+		messageBlocks.add(new PayloadBlock(153, 163, 11, "Air Temperature", "temperature", "u",
+				"Dry bulb temp: 0.1 deg C -60.0 to +60.0, 2047 = N/A (default),"));
+		messageBlocks.add(new PayloadBlock(164, 170, 7, "Relative Humidity", "humidity", "u",
+				"0-100%, units of 1%, 127 = N/A (default)."));
+		messageBlocks.add(new PayloadBlock(171, 180, 10, "Dew Point", "dewpoint", "u",
+				"-20.0 to +50.0: 0.1 deg C, 1023 = N/A (default),"));
+		messageBlocks.add(new PayloadBlock(181, 189, 9, "Air Pressure", "pressure", "u",
+				"800-1200hPa: units 1hPa, 511 = N/A (default)."));
+		messageBlocks.add(new PayloadBlock(190, 191, 2, "Pressure Tendency", "pressuretend", "e",
+				"0 = steady, 1 = decreasing, 2 = increasing, 3 - N/A (default)."));
+		messageBlocks.add(new PayloadBlock(192, 199, 8, "Horiz. Visibility", "visibility", "U1",
+				"0-25.0, units of 0.1nm 255 = N/A (default)"));
+		messageBlocks.add(new PayloadBlock(200, 208, 9, "Water Level", "waterlevel", "I1",
+				"-10.0 to +30.0 in 0.1m, 511 = N/A (default)."));
+		messageBlocks.add(new PayloadBlock(209, 210, 2, "Water Level Trend", "leveltrend", "e",
+				"0 = steady, 1 = decreasing, 2 = increasing, 3 - N/A (default)."));
+		messageBlocks.add(new PayloadBlock(211, 218, 8, "Surface Current Speed", "cspeed", "U1",
+				"0.0-25.0 knots: units 0.1 knot"));
+		messageBlocks.add(new PayloadBlock(219, 227, 9, "Surface Current Direction", "cdir", "u",
+				"0-359: deg from true north, 511 = N/A (default)"));
+		messageBlocks.add(new PayloadBlock(228, 235, 8, "Current Speed #2", "cspeed2", "U1",
+				"0.0-25.0 in units of 0.1 knot, 255 = N/A (default)."));
+		messageBlocks.add(new PayloadBlock(236, 244, 9, "Current Direction #2", "cdir2", "u",
+				"0-359: deg. fom true north, 511 = N/A (default)"));
+		messageBlocks.add(new PayloadBlock(245, 249, 5, "Measurement Depth #2", "cdepth2", "U1",
+				"0-30m down: units 0.1m, 31 = N/A (default)."));
+		messageBlocks.add(new PayloadBlock(250, 257, 8, "Current Speed #3", "cspeed3", "U1",
+				"0.0-25.0: units of 0.1 knot, 255 = N/A (default)."));
+		messageBlocks.add(new PayloadBlock(258, 266, 9, "Current Direction #3", "cdir3", "u",
+				"0-359: degrees fom true north, 511 = N/A (default)."));
+		messageBlocks.add(new PayloadBlock(267, 271, 5, "Measurement Depth #3", "cdepth3", "U1",
+				"0-30m down: units 0.1m, 31 = N/A (default)."));
+		messageBlocks.add(new PayloadBlock(272, 279, 8, "Wave height", "waveheight", "U1",
+				"0-25m: units of 0.1m, 255 = N/A (default)."));
+		messageBlocks.add(
+				new PayloadBlock(280, 285, 6, "Wave period", "waveperiod", "u", "Seconds 0-60: 63 = N/A (default)."));
+		messageBlocks.add(new PayloadBlock(286, 294, 9, "Wave direction", "wavedir", "u",
+				"0-359: deg. ffom true north, 511 = N/A (default)."));
+		messageBlocks.add(new PayloadBlock(295, 302, 8, "Swell height", "swellheight", "U1",
+				"0-25m: units of 0.1m 255 = N/A (default)."));
+		messageBlocks.add(
+				new PayloadBlock(303, 308, 6, "Swell period", "swellperiod", "u", "Seconds 0-60: 63 = N/A (default)."));
+		messageBlocks.add(new PayloadBlock(309, 317, 9, "Swell direction", "swelldir", "u",
+				"0-359: deg. fom true north, 511 = N/A (default)."));
+		messageBlocks.add(new PayloadBlock(318, 321, 4, "Sea state", "seastate", "e", "See \"Beaufort Scale\""));
+		messageBlocks.add(new PayloadBlock(322, 331, 10, "Water Temperature", "watertemp", "U1",
+				"-10.0 to 50.0: units 0.1 C, 1023 = N/A (default)."));
+		messageBlocks
+				.add(new PayloadBlock(332, 334, 3, "Precipitation", "preciptype", "e", "See \"Precipitation Types\""));
+		messageBlocks.add(new PayloadBlock(335, 343, 9, "Salinity", "salinity", "U1",
+				"0.0-50.0%: units 0.1%, 511 = N/A (default)"));
+		messageBlocks.add(new PayloadBlock(344, 345, 2, "Ice", "ice", "e",
+				"0 = No 1 = Yes 2 = (reserved for future use) 3 = not available = default"));
+		messageBlocks.add(new PayloadBlock(346, 351, 6, "Spare", "", "x", "Not used"));
 	}
-	
+
 	public void parseMessage(String message) {
-		for (_PayloadBlock block : getMessageBlock()) {
+		for (PayloadBlock block : messageBlocks) {
 			if (block.getEnd() == -1) {
 				block.setBits(message.substring(block.getStart(), message.length()));
 			} else {
 				block.setBits(message.substring(block.getStart(), block.getEnd() + 1));
 			}
-			
+
 			switch (block.getStart()) {
 			case 56:
 				setLat(AISMessage.float_decoder(block.getBits()) / 60000f);
@@ -193,11 +222,11 @@ public class Type8_Dac1_Fid11 extends BinaryBroadCastMessage {
 			}
 		}
 	}
-	
+
 	@Override
 	public String toString() {
 		StringBuilder buffer = new StringBuilder();
-		
+
 		buffer.append("{ \"BinaryBroadCastMessage_DAC1_FID11\": {");
 		buffer.append("\"type\":" + getType());
 		buffer.append(", \"repeat\":" + getRepeat());
@@ -243,7 +272,7 @@ public class Type8_Dac1_Fid11 extends BinaryBroadCastMessage {
 		buffer.append(", \"salinity\":" + getSalinity());
 		buffer.append(", \"ice\":" + getIce());
 		buffer.append("}}");
-		
+
 		return buffer.toString();
 	}
 

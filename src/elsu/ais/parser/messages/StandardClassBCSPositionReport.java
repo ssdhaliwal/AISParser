@@ -3,59 +3,68 @@ package elsu.ais.parser.messages;
 import java.util.*;
 
 import elsu.ais.parser.AISMessage;
+import elsu.ais.parser.resources.PayloadBlock;
 
 public class StandardClassBCSPositionReport extends AISMessage {
 
 	public static AISMessage fromAISMessage(AISMessage aisMessage, String messageBits) {
 		StandardClassBCSPositionReport positionReport = new StandardClassBCSPositionReport();
-		
+
 		positionReport.setRawMessage(aisMessage.getRawMessage());
 		positionReport.setBinaryMessage(aisMessage.getBinaryMessage());
 		positionReport.setEncodedMessage(aisMessage.getEncodedMessage());
 		positionReport.setErrorMessage(aisMessage.getErrorMessage());
 
 		positionReport.parseMessage(messageBits);
-		
+
 		return positionReport;
 	}
-	
+
 	public StandardClassBCSPositionReport() {
 		initialize();
 	}
 
 	private void initialize() {
-		ArrayList<_PayloadBlock> messageBlocks = getMessageBlock();
-		
-		messageBlocks.add(new _PayloadBlock(0, 5, 6, "Message Type", "type", "u", "Constant: 18"));
-		messageBlocks.add(new _PayloadBlock(6, 7, 2, "Repeat Indicator", "repeat", "u", "As in Common Navigation Block"));
-		messageBlocks.add(new _PayloadBlock(8, 37, 30, "MMSI", "mmsi", "u", "9 decimal digits"));
-		messageBlocks.add(new _PayloadBlock(38, 45, 8, "Regional Reserved", "reserved", "x", "Not used"));
-		messageBlocks.add(new _PayloadBlock(46, 55, 10, "Speed Over Ground", "speed", "U1", "As in common navigation block"));
-		messageBlocks.add(new _PayloadBlock(56, 56, 1, "Position Accuracy", "accuracy", "b", "See below"));
-		messageBlocks.add(new _PayloadBlock(57, 84, 28, "Longitude", "lon", "I4", "Minutes/10000 (as in CNB)"));
-		messageBlocks.add(new _PayloadBlock(85, 111, 27, "Latitude", "lat", "I4", "Minutes/10000 (as in CNB)"));
-		messageBlocks.add(new _PayloadBlock(112, 123, 12, "Course Over Ground", "course", "U1", "0.1 degrees from true north"));
-		messageBlocks.add(new _PayloadBlock(124, 132, 9, "True Heading", "heading", "u", "0 to 359 degrees, 511 = N/A"));
-		messageBlocks.add(new _PayloadBlock(133, 138, 6, "Time Stamp", "second", "u", "Second of UTC timestamp."));
-		messageBlocks.add(new _PayloadBlock(139, 140, 2, "Regional reserved", "regional", "u", "Uninterpreted"));
-		messageBlocks.add(new _PayloadBlock(141, 141, 1, "CS Unit", "cs", "b", "0=Class B SOTDMA unit 1=Class B CS (Carrier Sense) unit"));
-		messageBlocks.add(new _PayloadBlock(142, 142, 1, "Display flag", "display", "b", "0=No visual display, 1=Has display, (Probably not reliable)."));
-		messageBlocks.add(new _PayloadBlock(143, 143, 1, "DSC Flag", "dsc", "b", "If 1, unit is attached to a VHF voice radio with DSC capability."));
-		messageBlocks.add(new _PayloadBlock(144, 144, 1, "Band flag", "band", "b", "Base stations can command units to switch frequency. If this flag is 1, the unit can use any part of the marine channel."));
-		messageBlocks.add(new _PayloadBlock(145, 145, 1, "Message 22 flag", "msg22", "b", "If 1, unit can accept a channel assignment via Message Type 22."));
-		messageBlocks.add(new _PayloadBlock(146, 146, 1, "Assigned", "assigned", "b", "Assigned-mode flag: 0 = autonomous mode (default), 1 = assigned mode."));
-		messageBlocks.add(new _PayloadBlock(147, 147, 1, "RAIM flag", "raim", "b", "As for common navigation block"));
-		messageBlocks.add(new _PayloadBlock(148, 167, 20, "Radio status", "radio", "u", "See [IALA] for details."));
+		messageBlocks.add(new PayloadBlock(0, 5, 6, "Message Type", "type", "u", "Constant: 18"));
+		messageBlocks
+				.add(new PayloadBlock(6, 7, 2, "Repeat Indicator", "repeat", "u", "As in Common Navigation Block"));
+		messageBlocks.add(new PayloadBlock(8, 37, 30, "MMSI", "mmsi", "u", "9 decimal digits"));
+		messageBlocks.add(new PayloadBlock(38, 45, 8, "Regional Reserved", "reserved", "x", "Not used"));
+		messageBlocks.add(
+				new PayloadBlock(46, 55, 10, "Speed Over Ground", "speed", "U1", "As in common navigation block"));
+		messageBlocks.add(new PayloadBlock(56, 56, 1, "Position Accuracy", "accuracy", "b", "See below"));
+		messageBlocks.add(new PayloadBlock(57, 84, 28, "Longitude", "lon", "I4", "Minutes/10000 (as in CNB)"));
+		messageBlocks.add(new PayloadBlock(85, 111, 27, "Latitude", "lat", "I4", "Minutes/10000 (as in CNB)"));
+		messageBlocks.add(
+				new PayloadBlock(112, 123, 12, "Course Over Ground", "course", "U1", "0.1 degrees from true north"));
+		messageBlocks
+				.add(new PayloadBlock(124, 132, 9, "True Heading", "heading", "u", "0 to 359 degrees, 511 = N/A"));
+		messageBlocks.add(new PayloadBlock(133, 138, 6, "Time Stamp", "second", "u", "Second of UTC timestamp."));
+		messageBlocks.add(new PayloadBlock(139, 140, 2, "Regional reserved", "regional", "u", "Uninterpreted"));
+		messageBlocks.add(new PayloadBlock(141, 141, 1, "CS Unit", "cs", "b",
+				"0=Class B SOTDMA unit 1=Class B CS (Carrier Sense) unit"));
+		messageBlocks.add(new PayloadBlock(142, 142, 1, "Display flag", "display", "b",
+				"0=No visual display, 1=Has display, (Probably not reliable)."));
+		messageBlocks.add(new PayloadBlock(143, 143, 1, "DSC Flag", "dsc", "b",
+				"If 1, unit is attached to a VHF voice radio with DSC capability."));
+		messageBlocks.add(new PayloadBlock(144, 144, 1, "Band flag", "band", "b",
+				"Base stations can command units to switch frequency. If this flag is 1, the unit can use any part of the marine channel."));
+		messageBlocks.add(new PayloadBlock(145, 145, 1, "Message 22 flag", "msg22", "b",
+				"If 1, unit can accept a channel assignment via Message Type 22."));
+		messageBlocks.add(new PayloadBlock(146, 146, 1, "Assigned", "assigned", "b",
+				"Assigned-mode flag: 0 = autonomous mode (default), 1 = assigned mode."));
+		messageBlocks.add(new PayloadBlock(147, 147, 1, "RAIM flag", "raim", "b", "As for common navigation block"));
+		messageBlocks.add(new PayloadBlock(148, 167, 20, "Radio status", "radio", "u", "See [IALA] for details."));
 	}
 
 	public void parseMessage(String message) {
-		for (_PayloadBlock block : getMessageBlock()) {
+		for (PayloadBlock block : messageBlocks) {
 			if (block.getEnd() == -1) {
 				block.setBits(message.substring(block.getStart(), message.length()));
 			} else {
 				block.setBits(message.substring(block.getStart(), block.getEnd() + 1));
 			}
-			
+
 			switch (block.getStart()) {
 			case 0:
 				setType(AISMessage.unsigned_integer_decoder(block.getBits()));
@@ -117,11 +126,11 @@ public class StandardClassBCSPositionReport extends AISMessage {
 			}
 		}
 	}
-	
+
 	@Override
 	public String toString() {
 		StringBuilder buffer = new StringBuilder();
-		
+
 		buffer.append("{ \"StandardClassBCSPositionReport\": {");
 		buffer.append("\"transponder\":" + getTransponderType());
 		buffer.append(", \"type\":" + getType());
@@ -144,18 +153,18 @@ public class StandardClassBCSPositionReport extends AISMessage {
 		buffer.append(", \"raim\":" + isRaim());
 		buffer.append(", \"radio\":" + getRadio());
 		buffer.append("}}");
-		
+
 		return buffer.toString();
 	}
 
 	public String getTransponderType() {
 		return "B";
 	}
-	
+
 	public int getType() {
 		return type;
 	}
-	
+
 	public void setType(int type) {
 		this.type = type;
 	}

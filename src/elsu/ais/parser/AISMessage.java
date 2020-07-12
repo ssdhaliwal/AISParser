@@ -2,10 +2,13 @@ package elsu.ais.parser;
 
 import java.util.ArrayList;
 
-import elsu.ais.parser.messages._PayloadBlock;
+import elsu.ais.parser.resources.AISMessageDecoders;
+import elsu.ais.parser.resources.PayloadBlock;
 
 public class AISMessage {
 
+	public ArrayList<PayloadBlock> messageBlocks = new ArrayList<>();
+	
 	private String _rawMessage = "";
 	private String[] _rawMessageArray = null;
 	private ArrayList<String> _messageFragments = new ArrayList<String>();
@@ -13,15 +16,13 @@ public class AISMessage {
 	private String _encodedMessage = "";
 	private String _errorMessage = "";
 
-	private ArrayList<_PayloadBlock> _messageBlocks = new ArrayList<>();
-
 	public static AISMessage fromString(String message) throws Exception {
 		return new AISMessage(message);
 	}
 
 	public AISMessage() {
 	}
-	
+
 	public AISMessage(String message) throws Exception {
 		setRawMessage(message);
 
@@ -39,7 +40,7 @@ public class AISMessage {
 		isMessageValid();
 		return result;
 	}
-	
+
 	public String getRawMessage() {
 		return this._rawMessage;
 	}
@@ -53,11 +54,11 @@ public class AISMessage {
 	protected String[] getRawMessageArray() {
 		return this._rawMessageArray;
 	}
-	
-	protected ArrayList<String> getMessageFragments() {
+
+	public ArrayList<String> getMessageFragments() {
 		return this._messageFragments;
 	}
-	
+
 	protected void setMessageFragments(ArrayList<String> fragments) {
 		this._messageFragments = fragments;
 	}
@@ -66,7 +67,7 @@ public class AISMessage {
 		return this._binaryMessage;
 	}
 
-	protected void setBinaryMessage(String message) {
+	public void setBinaryMessage(String message) {
 		this._binaryMessage = message;
 	}
 
@@ -74,7 +75,7 @@ public class AISMessage {
 		return this._encodedMessage;
 	}
 
-	protected void setEncodedMessage(String message) {
+	public void setEncodedMessage(String message) {
 		this._encodedMessage = message;
 	}
 
@@ -84,10 +85,6 @@ public class AISMessage {
 
 	protected void setErrorMessage(String message) {
 		this._errorMessage = message;
-	}
-	
-	public ArrayList<_PayloadBlock> getMessageBlock() {
-		return this._messageBlocks;
 	}
 
 	public String getMessageType() {
@@ -194,42 +191,42 @@ public class AISMessage {
 		return ((day < 10) ? "0" + day : day) + "-" + ((month < 10) ? "0" + month : month) + " "
 				+ ((hour < 10) ? "0" + hour : hour) + ":" + ((minute < 10) ? "0" + minute : minute);
 	}
-	
+
 	public static String text_decoder(String bits) {
 		StringBuffer buffer = new StringBuffer();
-		
+
 		int len = bits.length(), index = 0;
 		String bit = "";
-		for(int i = 0; i < len; i += 6) {
-			if (len < i+6) {
+		for (int i = 0; i < len; i += 6) {
+			if (len < i + 6) {
 				bit = String.format("%-6s", bits.substring(i, len)).replace(" ", "0");
 			} else {
-				bit = bits.substring(i, i+6);
+				bit = bits.substring(i, i + 6);
 			}
 			index = unsigned_integer_decoder(bit);
 
-			buffer.append(AISDecoder.sixbitAscii[index]);
+			buffer.append(AISMessageDecoders.sixbitAscii[index]);
 		}
-		
+
 		return buffer.toString();
 	}
 
 	public static String text_decoder_8bit(String bits) {
 		StringBuffer buffer = new StringBuffer();
-		
+
 		int len = bits.length(), index = 0;
 		String bit = "";
-		for(int i = 0; i < len; i += 8) {
-			if (len < i+8) {
+		for (int i = 0; i < len; i += 8) {
+			if (len < i + 8) {
 				bit = String.format("%-8s", bits.substring(i, len)).replace(" ", "0");
 			} else {
-				bit = bits.substring(i, i+8);
+				bit = bits.substring(i, i + 8);
 			}
 			index = unsigned_integer_decoder(bit);
 
 			buffer.append(Integer.toHexString(0x100 | index).substring(1));
 		}
-		
+
 		return buffer.toString();
 	}
 

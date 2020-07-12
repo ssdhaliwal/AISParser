@@ -3,9 +3,9 @@ package elsu.ais.parser.messages;
 import java.util.ArrayList;
 
 import elsu.ais.parser.AISMessage;
-import elsu.ais.parser.lookups.LookupValues;
 import elsu.ais.parser.messages.StaticDataReport;
-import elsu.ais.parser.messages._PayloadBlock;
+import elsu.ais.parser.resources.LookupValues;
+import elsu.ais.parser.resources.PayloadBlock;
 
 public class StaticDataReportPartB extends StaticDataReport {
 
@@ -32,26 +32,23 @@ public class StaticDataReportPartB extends StaticDataReport {
 	}
 
 	private void initialize() {
-		ArrayList<_PayloadBlock> messageBlocks = getMessageBlock();
-		messageBlocks.clear();
-
-		messageBlocks.add(new _PayloadBlock(40, 47, 8, "Ship Type", "shiptype", "e", "(Part B) See \"Ship Types\""));
-		messageBlocks.add(new _PayloadBlock(48, 65, 18, "Vendor ID", "vendorid", "t", "(Part B) 3 six-bit chars"));
-		messageBlocks.add(new _PayloadBlock(66, 69, 4, "Unit Model Code", "model", "u", "(Part B)"));
-		messageBlocks.add(new _PayloadBlock(70, 89, 20, "Serial Number", "serial", "u", "(Part B)"));
+		messageBlocks.add(new PayloadBlock(40, 47, 8, "Ship Type", "shiptype", "e", "(Part B) See \"Ship Types\""));
+		messageBlocks.add(new PayloadBlock(48, 65, 18, "Vendor ID", "vendorid", "t", "(Part B) 3 six-bit chars"));
+		messageBlocks.add(new PayloadBlock(66, 69, 4, "Unit Model Code", "model", "u", "(Part B)"));
+		messageBlocks.add(new PayloadBlock(70, 89, 20, "Serial Number", "serial", "u", "(Part B)"));
 		messageBlocks
-				.add(new _PayloadBlock(90, 131, 42, "Call Sign", "callsign", "t", "(Part B) As in Message Type 5"));
-		messageBlocks.add(new _PayloadBlock(132, 140, 9, "Dimension to Bow", "to_bow", "u", "(Part B) Meters"));
-		messageBlocks.add(new _PayloadBlock(141, 149, 9, "Dimension to Stern", "to_stern", "u", "(Part B) Meters"));
-		messageBlocks.add(new _PayloadBlock(150, 155, 6, "Dimension to Port", "to_port", "u", "(Part B) Meters"));
+				.add(new PayloadBlock(90, 131, 42, "Call Sign", "callsign", "t", "(Part B) As in Message Type 5"));
+		messageBlocks.add(new PayloadBlock(132, 140, 9, "Dimension to Bow", "to_bow", "u", "(Part B) Meters"));
+		messageBlocks.add(new PayloadBlock(141, 149, 9, "Dimension to Stern", "to_stern", "u", "(Part B) Meters"));
+		messageBlocks.add(new PayloadBlock(150, 155, 6, "Dimension to Port", "to_port", "u", "(Part B) Meters"));
 		messageBlocks
-				.add(new _PayloadBlock(156, 161, 6, "Dimension to Starboard", "to_starboard", "u", "(Part B) Meters"));
+				.add(new PayloadBlock(156, 161, 6, "Dimension to Starboard", "to_starboard", "u", "(Part B) Meters"));
 		messageBlocks
-				.add(new _PayloadBlock(132, 161, 30, "Mothership MMSI", "mothership_mmsi", "u", "(Part B) See below"));
+				.add(new PayloadBlock(132, 161, 30, "Mothership MMSI", "mothership_mmsi", "u", "(Part B) See below"));
 	}
 
 	public void parseMessage(String message) {
-		for (_PayloadBlock block : getMessageBlock()) {
+		for (PayloadBlock block : messageBlocks) {
 			if (block.getEnd() == -1) {
 				block.setBits(message.substring(block.getStart(), message.length()));
 			} else {
