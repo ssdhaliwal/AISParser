@@ -7,8 +7,6 @@ import elsu.ais.parser.lookups.LookupValues;
 
 public class PositionReportClassA extends AISMessage {
 
-	private ArrayList<_PayloadBlock> messageBlocks = new ArrayList<>();
-
 	public static AISMessage fromAISMessage(AISMessage aisMessage, String messageBits) {
 		PositionReportClassA positionReport = new PositionReportClassA();
 		
@@ -27,6 +25,8 @@ public class PositionReportClassA extends AISMessage {
 	}
 
 	private void initialize() {
+		ArrayList<_PayloadBlock> messageBlocks = getMessageBlock();
+		
 		messageBlocks.add(new _PayloadBlock(0, 5, 6, "Message Type", "type", "u", "Constant: 1-3"));
 		messageBlocks
 				.add(new _PayloadBlock(6, 7, 2, "Repeat Indicator", "repeat", "u", "Message repeat count"));
@@ -55,7 +55,7 @@ public class PositionReportClassA extends AISMessage {
 	}
 
 	public void parseMessage(String message) {
-		for (_PayloadBlock block : messageBlocks) {
+		for (_PayloadBlock block : getMessageBlock()) {
 			if (block.getEnd() == -1) {
 				block.setBits(message.substring(block.getStart(), message.length()));
 			} else {
@@ -101,8 +101,6 @@ public class PositionReportClassA extends AISMessage {
 				break;
 			case 143:
 				setManeuver(AISMessage.unsigned_integer_decoder(block.getBits()));
-				break;
-			case 145:
 				break;
 			case 148:
 				setRaim(AISMessage.boolean_decoder(block.getBits()));

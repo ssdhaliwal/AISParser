@@ -1,12 +1,19 @@
 package elsu.ais.parser;
 
+import java.util.ArrayList;
+
+import elsu.ais.parser.messages._PayloadBlock;
+
 public class AISMessage {
 
 	private String _rawMessage = "";
 	private String[] _rawMessageArray = null;
+	private ArrayList<String> _messageFragments = new ArrayList<String>();
 	private String _binaryMessage = "";
 	private String _encodedMessage = "";
 	private String _errorMessage = "";
+
+	private ArrayList<_PayloadBlock> _messageBlocks = new ArrayList<>();
 
 	public static AISMessage fromString(String message) throws Exception {
 		return new AISMessage(message);
@@ -32,7 +39,7 @@ public class AISMessage {
 		isMessageValid();
 		return result;
 	}
-
+	
 	public String getRawMessage() {
 		return this._rawMessage;
 	}
@@ -45,6 +52,14 @@ public class AISMessage {
 
 	protected String[] getRawMessageArray() {
 		return this._rawMessageArray;
+	}
+	
+	protected ArrayList<String> getMessageFragments() {
+		return this._messageFragments;
+	}
+	
+	protected void setMessageFragments(ArrayList<String> fragments) {
+		this._messageFragments = fragments;
 	}
 
 	public String getBinaryMessage() {
@@ -69,6 +84,10 @@ public class AISMessage {
 
 	protected void setErrorMessage(String message) {
 		this._errorMessage = message;
+	}
+	
+	public ArrayList<_PayloadBlock> getMessageBlock() {
+		return this._messageBlocks;
 	}
 
 	public String getMessageType() {

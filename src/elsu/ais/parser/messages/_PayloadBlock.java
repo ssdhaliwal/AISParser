@@ -1,5 +1,7 @@
 package elsu.ais.parser.messages;
 
+import java.math.BigInteger;
+
 public class _PayloadBlock {
 
 	public _PayloadBlock(int start, int end, int length, String description, String member, String type, String units) {
@@ -59,6 +61,11 @@ public class _PayloadBlock {
 	}
 	public void setBits(String bits) {
 		this.bits = bits;
+		this.hex_value = new BigInteger(bits, 2).toString(16);
+	}
+	
+	public String getHexValue() {
+		return this.hex_value;
 	}
 
 	private int start = 0;
@@ -69,4 +76,5 @@ public class _PayloadBlock {
 	private String type = "";
 	private String units = "";
 	private String bits = "";
+	private String hex_value = "";
 }

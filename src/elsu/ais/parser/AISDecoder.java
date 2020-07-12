@@ -48,29 +48,33 @@ public class AISDecoder {
 			"\"", "#", "$", "%", "&", "'", "(", ")", "*", "+", ",", "-", ".", "/", "0", "1", "2", "3", "4", "5", "6",
 			"7", "8", "9", ":", ";", "<", "=", ">", "?" };
 
-	static public String decodeMessagePayload(ArrayList<AISMessage> messages) {
-		String result = "";
+	static public AISMessage decodeMessagePayload(ArrayList<AISMessage> messages) {
+		AISMessage firstMessage = null;
+		String decodedMessage = "";
 
 		if (messages.size() > 0) {
-			AISMessage firstMessage = messages.get(0);
+			firstMessage = messages.get(0);
 
-			if (!firstMessage.getEncodedMessage().isEmpty()) {
-				result = firstMessage.getBinaryMessage();
+			if (messages.size() == 1) {
+				firstMessage.setEncodedMessage(firstMessage.getPayload());
+				decodedMessage = decodeMessage(firstMessage.getEncodedMessage());
+				firstMessage.setBinaryMessage(decodedMessage);
 			} else {
 				// encoded merger
 				StringBuilder builder = new StringBuilder();
 
 				for (AISMessage message : messages) {
+					firstMessage.getMessageFragments().add(message.getRawMessage());
 					builder.append(message.getPayload());
 				}
 
 				firstMessage.setEncodedMessage(builder.toString());
-				result = decodeMessage(firstMessage.getEncodedMessage());
-				firstMessage.setBinaryMessage(result);
+				decodedMessage = decodeMessage(firstMessage.getEncodedMessage());
+				firstMessage.setBinaryMessage(decodedMessage);
 			}
 		}
 
-		return result;
+		return firstMessage;
 	}
 	
 	static public String decodeMessage(String message) {

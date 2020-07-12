@@ -2,13 +2,9 @@ package elsu.ais.parser.messages;
 
 import java.util.*;
 
-import elsu.ais.parser.AISDecoder;
 import elsu.ais.parser.AISMessage;
-import elsu.ais.parser.lookups.LookupValues;
 
 public class BinaryBroadCastMessage extends AISMessage {
-
-	private ArrayList<_PayloadBlock> messageBlocks = new ArrayList<>();
 
 	public static AISMessage fromAISMessage(AISMessage aisMessage, String messageBits) {
 		BinaryBroadCastMessage binaryMessage = new BinaryBroadCastMessage();
@@ -28,6 +24,8 @@ public class BinaryBroadCastMessage extends AISMessage {
 	}
 
 	private void initialize() {
+		ArrayList<_PayloadBlock> messageBlocks = getMessageBlock();
+		
 		messageBlocks.add(new _PayloadBlock(0, 5, 6, "Message Type", "type", "u", "Constant: 8"));
 		messageBlocks.add(new _PayloadBlock(6, 7, 2, "Repeat Indicator", "repeat", "u", "As in Common Navigation Block"));
 		messageBlocks.add(new _PayloadBlock(8, 37, 30, "Source MMSI", "mmsi", "u", "9 decimal digits"));
@@ -36,9 +34,9 @@ public class BinaryBroadCastMessage extends AISMessage {
 		messageBlocks.add(new _PayloadBlock(50, 55, 6, "Functional ID", "fid", "u", "Unsigned integer"));
 		messageBlocks.add(new _PayloadBlock(56, -1, 952, "Data", "data", "d", "Binary data, May be shorter than 952 bits."));
 	}
-
+	
 	public void parseMessage(String message) {
-		for (_PayloadBlock block : messageBlocks) {
+		for (_PayloadBlock block : getMessageBlock()) {
 			if (block.getEnd() == -1) {
 				block.setBits(message.substring(block.getStart(), message.length()));
 			} else {
@@ -66,6 +64,16 @@ public class BinaryBroadCastMessage extends AISMessage {
 				break;
 			}
 		}
+	}
+	
+	public void parseMessage(BinaryBroadCastMessage message) {
+		this.type = message.getType();
+		this.repeat = message.getRepeat();
+		this.mmsi = message.getMmsi();
+		this.dac = message.getDac();
+		this.fid = message.getFid();
+		this.data = message.getData();
+		this.data_raw = message.getDataRaw();
 	}
 	
 	@Override

@@ -2,13 +2,10 @@ package elsu.ais.parser.messages;
 
 import java.util.*;
 
-import elsu.ais.parser.AISDecoder;
 import elsu.ais.parser.AISMessage;
 import elsu.ais.parser.lookups.LookupValues;
 
 public class AidToNavigationReport extends AISMessage {
-
-	private ArrayList<_PayloadBlock> messageBlocks = new ArrayList<>();
 
 	public static AISMessage fromAISMessage(AISMessage aisMessage, String messageBits) {
 		AidToNavigationReport atonMessage = new AidToNavigationReport();
@@ -28,6 +25,8 @@ public class AidToNavigationReport extends AISMessage {
 	}
 
 	private void initialize() {
+		ArrayList<_PayloadBlock> messageBlocks = getMessageBlock();
+		
 		messageBlocks.add(new _PayloadBlock(0, 5, 6, "Message Type", "type", "u", "Constant: 21"));
 		messageBlocks.add(new _PayloadBlock(6, 7, 2, "Repeat Indicator", "repeat", "u", "As in CNB"));
 		messageBlocks.add(new _PayloadBlock(8, 37, 30, "MMSI", "mmsi", "u", "9 digits"));
@@ -52,7 +51,7 @@ public class AidToNavigationReport extends AISMessage {
 	}
 
 	public void parseMessage(String message) {
-		for (_PayloadBlock block : messageBlocks) {
+		for (_PayloadBlock block : getMessageBlock()) {
 			if (block.getEnd() == -1) {
 				block.setBits(message.substring(block.getStart(), message.length()));
 			} else {
@@ -328,5 +327,4 @@ public class AidToNavigationReport extends AISMessage {
 	private boolean raim = false;
 	private boolean virtual_aid = false;
 	private boolean assigned = false;
-	private String name_extension = "";
 }

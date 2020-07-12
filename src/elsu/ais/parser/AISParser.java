@@ -4,6 +4,7 @@ import java.io.*;
 import java.util.*;
 
 import elsu.ais.parser.messages.*;
+import elsu.ais.parser.messages.dataparser.Type8_Dac1_Fid11;
 import elsu.common.*;
 import elsu.support.*;
 
@@ -25,14 +26,19 @@ public class AISParser {
 			while ((line = reader.readLine()) != null) {
 				if (line.contains("SAVDM") || line.contains("AIVDM") || line.contains("AIVDO")) {
 					line = line.replaceFirst("^.*SAVDM", "!AIVDM");
-					System.out.println(line);
+					// System.out.println(line);
 				} else {
 					continue;
 				}
 
 				try {
 					AISMessage message = AISMessage.fromString(line);
-					messageBits = processMessages("BCS1", message);
+					message = processMessages("BCS1", message);
+					messageBits = "";
+					
+					if (message != null) {
+						messageBits = message.getBinaryMessage();
+					}
 					
 					if (messageBits.length() > 0) {
 						msgNumber = AISDecoder.getMessageNumber(messageBits);
@@ -43,27 +49,48 @@ public class AISParser {
 						case 2:
 						case 3:
 							decodedMessage = PositionReportClassA.fromAISMessage((AISMessage)message, messageBits);
-							// System.out.println(decodedMessage.toString());
+							System.out.println(decodedMessage.toString());
 							break;
 						case 4:
 							decodedMessage = BaseStationReport.fromAISMessage((AISMessage)message, messageBits);
-							// System.out.println(decodedMessage.toString());
+							System.out.println(decodedMessage.toString());
 							break;
 						case 5:
 							decodedMessage = StaticAndVoyageRelatedData.fromAISMessage((AISMessage)message, messageBits);
-							// System.out.println(decodedMessage.toString());
+							System.out.println(decodedMessage.toString());
 							break;
 						case 6:
 							decodedMessage = BinaryAddressedMessage.fromAISMessage((AISMessage)message, messageBits);
-							// System.out.println(decodedMessage.toString());
+							System.out.println(decodedMessage.toString());
 							break;
 						case 8:
 							decodedMessage = BinaryBroadCastMessage.fromAISMessage((AISMessage)message, messageBits);
+							// System.out.println(decodedMessage.toString());
+							
+							if (((BinaryBroadCastMessage)decodedMessage).getDac() == 1 &&
+									((BinaryBroadCastMessage)decodedMessage).getFid() == 11) {	
+								Type8_Dac1_Fid11 tdf = (Type8_Dac1_Fid11)Type8_Dac1_Fid11.fromAISMessage(decodedMessage, messageBits);
+								System.out.println(tdf.toString());
+							}
+							break;
+						case 18:
+							decodedMessage = StandardClassBCSPositionReport.fromAISMessage((AISMessage)message, messageBits);
 							System.out.println(decodedMessage.toString());
 							break;
 						case 21:
 							decodedMessage = AidToNavigationReport.fromAISMessage((AISMessage)message, messageBits);
+							System.out.println(decodedMessage.toString());
+							break;
+						case 24:
+							decodedMessage = StaticDataReport.fromAISMessage((AISMessage)message, messageBits);
 							// System.out.println(decodedMessage.toString());
+							if (((StaticDataReport)decodedMessage).getPartno() == 0) {
+								StaticDataReportPartA sdrPartA = (StaticDataReportPartA)StaticDataReportPartA.fromAISMessage(decodedMessage, messageBits);
+								System.out.println(sdrPartA);
+							} else if (((StaticDataReport)decodedMessage).getPartno() == 1) {
+								StaticDataReportPartB sdrPartB = (StaticDataReportPartB)StaticDataReportPartB.fromAISMessage(decodedMessage, messageBits);
+								System.out.println(sdrPartB);
+							}
 							break;
 						default:
 							System.out.println(message.getRawMessage() + "/" + msgNumber);
@@ -96,8 +123,8 @@ public class AISParser {
 		}
 	}
 
-	private String processMessages(String source, AISMessage message) throws Exception {
-		String result = "";
+	private AISMessage processMessages(String source, AISMessage message) throws Exception {
+		AISMessage result = null;
 			
 		int numberOfFragments = message.getNumberOfFragments();
 		if (numberOfFragments <= 0) {
