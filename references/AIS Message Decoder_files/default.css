@@ -1,0 +1,43 @@
+body {
+	padding-top: 60px;
+	/* 60px to make the container go all the way to the bottom of the topbar */
+}
+
+textarea {
+	width: 100%;
+}
+
+footer {
+	text-align: center;
+}
+
+div.social {
+	float: right;
+	margin: 0 auto;
+}
+
+div.adsense {
+	margin-top: 10px;
+	margin-bottom: 10px;
+}
+
+/* Scroll to stop */
+.scrollToTop{
+	width:130px;
+	height:110px;
+	padding:20px;
+	text-align:center;
+	background: whiteSmoke;
+	font-weight: bold;
+	color: #444;
+	text-decoration: none;
+	position:fixed;
+	top:100px;
+	left:0px;
+	display:none;
+	background: url('/resources/img/arrow_up.png') no-repeat 20px 20px;
+	background-position: center bottom;
+}
+.scrollToTop:hover{
+	text-decoration:none;
+}

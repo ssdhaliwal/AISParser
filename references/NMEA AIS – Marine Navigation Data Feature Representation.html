@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<!-- saved from url=(0106)https://docs.safe.com/fme/html/FME_Desktop_Documentation/FME_ReadersWriters/ais/Feature_Representation.htm -->
+<html xmlns:madcap="http://www.madcapsoftware.com/Schemas/MadCap.xsd" lang="en-us" xml:lang="en-us" class="ais _Skins_HTML5_TopMenu" data-mc-search-type="Stem" data-mc-help-system-file-name="FME_Readers_Writers.xml" data-mc-path-to-help-system="../" data-mc-has-content-body="True" data-mc-target-type="WebHelp2" data-mc-runtime-file-type="Topic;Default" data-mc-preload-images="false" data-mc-in-preview-mode="false" data-mc-toc-path=""><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        
+        <meta name="msapplication-config" content="../Skins/Favicons/browserconfig.xml">
+        <link rel="apple-touch-icon" sizes="180x180" href="https://docs.safe.com/fme/html/FME_Desktop_Documentation/FME_ReadersWriters/Skins/Favicons/apple-touch-icon.png">
+        <link rel="shortcut icon" href="https://docs.safe.com/fme/html/FME_Desktop_Documentation/FME_ReadersWriters/Skins/Favicons/favicon-32x32.png">
+        <link rel="icon" sizes="96x96" href="https://docs.safe.com/fme/html/FME_Desktop_Documentation/FME_ReadersWriters/Skins/Favicons/favicon-96x96.png">
+        <link rel="icon" sizes="32x32" href="https://docs.safe.com/fme/html/FME_Desktop_Documentation/FME_ReadersWriters/Skins/Favicons/favicon-32x32.png">
+        <link rel="icon" sizes="16x16" href="https://docs.safe.com/fme/html/FME_Desktop_Documentation/FME_ReadersWriters/Skins/Favicons/favicon-16x16.png">
+        
+        <meta name="description" content="">
+        <meta name="author" content=""><title>NMEA AIS – Marine Navigation Data Feature Representation</title>
+        <link href="./NMEA AIS – Marine Navigation Data Feature Representation_files/Slideshow.css" rel="stylesheet">
+        <link href="./NMEA AIS – Marine Navigation Data Feature Representation_files/TextEffects.css" rel="stylesheet">
+        <link href="./NMEA AIS – Marine Navigation Data Feature Representation_files/Topic.css" rel="stylesheet">
+        <link href="./NMEA AIS – Marine Navigation Data Feature Representation_files/Styles.css" rel="stylesheet">
+        <link href="./NMEA AIS – Marine Navigation Data Feature Representation_files/Tablet.css" rel="stylesheet">
+        <link href="./NMEA AIS – Marine Navigation Data Feature Representation_files/Mobile.css" rel="stylesheet">
+        <link href="./NMEA AIS – Marine Navigation Data Feature Representation_files/foundation.6.2.3.css" rel="stylesheet">
+        <link href="./NMEA AIS – Marine Navigation Data Feature Representation_files/Styles(1).css" rel="stylesheet">
+        <link href="./NMEA AIS – Marine Navigation Data Feature Representation_files/Tablet(1).css" rel="stylesheet">
+        <link href="./NMEA AIS – Marine Navigation Data Feature Representation_files/Mobile(1).css" rel="stylesheet">
+        <link href="./NMEA AIS – Marine Navigation Data Feature Representation_files/MainStyles.css" rel="stylesheet">
+        <style>/*&lt;meta /&gt;*/
+
+.button.remove-highlight-button
+{
+	-pie-background: url('../Skins/Default/Stylesheets/Images/highlight_1.png') no-repeat center center, linear-gradient(#ffffff, #ececec);
+}
+
+.button.separator-button
+{
+	-pie-background: linear-gradient(#ffffff, #ececec);
+}
+
+.button.expand-all-button
+{
+	-pie-background: url('../Skins/Default/Stylesheets/Images/expand_1.png') no-repeat center center, linear-gradient(#ffffff, #ececec);
+}
+
+.button.previous-topic-button
+{
+	-pie-background: url('../Skins/Default/Stylesheets/Images/back.png') no-repeat center center, linear-gradient(#ffffff, #ececec);
+}
+
+.button.next-topic-button
+{
+	-pie-background: url('../Skins/Default/Stylesheets/Images/forward.png') no-repeat center center, linear-gradient(#ffffff, #ececec);
+}
+
+.button.separator-button
+{
+	-pie-background: linear-gradient(#ffffff, #ececec);
+}
+
+.button.print-button
+{
+	-pie-background: url('../Skins/Default/Stylesheets/Images/print.png') no-repeat center center, linear-gradient(#ffffff, #ececec);
+}
+
+.button.collapse-all-button
+{
+	-pie-background: url('../Skins/Default/Stylesheets/Images/collapse_1.png') no-repeat center center, linear-gradient(#ffffff, #ececec);
+}
+
+.needs-pie
+{
+	behavior: url('../Resources/Scripts/PIE-no-motw.htc');
+}
+
+</style>
+        <link href="./NMEA AIS – Marine Navigation Data Feature Representation_files/PatternedRows.css" rel="stylesheet">
+        <script src="./NMEA AIS – Marine Navigation Data Feature Representation_files/jquery.min.js.download">
+        </script>
+        <script src="./NMEA AIS – Marine Navigation Data Feature Representation_files/purify.min.js.download" defer="defer">
+        </script>
+        <script src="./NMEA AIS – Marine Navigation Data Feature Representation_files/require.min.js.download" defer="defer">
+        </script>
+        <script src="./NMEA AIS – Marine Navigation Data Feature Representation_files/require.config.js.download" defer="defer">
+        </script>
+        <script src="./NMEA AIS – Marine Navigation Data Feature Representation_files/foundation.6.2.3_custom.js.download" defer="defer">
+        </script>
+        <script src="./NMEA AIS – Marine Navigation Data Feature Representation_files/plugins.min.js.download" defer="defer">
+        </script>
+        <script src="./NMEA AIS – Marine Navigation Data Feature Representation_files/MadCapAll.js.download" defer="defer">
+        </script>
+    <meta class="foundation-mq"><script type="text/javascript" charset="utf-8" async="" data-requirecontext="_" data-requiremodule="../Data/Breakpoints.js" src="./NMEA AIS – Marine Navigation Data Feature Representation_files/Breakpoints.js.download"></script><script type="text/javascript" charset="utf-8" async="" data-requirecontext="_" data-requiremodule="../Data/Language.js" src="./NMEA AIS – Marine Navigation Data Feature Representation_files/Language.js.download"></script><script type="text/javascript" charset="utf-8" async="" data-requirecontext="_" data-requiremodule="../Data/Filters.js" src="./NMEA AIS – Marine Navigation Data Feature Representation_files/Filters.js.download"></script><script type="text/javascript" charset="utf-8" async="" data-requirecontext="_" data-requiremodule="../Data/Tocs/TOC_FormatType.js" src="./NMEA AIS – Marine Navigation Data Feature Representation_files/TOC_FormatType.js.download"></script><script type="text/javascript" charset="utf-8" async="" data-requirecontext="_" data-requiremodule="../Data/Tocs/ais.js" src="./NMEA AIS – Marine Navigation Data Feature Representation_files/ais.js.download"></script><script type="text/javascript" charset="utf-8" async="" data-requirecontext="_" data-requiremodule="../Data/Tocs/TOC_FormatType_Chunk0.js" src="./NMEA AIS – Marine Navigation Data Feature Representation_files/TOC_FormatType_Chunk0.js.download"></script><script type="text/javascript" charset="utf-8" async="" data-requirecontext="_" data-requiremodule="../Data/Tocs/TOC_FormatType_Chunk1.js" src="./NMEA AIS – Marine Navigation Data Feature Representation_files/TOC_FormatType_Chunk1.js.download"></script><script type="text/javascript" charset="utf-8" async="" data-requirecontext="_" data-requiremodule="../Data/Tocs/ais_Chunk0.js" src="./NMEA AIS – Marine Navigation Data Feature Representation_files/ais_Chunk0.js.download"></script></head>
+    <body>
+        <div class="foundation-wrap off-canvas-wrapper">
+            <div class="off-canvas-wrapper-inner" data-off-canvas-wrapper="">
+                <aside class="off-canvas position-right" role="navigation" id="offCanvas" data-off-canvas="ym32l5-off-canvas" data-position="right" data-mc-ignore="true" aria-hidden="true">
+                    <ul class="off-canvas-accordion vertical menu off-canvas-list" data-accordion-menu="9k5xvr-accordion-menu" data-mc-back-link="Back" data-mc-css-tree-node-expanded="is-accordion-submenu-parent" data-mc-css-tree-node-collapsed="is-accordion-submenu-parent" data-mc-css-sub-menu="vertical menu is-accordion-submenu nested" data-mc-include-indicator="False" data-mc-include-icon="False" data-mc-include-parent-link="True" data-mc-include-back="False" data-mc-defer-expand-event="True" data-mc-expand-event="click.zf.accordionMenu" data-mc-toc="True" data-mc-chunk="Data/Toc.xml">
+                    <li class="tree-node is-accordion-submenu-parent" data-mc-id="0"><a href="https://docs.safe.com/fme/html/FME_Desktop_Documentation/FME_ReadersWriters/Format-List-All.htm" aria-expanded="false" role="button">Format Lists<span class="submenu-toggle-container"><span class="submenu-toggle">&nbsp;</span></span></a></li><li class="tree-node is-accordion-submenu-parent" data-mc-id="1"><a href="https://docs.safe.com/fme/html/FME_Desktop_Documentation/FME_ReadersWriters/New-Formats-2020.htm" aria-expanded="false" role="button">New Formats for 2020<span class="submenu-toggle-container"><span class="submenu-toggle">&nbsp;</span></span></a></li><li class="tree-node is-accordion-submenu-parent" data-mc-id="2"><a href="https://docs.safe.com/fme/html/FME_Desktop_Documentation/FME_ReadersWriters/!Transformer_Parameters/transformer_parameters.htm" aria-expanded="false" role="button">Transformers<span class="submenu-toggle-container"><span class="submenu-toggle">&nbsp;</span></span></a></li><li class="tree-node is-accordion-submenu-parent" data-mc-id="3"><a href="https://docs.safe.com/fme/html/FME_Desktop_Documentation/FME_ReadersWriters/aboutFeatures/About-Feature-Types.htm" aria-expanded="false" role="button">Feature Types<span class="submenu-toggle-container"><span class="submenu-toggle">&nbsp;</span></span></a></li><li class="tree-node is-accordion-submenu-parent" data-mc-id="4"><a href="https://docs.safe.com/fme/html/FME_Desktop_Documentation/FME_ReadersWriters/workbench-format-resources.htm" aria-expanded="false" role="button">Resources<span class="submenu-toggle-container"><span class="submenu-toggle">&nbsp;</span></span></a></li></ul>
+                </aside>
+                <div class="off-canvas-content inner-wrap" data-off-canvas-content="">
+                    <div data-sticky-container="" class="title-bar-container sticky-container" style="min-height: 76px;">
+                        <nav class="title-bar tab-bar sticky is-stuck is-at-top" data-sticky="yxkaw4-sticky" data-options="marginTop:0" style="width: 100%; max-width: 1266px; margin-top: 0em; top: 0px; bottom: auto;" data-sticky-on="small" data-mc-ignore="true" data-resize="bh0zo2-sticky" data-events="resize"><a class="skip-to-content fluid-skip showOnFocus" href="https://docs.safe.com/fme/html/FME_Desktop_Documentation/FME_ReadersWriters/ais/Feature_Representation.htm#mc-main-content">Skip To Main Content</a>
+                            <div class="middle title-bar-section outer-row clearfix">
+                                <div class="menu-icon-container relative clearfix">
+                                    <div class="central-dropdown" style="display:none;" id="#centralSmallScreen"><a class="central-account-drop"><span class="central-account-image"></span><span class="central-account-text">Account</span></a>
+                                        <div class="central-dropdown-content"><a class="MCCentralLink central-dropdown-content-settings">Settings</a>
+                                            <hr class="central-separator"><a class="MCCentralLink central-dropdown-content-logout">Logout</a>
+                                        </div>
+                                    </div>
+                                    <button class="menu-icon" aria-label="Show Navigation Panel" data-toggle="offCanvas" aria-expanded="false" aria-controls="offCanvas"><span></span>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="title-bar-layout outer-row">
+                                <div class="logo-wrapper"><a class="logo" href="https://docs.safe.com/fme/html/FME_Desktop_Documentation/FME_ReadersWriters/Home.htm"><img src="./NMEA AIS – Marine Navigation Data Feature Representation_files/transparent.gif" alt="http://www.safe.com" class="invisible-label"></a>
+                                </div>
+                                <div class="navigation-wrapper nocontent">
+                                    <ul class="navigation clearfix" data-mc-css-tree-node-has-children="has-children" data-mc-css-sub-menu="sub-menu" data-mc-expand-event="mouseenter" data-mc-top-nav-menu="True" data-mc-max-depth="3" data-mc-include-icon="False" data-mc-include-indicator="False" data-mc-include-children="True" data-mc-include-siblings="True" data-mc-include-parent="True" data-mc-toc="True" data-mc-chunk="Data/Toc.xml">
+                                        
+                                    <li data-mc-id="0" class="has-children"><a href="https://docs.safe.com/fme/html/FME_Desktop_Documentation/FME_ReadersWriters/Format-List-All.htm">Format Lists</a><button class="topnav-expand showOnFocus topnav-expand-toplevel" aria-label="Format Lists" aria-expanded="false" aria-haspopup="true">»</button></li><li data-mc-id="1" class="has-children"><a href="https://docs.safe.com/fme/html/FME_Desktop_Documentation/FME_ReadersWriters/New-Formats-2020.htm">New Formats for 2020</a><button class="topnav-expand showOnFocus topnav-expand-toplevel" aria-label="New Formats for 2020" aria-expanded="false" aria-haspopup="true" aria-controls="topnav-submenud416bfc0-4f86-485a-b336-bc21925a2850">»</button><ul class="sub-menu" id="topnav-submenud416bfc0-4f86-485a-b336-bc21925a2850"><li data-mc-id="5" class="has-children"><a href="https://docs.safe.com/fme/html/FME_Desktop_Documentation/FME_ReadersWriters/cityjson/cityjson.htm">CityJSON Reader/Writer (Technology Preview)</a><button class="topnav-expand showOnFocus topnav-expand-submenu" aria-label="CityJSON Reader/Writer (Technology Preview)" aria-expanded="false" aria-haspopup="true"></button></li><li data-mc-id="6" class="has-children"><a href="https://docs.safe.com/fme/html/FME_Desktop_Documentation/FME_ReadersWriters/dds/dds.htm">Microsoft DirectDraw Surface (DDS) Writer</a><button class="topnav-expand showOnFocus topnav-expand-submenu" aria-label="Microsoft DirectDraw Surface (DDS) Writer" aria-expanded="false" aria-haspopup="true"></button></li><li data-mc-id="7" class="has-children"><a href="https://docs.safe.com/fme/html/FME_Desktop_Documentation/FME_ReadersWriters/ept/ept.htm">Entwine Point Tile (EPT) Reader</a><button class="topnav-expand showOnFocus topnav-expand-submenu" aria-label="Entwine Point Tile (EPT) Reader" aria-expanded="false" aria-haspopup="true"></button></li><li data-mc-id="8"><a href="https://docs.safe.com/fme/html/FME_Desktop_Documentation/FME_ReadersWriters/automations/automations.htm">FME&nbsp;Server Automations Writer</a></li><li data-mc-id="9" class="has-children"><a href="https://docs.safe.com/fme/html/FME_Desktop_Documentation/FME_ReadersWriters/safe.google-bigquery.googlebigquery/googlebigquery.htm">Google BigQuery Writer</a><button class="topnav-expand showOnFocus topnav-expand-submenu" aria-label="Google BigQuery Writer" aria-expanded="false" aria-haspopup="true"></button></li><li data-mc-id="10" class="has-children"><a href="https://docs.safe.com/fme/html/FME_Desktop_Documentation/FME_ReadersWriters/nifti/nifti.htm">NIfTI Reader/Writer</a><button class="topnav-expand showOnFocus topnav-expand-submenu" aria-label="NIfTI Reader/Writer" aria-expanded="false" aria-haspopup="true"></button></li><li data-mc-id="11" class="has-children"><a href="https://docs.safe.com/fme/html/FME_Desktop_Documentation/FME_ReadersWriters/qlikjson/qlikjson.htm">Qlik Connect (QlikJSON) Reader</a><button class="topnav-expand showOnFocus topnav-expand-submenu" aria-label="Qlik Connect (QlikJSON) Reader" aria-expanded="false" aria-haspopup="true"></button></li><li data-mc-id="12" class="has-children"><a href="https://docs.safe.com/fme/html/FME_Desktop_Documentation/FME_ReadersWriters/snowflake_nonspatial/snowflake_nonspatial.htm">Snowflake Non-Spatial Reader/Writer</a><button class="topnav-expand showOnFocus topnav-expand-submenu" aria-label="Snowflake Non-Spatial Reader/Writer" aria-expanded="false" aria-haspopup="true"></button></li><li data-mc-id="13" class="has-children"><a href="https://docs.safe.com/fme/html/FME_Desktop_Documentation/FME_ReadersWriters/xsd_driven_xml/xsd_driven_xml.htm">XSD-Driven XML Reader/Writer</a><button class="topnav-expand showOnFocus topnav-expand-submenu" aria-label="XSD-Driven XML Reader/Writer" aria-expanded="false" aria-haspopup="true"></button></li></ul></li><li data-mc-id="2" class="has-children"><a href="https://docs.safe.com/fme/html/FME_Desktop_Documentation/FME_ReadersWriters/!Transformer_Parameters/transformer_parameters.htm">Transformers</a><button class="topnav-expand showOnFocus topnav-expand-toplevel" aria-label="Transformers" aria-expanded="false" aria-haspopup="true">»</button></li><li data-mc-id="3" class="has-children"><a href="https://docs.safe.com/fme/html/FME_Desktop_Documentation/FME_ReadersWriters/aboutFeatures/About-Feature-Types.htm">Feature Types</a><button class="topnav-expand showOnFocus topnav-expand-toplevel" aria-label="Feature Types" aria-expanded="false" aria-haspopup="true">»</button></li><li data-mc-id="4" class="has-children"><a href="https://docs.safe.com/fme/html/FME_Desktop_Documentation/FME_ReadersWriters/workbench-format-resources.htm">Resources</a><button class="topnav-expand showOnFocus topnav-expand-toplevel" aria-label="Resources" aria-expanded="false" aria-haspopup="true">»</button></li></ul>
+                                    <div class="central-dropdown" style="display:none;" id="#centralTop"><a class="central-account-drop"><span class="central-account-image"></span><span class="central-account-text">Account</span></a>
+                                        <div class="central-dropdown-content"><a class="MCCentralLink central-dropdown-content-settings">Settings</a>
+                                            <hr class="central-separator"><a class="MCCentralLink central-dropdown-content-logout">Logout</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="nav-search-wrapper">
+                                    <div class="nav-search row">
+                                        <form class="search" action="https://docs.safe.com/fme/html/FME_Desktop_Documentation/FME_ReadersWriters/ais/Feature_Representation.htm#">
+                                            <div class="search-bar search-bar-container needs-pie">
+                                                <input class="search-field needs-pie" type="search" aria-label="Search Field" placeholder="Search Readers and Writers help topics.">
+                                                <div class="search-filter-wrapper" style="display: block;"><span class="invisible-label" id="search-filters-label">Filter: </span>
+                                                    <div class="search-filter" aria-haspopup="true" aria-controls="sf-content" aria-expanded="false" aria-label="Search Filter" title="All Files" role="button" tabindex="0">
+                                                    </div>
+                                                    <div class="search-filter-content" id="sf-content">
+                                                        <ul>
+                                                            <li>
+                                                                <button class="mc-dropdown-item" aria-labelledby="search-filters-label filterSelectorLabel-00001"><span id="filterSelectorLabel-00001">All Files</span>
+                                                                </button>
+                                                            </li>
+                                                        <li><button class="mc-dropdown-item" aria-labelledby="search-filters-label d350f0d9-df83-49e8-bab1-ea6bd983a472"><span id="d350f0d9-df83-49e8-bab1-ea6bd983a472">Format Quick Facts</span></button></li><li><button class="mc-dropdown-item" aria-labelledby="search-filters-label 865ba246-8e09-4924-b715-03c63a77ebb5"><span id="865ba246-8e09-4924-b715-03c63a77ebb5">Readers and Writers</span></button></li></ul>
+                                                    </div>
+                                                </div>
+                                                <div class="search-submit-wrapper" dir="ltr">
+                                                    <div class="search-submit" title="Search" role="button" tabindex="0"><span class="invisible-label">Submit Search</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <div class="central-dropdown" style="display:none;"><a class="central-account-drop"><span class="central-account-image"></span><span class="central-account-text">Account</span></a>
+                                        <div class="central-dropdown-content"><a class="MCCentralLink central-dropdown-content-settings">Settings</a>
+                                            <hr class="central-separator"><a class="MCCentralLink central-dropdown-content-logout">Logout</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </nav>
+                    </div>
+                    <div class="main-section">
+                        <div class="row outer-row sidenav-layout">
+                            <nav class="sidenav-wrapper">
+                                <div class="sidenav-container">
+                                    <ul class="off-canvas-accordion vertical menu sidenav" data-accordion-menu="1mqjau-accordion-menu" data-mc-css-tree-node-expanded="is-accordion-submenu-parent" data-mc-css-tree-node-collapsed="is-accordion-submenu-parent" data-mc-css-sub-menu="vertical menu accordion-menu is-accordion-submenu nested" data-mc-include-indicator="False" data-mc-include-icon="False" data-mc-include-parent-link="False" data-mc-include-back="False" data-mc-defer-expand-event="True" data-mc-expand-event="click.zf.accordionMenu" data-mc-toc="True" data-mc-side-nav-menu="True" data-mc-chunk="Data/Toc.xml">
+                                    <li class="tree-node is-accordion-submenu-parent" data-mc-id="0"><a href="https://docs.safe.com/fme/html/FME_Desktop_Documentation/FME_ReadersWriters/Format-List-All.htm">Format Lists<span class="submenu-toggle-container" role="button" tabindex="0" aria-expanded="false"><span class="submenu-toggle">&nbsp;</span><span class="invisible-label">Format Lists&nbsp;</span></span></a></li><li class="tree-node is-accordion-submenu-parent" data-mc-id="1"><a href="https://docs.safe.com/fme/html/FME_Desktop_Documentation/FME_ReadersWriters/New-Formats-2020.htm">New Formats for 2020<span class="submenu-toggle-container" role="button" tabindex="0" aria-expanded="false"><span class="submenu-toggle">&nbsp;</span><span class="invisible-label">New Formats for 2020&nbsp;</span></span></a></li><li class="tree-node is-accordion-submenu-parent" data-mc-id="2"><a href="https://docs.safe.com/fme/html/FME_Desktop_Documentation/FME_ReadersWriters/!Transformer_Parameters/transformer_parameters.htm">Transformers<span class="submenu-toggle-container" role="button" tabindex="0" aria-expanded="false"><span class="submenu-toggle">&nbsp;</span><span class="invisible-label">Transformers&nbsp;</span></span></a></li><li class="tree-node is-accordion-submenu-parent" data-mc-id="3"><a href="https://docs.safe.com/fme/html/FME_Desktop_Documentation/FME_ReadersWriters/aboutFeatures/About-Feature-Types.htm">Feature Types<span class="submenu-toggle-container" role="button" tabindex="0" aria-expanded="false"><span class="submenu-toggle">&nbsp;</span><span class="invisible-label">Feature Types&nbsp;</span></span></a></li><li class="tree-node is-accordion-submenu-parent" data-mc-id="4"><a href="https://docs.safe.com/fme/html/FME_Desktop_Documentation/FME_ReadersWriters/workbench-format-resources.htm">Resources<span class="submenu-toggle-container" role="button" tabindex="0" aria-expanded="false"><span class="submenu-toggle">&nbsp;</span><span class="invisible-label">Resources&nbsp;</span></span></a></li></ul>
+                                </div>
+                            </nav>
+                            <div class="body-container">
+                                <div data-mc-content-body="True">
+                                    <div class="row collapse">
+                                        <form class="search" action="https://docs.safe.com/fme/html/FME_Desktop_Documentation/FME_ReadersWriters/ais/Feature_Representation.htm#">
+                                            <div class="search-bar search-bar-container needs-pie _Skins_SearchTopics mc-component">
+                                                <input class="search-field needs-pie" type="search" aria-label="Search Field" placeholder="Search Readers and Writers">
+                                                <div class="search-filter-wrapper" style="display: block;"><span class="invisible-label" id="search-filters-label">Filter: </span>
+                                                    <div class="search-filter" aria-haspopup="true" aria-controls="sf-content" aria-expanded="false" aria-label="Search Filter" title="All Files" role="button" tabindex="0">
+                                                    </div>
+                                                    <div class="search-filter-content" id="sf-content">
+                                                        <ul>
+                                                            <li>
+                                                                <button class="mc-dropdown-item" aria-labelledby="search-filters-label filterSelectorLabel-00001"><span id="filterSelectorLabel-00001">All Files</span>
+                                                                </button>
+                                                            </li>
+                                                        <li><button class="mc-dropdown-item" aria-labelledby="search-filters-label d350f0d9-df83-49e8-bab1-ea6bd983a472"><span id="d350f0d9-df83-49e8-bab1-ea6bd983a472">Format Quick Facts</span></button></li><li><button class="mc-dropdown-item" aria-labelledby="search-filters-label 865ba246-8e09-4924-b715-03c63a77ebb5"><span id="865ba246-8e09-4924-b715-03c63a77ebb5">Readers and Writers</span></button></li></ul>
+                                                    </div>
+                                                </div>
+                                                <div class="search-submit-wrapper" dir="ltr">
+                                                    <div class="search-submit" title="Search" role="button" tabindex="0"><span class="invisible-label">Submit Search</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </form>
+                                        <div class="sideContent">
+                                            <div class="clearfix">
+                                                <!-- <div class="button_set">
+                                <div id="expand">
+                                    <img src="../Images/expand.png" alt="" />
+                                </div>
+                                <div id="collapse">
+                                    <img src="../Images/collapse.png" alt="" />
+                                </div>
+                                <div id="high">
+                                    <img src="../Images/highlight.png" alt="" />
+                                </div>
+                                <div id="print">
+                                    <img src="../Images/print.png" alt="" />
+                                </div>
+                            </div>
+                            <div style="clear:both;">
+                            </div>-->
+                                                <div class="buttons popup-container clearfix topicToolbarProxy topicToolbarProxySkins_TopicToolBar _Skins_TopicToolbar mc-component nocontent">
+                                                    <div class="button-group-container-left">
+                                                        <button class="button needs-pie remove-highlight-button" title="Remove Highlights">
+                                                            <img src="./NMEA AIS – Marine Navigation Data Feature Representation_files/transparent.gif" class="invisible-label">
+                                                        </button>
+                                                        <div class="button-separator">
+                                                        </div>
+                                                        <button class="button needs-pie expand-all-button" data-state1-class="expand-all-button" data-state2-class="collapse-all-button" data-state2-title="Collapse all" title="Expand all" data-state1-title="Expand all">
+                                                            <img alt="Expand all" src="./NMEA AIS – Marine Navigation Data Feature Representation_files/transparent.gif" class="invisible-label">
+                                                        </button>
+                                                        <button class="button needs-pie previous-topic-button" title="Navigate previous">
+                                                            <img alt="Navigate previous" src="./NMEA AIS – Marine Navigation Data Feature Representation_files/transparent.gif" class="invisible-label">
+                                                        </button>
+                                                        <button class="button needs-pie next-topic-button" title="Navigate next">
+                                                            <img alt="Navigate next" src="./NMEA AIS – Marine Navigation Data Feature Representation_files/transparent.gif" class="invisible-label">
+                                                        </button>
+                                                        <div class="button-separator">
+                                                        </div>
+                                                        <button class="button needs-pie print-button" title="Print">
+                                                            <img alt="Print" src="./NMEA AIS – Marine Navigation Data Feature Representation_files/transparent.gif" class="invisible-label">
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                                <ul class="nocontent menu _Skins_SideMenu mc-component" data-mc-linked-toc="Data/Tocs/ais.js" data-mc-side-menu="True" data-mc-max-depth="-1" data-mc-include-icon="False" data-mc-include-indicator="False" data-mc-include-children="True" data-mc-include-siblings="True" data-mc-include-parent="True" data-mc-toc="True" data-mc-chunk="Data/Toc.xml">
+                                                <li class="tree-node-leaf" data-mc-id="0"><a href="https://docs.safe.com/fme/html/FME_Desktop_Documentation/FME_ReadersWriters/Format-List-All.htm">View the Complete List of Supported Formats</a></li><li data-mc-id="1" class="has-children"><a href="https://docs.safe.com/fme/html/FME_Desktop_Documentation/FME_ReadersWriters/ais/ais.htm">NMEA AIS – Marine Navigation Data Reader</a><ul class="sub-menu"><li class="tree-node-leaf" data-mc-id="2"><a href="https://docs.safe.com/fme/html/FME_Desktop_Documentation/FME_ReadersWriters/ais/quick_facts_ais.htm">Quick Facts</a></li><li class="tree-node-leaf" data-mc-id="3"><a href="https://docs.safe.com/fme/html/FME_Desktop_Documentation/FME_ReadersWriters/ais/AIS_reader.htm">Reader Parameters</a></li><li data-mc-id="4" class="has-children"><a href="https://docs.safe.com/fme/html/FME_Desktop_Documentation/FME_ReadersWriters/ais/About-Feature-Types.htm">Feature Types</a><ul class="sub-menu"><li class="tree-node-leaf" data-mc-id="5"><a href="https://docs.safe.com/fme/html/FME_Desktop_Documentation/FME_ReadersWriters/ais/user-attributes.htm">User Attributes</a></li><li class="tree-node-leaf" data-mc-id="6"><a href="https://docs.safe.com/fme/html/FME_Desktop_Documentation/FME_ReadersWriters/ais/Feature_Representation.htm" class="selected">Feature Representation</a></li></ul></li></ul></li></ul>
+                                            </div>
+                                        </div>
+                                        <div role="main" id="mc-main-content">
+                                            <h1><a name="aanchor1065"></a>
+                                                <madcap:concept term="FME Readers and Writers">NMEA AIS – Marine Navigation Data Feature Representation</madcap:concept></h1>
+                                            <p>In addition to the generic FME feature attributes that FME Workbench adds to all features (see <a href="https://docs.safe.com/fme/html/FME_Desktop_Documentation/FME_ReadersWriters/aboutFeatures/feature-type-attributes-about.htm" class="MCXref xref">About Feature Type Attributes</a>), this format also adds format-specific attributes (<a href="https://docs.safe.com/fme/html/FME_Desktop_Documentation/FME_ReadersWriters/aboutFeatures/feature-type-attributes-about.htm#Format">Format Attributes</a>).</p>
+                                            <p>Each feature created in FME corresponds to one complete AIS message. Usually, one line in an AIS file corresponds to one AIS message, but in some cases, longer AIS messages are split over multiple messages. In this case, the multiple message pieces will be reconstructed into a single AIS message before feature construction.</p>
+                                            <p>There are numerous AIS messages types, each one with different data fields. Each message type corresponds to a feature type in FME. The corresponding feature type will store the data of the AIS message as attributes. In some cases, additional location-specific information will be stored as traits of the geometry for the feature type. </p>
+                                            <p>The table below lists the FME feature types and the AIS messages that they support.</p>
+                                            <p>To see the attributes of a certain FME feature type, generate a workspace with an AIS reader and view that feature type’s attributes. In many cases, the value of an attribute is a constant that corresponds to a certain string or value. </p>
+                                            <p>The table below lists sections of the specification. These sections provide tables that describe the values of these enumerations. These links are a good reference  if the meaning or interpretation of the value of an attribute is desired.</p>
+                                            <p class="note" data-mc-autonum="&lt;b&gt;&lt;span style=&quot;color: Black;&quot; class=&quot;mcFormatColor&quot;&gt;Note: &lt;/span&gt;&lt;/b&gt;"><span class="autonumber"><span><b><span style="color: Black;" class="mcFormatColor">Note: </span></b></span></span>Not all of the type 6 and 8 subtypes are supported. Currently, the subtypes that are handled are subtypes specified by the International Maritime Organization (IMO). The format can be extended, however, to support additional subtypes upon request. If you would like added support for another binary subtype, please contact <a href="mailto:support@safe.com" target="_blank" title="E-mail Safe Software" alt="E-mail Safe Software">support@safe.com</a> and provide a specification detailing the contents of the subtype.</p>
+                                            <table class="TableStyle-PatternedRows" style="mc-table-style: url(&#39;../Resources/TableStyles/PatternedRows.css&#39;);" cellspacing="0">
+                                                <colgroup><col class="TableStyle-PatternedRows-Column-Regular">
+                                                <col class="TableStyle-PatternedRows-Column-Regular">
+                                                <col class="TableStyle-PatternedRows-Column-Regular">
+                                                </colgroup><thead>
+                                                    <tr class="TableStyle-PatternedRows-Head-Header1">
+                                                        <th class="TableStyle-PatternedRows-HeadE-Regular-Header1">Feature Type</th>
+                                                        <th class="TableStyle-PatternedRows-HeadE-Regular-Header1">AIS&nbsp;Message</th>
+                                                        <th class="TableStyle-PatternedRows-HeadD-Regular-Header1">Notes</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr class="TableStyle-PatternedRows-Body-LightRows">
+                                                        <td class="TableStyle-PatternedRows-BodyE-Regular-LightRows">ais_position_report</td>
+                                                        <td class="TableStyle-PatternedRows-BodyE-Regular-LightRows">
+                                                            <p>Type 1: Position Report Class A,
+</p>
+                                                            <p>Type 2: Position Report Class A (Assigned Schedule),
+</p>
+                                                            <p>Type 3: Position Report Class A (Response to interrogation)
+</p>
+                                                        </td>
+                                                        <td class="TableStyle-PatternedRows-BodyD-Regular-LightRows">
+                                                            <p>AIS messages 1 – 3 all correspond to this type of position report. This is the most common type of AIS message seen and makes up the majority of what is found in typical datasets. </p>
+                                                            <p>See <a href="http://gpsd.berlios.de/AIVDM.html#_types_1_2_and_3_position_report_class_a" target="_blank" title="Opens external website" alt="Opens external website">Types 1, 2, and 3 Position Reports</a> for information on how to interpret the attribute’s values.
+
+&nbsp;</p>
+                                                        </td>
+                                                    </tr>
+                                                    <tr class="TableStyle-PatternedRows-Body-DarkerRows">
+                                                        <td class="TableStyle-PatternedRows-BodyE-Regular-DarkerRows">ais_base_station_report</td>
+                                                        <td class="TableStyle-PatternedRows-BodyE-Regular-DarkerRows">
+                                                            <p>Type 4: Base Station Report 
+</p>
+                                                            <p>Type 11: UTC/Date Response
+</p>
+                                                        </td>
+                                                        <td class="TableStyle-PatternedRows-BodyD-Regular-DarkerRows">
+                                                            <p><a href="http://gpsd.berlios.de/AIVDM.html#_type_4_base_station_report" target="_blank" title="Opens an external website" alt="Opens an external website">Type 4 Base Station Report</a> contains information on how to interpret the attribute’s values. </p>
+                                                            <p>This message type is also relatively common.</p>
+                                                        </td>
+                                                    </tr>
+                                                    <tr class="TableStyle-PatternedRows-Body-LightRows">
+                                                        <td class="TableStyle-PatternedRows-BodyE-Regular-LightRows">ais_ship_static_and_voyage_related_data</td>
+                                                        <td class="TableStyle-PatternedRows-BodyE-Regular-LightRows">Type 5: Static and Voyage Related Data </td>
+                                                        <td class="TableStyle-PatternedRows-BodyD-Regular-LightRows"><a href="http://gpsd.berlios.de/AIVDM.html#_type_5_static_and_voyage_related_data" target="_blank" title="Opens external website" alt="Opens external website">Type 5 Static and Voyage-Related Data</a> contains information on how to interpret the attribute’s values.</td>
+                                                    </tr>
+                                                    <tr class="TableStyle-PatternedRows-Body-DarkerRows">
+                                                        <td class="TableStyle-PatternedRows-BodyE-Regular-DarkerRows">ais_dangerous_cargo_indication</td>
+                                                        <td class="TableStyle-PatternedRows-BodyE-Regular-DarkerRows">
+                                                            <p>Type 6: Binary Addressed Message – Subtype: IMO236 Dangerous Cargo Indication
+</p>
+                                                            <p>Type 6: Binary Addressed Message – Subtype: IMO289 Dangerous Cargo Indication
+</p>
+                                                        </td>
+                                                        <td class="TableStyle-PatternedRows-BodyD-Regular-DarkerRows" rowspan="7">
+                                                            <p><a href="http://gpsd.berlios.de/AIVDM.html#_type_6_binary_addressed_message" target="_blank" title="Opens external website" alt="Opens external website">Type 6 Binary Addressed Messages</a> contains information on how to interpret the attribute’s values. </p>
+                                                            <p>See the section corresponding to the specific subtype(s).</p>
+                                                        </td>
+                                                    </tr>
+                                                    <tr class="TableStyle-PatternedRows-Body-LightRows">
+                                                        <td class="TableStyle-PatternedRows-BodyE-Regular-LightRows">ais_tidal_window</td>
+                                                        <td class="TableStyle-PatternedRows-BodyE-Regular-LightRows">
+                                                            <p>Type 6: Binary Addressed Message – Subtype: IMO236 Tidal Window
+
+</p>
+                                                            <p>Type 6: Binary Addressed Message – Subtype: IMO289 Tidal Window
+</p>
+                                                        </td>
+                                                    </tr>
+                                                    <tr class="TableStyle-PatternedRows-Body-DarkerRows">
+                                                        <td class="TableStyle-PatternedRows-BodyE-Regular-DarkerRows">ais_number_persons_on_board</td>
+                                                        <td class="TableStyle-PatternedRows-BodyE-Regular-DarkerRows">
+                                                            <p>Type 6: Binary Addressed Message – Subtype: IMO236 Number of Persons on Board
+</p>
+                                                            <p>Type 6: Binary Addressed Message – Subtype: IMO289 Number of Persons on Board
+</p>
+                                                        </td>
+                                                    </tr>
+                                                    <tr class="TableStyle-PatternedRows-Body-LightRows">
+                                                        <td class="TableStyle-PatternedRows-BodyE-Regular-LightRows">ais_text_description</td>
+                                                        <td class="TableStyle-PatternedRows-BodyE-Regular-LightRows">Type 6: Binary Addressed Message – Subtype: IMO289 Text Description (addressed)</td>
+                                                    </tr>
+                                                    <tr class="TableStyle-PatternedRows-Body-DarkerRows">
+                                                        <td class="TableStyle-PatternedRows-BodyE-Regular-DarkerRows">ais_clearance_time_to_enter_port</td>
+                                                        <td class="TableStyle-PatternedRows-BodyE-Regular-DarkerRows">Type 6: Binary Addressed Message – Subtype: IMO289 Clearance Time to Enter Port</td>
+                                                    </tr>
+                                                    <tr class="TableStyle-PatternedRows-Body-LightRows">
+                                                        <td class="TableStyle-PatternedRows-BodyE-Regular-LightRows">ais_route_information</td>
+                                                        <td class="TableStyle-PatternedRows-BodyE-Regular-LightRows">Type 6: Binary Addressed Message – Subtype: IMO289 Route Information (addressed)</td>
+                                                    </tr>
+                                                    <tr class="TableStyle-PatternedRows-Body-DarkerRows">
+                                                        <td class="TableStyle-PatternedRows-BodyE-Regular-DarkerRows">ais_berthing_data </td>
+                                                        <td class="TableStyle-PatternedRows-BodyE-Regular-DarkerRows">Type 6: Binary Addressed Message – Subtype: IMO289 Berthing Data (addressed)</td>
+                                                    </tr>
+                                                    <tr class="TableStyle-PatternedRows-Body-LightRows">
+                                                        <td class="TableStyle-PatternedRows-BodyE-Regular-LightRows">ais_area_notice</td>
+                                                        <td class="TableStyle-PatternedRows-BodyE-Regular-LightRows">
+                                                            <p>Type 6: Binary Addressed Message – Subtype: IMO289 Area Notice (addressed)
+
+</p>
+                                                            <p>Type 8: Binary Broadcast message – Subtype: IMO289 Area Notice (broadcast)
+</p>
+                                                        </td>
+                                                        <td class="TableStyle-PatternedRows-BodyD-Regular-LightRows">
+                                                            <p><a href="http://gpsd.berlios.de/AIVDM.html#_type_6_binary_addressed_message" target="_blank" title="Opens external website" alt="Opens external website">Type 6 Binary Addressed Messages</a> contains information on how to interpret the attribute’s values. </p>
+                                                            <p>See the section corresponding to the specific subtype.</p>
+                                                            <p>The type 8 version has the same structure and interpretation as the type 6, except for the fact the message is broadcast instead of addressed to a certain ship.</p>
+                                                            <p>These messages contain an array of subareas over which the specific area notice applies. These areas are stored as an aggregate on the feature, and the aggregate can contain the following geometries: rectangles, sectors, polylines, and polygons, along with associated text.</p>
+                                                        </td>
+                                                    </tr>
+                                                    <tr class="TableStyle-PatternedRows-Body-DarkerRows">
+                                                        <td class="TableStyle-PatternedRows-BodyE-Regular-DarkerRows">ais_fairway_closed
+
+</td>
+                                                        <td class="TableStyle-PatternedRows-BodyE-Regular-DarkerRows">Type 8: Binary Broadcast message – Subtype: Fairway Closed</td>
+                                                        <td class="TableStyle-PatternedRows-BodyD-Regular-DarkerRows" rowspan="2">
+                                                            <p rowspan="2"><a href="http://gpsd.berlios.de/AIVDM.html#_type_8_binary_broadcast_message" target="_blank" title="Opens an external browser" alt="Opens an external browser">Type 8 Binary Broadcast Message</a> contains information on how to interpret the attribute’s values. </p>
+                                                            <p rowspan="2">See the section corresponding to this specific subtype.</p>
+                                                        </td>
+                                                    </tr>
+                                                    <tr class="TableStyle-PatternedRows-Body-LightRows">
+                                                        <td class="TableStyle-PatternedRows-BodyE-Regular-LightRows">ais_marine_traffic_signal</td>
+                                                        <td class="TableStyle-PatternedRows-BodyE-Regular-LightRows">Type 8: Binary Broadcast message – Subtype: IMO289 Marine Traffic Signal</td>
+                                                    </tr>
+                                                    <tr class="TableStyle-PatternedRows-Body-DarkerRows">
+                                                        <td class="TableStyle-PatternedRows-BodyE-Regular-DarkerRows">ais_synthetic_target</td>
+                                                        <td class="TableStyle-PatternedRows-BodyE-Regular-DarkerRows">Type 8: Binary Broadcast message – Subtype: VTS-Generated/Synthetic Targets</td>
+                                                        <td class="TableStyle-PatternedRows-BodyD-Regular-DarkerRows">
+                                                            <p><a href="http://gpsd.berlios.de/AIVDM.html#_type_8_binary_broadcast_message" target="_blank" title="Opens an external browser" alt="Opens an external browser">Type 8 Binary Broadcast Message</a> contains information on how to interpret the attribute’s values. </p>
+                                                            <p>See the section corresponding to this specific subtype.</p>
+                                                            <p>The last portion of this message contains an array of synthetic targets. The contents of which is stored as an aggregate on this feature type, with each geometry within that aggregate containing traits describing the target’s properties.
+</p>
+                                                        </td>
+                                                    </tr>
+                                                    <tr class="TableStyle-PatternedRows-Body-LightRows">
+                                                        <td class="TableStyle-PatternedRows-BodyE-Regular-LightRows">ais_weather_observation_from_ship_non_wmo</td>
+                                                        <td class="TableStyle-PatternedRows-BodyE-Regular-LightRows">Type 8: Binary Broadcast message – Subtype: IMO289 Weather Observation Report from Ship: Non-WMO Variant</td>
+                                                        <td class="TableStyle-PatternedRows-BodyD-Regular-LightRows" rowspan="4">
+                                                            <p rowspan="4"><a href="http://gpsd.berlios.de/AIVDM.html#_type_8_binary_broadcast_message" target="_blank" title="Opens an external browser" alt="Opens an external browser">Type 8 Binary Broadcast Message</a> contains information on how to interpret the attribute’s values. </p>
+                                                            <p rowspan="4">See the section corresponding to this specific subtype.</p>
+                                                        </td>
+                                                    </tr>
+                                                    <tr class="TableStyle-PatternedRows-Body-DarkerRows">
+                                                        <td class="TableStyle-PatternedRows-BodyE-Regular-DarkerRows">ais_weather_observation_from_ship_wmo</td>
+                                                        <td class="TableStyle-PatternedRows-BodyE-Regular-DarkerRows">Type 8: Binary Broadcast message – Subtype: IMO289 Weather Observation Report from Ship: Non-WMO Variant</td>
+                                                    </tr>
+                                                    <tr class="TableStyle-PatternedRows-Body-LightRows">
+                                                        <td class="TableStyle-PatternedRows-BodyE-Regular-LightRows">ais_extended_ship_static_voyage_imo236</td>
+                                                        <td class="TableStyle-PatternedRows-BodyE-Regular-LightRows">Type 8: Binary Broadcast message – Subtype: IMO236 Extended Ship Static and Voyage Related Data</td>
+                                                    </tr>
+                                                    <tr class="TableStyle-PatternedRows-Body-DarkerRows">
+                                                        <td class="TableStyle-PatternedRows-BodyE-Regular-DarkerRows">ais_extended_ship_static_voyage_imo289</td>
+                                                        <td class="TableStyle-PatternedRows-BodyE-Regular-DarkerRows">Type 8: Binary Broadcast message – Subtype: IMO289 Extended Ship Static and Voyage Related Data</td>
+                                                    </tr>
+                                                    <tr class="TableStyle-PatternedRows-Body-LightRows">
+                                                        <td class="TableStyle-PatternedRows-BodyE-Regular-LightRows">ais_environmental_report
+
+</td>
+                                                        <td class="TableStyle-PatternedRows-BodyE-Regular-LightRows">Type 8: Binary Broadcast message – Subtype: IMO289 Environmental</td>
+                                                        <td class="TableStyle-PatternedRows-BodyD-Regular-LightRows">
+                                                            <p><a href="http://gpsd.berlios.de/AIVDM.html#_type_8_binary_broadcast_message" target="_blank" title="Opens an external browser" alt="Opens an external browser">Type 8 Binary Broadcast Message</a> contains information on how to interpret the attribute’s values. </p>
+                                                            <p>See the section corresponding to this specific subtype.</p>
+                                                            <p>This feature type has an aggregate, which contains between 1 and 5 geometries. These geometries can either correspond to a location or be null. In either case, the traits of these geometries describe different types of environmental reports. The specifications for these reports can be found in the link above.
+</p>
+                                                        </td>
+                                                    </tr>
+                                                    <tr class="TableStyle-PatternedRows-Body-DarkerRows">
+                                                        <td class="TableStyle-PatternedRows-BodyE-Regular-DarkerRows">ais_meteorological_hydrological_data</td>
+                                                        <td class="TableStyle-PatternedRows-BodyE-Regular-DarkerRows">
+                                                            <p>Type 8: Binary Broadcast message – Subtype: IMO236 Meteorological and Hydrological Data
+
+</p>
+                                                            <p>Type 8: Binary Broadcast message – Subtype: IMO289 Meteorological and Hydrological Data
+</p>
+                                                        </td>
+                                                        <td class="TableStyle-PatternedRows-BodyD-Regular-DarkerRows">
+                                                            <p><a href="http://gpsd.berlios.de/AIVDM.html#_type_8_binary_broadcast_message" target="_blank" title="Opens an external browser" alt="Opens an external browser">Type 8 Binary Broadcast Message</a> contains information on how to interpret the attribute’s values. </p>
+                                                            <p>See the section corresponding to these specific subtypes.</p>
+                                                        </td>
+                                                    </tr>
+                                                    <tr class="TableStyle-PatternedRows-Body-LightRows">
+                                                        <td class="TableStyle-PatternedRows-BodyE-Regular-LightRows">ais_binary_message_unknown</td>
+                                                        <td class="TableStyle-PatternedRows-BodyE-Regular-LightRows">
+                                                            <p>Type 6: Binary Message With Unknown Subtype
+</p>
+                                                            <p>Type 8: Binary Message With Unknown Subtype
+</p>
+                                                        </td>
+                                                        <td class="TableStyle-PatternedRows-BodyD-Regular-LightRows">Not all type 6 and 8 binary messages are currently supported in FME. In the case where the subtype is not supported, this feature type is created, which contains information on which subtype it is along with its raw binary payload.</td>
+                                                    </tr>
+                                                    <tr class="TableStyle-PatternedRows-Body-DarkerRows">
+                                                        <td class="TableStyle-PatternedRows-BodyE-Regular-DarkerRows">ais_binary_acknowledge
+
+</td>
+                                                        <td class="TableStyle-PatternedRows-BodyE-Regular-DarkerRows">
+                                                            <p>Type 7: Binary Acknowledge
+</p>
+                                                            <p>Type 13: Safety-Related Acknowledgement
+</p>
+                                                        </td>
+                                                        <td class="TableStyle-PatternedRows-BodyD-Regular-DarkerRows"><a href="http://gpsd.berlios.de/AIVDM.html#_type_27_long_range_ais_broadcast_message%20contains%20information%20on%20how%20to%20interpret%20the%20attribute%E2%80%99s%20values.%20This%20message%20type%20is%20very%20rare%20and%20unlikely%20to%20be%20seen." target="_blank" title="Opens an external website" alt="Opens an external website">Type 7 Binary Acknowledge</a> contains information on how to interpret the attribute’s values.</td>
+                                                    </tr>
+                                                    <tr class="TableStyle-PatternedRows-Body-LightRows">
+                                                        <td class="TableStyle-PatternedRows-BodyE-Regular-LightRows">ais_sar_aircraft_position_report</td>
+                                                        <td class="TableStyle-PatternedRows-BodyE-Regular-LightRows">Type 9: Standard SAR Aircraft Position Report</td>
+                                                        <td class="TableStyle-PatternedRows-BodyD-Regular-LightRows"><a href="http://gpsd.berlios.de/AIVDM.html#_type_9_standard_sar_aircraft_position_report" target="_blank" title="Opens an external website" alt="Opens an external website">Standard SAR Aircraft Position Report</a> contains information on how to interpret the attribute’s values.</td>
+                                                    </tr>
+                                                    <tr class="TableStyle-PatternedRows-Body-DarkerRows">
+                                                        <td class="TableStyle-PatternedRows-BodyE-Regular-DarkerRows">ais_utc_date_inquiry</td>
+                                                        <td class="TableStyle-PatternedRows-BodyE-Regular-DarkerRows">Type 10: UTC/Date Inquiry</td>
+                                                        <td class="TableStyle-PatternedRows-BodyD-Regular-DarkerRows"><a href="http://gpsd.berlios.de/AIVDM.html#_type_10_utc_date_inquiry" target="_blank" title="Opens an external website" alt="Opens an external website">UTC/Date Inquiry</a> contains information on how to interpret the attribute’s values.</td>
+                                                    </tr>
+                                                    <tr class="TableStyle-PatternedRows-Body-LightRows">
+                                                        <td class="TableStyle-PatternedRows-BodyE-Regular-LightRows">ais_addressed_safety_related_message</td>
+                                                        <td class="TableStyle-PatternedRows-BodyE-Regular-LightRows">Type 12: Addressed Safety Related Message</td>
+                                                        <td class="TableStyle-PatternedRows-BodyD-Regular-LightRows"><a href="http://gpsd.berlios.de/AIVDM.html#_type_12_addressed_safety_related_message" target="_blank" title="Opens external browser" alt="Opens external browser">Addressed Safety Related Message</a> contains information on how to interpret the attribute’s values.</td>
+                                                    </tr>
+                                                    <tr class="TableStyle-PatternedRows-Body-DarkerRows">
+                                                        <td class="TableStyle-PatternedRows-BodyE-Regular-DarkerRows">ais_safety_related_broadcast_message</td>
+                                                        <td class="TableStyle-PatternedRows-BodyE-Regular-DarkerRows">Type 14: Safety-Related Broadcast Message</td>
+                                                        <td class="TableStyle-PatternedRows-BodyD-Regular-DarkerRows"><a href="http://gpsd.berlios.de/AIVDM.html#_type_14_safety_related_broadcast_message" target="_blank" title="Opens an external website" alt="Opens an external website">Safety-Related Broadcast Message</a> contains information on how to interpret the attribute’s values</td>
+                                                    </tr>
+                                                    <tr class="TableStyle-PatternedRows-Body-LightRows">
+                                                        <td class="TableStyle-PatternedRows-BodyE-Regular-LightRows">ais_interrogation</td>
+                                                        <td class="TableStyle-PatternedRows-BodyE-Regular-LightRows">Type 15: Interrogation</td>
+                                                        <td class="TableStyle-PatternedRows-BodyD-Regular-LightRows"><a href="http://gpsd.berlios.de/AIVDM.html#_type_15_interrogation" target="_blank" title="Opens an external website" alt="Opens an external website">Interrogation</a> contains information on how to interpret the attribute’s values.</td>
+                                                    </tr>
+                                                    <tr class="TableStyle-PatternedRows-Body-DarkerRows">
+                                                        <td class="TableStyle-PatternedRows-BodyE-Regular-DarkerRows">ais_assignment_mode_command</td>
+                                                        <td class="TableStyle-PatternedRows-BodyE-Regular-DarkerRows">Type 16: Assignment Mode Command
+
+
+</td>
+                                                        <td class="TableStyle-PatternedRows-BodyD-Regular-DarkerRows"><a href="http://gpsd.berlios.de/AIVDM.html#_type_16_assignment_mode_command" target="_blank" title="Opens an external website" alt="Opens an external website">Assignment Mode Command</a> contains information on how to interpret the attribute’s values</td>
+                                                    </tr>
+                                                    <tr class="TableStyle-PatternedRows-Body-LightRows">
+                                                        <td class="TableStyle-PatternedRows-BodyE-Regular-LightRows">ais_dgnss_broadcast_binary_message</td>
+                                                        <td class="TableStyle-PatternedRows-BodyE-Regular-LightRows">Type 17: DGNSS Broadcast Binary Message</td>
+                                                        <td class="TableStyle-PatternedRows-BodyD-Regular-LightRows"><a href="http://gpsd.berlios.de/AIVDM.html#_type_17_dgnss_broadcast_binary_message" target="_blank" title="Opens an external website" alt="Opens an external website">DGNSS Broadcast Binary Message</a> contains information on how to interpret the attribute’s values.</td>
+                                                    </tr>
+                                                    <tr class="TableStyle-PatternedRows-Body-DarkerRows">
+                                                        <td class="TableStyle-PatternedRows-BodyE-Regular-DarkerRows">ais_standard_class_b_cs_position_report</td>
+                                                        <td class="TableStyle-PatternedRows-BodyE-Regular-DarkerRows">Type 18: Standard Class B CS Position Report
+
+</td>
+                                                        <td class="TableStyle-PatternedRows-BodyD-Regular-DarkerRows"><a href="http://gpsd.berlios.de/AIVDM.html#_type_18_standard_class_b_cs_position_report" target="_blank" title="Opens an external website" alt="Opens an external website">Standard Class B CS Position Report</a> contains information on how to interpret the attribute’s values.</td>
+                                                    </tr>
+                                                    <tr class="TableStyle-PatternedRows-Body-LightRows">
+                                                        <td class="TableStyle-PatternedRows-BodyE-Regular-LightRows">ais_extended_class_b_cs_position_report</td>
+                                                        <td class="TableStyle-PatternedRows-BodyE-Regular-LightRows">Type 19: Extended Class B CS Position Report</td>
+                                                        <td class="TableStyle-PatternedRows-BodyD-Regular-LightRows"><a href="http://gpsd.berlios.de/AIVDM.html#_type_19_extended_class_b_cs_position_report" target="_blank">Extended Class B CS Position Report</a> contains information on how to interpret the attribute’s values.</td>
+                                                    </tr>
+                                                    <tr class="TableStyle-PatternedRows-Body-DarkerRows">
+                                                        <td class="TableStyle-PatternedRows-BodyE-Regular-DarkerRows">ais_data_link_management_message</td>
+                                                        <td class="TableStyle-PatternedRows-BodyE-Regular-DarkerRows">Type 20: Data Link Management Message
+</td>
+                                                        <td class="TableStyle-PatternedRows-BodyD-Regular-DarkerRows"><a href="http://gpsd.berlios.de/AIVDM.html#_type_20_data_link_management_message" target="_blank" title="Opens an external website" alt="Opens an external website">Data Link Management Message</a> contains information on how to interpret the attribute’s values.</td>
+                                                    </tr>
+                                                    <tr class="TableStyle-PatternedRows-Body-LightRows">
+                                                        <td class="TableStyle-PatternedRows-BodyE-Regular-LightRows">ais_aid_to_navigation_report</td>
+                                                        <td class="TableStyle-PatternedRows-BodyE-Regular-LightRows">Type 21: Aid-to-Navigation Report</td>
+                                                        <td class="TableStyle-PatternedRows-BodyD-Regular-LightRows"><a href="http://gpsd.berlios.de/AIVDM.html#_type_21_aid_to_navigation_report" target="_blank" title="Opens an external website" alt="Opens an external website">Aid-to-Navigation Report</a> contains information on how to interpret the attribute’s values.</td>
+                                                    </tr>
+                                                    <tr class="TableStyle-PatternedRows-Body-DarkerRows">
+                                                        <td class="TableStyle-PatternedRows-BodyE-Regular-DarkerRows">ais_channel_management</td>
+                                                        <td class="TableStyle-PatternedRows-BodyE-Regular-DarkerRows">Type 22: Channel Management</td>
+                                                        <td class="TableStyle-PatternedRows-BodyD-Regular-DarkerRows"><a href="http://gpsd.berlios.de/AIVDM.html#_type_22_channel_management" target="_blank" title="Opens an external website" alt="Opens an external website">Channel Management</a> contains information on how to interpret the attribute’s values.</td>
+                                                    </tr>
+                                                    <tr class="TableStyle-PatternedRows-Body-LightRows">
+                                                        <td class="TableStyle-PatternedRows-BodyE-Regular-LightRows">ais_group_channel_command</td>
+                                                        <td class="TableStyle-PatternedRows-BodyE-Regular-LightRows">Type 23: Group Assignment Command
+
+</td>
+                                                        <td class="TableStyle-PatternedRows-BodyD-Regular-LightRows"><a href="http://gpsd.berlios.de/AIVDM.html#_type_23_group_assignment_command" target="_blank" title="Opens an external website" alt="Opens an external website">Group Assignment Command</a> contains information on how to interpret the attribute’s values.</td>
+                                                    </tr>
+                                                    <tr class="TableStyle-PatternedRows-Body-DarkerRows">
+                                                        <td class="TableStyle-PatternedRows-BodyE-Regular-DarkerRows">ais_static_data_report</td>
+                                                        <td class="TableStyle-PatternedRows-BodyE-Regular-DarkerRows">Type 24: Static Data Report
+</td>
+                                                        <td class="TableStyle-PatternedRows-BodyD-Regular-DarkerRows"><a href="http://gpsd.berlios.de/AIVDM.html#_type_24_static_data_report" target="_blank" title="Opens an external website" alt="Opens an external website">Static Data Report</a> contains information on how to interpret the attribute’s values.</td>
+                                                    </tr>
+                                                    <tr class="TableStyle-PatternedRows-Body-LightRows">
+                                                        <td class="TableStyle-PatternedRows-BodyE-Regular-LightRows">ais_single_slot_binary_message</td>
+                                                        <td class="TableStyle-PatternedRows-BodyE-Regular-LightRows">Type 25: Single Slot Binary Message
+</td>
+                                                        <td class="TableStyle-PatternedRows-BodyD-Regular-LightRows"><a href="http://gpsd.berlios.de/AIVDM.html#_type_25_single_slot_binary_message" target="_blank" title="Opens an external website" alt="Opens an external website">Single Slot Binary Message</a> contains information on how to interpret the attribute’s values. This message type is very rare and unlikely to be seen.</td>
+                                                    </tr>
+                                                    <tr class="TableStyle-PatternedRows-Body-DarkerRows">
+                                                        <td class="TableStyle-PatternedRows-BodyE-Regular-DarkerRows">ais_multiple_slot_binary_message</td>
+                                                        <td class="TableStyle-PatternedRows-BodyE-Regular-DarkerRows">Type 26: Multiple Slot Binary Message</td>
+                                                        <td class="TableStyle-PatternedRows-BodyD-Regular-DarkerRows"><a href="http://gpsd.berlios.de/AIVDM.html#_type_26_multiple_slot_binary_message" target="_blank" title="Opens an external website" alt="Opens an external website">Multiple Slot Binary Message</a> contains information on how to interpret the attribute’s values. This message type is very rare and unlikely to be seen.</td>
+                                                    </tr>
+                                                    <tr class="TableStyle-PatternedRows-Body-LightRows">
+                                                        <td class="TableStyle-PatternedRows-BodyB-Regular-LightRows">ais_long_range_Broadcast_message</td>
+                                                        <td class="TableStyle-PatternedRows-BodyB-Regular-LightRows">Type 27: Long Range AIS Broadcast message
+</td>
+                                                        <td class="TableStyle-PatternedRows-BodyA-Regular-LightRows"><a href="http://gpsd.berlios.de/AIVDM.html#_type_27_long_range_ais_broadcast_message" target="_blank" title="Opens an external website" alt="Opens an external website">Long Range AIS Broadcast message</a> contains information on how to interpret the attribute’s values. This message type is very rare and unlikely to be seen.</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                            <p>Attributes prefixed by <code>ais_data_</code> correspond to information determined from the payload of the message, while attributes prefixed with <code>ais_header</code> correspond to information that was determined from the raw AIS message in the text file. For an example of <code>ais_header</code>, <code>ais_header_prefix</code> is any text found before the start of a raw AIS message. For an example of <code>ais_data</code>, <code>ais_data_rate_of_turn</code> is an attribute specific to the <code>ais_position_report</code> feature type and is found by decoding and interpreting the payload portion of the AIS message.</p>
+                                            <p>The table below lists the attributes prefixed with <span class="Code">ais_header</span>.</p>
+                                            <table class="TableStyle-PatternedRows" style="mc-table-style: url(&#39;../Resources/TableStyles/PatternedRows.css&#39;);" cellspacing="0">
+                                                <colgroup><col class="TableStyle-PatternedRows-Column-Regular">
+                                                <col class="TableStyle-PatternedRows-Column-Regular">
+                                                </colgroup><thead>
+                                                    <tr class="TableStyle-PatternedRows-Head-Header1">
+                                                        <th class="TableStyle-PatternedRows-HeadE-Regular-Header1">Attribute Name</th>
+                                                        <th class="TableStyle-PatternedRows-HeadD-Regular-Header1">Contents</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr class="TableStyle-PatternedRows-Body-LightRows">
+                                                        <td class="TableStyle-PatternedRows-BodyE-Regular-LightRows">ais_header_prefix</td>
+                                                        <td class="TableStyle-PatternedRows-BodyD-Regular-LightRows">
+                                                            <p class="TableText">Any text found before the start of a raw AIS message.
+</p>
+                                                            <p class="TableText"><span class="Bold">Range:</span> Alphanumeric string
+</p>
+                                                            <p class="TableText"><span class="Bold">Default:</span> No default
+</p>
+                                                        </td>
+                                                    </tr>
+                                                    <tr class="TableStyle-PatternedRows-Body-DarkerRows">
+                                                        <td class="TableStyle-PatternedRows-BodyE-Regular-DarkerRows">ais_header_message_type</td>
+                                                        <td class="TableStyle-PatternedRows-BodyD-Regular-DarkerRows">
+                                                            <p class="TableText">The NMEA message type.
+</p>
+                                                            <p class="TableText"><span class="Bold">Range:</span> “!AIVDM” or “!AIVDO”
+</p>
+                                                            <p class="TableText"><span class="Bold">Default:</span> No default
+</p>
+                                                        </td>
+                                                    </tr>
+                                                    <tr class="TableStyle-PatternedRows-Body-LightRows">
+                                                        <td class="TableStyle-PatternedRows-BodyE-Regular-LightRows">ais_header_msg_id</td>
+                                                        <td class="TableStyle-PatternedRows-BodyD-Regular-LightRows">
+                                                            <p class="TableText">Sequential message identifier for multi-sentence messages.
+</p>
+                                                            <p class="TableText"><span class="Bold">Range:</span> Alphanumeric string
+</p>
+                                                        </td>
+                                                    </tr>
+                                                    <tr class="TableStyle-PatternedRows-Body-DarkerRows">
+                                                        <td class="TableStyle-PatternedRows-BodyE-Regular-DarkerRows">ais_header_comment</td>
+                                                        <td class="TableStyle-PatternedRows-BodyD-Regular-DarkerRows">
+                                                            <p class="TableText">Free form text information.
+</p>
+                                                            <p class="TableText"><span class="Bold">Range:</span> Alphanumeric string
+</p>
+                                                            <p class="TableText"><span class="Bold">Default:</span> No default
+</p>
+                                                        </td>
+                                                    </tr>
+                                                    <tr class="TableStyle-PatternedRows-Body-LightRows">
+                                                        <td class="TableStyle-PatternedRows-BodyE-Regular-LightRows">ais_header_counter</td>
+                                                        <td class="TableStyle-PatternedRows-BodyD-Regular-LightRows">
+                                                            <p class="TableText">Count for each occurrence of the parameter being attached to a line by a talker.
+</p>
+                                                            <p class="TableText"><span class="Bold">Range:</span> Any positive integer 
+</p>
+                                                            <p class="TableText"><span class="Bold">Default:</span> No default
+</p>
+                                                        </td>
+                                                    </tr>
+                                                    <tr class="TableStyle-PatternedRows-Body-DarkerRows">
+                                                        <td class="TableStyle-PatternedRows-BodyE-Regular-DarkerRows">ais_header_destination_id</td>
+                                                        <td class="TableStyle-PatternedRows-BodyD-Regular-DarkerRows">
+                                                            <p class="TableText">Identification of the intended destination device or process.
+</p>
+                                                            <p class="TableText"><span class="Bold">Range:</span> Alphanumeric string
+</p>
+                                                            <p class="TableText"><span class="Bold">Default:</span> No default
+</p>
+                                                        </td>
+                                                    </tr>
+                                                    <tr class="TableStyle-PatternedRows-Body-LightRows">
+                                                        <td class="TableStyle-PatternedRows-BodyE-Regular-LightRows">ais_header_group_code</td>
+                                                        <td class="TableStyle-PatternedRows-BodyD-Regular-LightRows">
+                                                            <p class="TableText">String used to link sentences into groups.
+</p>
+                                                            <p class="TableText"><span class="Bold">Range:</span> Alphanumeric string
+</p>
+                                                            <p class="TableText"><span class="Bold">Default:</span> No default</p>
+                                                        </td>
+                                                    </tr>
+                                                    <tr class="TableStyle-PatternedRows-Body-DarkerRows">
+                                                        <td class="TableStyle-PatternedRows-BodyE-Regular-DarkerRows">ais_header_source_id</td>
+                                                        <td class="TableStyle-PatternedRows-BodyD-Regular-DarkerRows">
+                                                            <p class="TableText">Identification of the source device or process.
+</p>
+                                                            <p class="TableText"><span class="Bold">Range:</span> Alphanumeric string
+</p>
+                                                            <p class="TableText"><span class="Bold">Default:</span> No default
+</p>
+                                                        </td>
+                                                    </tr>
+                                                    <tr class="TableStyle-PatternedRows-Body-LightRows">
+                                                        <td class="TableStyle-PatternedRows-BodyE-Regular-LightRows">ais_header_time_stamp</td>
+                                                        <td class="TableStyle-PatternedRows-BodyD-Regular-LightRows">
+                                                            <p class="TableText">Time in seconds from midnight January 1, 1970. 
+</p>
+                                                            <p class="TableText"><span class="Bold">Range:</span> Any positive integer
+</p>
+                                                            <p class="TableText"><span class="Bold">Default:</span> No default
+</p>
+                                                        </td>
+                                                    </tr>
+                                                    <tr class="TableStyle-PatternedRows-Body-DarkerRows">
+                                                        <td class="TableStyle-PatternedRows-BodyB-Regular-DarkerRows">ais_header_channel</td>
+                                                        <td class="TableStyle-PatternedRows-BodyA-Regular-DarkerRows">
+                                                            <p class="TableText">AIS Channel.
+</p>
+                                                            <p class="TableText"><span class="Bold">Range:</span> “A” or “B”
+</p>
+                                                            <p class="TableText"><span class="Bold">Default:</span> No default
+</p>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div><a data-close="true"></a>
+                <div class="js-off-canvas-exit"></div></div>
+            </div>
+        </div>
+    
+</body></html>

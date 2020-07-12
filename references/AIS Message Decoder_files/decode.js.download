@@ -1,0 +1,113 @@
+$(document).ready(function() {
+
+	// ---
+	$('html, body').animate({scrollTop : 0}, 10);
+
+	//Check to see if the window is top if not then display button
+	$(window).scroll(function(){
+		if ($(this).scrollTop() > 100) {
+			$('.scrollToTop').fadeIn();
+		} else {
+			$('.scrollToTop').fadeOut();
+		}
+	});
+
+	//Click event to scroll to top
+	$('.scrollToTop').click(function(){
+		$('html, body').animate({scrollTop : 0}, 400);
+		return false;
+	});
+	// ---
+
+	$('#decode').click(function() {
+		// Validate input
+		if (isNmeaInputBlank()) {
+			alert("No NMEA messages provided.");
+			return false;
+		}
+
+		// Decode messages
+		decodeNmeaSentences();
+
+		// Done
+		return false;
+	});
+});
+
+// From http://lions-mark.com/jquery/scrollTo/
+$.fn.scrollTo = function( target, options, callback ){
+	if(typeof options == 'function' && arguments.length == 2){ callback = options; options = target; }
+	var settings = $.extend({
+		scrollTarget  : target,
+		offsetTop     : 50,
+		duration      : 500,
+		easing        : 'swing'
+	}, options);
+	return this.each(function(){
+		var scrollPane = $(this);
+		var scrollTarget = (typeof settings.scrollTarget == "number") ? settings.scrollTarget : $(settings.scrollTarget);
+		var scrollY = (typeof scrollTarget == "number") ? scrollTarget : scrollTarget.offset().top + scrollPane.scrollTop() - parseInt(settings.offsetTop);
+		scrollPane.animate({scrollTop : scrollY }, parseInt(settings.duration), settings.easing, function(){
+			if (typeof callback == 'function') { callback.call(this); }
+		});
+	});
+}
+
+function nmeaInput() {
+	return $('#nmeaInput').val();
+}
+
+function isNmeaInputBlank() {
+	return $.trim(nmeaInput()) == '';
+}
+
+function displayDecodedMessages(json) {
+	var myTable = $('#decodedMessages');
+	$(myTable).find("tr:gt(0)").remove();
+
+	var n = json.length;
+
+	for ( var i = 0; i < n; i++) {
+		o = json[i];
+		$.each(o, function(prop, value) {
+			console.log(prop + ' = ' + (value == null ? '' : value));
+			if (value != null && typeof value == 'object') {
+				var v = "<ul>";
+				$.each(value, function(prop2, value2) {
+					v += "<li>" + prop2 + ": " + value2 + "</li>";
+				});
+				v += "</ul>";
+				var newRow = $("<tr><td>" + i + "</td><td>" + prop
+						+ "</td><td>" + v + "</td></tr>");
+				$(myTable).append(newRow);
+			} else {
+				var newRow = $("<tr><td>" + i + "</td><td>" + prop
+						+ "</td><td>" + (value == null ? '' : value)  + "</td></tr>");
+				$(myTable).append(newRow);
+			}
+		});
+	}
+
+	$('body').scrollTo('#decoded-messages-section');
+}
+
+function decodeNmeaSentences() {
+	var json = new Object();
+	json.nmea = nmeaInput();
+
+	$.ajax({
+		type : "POST",
+		dataType : "json",
+		contentType: 'application/json',
+		mimeType: 'application/json',
+		headers : {
+			'Accept' : 'application/json'
+		},
+		url : "decode",
+		contentType : "application/json",
+		data : JSON.stringify(json),
+		success : function(json) {
+			displayDecodedMessages(json);
+		}
+	});
+}

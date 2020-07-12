@@ -1,0 +1,307 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!-- saved from url=(0039)https://www.aggsoft.com/ais-decoder.htm -->
+<html xmlns="https://www.w3.org/1999/xhtml" xml:lang="en" lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>AIS Online Decoder. AIVDM &amp; AIVDO NMEA Messages</title>
+<link rel="canonical" href="https://www.aggsoft.com/ais-decoder.htm">
+
+<meta name="rating" content="General">
+<meta name="content-language" content="english">
+<meta name="audience" content="all">
+<meta name="robots" content="index,follow">
+<meta name="author" content="AGG software">
+<meta name="copyright" content="AGG software">
+<meta name="application-name" content="AGG software">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="shortcut icon" href="https://www.aggsoft.com/favicon.ico" type="image/x-icon">
+
+<link rel="stylesheet" type="text/css" href="./AIS Online Decoder. AIVDM &amp; AIVDO NMEA Messages_files/main.css">
+<script type="text/javascript" async="" src="./AIS Online Decoder. AIVDM &amp; AIVDO NMEA Messages_files/f.txt"></script><script type="text/javascript" async="" src="./AIS Online Decoder. AIVDM &amp; AIVDO NMEA Messages_files/js"></script><script type="text/javascript" async="" src="./AIS Online Decoder. AIVDM &amp; AIVDO NMEA Messages_files/analytics.js.download"></script><script type="text/javascript" async="" src="./AIS Online Decoder. AIVDM &amp; AIVDO NMEA Messages_files/wt0p0.js.download"></script><script type="text/javascript">var BG_COLOR_ON='#1c70b1';var BG_IMG_ON='/img/li-btn-sel.png';var BG_COLOR_OFF='#ffffff';var BG_IMG_OFF='/img/li-btn.png';function setMenuOn(el_id){el=document.getElementById(el_id);if(el){el.style.backgroundImage='url('+BG_IMG_ON+')';el.style.backgroundColor=BG_COLOR_ON}}function setMenuOff(el_id){el=document.getElementById(el_id);if(el){el.style.backgroundImage='url('+BG_IMG_OFF+')';el.style.backgroundColor=BG_COLOR_OFF}}</script>
+<!--[if lte IE 6]>
+<link href="/css/ie6.css" rel="stylesheet" type="text/css" />
+<![endif]-->
+<!--[if lte IE 8]>
+<link href="/css/ie8.css" rel="stylesheet" type="text/css" />
+<script async src="/js/respond.min.js"></script>
+<![endif]-->
+
+<script async="" src="./AIS Online Decoder. AIVDM &amp; AIVDO NMEA Messages_files/js(1)"></script>
+<script type="text/javascript">
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', "UA-911637-1", {'linker': {'groups': 'stat', 'accept_incoming': true}});
+  gtag('config', "AW-1065378335", {'linker': {'groups': 'rm', 'accept_incoming': true, 'send_page_view': false}});
+</script>
+
+<meta name="description" content="Allows to decode and test AIVDM &amp; AIVDO NMEA messages with codes #1-26">
+<meta name="title" content="AIS Online Decoder. AIVDM &amp; AIVDO NMEA Messages">
+<meta name="keywords" content="ais decoder, ais online decoder, ais, ais message, AIVDM, AIVDO, NMEA 0183, NMEA AIS">
+<link type="text/css" href="./AIS Online Decoder. AIVDM &amp; AIVDO NMEA Messages_files/jquery-ui.css" rel="stylesheet">
+<link type="text/css" href="./AIS Online Decoder. AIVDM &amp; AIVDO NMEA Messages_files/table_jui.css" rel="stylesheet">
+<script src="./AIS Online Decoder. AIVDM &amp; AIVDO NMEA Messages_files/jquery.min.js.download" type="text/javascript"></script>	
+<script src="./AIS Online Decoder. AIVDM &amp; AIVDO NMEA Messages_files/jquery-ui.min.js.download" type="text/javascript"></script>
+<script type="text/javascript" language="javascript" src="./AIS Online Decoder. AIVDM &amp; AIVDO NMEA Messages_files/jquery.dataTables.min.js.download"></script>
+<script type="text/javascript" charset="utf-8">
+//<![CDATA[
+			$(document).ready(function() {		
+				var oTable;
+								
+				$('#dynamic').hide();			
+				$('input:submit, input:reset').button();
+				
+				$('#search_form').submit(function() {
+					if (!oTable)
+					{
+						$('#dynamic').show();
+										
+						$.fn.dataTableExt.oApi.fnReloadAjax = function ( oSettings, sNewSource, fnCallback )
+						{
+							if ( typeof sNewSource != 'undefined' )
+							{
+								oSettings.sAjaxSource = sNewSource;
+							}
+							this.oApi._fnProcessingDisplay( oSettings, true );
+							var that = this;
+							
+							oSettings.fnServerData( oSettings.sAjaxSource, null, function(json) {
+								/* Clear the old information from the table */
+								that.oApi._fnClearTable( oSettings );
+								
+								/* Got the data - add it to the table */
+								for ( var i=0 ; i<json.aaData.length ; i++ )
+								{
+									that.oApi._fnAddData( oSettings, json.aaData[i] );
+								}
+								
+								oSettings.aiDisplay = oSettings.aiDisplayMaster.slice();
+								that.fnDraw( that );
+								that.oApi._fnProcessingDisplay( oSettings, false );
+								
+								/* Callback user function - for event handlers etc */
+								if ( typeof fnCallback == 'function' )
+								{
+									fnCallback( oSettings );
+								}
+							} );
+						}
+				
+						oTable = $('#example').dataTable( {
+							"bPaginate": true,
+							"iDisplayLength": 50, 
+							"bLengthChange": true,
+							"bFilter": true,
+							"bSort": false,
+							"bJQueryUI": true,
+							"sPaginationType": "full_numbers",
+							"bProcessing": true,
+							"sAjaxSource": '/cgi-bin/ais/decode_ais.pl',
+							"fnServerData": function ( sSource, aoData, fnCallback ) {
+								var data = $('#src_message').val();
+								if(data.length > 950) {
+								  data = data.substr(0, 950);
+								  var nIdx = data.lastIndexOf("\n");
+								  if(nIdx>=0) {
+  								    data = data.substr(0, nIdx);
+								  }
+								}
+								sSource = sSource + '?src_message='+encodeURI(data);
+								$.getJSON( sSource, aoData, function (json) { 
+									fnCallback(json)									
+								} );
+							},
+							"oLanguage": {
+								"sProcessing": "Processing your request. Please wait..."
+							},
+							"aoColumns": [
+								{ "sWidth": "30%"},
+								{ "sWidth": "30%"},
+								{ "sWidth": "40%"}
+							]							
+						} );
+					}
+					else
+					{
+						oTable.fnClearTable();
+						oTable.fnReloadAjax();
+					}					
+										
+					return false;
+				} );
+				
+			} );
+//]]>
+		</script>
+<script src="./AIS Online Decoder. AIVDM &amp; AIVDO NMEA Messages_files/f(1).txt"></script></head>
+<body>
+<table cellpadding="0" cellspacing="0" border="0" id="container">
+  <tbody><tr>
+    <td id="main-container">	
+
+	<div id="header" itemprop="author" itemscope="itemscope" itemtype="https://schema.org/Organization"><meta itemprop="name" content="AGG Software">
+		<div id="logo" role="img" aria-label="AGG Software"><a itemprop="url" href="https://www.aggsoft.com/" title="AGG Software">&nbsp;</a></div>
+		<ul><!--
+			--><li><a href="https://www.aggsoft.com/support/contact.htm" title="Contact AGG Software">contact</a></li><!--
+			--><li><a href="https://www.aggsoft.com/support/" title="Support">support</a></li><!--
+			--><li><a href="https://www.aggsoft.com/order/" title="Order">order</a></li><!--
+			--><li><a href="https://www.aggsoft.com/modbus-software.htm" title="MODBUS">MODBUS</a></li><!--
+			--><li><a href="https://www.aggsoft.com/data-logger-software.htm" title="Data Logger Software">Data Logger</a></li><!--
+			--><li><a href="https://www.aggsoft.com/com-port-software.htm" title="COM Port Software">COM Port</a></li><!--
+		--></ul>
+		<div class="sep-tm"></div>
+	</div>
+      <table cellpadding="0" cellspacing="0" border="0" id="content">
+        <tbody><tr>
+          <td id="left-block"><!--noindex-->
+<ul>
+  <li id="menu-sel3" style="display: none;"><a href="https://www.aggsoft.com/ais-decoder.htm#" title="All Software" onmousedown="expandMenuItems(this);return false;">All Software</a></li>
+
+  <li><a href="https://www.aggsoft.com/com-port-software.htm" title="COM Port Software" onmousedown="return false;">COM Port Software</a></li>
+  <li><a href="https://www.aggsoft.com/data-logger-software.htm" title="Data Logger Software" onmousedown="return false;">Data Logger Software</a></li>
+  <li><a href="https://www.aggsoft.com/modbus-software.htm" title="MODBUS Software" onmousedown="return false;">MODBUS Software</a></li>
+  <li><a href="https://www.aggsoft.com/opc-software.htm" title="OPC Software" onmousedown="return false;">OPC Software</a></li>
+  <li><a href="https://www.aggsoft.com/serial-port-monitor.htm" title="Advanced Serial Port Monitor" onmousedown="return false;">Advanced Serial Port Monitor</a></li>
+  <li><a href="https://www.aggsoft.com/serial-data-logger.htm" title="Advanced Serial Data Logger" onmousedown="return false;">Advanced Serial Data Logger</a></li>
+  <li><a href="https://www.aggsoft.com/tcpip-data-logger.htm" title="Advanced TCP/IP Data Logger" onmousedown="return false;">Advanced TCP/IP Data Logger</a></li>
+  <li><a href="https://www.aggsoft.com/nmea-data-logger.htm" title="Advanced NMEA Data Logger" onmousedown="return false;">Advanced NMEA Data Logger</a></li>
+  <li><a href="https://www.aggsoft.com/gps-tracker-data-logger/" title="GPS Tracker Data Logger" onmousedown="return false;">GPS Tracker Data Logger</a></li>
+  <li><a href="https://www.aggsoft.com/gsmguard/" title="AlarmFront Monitoring" onmousedown="return false;">AlarmFront Monitoring</a></li>
+  <li><a href="https://www.aggsoft.com/serial-printer-logger.htm" title="Serial Printer Logger" onmousedown="return false;">Serial Printer Logger</a></li>
+  <li><a href="https://www.aggsoft.com/opc-data-logger.htm" title="Advanced OPC Data Logger" onmousedown="return false;">Advanced OPC Data Logger</a></li>
+  <li><a href="https://www.aggsoft.com/pbx-data-logger.htm" title="Advanced PBX Data Logger" onmousedown="return false;">Advanced PBX Data Logger</a></li>
+  <li><a href="https://www.aggsoft.com/snmp-data-logger/" title="SNMP Data Logger" onmousedown="return false;">SNMP Data Logger</a></li>
+  <li><a href="https://www.aggsoft.com/usb-port-monitor.htm" title="Advanced USB Port Monitor" onmousedown="return false;">Advanced USB Port Monitor</a></li>
+  <li><a href="https://www.virtual-null-modem.com/" title="Virtual Null Modem" onmousedown="return false;">Virtual Null Modem</a></li>
+  <li><a href="https://www.aggsoft.com/tcp-com/" title="TCP COM Bridge" onmousedown="return false;">TCP COM Bridge</a></li>
+  <li><a href="https://www.aggsoft.com/tcp-splitter/" title="TCP Splitter" onmousedown="return false;">TCP Splitter</a></li>
+  <li><a href="https://www.cnc-syntax-editor.com/" title="CNC Syntax Editor" onmousedown="return false;">CNC Syntax Editor</a></li>
+  <li><a href="https://www.aggsoft.com/dnc-precision.htm" title="DNC Precision" onmousedown="return false;">DNC Precision</a></li>
+  <li><a href="https://www.aggsoft.com/printer-monitor.htm" title="Accurate Printer Monitor" onmousedown="return false;">Accurate Printer Monitor</a></li>
+  <li><a href="https://www.aggsoft.com/log-monitor.htm" title="Log Monitor &amp; Export" onmousedown="return false;">Log Monitor &amp; Export</a></li>
+
+</ul>
+<script type="text/javascript" language="javascript">
+function expandMenuItems(obj){var mis='force-show';var obj2=obj.parentNode;var obj1=obj2;while(obj2){if(obj2.tagName){obj2.style.display='block';if(obj2.className.indexOf(mis) == -1){obj2.className += " " + mis;};}obj2=obj2.nextSibling;}var parent = obj1.parentNode;parent.removeChild(obj1);return;}
+</script>
+
+<!--/noindex-->
+</td>
+          <td id="right-block"><h1>AIS Online Decoder. AIVDM &amp; AIVDO NMEA Messages</h1>
+            <p></p>
+            <div id="dt_example">
+<noscript><p><em>Please, enable JavaScript to use the AIS Messages Online Decoder. </em></p></noscript>	
+		<p><br></p>
+		<p>This <b>AIS online decoder</b> can decode AIVDM &amp; AIVDO NMEA messages with codes #1-26. Paste your AIS message in the field below and click "Decode".</p>
+
+              <form action="https://www.aggsoft.com/ais-decoder.htm" method="post" id="search_form" name="search_form" enctype="multipart/form-data">
+                <table cellpadding="0" cellspacing="3" border="0">
+                  <tbody><tr>
+                    <td> AIS message: (for example: AIVDM,1,1,,A,15MgK45P3@G?fl0E`JbR0OwT0@MS,0*4E)<br>
+                      <textarea name="src_message" rows="12" cols="220" style="width: 100%" id="src_message"></textarea></td>
+                  </tr>
+                  <tr>
+                    <td align="center"><input type="submit" value="Decode" style="width: 280px" class="ui-button ui-widget ui-state-default ui-corner-all" role="button" aria-disabled="false"></td>
+                  </tr>
+                </tbody></table>
+              </form>
+
+              <div id="table_container">
+                <div id="dynamic" style="display: block;">
+
+<table cellpadding="0" cellspacing="0" border="0"><tbody><tr><td>
+	<div class="index-banners"><div class="banner ban-sep">
+	<div class="ban-h135px">
+		<img src="./AIS Online Decoder. AIVDM &amp; AIVDO NMEA Messages_files/nmealogger.png" alt="NMEA Data Logger" width="78" height="133" align="left">
+		<h3>Are You Capturing This AIS Data Manually?</h3>
+		<p style="height: 55px;">Really? Using Hyperterminal? Our <b>NMEA Data Logger</b> can do it automatically and export to a necessary format or database.</p>
+		<div class="banlinks">
+		<a class="more" href="https://www.aggsoft.com/nmea-data-logger.htm" title="Read more about Advanced NMEA Data Logger">read more</a>
+		<a class="more" href="https://www.aggsoft.com/nmea-data-logger/download.htm" title="Download">download</a>
+		</div>
+	</div>
+</div>
+</div>
+</td><td>
+	<div class="index-banners" style="margin-left: 10px;"><div class="banner ban-sep">
+	<div class="ban-h135px">
+		<img src="./AIS Online Decoder. AIVDM &amp; AIVDO NMEA Messages_files/sdl.png" alt="GPS Logger" width="78" height="133" align="left">
+		<h3>Would You Want To Monitor an Object Location?</h3>
+		<p style="height: 55px;">We offer <b>GPS logging</b> software too. Captured NMEA data will be saved in a database and showed on a map.</p>
+		<div class="banlinks">
+		<a class="more" href="https://www.aggsoft.com/gps-tracker-data-logger.htm" title="Read more about GPS Data Logger">read more</a>
+		<a class="more" href="https://www.aggsoft.com/gps-tracker-data-logger/download.htm" title="Download">download</a>
+		</div>
+	</div>
+</div>
+</div>
+</td></tr></tbody></table>
+
+<br>
+Decoded message:<br>
+                  <br>
+                  <div class="dataTables_wrapper" id="example_wrapper"><div class="fg-toolbar ui-widget-header ui-corner-tl ui-corner-tr ui-helper-clearfix"><div id="example_length" class="dataTables_length">Show <select size="1" name="example_length"><option value="10">10</option><option value="25">25</option><option value="50" selected="selected">50</option><option value="100">100</option></select> entries</div><div id="example_filter" class="dataTables_filter">Search: <input type="text"></div><div id="example_processing" class="dataTables_processing" style="visibility: hidden;">Processing your request. Please wait...</div></div><table cellpadding="0" cellspacing="0" border="0" class="display" id="example" style="width: 863px;">
+                    <thead class="ui-widget-header ui-state-default ui-widget-content">
+                      <tr style="height: 25px;">
+                        <th width="30%" style="width: 259px;"><span></span>Name</th>
+                        <th width="30%" style="width: 259px;"><span></span>Value</th>
+                        <th width="40%" style="width: 345px;"><span></span>Description</th>
+                      </tr>
+                    </thead>
+                    <tbody><tr class="odd"><td>Packet Type</td><td>AIVDO</td><td></td></tr><tr class="even"><td>CHANNEL</td><td>B</td><td></td></tr><tr class="odd"><td>Message Type</td><td>8</td><td>Binary Broadcast Message</td></tr><tr class="even"><td>Repeat Indicator</td><td></td><td>Default</td></tr><tr class="odd"><td>Source ID</td><td>992509977</td><td></td></tr><tr class="even"><td>Application ID</td><td>75</td><td></td></tr><tr class="odd"><td>Binary Data</td><td>30 CA FD FD 31 2C CA 27 83 0C 0C 07 AE 66 4A 1B 82 99 08 2C F0 06 88 0A 9F 99 74 2A 8C 32 2F 81 F0 CD FC</td><td></td></tr></tbody>
+                  </table><div class="fg-toolbar ui-widget-header ui-corner-bl ui-corner-br ui-helper-clearfix"><div class="dataTables_info" id="example_info">Showing 1 to 7 of 7 entries</div><div class="dataTables_paginate fg-buttonset fg-buttonset-multi paging_full_numbers" id="example_paginate"><span class="first ui-corner-tl ui-corner-bl fg-button ui-state-default ui-state-disabled" id="example_first">First</span><span class="previous fg-button ui-state-default ui-state-disabled" id="example_previous">Previous</span><span><span class="fg-button ui-state-default ui-state-disabled">1</span></span><span class="next fg-button ui-state-default ui-state-disabled" id="example_next">Next</span><span class="last ui-corner-tr ui-corner-br fg-button ui-state-default ui-state-disabled" id="example_last">Last</span></div></div></div>
+                </div>
+              </div>
+            </div><br></td>
+        </tr>
+        <tr id="footer">
+          		<td>Copyright © 1999-2020, AGG Software.<br> 
+		All rights reserved. <a rel="nofollow" href="https://www.aggsoft.com/terms.htm" title="Terms of use">Terms of use</a>&nbsp;|&nbsp;<a rel="nofollow" href="https://www.aggsoft.com/privacy.htm" title="Privacy policy">Privacy policy</a>
+		</td>
+		<td>
+			<ul><!--
+				--><li><a href="https://www.aggsoft.com/sitemap.htm" title="site map">site map</a></li><!--
+				--><li class="sep">|</li><!--
+				--><li><a href="https://www.aggsoft.com/support/contact.htm" title="contact AGG Software">contact</a></li><!--
+				--><li class="sep">|</li><!--
+				--><li><a href="https://www.aggsoft.com/support/" title="support">support</a></li><!--
+				--><li class="sep">|</li><!--
+				--><li><a href="https://www.aggsoft.com/rs232-software.htm" title="rs232 software">rs232 software</a></li><!--
+				--><li class="sep">|</li><!--
+				--><li><a href="https://www.aggsoft.com/rs232-pinout-cable/" title="rs232 pinout cable">rs232 pinout</a></li><!--
+				--><li class="sep">|</li><!--
+				--><li><a href="https://www.aggsoft.com/order/" title="order">order</a></li><!--
+				--><li class="sep">|</li><!--
+				--><li><a href="https://www.aggsoft.com/news.htm" title="news">news</a></li><!--
+				--><li class="sep">|</li><!--
+				--><li><a href="https://www.aggsoft.com/articles.htm" title="links">links</a></li><!--
+			--></ul>			
+
+<script type="text/javascript">   
+//<![CDATA[
+window.wtST = 0;
+ if(!window.wtPT){ window.wtPT = 0; }
+ if(!window.wtRD){
+  var aggs = document.createElement('script'); aggs.type = 'text/javascript'; aggs.async = true;
+  aggs.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 
+ 
+  'www.' +
+
+  'aggsoft.com/js/wt'+window.wtST+'p'+window.wtPT+'.js?r='+escape(document.referrer)+((location.search)?'&pp='+escape(location.search):'');
+  var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(aggs, s);
+ }
+//]]>
+</script>
+
+
+
+
+
+
+		</td>
+
+        </tr>
+      </tbody></table></td>
+  </tr>
+</tbody></table>
+
+
+</body></html>

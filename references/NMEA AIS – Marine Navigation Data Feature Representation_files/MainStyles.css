@@ -1,0 +1,3474 @@
+@namespace MadCap url(http://www.madcapsoftware.com/Schemas/MadCap.xsd);
+/*<meta />*/
+
+/*==Embedded Fonts==*/
+
+@font-face 
+{
+	font-family: verdana;
+	src: url(../Fonts/verdana.ttf);
+}
+
+@font-face 
+{
+	font-family: verdanab;
+	src: url(../Fonts/verdanab.ttf);
+}
+
+@font-face 
+{
+	font-family: verdanai;
+	src: url(../Fonts/verdanai.ttf);
+}
+
+@font-face 
+{
+	font-family: LTYPE;
+	src: url(../Fonts/LTYPE.ttf);
+}
+
+@font-face 
+{
+	font-family: LTYPEB;
+	src: url(../Fonts/LTYPEB.ttf);
+}
+
+/*==General Styles==*/
+
+body
+{
+	font-size: 1em;
+	line-height: 1.40em;
+	max-width: 100%;
+	color: #000000;
+	font-family: Verdana, Arial, sans-serif, Microsoft Sans Serif, Source Sans Pro;
+}
+
+.search-filter
+{
+	display: none;
+}
+
+.side_links
+{
+	margin-left: -15px;
+}
+
+.buttons._Skins_TopicToolBar2
+{
+	float: none;
+}
+
+#footer
+{
+	color: gray;
+	font-size: 15px;
+	background-color: lightgray;
+	border-radius: 10px;
+	padding: 5px;
+}
+
+#footer ul
+{
+	margin-left: 0;
+}
+
+div#footer a
+{
+	font-size: 13px;
+}
+
+div#footer li
+{
+	list-style: none;
+	padding-bottom: 0;
+}
+
+div#footer li > a
+{
+	color: #dcdcdc;
+	text-decoration: none;
+}
+
+.search-bar
+{
+	width: 75%;
+	margin: -19px auto;
+}
+
+a:link
+{
+	color: #2d8dcc;
+	font-family: Verdana, Arial, sans-serif;
+}
+
+a:visited
+{
+	color: #2d8dcc;
+	font-family: Verdana, Arial, sans-serif;
+}
+
+a:hover
+{
+	color: #8fbc8b;
+	font-family: Verdana, Arial, sans-serif;
+}
+
+.text-muted
+{
+	color: #999999;
+	text-align: center;
+}
+
+.sub-menu li
+{
+	border-bottom: 1px dotted grey;
+	padding: 1px 0 1px 0;
+}
+
+ul.menu._Skins_SideMenu
+{
+	background-color: #fff;
+	/*border-left: 1px solid #f5f5f5;*/
+	border-radius: 0 0 5px 5px;
+	padding-left: 10px;
+}
+
+.button_set
+{
+	margin: 0 auto 0 20%;
+}
+
+#high
+{
+	
+}
+
+#collapse
+{
+	
+}
+
+#expand
+{
+	
+}
+
+#print
+{
+	
+}
+
+.button_set #high,
+.button_set #collapse,
+.button_set #expand,
+.button_set #print
+{
+	float: left;
+	width: 40px;
+	padding-right: 3px;
+}
+
+.buttons #print
+{
+	padding-right: 0;
+}
+
+a
+{
+	color: #008000;
+}
+
+a.MCBreadcrumbsLink
+{
+	font-style: italic;
+	text-decoration: underline;
+	color: #696969;
+	font-size: 12px;
+	font-family: Verdana, Arial, sans-serif;
+}
+
+a.MCBreadcrumbsLink:visited
+{
+	color: #008000;
+}
+
+a.MCBreadcrumbsLink:hover
+{
+	color: #8fbc8b;
+}
+
+blockquote
+{
+	background-color: #e1e1e1;
+	background-repeat: no-repeat;
+	background-position: top left;
+	border-bottom: none;
+	border-left-color: #b3b3b3;
+	border-left-style: solid;
+	border-left-width: 1px;
+	border-right-color: #b3b3b3;
+	border-right-style: solid;
+	border-right-width: 1px;
+	border-top-color: #b3b3b3;
+	border-top-left-radius: 6px;
+	border-top-right-radius: 6px;
+	border-top-style: solid;
+	border-top-width: 1px;
+	font-family: 'Century Gothic';
+	font-size: 0.9em;
+	font-style: italic;
+	font-weight: normal;
+	line-height: 18px;
+	margin: 0;
+	padding-bottom: 0px;
+	padding-top: 12px;
+	background-image: none;
+	padding-left: 10px;
+	padding-right: 10px;
+}
+
+blockquote.name
+{
+	background-image: none;
+	border-bottom-color: #b3b3b3;
+	border-bottom-left-radius: 6px;
+	border-bottom-right-radius: 6px;
+	border-bottom-style: solid;
+	border-bottom-width: 1px;
+	border-top: none;
+	border-top-left-radius: 0px;
+	border-top-right-radius: 0px;
+	margin-bottom: 0;
+	padding-bottom: 12px;
+	padding-right: 35px;
+	padding-top: 8px;
+	text-align: right;
+}
+
+div.ImagesFloatLeft
+{
+	clear: both;
+	float: left;
+	margin-right: 10px;
+	padding: 5px;
+}
+
+div.ImagesFloatRight
+{
+	clear: both;
+	float: right;
+	margin-left: 10px;
+	padding: 5px;
+}
+
+div.TightContent
+{
+	margin: 0px;
+	padding: 0px;
+	line-height: 1em;
+}
+
+h1
+{
+	font-weight: normal;
+	margin-bottom: 8px;
+	font-size: 1.40em;
+	border-bottom: solid 1px #c0c0c0;
+	border-bottom-style: solid;
+	border-bottom-width: 1px;
+	line-height: 125%;
+	font-family: Verdana, Arial, sans-serif, Microsoft Sans Serif, Source Sans Pro;
+	margin-top: 15px;
+	padding-bottom: 6px;
+}
+
+h2
+{
+	font-size: 1.20em;
+	margin-bottom: 12px;
+	margin-top: 30px;
+	font-weight: normal;
+	color: #000000;
+	overflow: auto;
+	border-top: solid 0.5px #808000;
+	font-family: Verdana, Arial, sans-serif, Microsoft Sans Serif, Source Sans Pro;
+}
+
+h3
+{
+	font-weight: normal;
+	margin-bottom: 4px;
+	margin-top: 16px;
+	font-size: 1.10em;
+	font-family: Verdana, Arial, sans-serif, Microsoft Sans Serif, Source Sans Pro;
+}
+
+img
+{
+	border: none;
+	background: transparent;
+}
+
+.FiftyPercentMaxWidth
+{
+	max-width: 50%;
+}
+
+img.Thumbnail
+{
+	mc-thumbnail: popup;
+}
+
+img.ReduceButtonSize
+{
+	max-height: 18px;
+	max-width: auto;
+}
+
+MadCap|breadcrumbsProxy
+{
+	border-bottom: none;
+	font-style: italic;
+	mc-breadcrumbs-prefix: 'You are here: ';
+	mc-breadcrumbs-count: 4;
+	mc-breadcrumbs-divider: ' > ';
+	color: #696969;
+	font-size: 12px;
+	font-family: Verdana, Arial, sans-serif;
+}
+
+MadCap|dropDown
+{
+	margin-bottom: 6px;
+	margin-top: 6px;
+	mc-closed-image: url('../Images/DropDownClosed.png');
+	mc-disabled: false;
+	mc-open-image: url('../Images/DropDownOpen.png');
+}
+
+MadCap|dropDownBody
+{
+	border-bottom: solid 1px #bed230;
+	mc-disabled: false;
+}
+
+MadCap|dropDownBody.Final
+{
+	border-bottom: 0px;
+}
+
+MadCap|dropDownHead
+{
+	mc-disabled: false;
+	font-size: inherit;
+	text-decoration: underline;
+	font-weight: bold;
+	color: #4574b1;
+}
+
+MadCap|dropDownHotspot
+{
+	mc-disabled: false;
+	font-size: 1em;
+	text-decoration: underline;
+	font-family: Verdana, Arial, sans-serif, 'Microsoft Sans Serif', 'Source Sans Pro';
+	color: #4d75b3;
+	font-weight: normal;
+}
+
+MadCap|dropDownHotspot:hover
+{
+	font-weight: bold;
+	color: #4d75b3;
+}
+
+MadCap|popup
+{
+	color: #2D8DCC;
+}
+
+MadCap|popup:focus
+{
+	color: #2D8DCC;
+}
+
+MadCap|popup:hover
+{
+	color: #2D8DCC;
+}
+
+MadCap|popupHead
+{
+	color: #2D8DCC;
+	font-weight: bold;
+}
+
+MadCap|xref
+{
+	mc-format: '{para}';
+	text-decoration: underline;
+	font-weight: normal;
+	color: #2d8dcc;
+}
+
+MadCap|xref:hover
+{
+	color: #8fbc8b;
+}
+
+p
+{
+	margin-bottom: 8px;
+	margin-top: 8px;
+	overflow: auto;
+	font-size: 1em;
+	font-family: Verdana, Arial, sans-serif, 'Microsoft Sans Serif', 'Source Sans Pro';
+}
+
+p.CompanyInformation1
+{
+	margin-bottom: 4px;
+	margin-top: 14px;
+	font-weight: bold;
+}
+
+p.CompanyInformation2
+{
+	color: #6d6d6d;
+	margin-top: 4px;
+	margin-bottom: 4px;
+}
+
+p.note
+{
+	background-repeat: no-repeat;
+	padding-right: 10px;
+	background-image: none;
+	padding-left: 20px;
+	border-left-width: 3px;
+	border-radius: 5px;
+	border-right: none;
+	border-bottom-width: 0px;
+	border-left: solid 3px;
+	overflow: auto;
+	border-bottom-right-radius: 5px;
+	border-bottom-left-radius: 5px;
+	border: solid 1px #f5f5f5;
+	background-color: #f5f5f5;
+	mc-auto-number-format: '{b}{color black}Note: {/color}{/b}';
+	padding-top: 3px;
+	padding-bottom: 3px;
+	margin-bottom: 3px;
+	color: #000000;
+}
+
+p.noteBottom
+{
+	border-bottom-color: #f5f5f5;
+	border-bottom-style: solid;
+	border-bottom-width: 1px;
+	border-left-color: #f5f5f5;
+	border-left-style: solid;
+	border-left-width: 1px;
+	border-right-color: #f5f5f5;
+	border-right-style: solid;
+	border-right-width: 1px;
+	border-top: 0px;
+	margin-top: 0px;
+	padding-bottom: 10px;
+	padding-right: 10px;
+	background-color: #f5f5f5;
+	border-bottom-left-radius: 5px;
+	border-bottom-right-radius: 5px;
+	overflow: auto;
+	padding-left: 20px;
+	padding-top: 10px;
+	color: #000000;
+}
+
+p.noteMiddle
+{
+	border-bottom: 0px;
+	border-left-color: #f5f5f5;
+	border-left-style: solid;
+	border-left-width: 1px;
+	border-right-color: #f5f5f5;
+	border-right-style: solid;
+	border-right-width: 1px;
+	border-top: 0px;
+	margin-bottom: 0px;
+	margin-top: 0px;
+	padding-right: 10px;
+	background-color: #f5f5f5;
+	overflow: auto;
+	padding-bottom: 10px;
+	padding-left: 20px;
+	padding-top: 10px;
+	color: #000000;
+}
+
+p.noteTop
+{
+	background-repeat: no-repeat;
+	border-left-color: #f5f5f5;
+	border-left-style: solid;
+	border-left-width: 1px;
+	border-right-color: #f5f5f5;
+	border-right-style: solid;
+	border-right-width: 1px;
+	border-top-color: #f5f5f5;
+	border-top-style: solid;
+	border-top-width: 1px;
+	margin-bottom: 0;
+	padding-right: 10px;
+	padding-top: 10px;
+	background-image: none;
+	background-color: #f5f5f5;
+	border-top-right-radius: 5px;
+	border-top-left-radius: 5px;
+	overflow: auto;
+	padding-bottom: 10px;
+	padding-left: 20px;
+	mc-auto-number-format: '{b}{color black}Note: {/color}{/b}';
+	color: #000000;
+}
+
+p.TableTextCenterDark
+{
+	color: #000000;
+	margin-bottom: 2px;
+	margin-top: 8px;
+	text-align: center;
+}
+
+p.TableTextDark
+{
+	color: #000000;
+	margin-bottom: 2px;
+	margin-top: 8px;
+	font-weight: bold;
+	vertical-align: top;
+}
+
+p.TableTextDarkEmphasis
+{
+	color: #000000;
+	font-weight: bold;
+	margin-bottom: 2px;
+	margin-top: 8px;
+}
+
+p.UnlinkedTopics
+{
+	color: #000000;
+	margin-bottom: 8pt;
+	margin-top: 8pt;
+	text-indent: 1px;
+	top: 0px;
+	margin-left: 0pt;
+	font-family: Verdana;
+	font-size: 10pt;
+	display: none;
+}
+
+span.Emphasis
+{
+	font-weight: bold;
+}
+
+span.ParameterName
+{
+	font-weight: normal;
+	font-style: italic;
+}
+
+span.ParameterValue
+{
+	font-weight: bold;
+}
+
+span.PortName
+{
+	font-weight: bold;
+	font-style: italic;
+}
+
+span.ColumnHeading
+{
+	font-weight: normal;
+	font-style: italic;
+}
+
+span.SetOffFirstLevel
+{
+	color: #5e6914;
+	font-weight: bold;
+}
+
+span.SetOffSecondLevel
+{
+	color: #445879;
+	font-weight: bold;
+}
+
+td
+{
+	margin: 8px;
+	vertical-align: top;
+}
+
+th
+{
+	color: #ffffff;
+	margin-bottom: 8px;
+	margin-top: 8px;
+}
+
+div.sideContent
+{
+	float: right;
+	margin-left: 10px;
+	margin-bottom: 10px;
+	width: 33.33%;
+	display: block;
+	background-color: #fff;
+	padding-left: 10px;
+	border-left: 1px solid grey;
+	overflow: auto;
+}
+
+h4
+{
+	font-family: Verdana, Arial, sans-serif, Microsoft Sans Serif, Source Sans Pro;
+}
+
+h5
+{
+	font-family: Verdana, Arial, sans-serif, Microsoft Sans Serif, Source Sans Pro;
+}
+
+h6
+{
+	font-family: Verdana, Arial, sans-serif, Microsoft Sans Serif, Source Sans Pro;
+}
+
+p.Code
+{
+	text-align: left;
+	margin-left: 0in;
+	margin-right: 0in;
+	margin-top: 0pt;
+	margin-bottom: 0pt;
+	letter-spacing: 0em;
+	text-indent: 0px;
+	text-decoration: none;
+	font-style: normal;
+	font-family: 'Lucida Sans Typewriter', 'Courier New', monospace;
+	color: #808000;
+	font-weight: 200;
+	font-size: 0.90 em;
+}
+
+p.Code1
+{
+	text-align: left;
+	margin-left: 12pt;
+	margin-right: 0in;
+	margin-top: 0pt;
+	margin-bottom: 0pt;
+	letter-spacing: 0em;
+	text-indent: 0px;
+	text-decoration: none;
+	font-style: normal;
+	font-family: 'Lucida Sans Typewriter', 'Courier New', monospace;
+	color: #808000;
+	font-weight: 200;
+	font-size: 0.90 em;
+}
+
+p.Code2
+{
+	text-align: left;
+	margin-left: 24pt;
+	margin-right: 0in;
+	margin-top: 0pt;
+	margin-bottom: 0pt;
+	letter-spacing: 0em;
+	text-indent: 0px;
+	text-decoration: none;
+	font-style: normal;
+	font-family: 'Lucida Sans Typewriter', 'Courier New', monospace;
+	color: #808000;
+	font-weight: 200;
+	font-size: 0.90 em;
+}
+
+p.Code3
+{
+	text-align: left;
+	margin-left: 36pt;
+	margin-right: 0in;
+	margin-top: 0pt;
+	margin-bottom: 0pt;
+	letter-spacing: 0em;
+	text-indent: 0px;
+	text-decoration: none;
+	font-style: normal;
+	font-family: 'Lucida Sans Typewriter', 'Courier New', monospace;
+	color: #808000;
+	font-size: 0.90 em;
+	font-weight: 200;
+}
+
+p.Example
+{
+	border-bottom: solid 1px #c0c0c0;
+	border-top: solid 0px #c0c0c0;
+	margin-top: 2pt;
+	margin-bottom: 2pt;
+	text-indent: 0;
+	vertical-align: middle;
+	border-top-style: none;
+	border-top-width: 0px;
+	border-bottom-style: none;
+	border-bottom-width: 0px;
+	padding-left: 8px;
+	padding-right: 6px;
+	padding-top: 3px;
+	padding-bottom: 3px;
+	font-size: 0.90em;
+	font-family: 'Lucida Sans Typewriter', 'Courier New', monospace;
+	color: #808000;
+	font-weight: 200;
+}
+
+p.snippet_begin
+{
+	color: #094600;
+	line-height: normal;
+	text-align: left;
+	border-top: solid 1px #000000;
+	border-bottom: solid 0px #000000;
+	border-left-style: None;
+	border-left-width: 0px;
+	border-left-color: #005b04;
+	border-right-style: None;
+	border-right-width: 0px;
+	border-right-color: #005b04;
+	border-top-style: none;
+	border-top-width: 1px;
+	border-top-color: #000000;
+	border-bottom-style: none;
+	border-bottom-width: 0px;
+	border-bottom-color: #000000;
+	font-family: Verdana;
+	font-weight: normal;
+	font-style: italic;
+	font-size: 13px;
+	margin-right: 2pt;
+	padding-left: 1pt;
+	padding-right: 1pt;
+	padding-top: 1pt;
+	padding-bottom: 1pt;
+	margin-bottom: 15px;
+	margin-top: 15px;
+	background-color: #ffffe0;
+}
+
+p.snippet_end
+{
+	color: #094600;
+	line-height: normal;
+	text-align: left;
+	border-top: solid 1px #000000;
+	border-bottom: solid 0px #000000;
+	border-left-style: None;
+	border-left-width: 0px;
+	border-left-color: #005b04;
+	border-right-style: None;
+	border-right-width: 0px;
+	border-right-color: #005b04;
+	border-top-style: none;
+	border-top-width: 1px;
+	border-top-color: #000000;
+	border-bottom-style: none;
+	border-bottom-width: 0px;
+	border-bottom-color: #000000;
+	font-family: Verdana;
+	font-weight: normal;
+	font-style: italic;
+	font-size: 13px;
+	margin-right: 2pt;
+	padding-left: 1pt;
+	padding-right: 1pt;
+	padding-top: 1pt;
+	padding-bottom: 1pt;
+	margin-bottom: 15px;
+	margin-top: 15px;
+	background-color: #e0ffff;
+}
+
+p.Subheading
+{
+	font-style: normal;
+	padding-top: 6px;
+	font-weight: bold;
+	font-size: 1.2;
+	font-family: Verdana, Arial, sans-serif, 'Microsoft Sans Serif', 'Source Sans Pro';
+	color: #1d5ca8;
+}
+
+pre
+{
+	margin-top: 1pt;
+	font-size: 9pt;
+	margin-bottom: 3pt;
+	padding-bottom: 2pt;
+	font-family: 'Lucida Sans Typewriter', 'Courier New', monospace;
+	color: #808000;
+	overflow: hidden;
+}
+
+pre.Indent1
+{
+	font-size: 9pt;
+	margin-top: 1pt;
+	margin-bottom: 1pt;
+	margin-left: 12pt;
+}
+
+pre.Indent2
+{
+	font-size: 9pt;
+	margin-top: 1pt;
+	margin-bottom: 1pt;
+	margin-left: 25pt;
+}
+
+pre.Indent3
+{
+	font-size: 9pt;
+	margin-top: 1pt;
+	margin-bottom: 1pt;
+	margin-left: 40pt;
+}
+
+span.Italics
+{
+	font-weight: normal;
+	font-style: italic;
+}
+
+span.BoldItalic
+{
+	font-weight: bold;
+	font-style: italic;
+}
+
+span.Code
+{
+	font-family: 'Lucida Sans Typewriter', 'Courier New', monospace;
+	color: #808000;
+	font-weight: 200;
+	font-size: 1em;
+}
+
+span.Bold
+{
+	font-weight: bold;
+	font-size: inherit;
+}
+
+MadCap|slideshowCaption
+{
+	font-family: Verdana, 'Lucida Console';
+}
+
+p.NormalIndented
+{
+	margin-left: 12pt;
+}
+
+p.NormalIndented2
+{
+	margin-left: 30pt;
+}
+
+p.NormalIndented3
+{
+	margin-left: 40pt;
+}
+
+p.NormalIndented4
+{
+	margin-left: 52pt;
+}
+
+p.NumberedStepsContinued
+{
+	
+}
+
+p.tip
+{
+	background-repeat: no-repeat;
+	border-radius: 6px;
+	padding-bottom: 10px;
+	padding-right: 10px;
+	padding-top: 10px;
+	border-left-color: #808080;
+	border-right-color: #808080;
+	border-top-color: #808080;
+	border-bottom-color: #808080;
+	border: solid 1px #808080;
+	mc-auto-number-format: '{b}Tip: {/b}';
+	padding-left: 10px;
+	color: #000000;
+	background-image: none;
+	border-top-right-radius: 5px;
+	border-top-left-radius: 5px;
+	border-bottom-left-radius: 5px;
+	border-bottom-right-radius: 5px;
+	overflow: auto;
+	background-color: #f5f5f5;
+}
+
+p.tipBottom
+{
+	border-bottom-color: #404040;
+	border-bottom-style: solid;
+	border-bottom-width: 1px;
+	border-left-color: #404040;
+	border-left-style: solid;
+	border-left-width: 1px;
+	border-right-color: #404040;
+	border-right-style: solid;
+	border-right-width: 1px;
+	border-top: 0px;
+	margin-top: 0px;
+	padding-bottom: 10px;
+	padding-left: 40px;
+	padding-right: 10px;
+	padding-top: 0px;
+	background-color: #f5f5f5;
+	border-bottom-left-radius: 5px;
+	border-bottom-right-radius: 5px;
+	overflow: auto;
+	color: #000000;
+}
+
+p.tipMiddle
+{
+	border-bottom: 0px;
+	border-left-color: #404040;
+	border-left-style: solid;
+	border-left-width: 1px;
+	border-right-color: #404040;
+	border-right-style: solid;
+	border-right-width: 1px;
+	border-top: 0px;
+	margin-bottom: 0px;
+	margin-top: 0px;
+	padding-bottom: 8px;
+	padding-left: 40px;
+	padding-right: 10px;
+	padding-top: 0px;
+	background-color: #f5f5f5;
+	overflow: auto;
+	color: #000000;
+}
+
+p.tipTop
+{
+	background-repeat: no-repeat;
+	border-left-color: #404040;
+	border-left-style: solid;
+	border-left-width: 1px;
+	border-right-color: #404040;
+	border-right-style: solid;
+	border-right-width: 1px;
+	border-top-color: #404040;
+	border-top-style: solid;
+	border-top-width: 1px;
+	margin-bottom: 0;
+	padding-bottom: 8px;
+	padding-left: 40px;
+	padding-right: 10px;
+	padding-top: 10px;
+	background-image: none;
+	background-color: #f5f5f5;
+	border-top-right-radius: 5px;
+	border-top-left-radius: 5px;
+	overflow: auto;
+	mc-auto-number-format: '{b}Tip: {/b}';
+	color: #000000;
+}
+
+span.BoldItalicLarge
+{
+	font-style: italic;
+	font-weight: bold;
+	font-size: 1.2em;
+	font-family: Verdana, 'Lucida Console';
+}
+
+a.LargeTextLink
+{
+	font-size: 1.5em;
+	font-family: Verdana, Arial, sans-serif;
+}
+
+p.shaded_box
+{
+	background-repeat: no-repeat;
+	padding-bottom: 10px;
+	padding-right: 10px;
+	padding-top: 10px;
+	border-left-color: #808080;
+	border-right-color: #808080;
+	border-top-color: #808080;
+	border-bottom-color: #808080;
+	padding-left: 10px;
+	background-color: #f5f5f5;
+	overflow: auto;
+	border-top-right-radius: 5px;
+	border-top-left-radius: 5px;
+	border: none 1px transparent;
+	border-bottom-left-radius: 1;
+	border-bottom-right-radius: 1;
+	border-radius: 1;
+	color: #000000;
+}
+
+li
+{
+	orphans: 2;
+	widows: 2;
+	font-family: Verdana, Arial, sans-serif;
+	list-style-type: disc;
+	padding-bottom: 6px;
+}
+
+li::marker
+{
+	font-family: Verdana, 'Lucida Console';
+}
+
+ol
+{
+	list-style-image: none;
+	font-family: Verdana, 'Lucida Console';
+}
+
+ol.LowerAlpha
+{
+	list-style-type: lower-alpha;
+	font-family: Verdana, 'Lucida Console';
+}
+
+ol.LowerRoman
+{
+	list-style-type: lower-roman;
+	font-family: Verdana, 'Lucida Console';
+}
+
+ul
+{
+	margin-left: 2.1em;
+	padding: 0;
+	font-family: Verdana, Arial, sans-serif;
+	list-style-image: none;
+	list-style-type: disc;
+}
+
+ul.FirstLevelLessIndentation
+{
+	list-style-image: url('../Images/Bullet1.png');
+	font-family: Verdana, 'Lucida Console';
+}
+
+ul.SecondLevel
+{
+	font-family: Verdana, 'Lucida Console';
+	padding: 2.5em;
+	list-style-image: none;
+	padding-top: 0em;
+	padding-bottom: 0.15em;
+}
+
+dt
+{
+	font-family: Verdana, 'Lucida Console';
+}
+
+dd
+{
+	font-family: Verdana, 'Lucida Console';
+}
+
+dl
+{
+	font-family: Verdana, 'Lucida Console';
+}
+
+p.keywords
+{
+	mc-auto-number-format: '{b}Tags {/b}';
+	color: #808000;
+	font-family: 'Lucida Sans Typewriter', 'Courier New', monospace;
+	font-size: 0.90 em;
+}
+
+p.warning
+{
+	background-repeat: no-repeat;
+	border-radius: 6px;
+	padding-bottom: 10px;
+	padding-right: 10px;
+	padding-top: 10px;
+	border-left-color: #808080;
+	border-right-color: #808080;
+	border-top-color: #808080;
+	border-bottom-color: #808080;
+	border: solid 1px #808080;
+	padding-left: 10px;
+	color: #000000;
+	background-color: #f5f5f5;
+	background-image: none;
+	mc-auto-number-format: '{b}WARNING: {/b} ';
+	border-top-right-radius: 5px;
+	border-bottom-right-radius: 5px;
+	border-bottom-left-radius: 5px;
+}
+
+p.HowToOpen
+{
+	background-repeat: no-repeat;
+	border-radius: 6px;
+	padding-bottom: 10px;
+	padding-right: 10px;
+	padding-top: 10px;
+	border-left-color: #808080;
+	border-right-color: #808080;
+	border-top-color: #808080;
+	border-bottom-color: #808080;
+	border: solid 1px #808080;
+	color: #000000;
+	background-color: #f5f5f5;
+	background-position: left center;
+	margin-left: 0px;
+	padding-left: 80px;
+}
+
+p.TOC1
+{
+	margin-bottom: 8pt;
+	margin-top: 8pt;
+	border-top: solid 1px #228b22;
+}
+
+p.TOC2
+{
+	margin-bottom: 8pt;
+	margin-top: 8pt;
+	margin-left: 0px;
+	text-indent: 0px;
+}
+
+p.TOC3
+{
+	margin-left: 12pt;
+}
+
+MadCap|miniTocProxy
+{
+	font-size: 9pt;
+	font-family: Verdana;
+	color: #556b2f;
+	border-width: 1px;
+	text-indent: 3px;
+}
+
+MadCap|tocProxy
+{
+	font-size: 8pt;
+	font-family: Verdana, Arial, sans-serif;
+	color: #808000;
+}
+
+MadCap|miniTocProxy.miniTocStyle
+{
+	mc-toc-depth: 3;
+	font-style: italic;
+	border: solid 1px #000000;
+	padding-top: 0px;
+	vertical-align: 2px;
+	margin-top: 1px;
+	padding-left: 5px;
+	font-family: 'Source Sans Pro', Arial, Verdana, sans-serif;
+	margin-bottom: 3px;
+}
+
+p.MiniTOC1
+{
+	mc-leader-offset: 5pt;
+	font-size: 9pt;
+	margin-bottom: 2pt;
+	margin-top: 5pt;
+}
+
+p.MiniTOC2
+{
+	font-size: 9pt;
+	margin-bottom: 2pt;
+	margin-top: 2pt;
+}
+
+p.MiniTOC3
+{
+	margin-bottom: 2pt;
+	margin-top: 2pt;
+}
+
+a.LargeTextLink:link
+{
+	color: #696969;
+}
+
+a.LargeTextLink:visited
+{
+	color: #8fbc8b;
+}
+
+a.LargeTextLink:hover
+{
+	color: #dcdcdc;
+}
+
+p.MasterPageText
+{
+	font-size: 9pt;
+	font-style: italic;
+	margin-top: 3px;
+	margin-bottom: 3px;
+	text-indent: 20px;
+}
+
+code
+{
+	font-weight: 300;
+	font-family: 'Lucida Sans Typewriter', 'Courier New', monospace;
+	color: #808000;
+}
+
+span.SearchHighlight
+{
+	background-color: #ffff00;
+}
+
+html.formatLanding
+{
+	mc-master-page: url('../MasterPages/FormatLanding.flmsp');
+}
+
+/* First Page of Each Format */
+/*{*/
+/*html.formatlanding*/
+/*}*/
+/*html.formatlanding */
+/*{*/
+/*	div.sideContent: {display: none;}*/
+/*{*/
+
+MadCap|bodyProxy
+{
+	border-top: solid 1px #808080;
+}
+
+span.footer_title
+{
+	
+}
+
+MadCap|topicToolbarProxy
+{
+	
+}
+
+html.xml
+{
+	mc-master-page: url('../MasterPages/xml.flmsp');
+}
+
+html.mssql_spatial
+{
+	mc-master-page: url('../MasterPages/mssql_spatial.flmsp');
+}
+
+html.imx
+{
+	mc-master-page: url('../MasterPages/imx.flmsp');
+}
+
+html.WKBkml
+{
+	mc-master-page: url('../MasterPages/WKBkml.flmsp');
+}
+
+html.geodatabase
+{
+	mc-master-page: url('../MasterPages/geodatabase.flmsp');
+}
+
+html.xlsx
+{
+	mc-master-page: url('../MasterPages/xlsx.flmsp');
+}
+
+html.ingres
+{
+	mc-master-page: url('../MasterPages/ingres.flmsp');
+}
+
+html.csv2
+{
+	mc-master-page: url('../MasterPages/csv2.flmsp');
+}
+
+html.mitab
+{
+	mc-master-page: url('../MasterPages/mitab.flmsp');
+}
+
+html.tiff
+{
+	mc-master-page: url('../MasterPages/tiff.flmsp');
+}
+
+html.elasticsearch
+{
+	mc-master-page: url('../MasterPages/elasticsearch.flmsp');
+}
+
+html.acad
+{
+	mc-master-page: url('../MasterPages/acad.flmsp');
+}
+
+html.oracle_nonspatial
+{
+	mc-master-page: url('../MasterPages/oracle_nonspatial.flmsp');
+}
+
+html.oracle_relational
+{
+	mc-master-page: url('../MasterPages/oracle_relational.flmsp');
+}
+
+html.oracle_spatial
+{
+	mc-master-page: url('../MasterPages/oracle_spatial.flmsp');
+}
+
+html.oraclepointcloud
+{
+	mc-master-page: url('../MasterPages/oraclepointcloud.flmsp');
+}
+
+html.oracleraster
+{
+	mc-master-page: url('../MasterPages/oracleraster.flmsp');
+}
+
+html.arcgisonlinefeatures
+{
+	mc-master-page: url('../MasterPages/arcgisonlinefeatures.flmsp');
+}
+
+html.mssql_ado
+{
+	mc-master-page: url('../MasterPages/mssql_ado.flmsp');
+}
+
+html.documentdb
+{
+	mc-master-page: url('../MasterPages/documentdb.flmsp');
+}
+
+html.postgis
+{
+	mc-master-page: url('../MasterPages/postgis.flmsp');
+}
+
+html.postgis_raster
+{
+	mc-master-page: url('../MasterPages/postgis_raster.flmsp');
+}
+
+html.db2
+{
+	mc-master-page: url('../MasterPages/db2.flmsp');
+}
+
+html.db2spatial
+{
+	mc-master-page: url('../MasterPages/db2spatial.flmsp');
+}
+
+p.TransformerSummary
+{
+	
+}
+
+span.TransformerSummary
+{
+	
+}
+
+html.mongodb
+{
+	mc-master-page: url('../MasterPages/mongodb.flmsp');
+}
+
+html.pdf2d
+{
+	mc-master-page: url('../MasterPages/pdf2d.flmsp');
+}
+
+html.dynamodb
+{
+	mc-master-page: url('../MasterPages/dynamodb.flmsp');
+}
+
+html.arcgisfeatures
+{
+	mc-master-page: url('../MasterPages/arcgisfeatures.flmsp');
+}
+
+html.arcgisportalfeatures
+{
+	mc-master-page: url('../MasterPages/arcgisportalfeatures.flmsp');
+}
+
+html.esrihdr
+{
+	mc-master-page: url('../MasterPages/esrihdr.flmsp');
+}
+
+html.arcviewgrid
+{
+	mc-master-page: url('../MasterPages/arcviewgrid.flmsp');
+}
+
+html.arcgis_image_server
+{
+	mc-master-page: url('../MasterPages/arcgis_image_server.flmsp');
+}
+
+html.arcgis_layer
+{
+	mc-master-page: url('../MasterPages/arcgis_layer.flmsp');
+}
+
+html.gtfs
+{
+	mc-master-page: url('../MasterPages/gtfs.flmsp');
+}
+
+html.cloudant
+{
+	mc-master-page: url('../MasterPages/cloudant.flmsp');
+}
+
+html.sharepoint
+{
+	mc-master-page: url('../MasterPages/sharepoint.flmsp');
+}
+
+html.mssql_jdbc_nonspatial
+{
+	mc-master-page: url('../MasterPages/mssql_jdbc_nonspatial.flmsp');
+}
+
+html.collada
+{
+	mc-master-page: url('../MasterPages/collada.flmsp');
+}
+
+html.carto
+{
+	mc-master-page: url('../MasterPages/carto.flmsp');
+}
+
+html.couchdb
+{
+	mc-master-page: url('../MasterPages/couchdb.flmsp');
+}
+
+html.fbx
+{
+	mc-master-page: url('../MasterPages/fbx.flmsp');
+}
+
+html.netezza
+{
+	mc-master-page: url('../MasterPages/netezza.flmsp');
+}
+
+html.sap_sybase_ase
+{
+	mc-master-page: url('../MasterPages/sap_sybase_ase.flmsp');
+}
+
+html.cesium3dpc
+{
+	mc-master-page: url('../MasterPages/cesium3dpc.flmsp');
+}
+
+html.mssql_jdbc_spatial
+{
+	mc-master-page: url('../MasterPages/mssql_jdbc_spatial.flmsp');
+}
+
+html.gml
+{
+	mc-master-page: url('../MasterPages/gml.flmsp');
+}
+
+html.iff
+{
+	mc-master-page: url('../MasterPages/iff.flmsp');
+}
+
+html.ais
+{
+	mc-master-page: url('../MasterPages/ais.flmsp');
+}
+
+html.dwf
+{
+	mc-master-page: url('../MasterPages/dwf.flmsp');
+}
+
+html.pdf
+{
+	mc-master-page: url('../MasterPages/pdf.flmsp');
+}
+
+html.mysql_google
+{
+	mc-master-page: url('../MasterPages/mysql_google.flmsp');
+}
+
+html.mysql_google_db
+{
+	mc-master-page: url('../MasterPages/mysql_google_db.flmsp');
+}
+
+html.mysql
+{
+	mc-master-page: url('../MasterPages/mysql.flmsp');
+}
+
+MadCap|footnote
+{
+	mc-footnote-format: '{n} ';
+}
+
+html.mysql_db
+{
+	mc-master-page: url('../MasterPages/mysql_db.flmsp');
+}
+
+html.wfs
+{
+	mc-master-page: url('../MasterPages/wfs.flmsp');
+}
+
+html.ffs
+{
+	mc-master-page: url('../MasterPages/ffs.flmsp');
+}
+
+html.flash
+{
+	mc-master-page: url('../MasterPages/flash.flmsp');
+}
+
+html.ieps
+{
+	mc-master-page: url('../MasterPages/ieps.flmsp');
+}
+
+html.mapublisher
+{
+	mc-master-page: url('../MasterPages/mapublisher.flmsp');
+}
+
+html.denodo
+{
+	mc-master-page: url('../MasterPages/denodo.flmsp');
+}
+
+html.sdf3
+{
+	mc-master-page: url('../MasterPages/sdf3.flmsp');
+}
+
+html.mbtiles
+{
+	mc-master-page: url('../MasterPages/mbtiles.flmsp');
+}
+
+html.json
+{
+	mc-master-page: url('../MasterPages/json.flmsp');
+}
+
+html.geotiff
+{
+	mc-master-page: url('../MasterPages/geotiff.flmsp');
+}
+
+html.cadrg
+{
+	mc-master-page: url('../MasterPages/cadrg.flmsp');
+}
+
+html.osm
+{
+	mc-master-page: url('../MasterPages/osm.flmsp');
+}
+
+html.bcf
+{
+	mc-master-page: url('../MasterPages/bcf.flmsp');
+}
+
+html.azure_table
+{
+	mc-master-page: url('../MasterPages/azure_table.flmsp');
+}
+
+html.bmp
+{
+	mc-master-page: url('../MasterPages/bmp.flmsp');
+}
+
+html.igds
+{
+	mc-master-page: url('../MasterPages/igds.flmsp');
+}
+
+html.igds_xfm
+{
+	mc-master-page: url('../MasterPages/igds_xfm.flmsp');
+}
+
+html.minecraft
+{
+	mc-master-page: url('../MasterPages/minecraft.flmsp');
+}
+
+html.postgres
+{
+	mc-master-page: url('../MasterPages/postgres.flmsp');
+}
+
+html.path
+{
+	mc-master-page: url('../MasterPages/path.flmsp');
+}
+
+html.gltf
+{
+	mc-master-page: url('../MasterPages/gltf.flmsp');
+}
+
+html.geopackage
+{
+	mc-master-page: url('../MasterPages/geopackage.flmsp');
+}
+
+html.filegdb
+{
+	mc-master-page: url('../MasterPages/filegdb.flmsp');
+}
+
+html.fm0
+{
+	mc-master-page: url('../MasterPages/fm0.flmsp');
+}
+
+html.fmw
+{
+	mc-master-page: url('../MasterPages/fmw.flmsp');
+}
+
+html.threeds
+{
+	mc-master-page: url('../MasterPages/3ds.flmsp');
+}
+
+p.Footnote
+{
+	margin: 5px;
+	mc-auto-number-format: '{n} ';
+	mc-auto-number-offset: 2px;
+}
+
+html.mysql_aurora_spatial
+{
+	mc-master-page: url('../MasterPages/mysql_aurora_spatial.flmsp');
+}
+
+html.mysql_aurora_nonspatial
+{
+	mc-master-page: url('../MasterPages/mysql_aurora_nonspatial.flmsp');
+}
+
+html.cesium3dtiles
+{
+	mc-master-page: url('../MasterPages/cesium3dtiles.flmsp');
+}
+
+html.jdbc
+{
+	mc-master-page: url('../MasterPages/jdbc.flmsp');
+}
+
+html.msaccess_jdbc
+{
+	mc-master-page: url('../MasterPages/msaccess_jdbc.flmsp');
+}
+
+html.sap_hana_nonspatial
+{
+	mc-master-page: url('../MasterPages/sap_hana_nonspatial.flmsp');
+}
+
+html.db2_jdbc_nonspatial
+{
+	mc-master-page: url('../MasterPages/db2_jdbc_nonspatial.flmsp');
+}
+
+html.infx_jdbc_nonspatial
+{
+	mc-master-page: url('../MasterPages/infx_jdbc_nonspatial.flmsp');
+}
+
+html.infx
+{
+	mc-master-page: url('../MasterPages/infx.flmsp');
+}
+
+html.mgc
+{
+	mc-master-page: url('../MasterPages/mgc.flmsp');
+}
+
+html.ogeosms
+{
+	mc-master-page: url('../MasterPages/ogeosms.flmsp');
+}
+
+html.rdb
+{
+	mc-master-page: url('../MasterPages/rdb.flmsp');
+}
+
+html.textline
+{
+	mc-master-page: url('../MasterPages/textline.flmsp');
+}
+
+html.wkb
+{
+	mc-master-page: url('../MasterPages/wkb.flmsp');
+}
+
+html.wkt
+{
+	mc-master-page: url('../MasterPages/wkt.flmsp');
+}
+
+html.infxspatial
+{
+	mc-master-page: url('../MasterPages/infxspatial.flmsp');
+}
+
+html.odbc2
+{
+	mc-master-page: url('../MasterPages/odbc2.flmsp');
+}
+
+html.autocad_od
+{
+	mc-master-page: url('../MasterPages/autocad_od.flmsp');
+}
+
+html.osmpbf
+{
+	mc-master-page: url('../MasterPages/osmpbf.flmsp');
+}
+
+html.gif
+{
+	mc-master-page: url('../MasterPages/gif.flmsp');
+}
+
+html.gifraster
+{
+	mc-master-page: url('../MasterPages/gifraster.flmsp');
+}
+
+html.planetdata
+{
+	mc-master-page: url('../MasterPages/planetdata.flmsp');
+}
+
+html.sentinel2aws
+{
+	mc-master-page: url('../MasterPages/sentinel2aws.flmsp');
+}
+
+html.salesforce
+{
+	mc-master-page: url('../MasterPages/salesforce.flmsp');
+}
+
+html.adac
+{
+	mc-master-page: url('../MasterPages/adac.flmsp');
+}
+
+html.landsat8aws
+{
+	mc-master-page: url('../MasterPages/landsat8aws.flmsp');
+}
+
+html.landsat8
+{
+	mc-master-page: url('../MasterPages/landsat8.flmsp');
+}
+
+html.saif
+{
+	mc-master-page: url('../MasterPages/saif.flmsp');
+}
+
+html.asrp
+{
+	mc-master-page: url('../MasterPages/asrp.flmsp');
+}
+
+html.las
+{
+	mc-master-page: url('../MasterPages/las.flmsp');
+}
+
+html.apt
+{
+	mc-master-page: url('../MasterPages/apt.flmsp');
+}
+
+html.arcgen
+{
+	mc-master-page: url('../MasterPages/arcgen.flmsp');
+}
+
+html
+{
+	
+}
+
+html.arcgismap
+{
+	mc-master-page: url('../MasterPages/arcgismap.flmsp');
+}
+
+html.arcpadaxf
+{
+	mc-master-page: url('../MasterPages/arcpadaxf.flmsp');
+}
+
+html.bag
+{
+	mc-master-page: url('../MasterPages/bag.flmsp');
+}
+
+html.bsb
+{
+	mc-master-page: url('../MasterPages/bsb.flmsp');
+}
+
+html.planet
+{
+	mc-master-page: url('../MasterPages/planet.flmsp');
+}
+
+html.cat
+{
+	mc-master-page: url('../MasterPages/cat.flmsp');
+}
+
+html.ccogif
+{
+	mc-master-page: url('../MasterPages/ccogif.flmsp');
+}
+
+html.cded
+{
+	mc-master-page: url('../MasterPages/cded.flmsp');
+}
+
+html.citygml
+{
+	mc-master-page: url('../MasterPages/citygml.flmsp');
+}
+
+html.civil3d
+{
+	mc-master-page: url('../MasterPages/civil3d.flmsp');
+}
+
+html.socrata
+{
+	mc-master-page: url('../MasterPages/socrata.flmsp');
+}
+
+html.recap
+{
+	mc-master-page: url('../MasterPages/recap.flmsp');
+}
+
+html.revit
+{
+	mc-master-page: url('../MasterPages/revit.flmsp');
+}
+
+html.sdl
+{
+	mc-master-page: url('../MasterPages/sdl.flmsp');
+}
+
+html.sqlite3
+{
+	mc-master-page: url('../MasterPages/sqlite3.flmsp');
+}
+
+html.idrisi
+{
+	mc-master-page: url('../MasterPages/idrisi.flmsp');
+}
+
+html.tde
+{
+	mc-master-page: url('../MasterPages/tde.flmsp');
+}
+
+html.wms
+{
+	mc-master-page: url('../MasterPages/wms.flmsp');
+}
+
+html.geopackage_raster
+{
+	mc-master-page: url('../MasterPages/geopackage_raster.flmsp');
+}
+
+html.imdf
+{
+	mc-master-page: url('../MasterPages/imdf.flmsp');
+}
+
+html.teradata_jdbc_nonspatial
+{
+	mc-master-page: url('../MasterPages/teradata_jdbc_nonspatial.flmsp');
+}
+
+MadCap|snippetBlock.MaxWidth	/*Use for Feature Operation table snippets*/
+{
+	max-width: 710px;
+}
+
+p.SmallParaBreak	/*Small paragraph spacer between snippets*/
+{
+	font-size: 5pt;
+	margin-bottom: 3px;
+	margin-top: 0px;
+}
+
+html.i2kgml
+{
+	mc-master-page: url('../MasterPages/i2kgml.flmsp');
+}
+
+html.aixm5
+{
+	mc-master-page: url('../MasterPages/aixm5.flmsp');
+}
+
+html.htmltable
+{
+	mc-master-page: url('../MasterPages/htmltable.flmsp');
+}
+
+html.html
+{
+	mc-master-page: url('../MasterPages/html.flmsp');
+}
+
+html.sdts
+{
+	mc-master-page: url('../MasterPages/sdts.flmsp');
+}
+
+html.zmapraster
+{
+	mc-master-page: url('../MasterPages/zmapraster.flmsp');
+}
+
+html.e00
+{
+	mc-master-page: url('../MasterPages/e00.flmsp');
+}
+
+html.zmap
+{
+	mc-master-page: url('../MasterPages/zmap.flmsp');
+}
+
+html.csar
+{
+	mc-master-page: url('../MasterPages/csar.flmsp');
+}
+
+html.csarpc
+{
+	mc-master-page: url('../MasterPages/csarpc.flmsp');
+}
+
+html.mrr
+{
+	mc-master-page: url('../MasterPages/mrr.flmsp');
+}
+
+html.xyz
+{
+	mc-master-page: url('../MasterPages/xyz.flmsp');
+}
+
+html.xpm
+{
+	mc-master-page: url('../MasterPages/xpm.flmsp');
+}
+
+html.vrt
+{
+	mc-master-page: url('../MasterPages/vrt.flmsp');
+}
+
+pre.Indent4
+{
+	margin-bottom: 1pt;
+	margin-left: 50pt;
+	margin-top: 1pt;
+}
+
+html.rdata
+{
+	mc-master-page: url('../MasterPages/rdata.flmsp');
+}
+
+html.rdataraster
+{
+	mc-master-page: url('../MasterPages/rdataraster.flmsp');
+}
+
+html.ff
+{
+	mc-master-page: url('../MasterPages/ff.flmsp');
+}
+
+html.schema
+{
+	mc-master-page: url('../MasterPages/schema.flmsp');
+}
+
+html.schema_from_table
+{
+	mc-master-page: url('../MasterPages/schema_from_table.flmsp');
+}
+
+html.sas
+{
+	mc-master-page: url('../MasterPages/sas.flmsp');
+}
+
+html.ecw
+{
+	mc-master-page: url('../MasterPages/ecw.flmsp');
+}
+
+html.ers
+{
+	mc-master-page: url('../MasterPages/ers.flmsp');
+}
+
+html.esriasciigrid
+{
+	mc-master-page: url('../MasterPages/esriasciigrid.flmsp');
+}
+
+html.adrg
+{
+	mc-master-page: url('../MasterPages/adrg.flmsp');
+}
+
+html.moep
+{
+	mc-master-page: url('../MasterPages/moep.flmsp');
+}
+
+html.mdb_ado
+{
+	mc-master-page: url('../MasterPages/mdb_ado.flmsp');
+}
+
+html.sav
+{
+	mc-master-page: url('../MasterPages/sav.flmsp');
+}
+
+html.pcidsk
+{
+	mc-master-page: url('../MasterPages/pcidsk.flmsp');
+}
+
+html.terraintilesaws
+{
+	mc-master-page: url('../MasterPages/terraintilesaws.flmsp');
+}
+
+html.generic
+{
+	mc-master-page: url('../MasterPages/generic.flmsp');
+}
+
+html.nitf
+{
+	mc-master-page: url('../MasterPages/nitf.flmsp');
+}
+
+html.stl
+{
+	mc-master-page: url('../MasterPages/stl.flmsp');
+}
+
+html.sgi
+{
+	mc-master-page: url('../MasterPages/sgi.flmsp');
+}
+
+html.erdasraw
+{
+	mc-master-page: url('../MasterPages/erdasraw.flmsp');
+}
+
+html.cib
+{
+	mc-master-page: url('../MasterPages/cib.flmsp');
+}
+
+html.RasterFeatures
+{
+	mc-master-page: url('../MasterPages/RasterFeatures.flmsp');
+}
+
+html.vrt_raster
+{
+	mc-master-page: url('../MasterPages/vrt_raster.flmsp');
+}
+
+pre.larger_font
+{
+	margin-top: 1pt;
+	margin-bottom: 3pt;
+	padding-bottom: 2pt;
+	font-size: 10pt;
+	font-family: 'Lucida Sans Typewriter', 'Courier New', monospace;
+	color: #808000;
+	overflow: auto;
+}
+
+html.jpeg
+{
+	mc-master-page: url('../MasterPages/jpeg.flmsp');
+}
+
+html.jpeg2000
+{
+	mc-master-page: url('../MasterPages/jpeg2000.flmsp');
+}
+
+html.seabedml
+{
+	mc-master-page: url('../MasterPages/seabedml.flmsp');
+}
+
+html.athena
+{
+	mc-master-page: url('../MasterPages/athena.flmsp');
+}
+
+html.mapinfo_extended
+{
+	mc-master-page: url('../MasterPages/mapinfo_extended.flmsp');
+}
+
+html.sap_hana_spatial
+{
+	mc-master-page: url('../MasterPages/sap_hana_spatial.flmsp');
+}
+
+html.geodatabase_xml
+{
+	mc-master-page: url('../MasterPages/geodatabase_xml.flmsp');
+}
+
+html.ngrid
+{
+	mc-master-page: url('../MasterPages/ngrid.flmsp');
+}
+
+div#footer
+{
+	background-color: #dcdcdc;
+	border-bottom-left-radius: 0;
+	border-bottom-right-radius: 0;
+	border-radius: 0;
+}
+
+html.ogdi
+{
+	mc-master-page: url('../MasterPages/ogdi.flmsp');
+}
+
+html.mrf
+{
+	mc-master-page: url('../MasterPages/mrf.flmsp');
+}
+
+html.spatialite
+{
+	mc-master-page: url('../MasterPages/spatialite.flmsp');
+}
+
+html.tiger
+{
+	mc-master-page: url('../MasterPages/tiger.flmsp');
+}
+
+html.inspire
+{
+	mc-master-page: url('../MasterPages/inspire.flmsp');
+}
+
+html.pervasive
+{
+	mc-master-page: url('../MasterPages/pervasive.flmsp');
+}
+
+html.sqlite3fdo
+{
+	mc-master-page: url('../MasterPages/sqlite3fdo.flmsp');
+}
+
+html.aixm
+{
+	mc-master-page: url('../MasterPages/aixm.flmsp');
+}
+
+html.mif
+{
+	mc-master-page: url('../MasterPages/mif.flmsp');
+}
+
+html.ufo
+{
+	mc-master-page: url('../MasterPages/ufo.flmsp');
+}
+
+html.garmin_gdb
+{
+	mc-master-page: url('../MasterPages/garmin_gdb.flmsp');
+}
+
+html.garmin_mps
+{
+	mc-master-page: url('../MasterPages/garmin_mps.flmsp');
+}
+
+html.garmin_poi
+{
+	mc-master-page: url('../MasterPages/garmin_poi.flmsp');
+}
+
+html.redshift
+{
+	mc-master-page: url('../MasterPages/redshift.flmsp');
+}
+
+html.cgdef
+{
+	mc-master-page: url('../MasterPages/cgdef.flmsp');
+}
+
+html.gmlsf
+{
+	mc-master-page: url('../MasterPages/gmlsf.flmsp');
+}
+
+html.bigquery
+{
+	mc-master-page: url('../MasterPages/bigquery.flmsp');
+}
+
+html.sosi_gml
+{
+	mc-master-page: url('../MasterPages/sosi_gml.flmsp');
+}
+
+html.cloudspanner_jdbc
+{
+	mc-master-page: url('../MasterPages/cloudspanner_jdbc.flmsp');
+}
+
+html.png
+{
+	mc-master-page: url('../MasterPages/png.flmsp');
+}
+
+html.pngraster
+{
+	mc-master-page: url('../MasterPages/pngraster.flmsp');
+}
+
+html.ldap_jdbc
+{
+	mc-master-page: url('../MasterPages/ldap_jdbc.flmsp');
+}
+
+html.hypackbrd
+{
+	mc-master-page: url('../MasterPages/hypack_brd.flmsp');
+}
+
+html.cals
+{
+	mc-master-page: url('../MasterPages/cals.flmsp');
+}
+
+html.idrisi_raster
+{
+	mc-master-page: url('../MasterPages/idrisi_raster.flmsp');
+}
+
+html.wlas
+{
+	mc-master-page: url('../MasterPages/wlas.flmsp');
+}
+
+html.pcd
+{
+	mc-master-page: url('../MasterPages/pcd.flmsp');
+}
+
+html.zfs
+{
+	mc-master-page: url('../MasterPages/zfs.flmsp');
+}
+
+html.gg
+{
+	mc-master-page: url('../MasterPages/gg.flmsp');
+}
+
+html.teradata_jdbc_spatial
+{
+	mc-master-page: url('../MasterPages/teradata_jdbc_spatial.flmsp');
+}
+
+html.strumap
+{
+	mc-master-page: url('../MasterPages/strumap.flmsp');
+}
+
+html.skp
+{
+	mc-master-page: url('../MasterPages/skp.flmsp');
+}
+
+html.imodel
+{
+	mc-master-page: url('../MasterPages/imodel.flmsp');
+}
+
+ul.List-bullets	/*No indent*/
+{
+	list-style-type: disc;
+	list-style-image: none;
+}
+
+ul.List-bullets > li::marker
+{
+	font-family: ;
+	content: '•';
+}
+
+html.gdal_generic_raster
+{
+	mc-master-page: url('../MasterPages/gdal_generic_raster.flmsp');
+}
+
+html.grd
+{
+	mc-master-page: url('../MasterPages/grd.flmsp');
+}
+
+html.msword
+{
+	mc-master-page: url('../MasterPages/msword.flmsp');
+}
+
+html.fme_ar_file
+{
+	mc-master-page: url('../MasterPages/fme_ar_file.flmsp');
+}
+
+html.obj
+{
+	mc-master-page: url('../MasterPages/obj.flmsp');
+}
+
+html.indoorgml
+{
+	mc-master-page: url('../MasterPages/indoorgml.flmsp');
+}
+
+html.ingres_spatial
+{
+	mc-master-page: url('../MasterPages/ingres_spatial.flmsp');
+}
+
+html.ingres_nonspatial
+{
+	mc-master-page: url('../MasterPages/ingres_nonspatial.flmsp');
+}
+
+html.geojson
+{
+	mc-master-page: url('../MasterPages/geojson.flmsp');
+}
+
+html.qvx
+{
+	mc-master-page: url('../MasterPages/qvx.flmsp');
+}
+
+html.here_venue_map
+{
+	mc-master-page: url('../MasterPages/here_venue_map.flmsp');
+}
+
+html.powerpoint
+{
+	mc-master-page: url('../MasterPages/powerpoint.flmsp');
+}
+
+html.landxml
+{
+	mc-master-page: url('../MasterPages/landxml.flmsp');
+}
+
+html.datafile
+{
+	mc-master-page: url('../MasterPages/datafile.flmsp');
+}
+
+html.cuzk_gml
+{
+	mc-master-page: url('../MasterPages/cuzk_gml.flmsp');
+}
+
+html.kommungml
+{
+	mc-master-page: url('../MasterPages/kommungml.flmsp');
+}
+
+html.kuntagml
+{
+	mc-master-page: url('../MasterPages/kuntagml.flmsp');
+}
+
+html.nas
+{
+	mc-master-page: url('../MasterPages/nas.flmsp');
+}
+
+html.tigergml
+{
+	mc-master-page: url('../MasterPages/tigergml.flmsp');
+}
+
+html.nen3610
+{
+	mc-master-page: url('../MasterPages/nen3610.flmsp');
+}
+
+html.top50nl
+{
+	mc-master-page: url('../MasterPages/top50nl.flmsp');
+}
+
+html.top10
+{
+	mc-master-page: url('../MasterPages/top10.flmsp');
+}
+
+html.ch_ehi_fme_main
+{
+	mc-master-page: url('../MasterPages/ch_ehi_fme_main.flmsp');
+}
+
+html.directx
+{
+	mc-master-page: url('../MasterPages/directx.flmsp');
+}
+
+html.aml
+{
+	mc-master-page: url('../MasterPages/aml.flmsp');
+}
+
+html.esrijson
+{
+	mc-master-page: url('../MasterPages/esrijson.flmsp');
+}
+
+html.envihdr
+{
+	mc-master-page: url('../MasterPages/envihdr.flmsp');
+}
+
+html.epa_gdxml
+{
+	mc-master-page: url('../MasterPages/epa_gdxml.flmsp');
+}
+
+html.erdas
+{
+	mc-master-page: url('../MasterPages/erdas.flmsp');
+}
+
+html.hyd93
+{
+	mc-master-page: url('../MasterPages/hyd93.flmsp');
+}
+
+html.grib
+{
+	mc-master-page: url('../MasterPages/grib.flmsp');
+}
+
+html.hdf4_aster
+{
+	mc-master-page: url('../MasterPages/hdf4_aster.flmsp');
+}
+
+html.hdf4_hyperion
+{
+	mc-master-page: url('../MasterPages/hdf4_hyperion.flmsp');
+}
+
+html.idex
+{
+	mc-master-page: url('../MasterPages/idex.flmsp');
+}
+
+html.ifc
+{
+	mc-master-page: url('../MasterPages/ifc.flmsp');
+}
+
+html.iso8211
+{
+	mc-master-page: url('../MasterPages/iso8211.flmsp');
+}
+
+html.jobxml
+{
+	mc-master-page: url('../MasterPages/jobxml.flmsp');
+}
+
+html.kf85
+{
+	mc-master-page: url('../MasterPages/kf85.flmsp');
+}
+
+html.tomtom_poi
+{
+	mc-master-page: url('../MasterPages/tomtom_poi.flmsp');
+}
+
+html.masik
+{
+	mc-master-page: url('../MasterPages/masik.flmsp');
+}
+
+html.pointcloudxyz
+{
+	mc-master-page: url('../MasterPages/pointcloudxyz.flmsp');
+}
+
+html.x3d
+{
+	mc-master-page: url('../MasterPages/x3d.flmsp');
+}
+
+html.vpf
+{
+	mc-master-page: url('../MasterPages/vpf.flmsp');
+}
+
+html.tdrbm
+{
+	mc-master-page: url('../MasterPages/tdrbm.flmsp');
+}
+
+html.prc
+{
+	mc-master-page: url('../MasterPages/prc.flmsp');
+}
+
+html.enterprise
+{
+	mc-master-page: url('../MasterPages/enterprise.flmsp');
+}
+
+html.e57
+{
+	mc-master-page: url('../MasterPages/e57.flmsp');
+}
+
+html.esf
+{
+	mc-master-page: url('../MasterPages/esf.flmsp');
+}
+
+html.ntx
+{
+	mc-master-page: url('../MasterPages/ntx.flmsp');
+}
+
+html.qlf
+{
+	mc-master-page: url('../MasterPages/qlf.flmsp');
+}
+
+html.dsfl
+{
+	mc-master-page: url('../MasterPages/dsfl.flmsp');
+}
+
+html.esrimsd
+{
+	mc-master-page: url('../MasterPages/esrimsd.flmsp');
+}
+
+html.facet
+{
+	mc-master-page: url('../MasterPages/facet.flmsp');
+}
+
+html.falconview
+{
+	mc-master-page: url('../MasterPages/falconview.flmsp');
+}
+
+html.filecopy
+{
+	mc-master-page: url('../MasterPages/filecopy.flmsp');
+}
+
+html.delorme_gpl
+{
+	mc-master-page: url('../MasterPages/delorme_gpl.flmsp');
+}
+
+html.des
+{
+	mc-master-page: url('../MasterPages/des.flmsp');
+}
+
+html.dlg
+{
+	mc-master-page: url('../MasterPages/dlg.flmsp');
+}
+
+html.dmdf
+{
+	mc-master-page: url('../MasterPages/dmdf.flmsp');
+}
+
+html.dted
+{
+	mc-master-page: url('../MasterPages/dted.flmsp');
+}
+
+html.edigeo
+{
+	mc-master-page: url('../MasterPages/edigeo.flmsp');
+}
+
+html.eps
+{
+	mc-master-page: url('../MasterPages/eps.flmsp');
+}
+
+html.genamap
+{
+	mc-master-page: url('../MasterPages/genamap.flmsp');
+}
+
+html.geoconcept
+{
+	mc-master-page: url('../MasterPages/geoconcept.flmsp');
+}
+
+html.gdf
+{
+	mc-master-page: url('../MasterPages/gdf.flmsp');
+}
+
+html.gdms
+{
+	mc-master-page: url('../MasterPages/gdms.flmsp');
+}
+
+html.geohash
+{
+	mc-master-page: url('../MasterPages/geohash.flmsp');
+}
+
+html.georss
+{
+	mc-master-page: url('../MasterPages/georss.flmsp');
+}
+
+html.surferbinary
+{
+	mc-master-page: url('../MasterPages/surferbinary.flmsp');
+}
+
+html.gml2
+{
+	mc-master-page: url('../MasterPages/gml2.flmsp');
+}
+
+html.webp
+{
+	mc-master-page: url('../MasterPages/webp.flmsp');
+}
+
+html.gpxx
+{
+	mc-master-page: url('../MasterPages/gpxx.flmsp');
+}
+
+html.gti_gtviewer
+{
+	mc-master-page: url('../MasterPages/gti_gtviewer.flmsp');
+}
+
+html.whitestar
+{
+	mc-master-page: url('../MasterPages/whitestar.flmsp');
+}
+
+html.sef
+{
+	mc-master-page: url('../MasterPages/sef.flmsp');
+}
+
+html.mge
+{
+	mc-master-page: url('../MasterPages/mge.flmsp');
+}
+
+html.ingr
+{
+	mc-master-page: url('../MasterPages/ingr.flmsp');
+}
+
+html.zgf
+{
+	mc-master-page: url('../MasterPages/zgf.flmsp');
+}
+
+html.mrsid
+{
+	mc-master-page: url('../MasterPages/mrsid.flmsp');
+}
+
+html.iuf
+{
+	mc-master-page: url('../MasterPages/iuf.flmsp');
+}
+
+html.landonline
+{
+	mc-master-page: url('../MasterPages/landonline.flmsp');
+}
+
+html.spatialware
+{
+	mc-master-page: url('../MasterPages/spatialware.flmsp');
+}
+
+html.mspolyxml
+{
+	mc-master-page: url('../MasterPages/mspolyxml.flmsp');
+}
+
+html.multireader
+{
+	mc-master-page: url('../MasterPages/multireader.flmsp');
+}
+
+html.multiwriter
+{
+	mc-master-page: url('../MasterPages/multiwriter.flmsp');
+}
+
+html.osg
+{
+	mc-master-page: url('../MasterPages/osg.flmsp');
+}
+
+html.netcdf
+{
+	mc-master-page: url('../MasterPages/netcdf.flmsp');
+}
+
+html.mtkgml
+{
+	mc-master-page: url('../MasterPages/mtkgml.flmsp');
+}
+
+html.nmea_gps
+{
+	mc-master-page: url('../MasterPages/nmea_gps.flmsp');
+}
+
+html.odata
+{
+	mc-master-page: url('../MasterPages/odata.flmsp');
+}
+
+html.p190
+{
+	mc-master-page: url('../MasterPages/p190.flmsp');
+}
+
+html.null
+{
+	mc-master-page: url('../MasterPages/null.flmsp');
+}
+
+html.sqlldr
+{
+	mc-master-page: url('../MasterPages/sqlldr.flmsp');
+}
+
+html.ntf
+{
+	mc-master-page: url('../MasterPages/ntf.flmsp');
+}
+
+html.osvectormapdistrict
+{
+	mc-master-page: url('../MasterPages/osvectormapdistrict.flmsp');
+}
+
+html.osvectormaplocal
+{
+	mc-master-page: url('../MasterPages/osvectormaplocal.flmsp');
+}
+
+html.phocus
+{
+	mc-master-page: url('../MasterPages/phocus.flmsp');
+}
+
+html.pod
+{
+	mc-master-page: url('../MasterPages/pod.flmsp');
+}
+
+html.openflight
+{
+	mc-master-page: url('../MasterPages/openflight.flmsp');
+}
+
+html.radarsat2
+{
+	mc-master-page: url('../MasterPages/radarsat2.flmsp');
+}
+
+html.regis
+{
+	mc-master-page: url('../MasterPages/regis.flmsp');
+}
+
+html.rdb_project
+{
+	mc-master-page: url('../MasterPages/rdb_project.flmsp');
+}
+
+html.sxf
+{
+	
+}
+
+html.s57
+{
+	mc-master-page: url('../MasterPages/s57.flmsp');
+}
+
+html.seg-p1
+{
+	mc-master-page: url('../MasterPages/seg-p1.flmsp');
+}
+
+html.segy
+{
+	mc-master-page: url('../MasterPages/segy.flmsp');
+}
+
+html.sentinel1
+{
+	mc-master-page: url('../MasterPages/sentinel1.flmsp');
+}
+
+html.sentinel2
+{
+	mc-master-page: url('../MasterPages/sentinel2.flmsp');
+}
+
+html.sworld
+{
+	mc-master-page: url('../MasterPages/sworld.flmsp');
+}
+
+html.sworldswaf
+{
+	mc-master-page: url('../MasterPages/sworldswaf.flmsp');
+}
+
+html.srtmhgt
+{
+	mc-master-page: url('../MasterPages/srtmhgt.flmsp');
+}
+
+html.slf
+{
+	mc-master-page: url('../MasterPages/slf.flmsp');
+}
+
+html.mcf
+{
+	mc-master-page: url('../MasterPages/mcf.flmsp');
+}
+
+html.sunraster
+{
+	mc-master-page: url('../MasterPages/sunraster.flmsp');
+}
+
+html.svg
+{
+	mc-master-page: url('../MasterPages/svg.flmsp');
+}
+
+html.teleatlascsv
+{
+	mc-master-page: url('../MasterPages/teleatlascsv.flmsp');
+}
+
+html.terrascan
+{
+	mc-master-page: url('../MasterPages/terrascan.flmsp');
+}
+
+html.tetgen
+{
+	mc-master-page: url('../MasterPages/tetgen.flmsp');
+}
+
+html.tfs_fixedschema
+{
+	mc-master-page: url('../MasterPages/tfs_fixedschema.flmsp');
+}
+
+html.tfs_variableschema
+{
+	mc-master-page: url('../MasterPages/tfs_variableschema.flmsp');
+}
+
+html.usgs_dem
+{
+	mc-master-page: url('../MasterPages/usgs_dem.flmsp');
+}
+
+html.vml
+{
+	mc-master-page: url('../MasterPages/vml.flmsp');
+}
+
+html.voiv
+{
+	mc-master-page: url('../MasterPages/voiv.flmsp');
+}
+
+html.xdk
+{
+	mc-master-page: url('../MasterPages/xdk.flmsp');
+}
+
+html.summary
+{
+	mc-master-page: url('../MasterPages/summary.flmsp');
+}
+
+html.dwml
+{
+	mc-master-page: url('../MasterPages/dwml.flmsp');
+}
+
+html.isce
+{
+	mc-master-page: url('../MasterPages/isce.flmsp');
+}
+
+html.rraster
+{
+	mc-master-page: url('../MasterPages/rraster.flmsp');
+}
+
+html.apache_hive
+{
+	mc-master-page: url('../MasterPages/apache_hive.flmsp');
+}
+
+html.db2spatial_dashdb
+{
+	mc-master-page: url('../MasterPages/db2spatial_dashdb.flmsp');
+}
+
+html.dicom
+{
+	mc-master-page: url('../MasterPages/dicom.flmsp');
+}
+
+div.content
+{
+	wrapper: inherit;
+	padding: 0px;
+	padding-left: 10 px;
+	padding-right: 0px;
+	width: 100%;
+}
+
+html.feature_types
+{
+	mc-master-page: url('../MasterPages/feature_types.flmsp');
+}
+
+html.wcs
+{
+	mc-master-page: url('../MasterPages/wcs.flmsp');
+}
+
+html.garmin_gpi
+{
+	mc-master-page: url('../MasterPages/garmin_gpi.flmsp');
+}
+
+html.format_lists
+{
+	
+}
+
+html.revitnative
+{
+	mc-master-page: url('../MasterPages/revitnative.flmsp');
+}
+
+html.topojson
+{
+	mc-master-page: url('../MasterPages/topojson.flmsp');
+}
+
+html.shapefile
+{
+	mc-master-page: url('../MasterPages/shapefile.flmsp');
+}
+
+html.udatasmith
+{
+	mc-master-page: url('../MasterPages/udatasmith.flmsp');
+}
+
+pre.Indent3_larger	/*Font size 10*/
+{
+	margin-top: 1pt;
+	margin-bottom: 1pt;
+	font-size: 10pt;
+	margin-left: 45pt;
+	font-family: 'Lucida Sans Typewriter', 'Courier New', monospace;
+}
+
+pre.Indent4_larger
+{
+	margin-bottom: 1pt;
+	margin-top: 1pt;
+	margin-left: 60pt;
+	font-size: 10pt;
+	font-family: 'Lucida Sans Typewriter', 'Courier New', monospace;
+}
+
+html.dbase
+{
+	mc-master-page: url('../MasterPages/dbase.flmsp');
+}
+
+html.i3s
+{
+	mc-master-page: url('../MasterPages/i3s.flmsp');
+}
+
+html.mongodb3
+{
+	mc-master-page: url('../MasterPages/mongodb3.flmsp');
+}
+
+p.notice
+{
+	background-repeat: no-repeat;
+	padding-bottom: 10px;
+	padding-right: 10px;
+	padding-top: 10px;
+	background-image: none;
+	padding-left: 20px;
+	border-left-width: 3px;
+	border-right: none;
+	border-bottom-width: 0px;
+	overflow: auto;
+	border: solid 1px #f5f5f5;
+	background-color: #f5f5f5;
+	mc-auto-number-format: '{b}Notice: {/b}';
+	color: #000000;
+	border-bottom-left-radius: 1px;
+	border-bottom-right-radius: 1px;
+	border-left-color: #808000;
+	border-radius: 1px;
+	border-left: solid 4px #808000;
+}
+
+html.mapinfo_efal
+{
+	mc-master-page: url('../MasterPages/mapinfo_efal.flmsp');
+}
+
+MadCap|expandingHead
+{
+	font-size: inherit;
+	color: #2d8dcc;
+	font-family: Verdana, Arial, sans-serif;
+	text-decoration: underline;
+}
+
+MadCap|dropDownHotspot.dropspot
+{
+	color: #4d75b3;
+}
+
+html.socrata2
+{
+	mc-master-page: url('../MasterPages/socrata2.flmsp');
+}
+
+html.mvt
+{
+	mc-master-page: url('../MasterPages/mvt.flmsp');
+}
+
+html.os_mastermap_topo_gml
+{
+	mc-master-page: url('../MasterPages/os_mastermap_topo_gml.flmsp');
+}
+
+p.shaded_box_indent
+{
+	background-repeat: no-repeat;
+	padding-bottom: 10px;
+	padding-right: 10px;
+	padding-top: 10px;
+	border-left-color: #808080;
+	border-right-color: #808080;
+	border-top-color: #808080;
+	border-bottom-color: #808080;
+	background-color: #f5f5f5;
+	overflow: auto;
+	border-top-right-radius: 5px;
+	border-top-left-radius: 5px;
+	border: none 1px transparent;
+	border-bottom-left-radius: 1;
+	border-bottom-right-radius: 1;
+	border-radius: 1;
+	color: #696969;
+	left: 0px;
+	padding-left: 10px;
+	margin-left: 50px;
+	margin-top: 2px;
+}
+
+html.dnf
+{
+	mc-master-page: url('../MasterPages/dnf.flmsp');
+}
+
+html.os_mastermap_hwy_network_gml
+{
+	mc-master-page: url('../MasterPages/os_mastermap_hwy_network_gml.flmsp');
+}
+
+html.os_mastermap_sites_gml
+{
+	mc-master-page: url('../MasterPages/os_mastermap_sites_gml.flmsp');
+}
+
+html.os_mastermap_water_network_gml
+{
+	mc-master-page: url('../MasterPages/os_mastermap_water_network_gml.flmsp');
+}
+
+a.link	/*home-page-footer*/
+{
+	color: #000000;
+	text-decoration: underline;
+}
+
+html.os_mastermap_green_gml
+{
+	mc-master-page: url('../MasterPages/os_mastermap_green_gml.flmsp');
+}
+
+p.Table-Row	/*Less padding above/below in cells*/
+{
+	margin-bottom: 2px;
+	margin-top: 2px;
+	vertical-align: top;
+}
+
+MadCap|dropDownHotspot.Heading
+{
+	font-size: 1.2em;
+	text-decoration: underline;
+	color: #4d75b3;
+}
+
+html.automations
+{
+	mc-master-page: url('../MasterPages/automations.flmsp');
+}
+
+html.twelvedxml
+{
+	mc-master-page: url('../MasterPages/12dxml.flmsp');
+}
+
+html.parquet
+{
+	mc-master-page: url('../MasterPages/parquet.flmsp');
+}
+
+html.cityjson
+{
+	mc-master-page: url('../MasterPages/cityjson.flmsp');
+}
+
+html.qlikjson
+{
+	mc-master-page: url('../MasterPages/qlikjson.flmsp');
+}
+
+html.nifti
+{
+	mc-master-page: url('../MasterPages/nifti.flmsp');
+}
+
+html.ept
+{
+	mc-master-page: url('../MasterPages/ept.flmsp');
+}
+
+p.SubheadingColor
+{
+	font-weight: bold;
+	font-style: normal;
+	margin-top: 5px;
+	margin-bottom: 2px;
+	font-family: Verdana, Arial, sans-serif, 'Microsoft Sans Serif', 'Source Sans Pro';
+	color: #32567a;
+	padding-left: 0;
+}
+
+h2.larger	/*use for visual break in dense parameters*/
+{
+	margin-bottom: 12px;
+	margin-top: 30px;
+	font-weight: normal;
+	color: #000000;
+	font-family: Verdana, Arial, sans-serif, 'Microsoft Sans Serif', 'Source Sans Pro';
+	overflow: auto;
+	padding-top: 2px;
+	font-size: 1.25em;
+	border-left-style: none;
+	border-left-width: 0px;
+	border-right-style: none;
+	border-right-width: 0px;
+	border-top-style: none;
+	border-top-width: 0px;
+	border-top-color: #808000;
+	border-bottom-style: none;
+	border-bottom-width: 0px;
+}
+
+html.xsd_driven_xml
+{
+	mc-master-page: url('../MasterPages/xsd_driven_xml.flmsp');
+}
+
+p.NumList-1
+{
+	mc-auto-number-format: '{n=1}.';
+	mc-auto-number-position: outside-head;
+	margin-right: 0.5in;
+	margin-top: 6pt;
+	margin-bottom: 6pt;
+	mc-auto-number-offset: 0.5in;
+	mc-next-class: NumList-1Plus;
+	margin-left: 0.5in;
+}
+
+p.NumList-1Plus
+{
+	mc-auto-number-format: '{n+1}.';
+	mc-auto-number-position: outside-head;
+	margin-left: 0.5in;
+	margin-right: 0.5in;
+	margin-top: 6pt;
+	margin-bottom: 6pt;
+	mc-auto-number-offset: 0.5in;
+}
+
+h2.no-line
+{
+	font-size: 1.20em;
+	margin-top: 30px;
+	font-weight: normal;
+	color: #000000;
+	overflow: auto;
+	font-family: Verdana, Arial, sans-serif, Microsoft Sans Serif, Source Sans Pro;
+	border-top: solid 2px transparent;
+	margin-bottom: 8px;
+}
+
+span.H2-size	/*Text that is the same size as h2*/
+{
+	font-family: Verdana, Arial, sans-serif, Microsoft Sans Serif, Source Sans Pro;
+	font-size: 1.2em;
+	color: #000000;
+}
+
+html.mssql_jdbc_nonspatial_2
+{
+	mc-master-page: url('../MasterPages/mssql_jdbc_nonspatial_2.flmsp');
+}
+
+html.mssql_jdbc_azure_nonspatial_2
+{
+	mc-master-page: url('../MasterPages/mssql_jdbc_azure_nonspatial_2.flmsp');
+}
+
+html.mssql_jdbc_spatial_2
+{
+	mc-master-page: url('../MasterPages/mssql_jdbc_spatial_2.flmsp');
+}
+
+html.mssql_jdbc_azure_spatial_2
+{
+	mc-master-page: url('../MasterPages/mssql_jdbc_azure_spatial_2.flmsp');
+}
+
+html.ogcgeopackage
+{
+	mc-master-page: url('../MasterPages/ogcgeopackage.flmsp');
+}
+
+p.Note-NoText
+{
+	background-repeat: no-repeat;
+	padding-bottom: 10px;
+	padding-right: 10px;
+	padding-top: 10px;
+	background-image: none;
+	padding-left: 20px;
+	border-left-width: 3px;
+	border-right: none;
+	border-bottom-width: 0px;
+	overflow: auto;
+	border: solid 1px #f5f5f5;
+	background-color: #f5f5f5;
+	color: #000000;
+	border-bottom-left-radius: 1px;
+	border-bottom-right-radius: 1px;
+	border-left-color: #808000;
+	border-radius: 1px;
+	border-left: solid 4px #808000;
+}
+
+html.dds
+{
+	mc-master-page: url('../MasterPages/dds.flmsp');
+}
+
+html.snowflake_nonspatial
+{
+	mc-master-page: url('../MasterPages/snowflake_nonspatial.flmsp');
+}
+
+html.googlebigquery
+{
+	mc-master-page: url('../MasterPages/googlebigquery.flmsp');
+}
+
+html.googlesheets
+{
+	mc-master-page: url('../MasterPages/googlesheets.flmsp');
+}
+

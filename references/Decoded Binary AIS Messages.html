@@ -1,0 +1,1626 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!-- saved from url=(0062)https://arundaleais.github.io/docs/ais/ais_decoder_binary.html -->
+<html style="height: 100%;"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <meta name="keywords" content="AIS, Decoding, Viewer, Parser,
+      Binary">
+    <meta name="description" content="Binary Ais Message Decoding
+      Status">
+    <title>Decoded Binary AIS Messages</title>
+    <!-- begin ais head -->
+  
+  <meta name="author" content="Neal Arundale">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- begin Google Translate --> 
+<!-- arundale.co.uk 
+<meta name="google-translate-customization" content="b8a1aa1577e11ff4-8954c33130f812ab-g8be2d01110f26319-12"></meta>
+-->
+
+<!-- nmearouter.com -->
+<meta name="google-translate-customization" content="f094b1b3c763f573-77f8d1f7038f0565-g87bdb550dca1f710-12">
+
+<!-- end Google Translate -->
+
+<!-- begin stylesheet -->
+<!-- link rel="stylesheet" href="../css/style_new.css" type="text/css" -->
+<link rel="stylesheet" href="./Decoded Binary AIS Messages_files/navbar.css" type="text/css">
+<!-- link rel="stylesheet" href="../css/style_print.css" type="text/css" media="print" -->
+  <style type="text/css">
+BODY { margin: 5px; font-family: arial, helvetica, sans-serif; color: #000000;
+background-color: #ffffff; width: 95%; }	/*White*/
+  </style>
+<!-- end stylesheet -->
+
+  <link rel="SHORTCUT ICON" href="https://arundaleais.github.io/docs/arundale.ico">
+
+<!-- begin scripts -->
+  <script async="" src="./Decoded Binary AIS Messages_files/analytics.js.download"></script><script language="JavaScript" type="text/javascript"> 
+ </script>
+
+
+<!-- begin google tracker -->
+
+<!--   <script src="https://www.google-analytics.com/urchin.js" type="text/javascript"> 
+Arundale AIS tracker
+  </script>
+  <script type="text/javascript"> 
+_uacct = "UA-70718-1";
+urchinTracker();
+  </script>
+
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-70718-1");
+pageTracker._trackPageview();
+} catch(err) {}</script>
+-->
+<!-- end google tracker -->
+
+<!-- NmeaRouter Tracker -->
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-70718-7', 'auto');
+  ga('send', 'pageview');
+
+</script>
+<!-- End ArundaleCom Tracker -->
+
+<!-- end scripts -->
+
+<!-- end ais head -->
+
+
+  <link type="text/css" rel="stylesheet" charset="UTF-8" href="./Decoded Binary AIS Messages_files/translateelement.css"><script type="text/javascript" charset="UTF-8" src="./Decoded Binary AIS Messages_files/main.js.download"></script><script type="text/javascript" charset="UTF-8" src="./Decoded Binary AIS Messages_files/element_main.js.download"></script></head>
+  <body style="position: relative; min-height: 100%; top: 0px;">
+    <!-- begin navbar -->
+            <table class="navigation">
+            <tbody><tr><td>
+            <div id="navBg">
+            <ul id="nav">
+
+              <li class="topmenu" style="width: 6em;">
+                <a>AIS</a>
+                <ul class="submenu">
+                  <li><a href="https://arundaleais.github.io/docs/ais/ais_decoder.html">AIS Decoder Guide</a></li>
+                <li><a href="https://arundaleais.github.io/docs/ais/sp_map.html">Live AIS Yorkshire Coast</a></li>
+                  <li><a href="https://arundaleais.github.io/docs/ais/yorkshirecoast.kmz" onclick="javascript: pageTracker._trackPageview(&#39;/docs/ais/yorkshirecoast.kmz&#39;); ">Google Earth View (KMZ)</a></li>
+                  <li><a href="https://arundaleais.github.io/docs/ais/world.kmz" onclick="javascript: pageTracker._trackPageview(&#39;/docs/ais/world.kmz&#39;); ">Google Earth World AIS (1Mb to download)</a></li>
+                  <li><a href="https://arundaleais.github.io/docs/ais/sp_google.html">Google Maps View (XML)</a></li>
+                  <li><a href="https://maps.google.com/maps?q=data.kml?" onclick="javascript: pageTracker._trackPageview(&#39;/docs/ais/data.kml&#39;); ">Google Maps Server View (KML)</a></li>
+                  <!-- <li><a href="https://maps.google.com/maps?q=aisDispatcherSnapshot.kml?" onClick="javascript: pageTracker._trackPageview('/docs/ais/aisDispatcherSnapshot.kml'); ">AisDispatcher KML View</a></li> -->
+                  <li><a href="https://arundaleais.github.io/docs/ais/sp_list.html">HTML List of Ships</a></li>
+                <li><a href="https://arundaleais.github.io/docs/ais/ais_station.html">How to Receive AIS</a></li>
+                  <li><a href="https://arundaleais.github.io/docs/ais/sr162_nasa.html">AIS Receiver Comparisons</a></li>
+                  <li><a href="https://arundaleais.github.io/docs/ais/aerial_comparisons.html">AIS Aerial Comparisons</a> </li>
+                </ul>
+              </li>
+
+              <li class="topmenu" style="width: 6em;">
+		<a>Guides</a>
+                <ul class="submenu">
+                  <li><a href="https://arundaleais.github.io/docs/ais/ais_decoder.html">AIS Decoder Guide</a></li>
+                  <li><a href="https://arundaleais.github.io/docs/ais/AisDecoderHelp.pdf" onclick="javascript: pageTracker._trackPageview(&#39;/docs/ais/AisDecoderHelp.pdf&#39;); ">AIS Decoder Manual</a></li>
+                  <li><a href="https://arundaleais.github.io/docs/ais/spxl_user_guide.html">AIS Reception Analysis User Guide</a></li>
+                  <li><a href="https://arundaleais.github.io/docs/ais/nmearouter.html">NMEA &amp; AIS Router Guide</a></li>
+                  <li><a href="https://arundaleais.github.io/docs/ais/virtualports.pdf">Using OpenCPN &amp; AisDecoder</a></li>
+                  <li><a href="https://arundaleais.github.io/docs/ais/spxl_website_guide.html">AIS Reception Analysis Website Upload Guide</a></li>
+                  <li><a href="https://arundaleais.github.io/docs/ais/ais_message_types.html">AIS Message Types</a></li>
+                  <li><a href="https://arundaleais.github.io/docs/ais/ais_decoder_binary.html">AIS Binary Messages</a></li>
+                  <li><a href="https://arundaleais.github.io/docs/ais/ais_reporting_rates.html">AIS Reporting Rates</a></li>
+                </ul>
+              </li>
+
+              <li class="topmenu" style="width: 6em;">
+			<a>Antenna</a>
+                <ul class="submenu">
+                <li><a href="https://arundaleais.github.io/docs/ais/aerial.html">
+Collinear Antenna Construction</a></li>
+                  <li><a href="https://arundaleais.github.io/docs/ais/aerial_comparisons.html">AIS Aerial Comparisons</a> </li>
+                  <li><a href="https://arundaleais.github.io/docs/ais/horizon.html">VHF Reception Horizon</a> </li>
+                </ul>
+              </li>
+
+              <li class="topmenu" style="width: 9em;">
+		<a href="https://arundaleais.github.io/docs/ais/ais_decoder_v3_downloads.html">Downloads</a>
+                <ul class="submenu">
+		<li><a href="https://arundaleais.github.io/docs/ais/ais_decoder_v3_downloads.html">Downloads</a></li>
+                </ul>
+              </li>
+
+              <li class="topmenu" style="width: 7em;">
+		<a href="https://arundaleais.github.io/docs/ais/nocontact.html">Contact Me</a>
+                <ul class="submenu">
+		<li><a href="https://arundaleais.github.io/docs/ais/nocontact.html">Contact Me</a></li>
+
+                </ul>
+              </li>
+
+<!--              <li class="topmenu" style="width: 10em; background-color: white">
+		</li> -->
+            </ul>
+            </div>
+            </td></tr></tbody></table>
+<!-- Google Translate -->
+
+<div id="google_translate_element"><div class="skiptranslate goog-te-gadget" dir="ltr" style=""><div id=":0.targetLanguage" class="goog-te-gadget-simple" style="white-space: nowrap;"><img src="./Decoded Binary AIS Messages_files/cleardot.gif" class="goog-te-gadget-icon" alt="" style="background-image: url(&quot;https://translate.googleapis.com/translate_static/img/te_ctrl3.gif&quot;); background-position: -65px 0px;"><span style="vertical-align: middle;"><a aria-haspopup="true" class="goog-te-menu-value" href="javascript:void(0)"><span>Select Language</span><img src="./Decoded Binary AIS Messages_files/cleardot.gif" alt="" width="1" height="1"><span style="border-left: 1px solid rgb(187, 187, 187);">​</span><img src="./Decoded Binary AIS Messages_files/cleardot.gif" alt="" width="1" height="1"><span aria-hidden="true" style="color: rgb(118, 118, 118);">▼</span></a></span></div></div></div><script type="text/javascript">
+function googleTranslateElementInit() {
+  new google.translate.TranslateElement({pageLanguage: 'en', layout: google.translate.TranslateElement.InlineLayout.SIMPLE}, 'google_translate_element');
+}
+</script><script type="text/javascript" src="./Decoded Binary AIS Messages_files/f.txt"></script>
+<!-- End Google Translate -->
+
+<!-- end navbar -->
+
+    <div style="text-align: center;">
+      <h2><span class="descr">Binary AIS Message Decoding Status</span></h2>
+      <div style="text-align: left;"><font size="-1"><span style="font-weight: bold;"></span><span style="font-family:
+            Verdana;">There is a massive amount of confusion in the
+            detailed specification of binary messages, in particular
+            with the international messages.</span> </font></div>
+    </div>
+    <span style="font-family: Verdana;"><span style="font-family:
+        Verdana;"><span style="font-family: Arial;"></span><font size="-1">It appears too many international bodies have had
+          their finger in the pie and failed to agree even on the
+          basics.<br>
+          In particular the ITU, IMO</font></span></span><font size="-1"><span style="font-family: Verdana;"><span style="font-family:
+          Verdana;">(</span></span></font><font style="font-family:
+      Verdana;" size="-1"><font style="font-family: Verdana;" size="-1"><font style="font-family: Verdana;" size="-1"><font style="font-family: Verdana;" size="-1"><font style="font-family: Verdana;" size="-1"><font style="font-family: Verdana;" size="-1">SN/Circ 236</font></font></font></font></font></font><font size="-1"><span style="font-family: Verdana;"><span style="font-family: Verdana;">)</span></span></font><font size="-1"><span style="font-family: Verdana;"><span style="font-family: Verdana;"> and IALA</span></span></font><font size="-1"><span style="font-family: Verdana;"><span style="font-family: Verdana;"> have released contradictory and
+          inconsistent specifications. The IMO appear to have been given
+          the job of sorting it out.</span></span></font><font size="-1"><span style="font-family: Verdana;"><span style="font-family:
+          Verdana;"> For Example, data fields are too small to hold the
+          data specified, data format not specified, data field sizes do
+          not add up to total record size. The equipment manufacturers
+          must be pulling their hair out.<br>
+        </span></span></font><font style="font-family: Verdana;" size="-1">This is causing me big difficulties decoding the data,
+      not least because what is actually being transmitted (where I have
+      seen it) differs!<br>
+      IMO SN239 has clarified some issues.<br>
+      <span style="font-weight: bold;"><br>
+      </span></font><font style="font-family: Verdana;" size="-1"><span style="font-weight: bold;">International Messages (DAC=1)</span></font><br>
+    <font size="-1"><span style="font-family: Verdana;"><span style="font-family: Verdana;"></span></span></font><font style="font-family: Verdana;" size="-1">All the "new" (FI=18-32)
+      messages have now been decoded (excepting 21-1).<br>
+      Where I have seen the "old" messages, I have decoded them. Where
+      there are conflicting specifications, the message size is used to
+      decided which type of message it actually is.<br>
+      &nbsp;<br>
+      <span style="font-weight: bold;">Inland Waterways (DAC=200)</span></font><br>
+    <font style="font-family: Verdana;" size="-1">These now appear to be
+      the responsibility of the United Nations - the specification
+      appears to be consistent and has been adopted by Europe through
+      various EU bodies and by CCNR (Central Commission for Navigation
+      on the Rhine). So far I have only actually seen is the Extended
+      Vessel/voyage details, which is being used by barges in Europe. As
+      the EU are giving grants to encourage further use, I expect this
+      will gain momentum.<br>
+    </font><font style="font-family: Verdana;" size="-1"><span style="font-weight: bold;"><br>
+        St Lawrence Seaway (DAC=366/316, FI 1,2,32)</span></font><br>
+    <font style="font-family: Verdana;" size="-1"><span style="color:
+        rgb(255, 0, 0);"><span style="color: rgb(0, 0, 0);">All messages
+          have been decoded using the V4.0A specification. Although the
+          specification is clear, it appears some messages being
+          transmitted are not in agreement with the specification for
+          example the default wind speed appears incorrect (101.4 cf
+          102.3)). As I do not have samples of some Message ID's, not
+          all have been verified. Apart from some of the environmental
+          messages, the only Lockage message I have seen is the Lockage
+          Order message.</span><br>
+      </span><br>
+    </font><font style="font-family: Verdana;" size="-1"><span style="font-weight: bold;">USA (DAC=366)</span><br>
+      All the environmental messages (FI=33) have been decoded - not all
+      have been verified<br>
+      <br>
+      <span style="font-weight: bold;">UK &amp; ROI (DAC=235/250)</span><br>
+      The AtoN status message (FI=10) has been decoded and is being used
+      by Trinity House, Northern Lights and the Commissioners of Irish
+      Lights to remotely monitor the status of buoys. <br>
+      <br>
+      <span style="font-weight: bold;"></span></font><font style="font-family: Verdana;" size="-1"><span style="font-weight:
+        bold;">Denmark (DAC 219)</span><br>
+      FI (1,2 &amp; 3) are awaiting decoding.<br>
+      <br>
+    </font><font style="font-family: Verdana;" size="-1"><span style="font-weight: bold;">Other Messages</span><br>
+      Some other messages have been decoded, by making an educated
+      guess.<br>
+      <br>
+    </font><font style="font-family: Verdana;" size="-1"><span style="font-weight: bold;">Examples</span><br>
+      If there is no example, it's because I have yet to receive the
+      message.<br>
+      <br>
+    </font><font style="font-family: Verdana;" size="-1"><font style="font-family: Verdana;" size="-1"><span style="font-weight: bold;">Status<br>
+        </span></font>
+      <table style="text-align: left; width: 100%; font-family: Verdana;
+        font-size: small;" border="0" cellpadding="2" cellspacing="2">
+        <tbody>
+          <tr style="font-weight: bold; vertical-align: top;">
+            <td>DAC </td>
+            <td> <br>
+            </td>
+            <td>FI </td>
+            <td>Source or ID </td>
+            <td>Description</td>
+            <td>Status </td>
+          </tr>
+          <tr>
+            <td>0<br>
+            </td>
+            <td>Test only</td>
+            <td>Any </td>
+            <td> <br>
+            </td>
+            <td> <font color="#ff0000">Is incorrectly used by some
+                shore stations and responded to by some vessels.</font><br>
+            </td>
+            <td> <br>
+            </td>
+          </tr>
+          <tr>
+            <td> 1 </td>
+            <td>International </td>
+            <td>0 </td>
+            <td>ITU </td>
+            <td>Text Telegram <a href="https://arundaleais.github.io/docs/ais/binary_1_0.gif" onclick="javascript:
+                pageTracker._trackPageview(&#39;/docs/ais/binary_1_0.gif&#39;);
+                "><img alt="AIS Binary Message, DAC=1, FI=0" title="AIS
+                  Binary Message, DAC=1, FI=0" src="./Decoded Binary AIS Messages_files/view_example.gif" style="border: 0px solid ; width: 83px; height: 16px;"></a>
+            </td>
+            <td>Decoded<br>
+            </td>
+          </tr>
+          <tr>
+            <td><br>
+            </td>
+            <td><br>
+            </td>
+            <td>1<br>
+            </td>
+            <td>ITU<br>
+            </td>
+            <td><span style="color: rgb(255, 0, 0);">Application
+                acknowledgement</span> <a href="https://arundaleais.github.io/docs/ais/binary_1_1.gif" onclick="javascript:
+                pageTracker._trackPageview(&#39;/docs/ais/binary_1_1.gif&#39;);
+                "><img alt="AIS Binary Message, DAC=1, FI=1" title="AIS
+                  Binary Message, DAC=1, FI=1" src="./Decoded Binary AIS Messages_files/view_example.gif" style="border: 0px solid ; width: 83px; height: 16px;"></a>
+            </td>
+            <td><font style="font-family: Verdana;" size="-1">Replaced
+                by 5<br>
+              </font></td>
+          </tr>
+          <tr>
+            <td> <br>
+            </td>
+            <td> <br>
+            </td>
+            <td>2 </td>
+            <td>ITU </td>
+            <td>Interrogation on specific IFM <a href="https://arundaleais.github.io/docs/ais/binary_1_2.gif" onclick="javascript:
+                pageTracker._trackPageview(&#39;/docs/ais/binary_1_2.gif&#39;);
+                "><img alt="AIS Binary Message, DAC=1, FI=2" title="AIS
+                  Binary Message, DAC=1, FI=2" src="./Decoded Binary AIS Messages_files/view_example.gif" style="border: 0px solid ; width: 83px; height: 16px;"></a>
+            </td>
+            <td>Decoded </td>
+          </tr>
+          <tr>
+            <td> <br>
+            </td>
+            <td> <br>
+            </td>
+            <td>3 </td>
+            <td>ITU </td>
+            <td>Capability interrogation <a href="https://arundaleais.github.io/docs/ais/binary_1_3.gif" onclick="javascript:
+                pageTracker._trackPageview(&#39;/docs/ais/binary_1_3.gif&#39;);
+                "><img alt="AIS Binary Message, DAC=1, FI=3" title="AIS
+                  Binary Message, DAC=1, FI=3" src="./Decoded Binary AIS Messages_files/view_example.gif" style="border: 0px solid ; width: 83px; height: 16px;"></a>
+            </td>
+            <td>Decoded<br>
+            </td>
+          </tr>
+          <tr>
+            <td> <br>
+            </td>
+            <td> <br>
+            </td>
+            <td>4 </td>
+            <td>ITU </td>
+            <td>Capability interrogation reply <a href="https://arundaleais.github.io/docs/ais/binary_1_4.gif" onclick="javascript:
+                pageTracker._trackPageview(&#39;/docs/ais/binary_1_4.gif&#39;);
+                "><img alt="AIS Binary Message, DAC=1, FI=4" title="AIS
+                  Binary Message, DAC=1, FI=4" src="./Decoded Binary AIS Messages_files/view_example.gif" style="border: 0px solid ; width: 83px; height: 16px;"></a>
+            </td>
+            <td>Decoded<br>
+            </td>
+          </tr>
+          <tr>
+            <td><br>
+            </td>
+            <td><br>
+            </td>
+            <td>5<br>
+            </td>
+            <td>ITU<br>
+            </td>
+            <td>Application acknowledgement to an addressed binary
+              message <br>
+            </td>
+            <td>Decoded<br>
+            </td>
+          </tr>
+          <tr>
+            <td><br>
+            </td>
+            <td><br>
+            </td>
+            <td>11<br>
+              <br>
+              <br>
+            </td>
+            <td valign="top">IMO/236<br>
+              IALA/2004<br>
+            </td>
+            <td style="vertical-align: top; color: rgb(51, 102, 255);">Meteorological
+
+
+
+              and Hydrological data<font style="font-family: Verdana;" size="-1"> <span style="color: rgb(255, 0, 0);">not to
+                  be used after 1 Jan 2013</span></font> <a href="https://arundaleais.github.io/docs/ais/binary_1_11.gif" onclick="javascript:
+                pageTracker._trackPageview(&#39;/docs/ais/binary_1_11.gif&#39;);
+                "><img alt="AIS Binary Message, DAC=1, FI=11" title="AIS
+                  Binary Message, DAC=1, FI=11" src="./Decoded Binary AIS Messages_files/view_example.gif" style="border: 0px solid ; width: 83px; height: 16px;"></a></td>
+            <td>Decoded<br>
+            </td>
+          </tr>
+          <tr>
+            <td><br>
+            </td>
+            <td><br>
+            </td>
+            <td>12<br>
+              <br>
+            </td>
+            <td>IMO/236<br>
+              IALA/2004<br>
+            </td>
+            <td style="vertical-align: top; color: rgb(51, 51, 255);"><span style="color: rgb(0, 0, 0);">Dangerous Cargo Indication
+              </span><span style="color: rgb(255, 0, 0);">not to be used
+                after 1 Jan 2013</span> </td>
+            <td>Replaced by 25<br>
+            </td>
+          </tr>
+          <tr>
+            <td><br>
+            </td>
+            <td><br>
+            </td>
+            <td>13<br>
+              <br>
+            </td>
+            <td>IMO/236<br>
+              IALA/2004<br>
+            </td>
+            <td style="vertical-align: top; color: rgb(51, 51, 255);"><span style="color: rgb(0, 0, 0);">Fairway closed</span><font style="font-family: Verdana;" size="-1"><span style="color: rgb(0, 0, 0);"> </span><span style="color: rgb(255, 0, 0);">not to be used after 1
+                  Jan 2013</span></font> </td>
+            <td>Replaced by 22<br>
+            </td>
+          </tr>
+          <tr>
+            <td><br>
+            </td>
+            <td><br>
+            </td>
+            <td>14<br>
+              <br>
+              <br>
+            </td>
+            <td valign="top">IMO/236<br>
+              IALA/2004<br>
+            </td>
+            <td style="vertical-align: top; color: rgb(51, 51, 255);"><span style="color: rgb(0, 0, 0);">Tidal Window</span><font style="font-family: Verdana; color: rgb(0, 0, 0);" size="-1"><font style="font-family: Verdana;" size="-1">&nbsp;</font></font><font style="font-family: Verdana;" size="-1"><font style="font-family: Verdana;" size="-1"><span style="color: rgb(0, 0, 0);"> </span><span style="color: rgb(255, 0, 0);">not to be used</span>
+                  <span style="color: rgb(255, 0, 0);">after 1 Jan 2013
+                    (USCG)<br>
+                  </span></font></font><font style="font-family:
+                Verdana;" size="-1"><font style="font-family: Verdana;
+                  color: rgb(0, 0, 0);" size="-1"><font style="font-family: Verdana;" size="-1">(IMO to
+                    hour/min fields missing)</font></font></font></td>
+            <td>Decoded<br>
+            </td>
+          </tr>
+          <tr>
+            <td><br>
+            </td>
+            <td><br>
+            </td>
+            <td>15<br>
+              <br>
+            </td>
+            <td>IMO/236<br>
+              IALA/2004<br>
+            </td>
+            <td style="vertical-align: top; color: rgb(51, 51, 255);"><span style="color: rgb(0, 0, 0);">Extended static and voyage
+                related data</span><font style="font-family: Verdana;" size="-1"><font style="font-family: Verdana;" size="-1"><font style="font-family: Verdana;" size="-1"><span style="color: rgb(0, 0, 0);"> [Air draught only]</span></font></font></font><font style="font-family: Verdana;" size="-1"><font style="font-family: Verdana;" size="-1"> <span style="color: rgb(255, 0, 0);">not to be used after
+                    1 Jan 2013</span> <br>
+                </font></font> </td>
+            <td>Decoded<br>
+            </td>
+          </tr>
+          <tr>
+            <td><br>
+            </td>
+            <td><br>
+            </td>
+            <td>16<br>
+              <br>
+              <br>
+            </td>
+            <td>IMO/236<br>
+              IALA/2004<br>
+              IMO/289<br>
+            </td>
+            <td>Number of persons on board<font style="font-family:
+                Verdana;" size="-1"><font style="font-family: Verdana;" size="-1"><font style="font-family: Verdana;" size="-1"><font style="font-family: Verdana;" size="-1"> - conflicts with below<br>
+                      IMO/289 corrected<br>
+                      <br>
+                      <br>
+                    </font></font></font></font> </td>
+            <td>Decoded<br>
+            </td>
+          </tr>
+          <tr>
+            <td><br>
+            </td>
+            <td><br>
+            </td>
+            <td>16<br>
+              <br>
+            </td>
+            <td>IALA/2002<br>
+              <br>
+            </td>
+            <td style="vertical-align: top; color: rgb(51, 51, 255);"><font color="#ff0000">VTS Targets - Legacy is used by some
+                shore stations 2014) </font><br>
+              <a href="https://arundaleais.github.io/docs/ais/binary_1_16.gif" onclick="javascript:
+                pageTracker._trackPageview(&#39;/docs/ais/binary_1_16.gif&#39;);
+                "><img alt="AIS Binary Message, DAC=1, FI=16" title="AIS
+                  Binary Message, DAC=1, FI=16" src="./Decoded Binary AIS Messages_files/view_example.gif" style="border: 0px solid ; width: 83px; height: 16px;"></a>
+            </td>
+            <td>Decoded<br>
+            </td>
+          </tr>
+          <tr>
+            <td><br>
+            </td>
+            <td><br>
+            </td>
+            <td>17<br>
+              <br>
+              <br>
+            </td>
+            <td>IMO/236<br>
+              IALA/2004<br>
+              IMO/289<br>
+            </td>
+            <td>Pseudo-AIS Targets<font style="font-family: Verdana;" size="-1"> renamed VTS-generated/synthetic targets<br>
+                <br>
+                <br>
+              </font> </td>
+            <td>Decoded<br>
+            </td>
+          </tr>
+          <tr>
+            <td><br>
+            </td>
+            <td><br>
+            </td>
+            <td>17<br>
+            </td>
+            <td>IALA/2002<br>
+            </td>
+            <td style="vertical-align: top; color: rgb(204, 51, 204);">Ship
+Waypoints
+
+
+
+              and/or Route Plan report - now disused (IMO 2006)<br>
+            </td>
+            <td>disused<br>
+            </td>
+          </tr>
+          <tr>
+            <td><br>
+            </td>
+            <td><br>
+            </td>
+            <td>18<br>
+            </td>
+            <td>IALA/2002<br>
+            </td>
+            <td style="vertical-align: top; color: rgb(204, 51, 204);">Advice
+of
+
+
+
+              waypoints and/or route plan of VTS - now disused (IMO
+              2006)<br>
+            </td>
+            <td>disused<br>
+            </td>
+          </tr>
+          <tr>
+            <td><br>
+            </td>
+            <td><br>
+            </td>
+            <td>18<br>
+            </td>
+            <td valign="top">IMO/289<br>
+            </td>
+            <td>Clearance time to enter port (IMO total incorrect,
+              destination added IMO/289)<br>
+            </td>
+            <td>Decoded<br>
+            </td>
+          </tr>
+          <tr>
+            <td><br>
+            </td>
+            <td><br>
+            </td>
+            <td>19<br>
+            </td>
+            <td>IALA/2002<br>
+            </td>
+            <td><font style="font-family: Verdana;" size="-1"><span style="color: rgb(204, 51, 204);">Extended static and
+                  voyage related data [Air draught only] (IALA) <span style="color: rgb(51, 51, 255);"></span></span><font style="font-family: Verdana;" size="-1"><font style="font-family: Verdana;" size="-1"><font style="font-family: Verdana;" size="-1"> </font></font></font></font>
+              <a href="https://arundaleais.github.io/docs/ais/binary_1_19.gif" onclick="javascript:
+                pageTracker._trackPageview(&#39;/docs/ais/binary_1_19.gif&#39;);
+                "><img alt="AIS Binary Message, DAC=1, FI=19" title="AIS
+                  Binary Message, DAC=1, FI=19" src="./Decoded Binary AIS Messages_files/view_example.gif" style="border: 0px solid ; width: 83px; height: 16px;"></a><br>
+            </td>
+            <td>Decoded<br>
+            </td>
+          </tr>
+          <tr>
+            <td><br>
+            </td>
+            <td><br>
+            </td>
+            <td>19<br>
+            </td>
+            <td valign="top">IMO/289<br>
+            </td>
+            <td>Marine Traffic Signal (IMO signal format not specified,
+              specified in IMO/289)<br>
+            </td>
+            <td>Decoded<br>
+            </td>
+          </tr>
+          <tr>
+            <td><br>
+            </td>
+            <td><br>
+            </td>
+            <td>20<br>
+            </td>
+            <td>IMO/2009<br>
+            </td>
+            <td>Berthing Data<br>
+            </td>
+            <td>Decoded<br>
+            </td>
+          </tr>
+          <tr>
+            <td><br>
+            </td>
+            <td><br>
+            </td>
+            <td>21<br>
+            </td>
+            <td>IMO/2009<br>
+              <br>
+            </td>
+            <td>Weather Report from Ships (IMO hPa field size incorrect)
+              <br>
+            </td>
+            <td>Replaced by 21:0,21:1<br>
+            </td>
+          </tr>
+          <tr>
+            <td style="vertical-align: top;"><br>
+            </td>
+            <td style="vertical-align: top;"><br>
+            </td>
+            <td style="vertical-align: top;">21<br>
+            </td>
+            <td style="vertical-align: top;">0<br>
+              <font style="font-family: Verdana;" size="-1">IMO/289</font></td>
+            <td style="vertical-align: top;"><font style="font-family:
+                Verdana;" size="-1">Weather Report from Ships</font></td>
+            <td style="vertical-align: top;">Decoded<br>
+            </td>
+          </tr>
+          <tr>
+            <td style="vertical-align: top;"><br>
+            </td>
+            <td style="vertical-align: top;"><br>
+            </td>
+            <td style="vertical-align: top;"><br>
+            </td>
+            <td style="vertical-align: top;">1<br>
+              IMO/289<br>
+            </td>
+            <td style="vertical-align: top;">WMO <font style="font-family: Verdana;" size="-1"><font style="font-family: Verdana;" size="-1">Weather Report
+                  from Ships</font></font></td>
+            <td style="vertical-align: top;">Awaiting Decoding<br>
+            </td>
+          </tr>
+          <tr>
+            <td><br>
+            </td>
+            <td><br>
+            </td>
+            <td>22<br>
+            </td>
+            <td>IMO/289<br>
+            </td>
+            <td>Area Notice - broadcast <a href="https://arundaleais.github.io/docs/ais/binary_1_22.gif" onclick="javascript:
+                pageTracker._trackPageview(&#39;/docs/ais/binary_1_22.gif&#39;);
+                "><img alt="AIS Binary Message, DAC=1, FI=22" title="AIS
+                  Binary Message, DAC=1, FI=22" src="./Decoded Binary AIS Messages_files/view_example.gif" style="border: 0px solid ; width: 83px; height: 16px;"></a>
+            </td>
+            <td>Decoded<br>
+            </td>
+          </tr>
+          <tr>
+            <td><br>
+            </td>
+            <td><br>
+            </td>
+            <td>23<br>
+            </td>
+            <td>IMO/289<br>
+            </td>
+            <td>Area Notice - addressed<br>
+            </td>
+            <td>Decoded<br>
+            </td>
+          </tr>
+          <tr>
+            <td><br>
+            </td>
+            <td><br>
+            </td>
+            <td>24<br>
+            </td>
+            <td>IMO/289<br>
+            </td>
+            <td><font style="font-family: Verdana;" size="-1"><font style="font-family: Verdana;" size="-1">Extended
+                  static and voyage related data - Broadcast<br>
+                </font></font></td>
+            <td>Decoded<br>
+            </td>
+          </tr>
+          <tr>
+            <td><br>
+            </td>
+            <td><br>
+            </td>
+            <td>25<br>
+            </td>
+            <td>IMO/289<br>
+            </td>
+            <td>Dangerous Cargo Indication - addressed<br>
+            </td>
+            <td>Decoded<br>
+            </td>
+          </tr>
+          <tr>
+            <td><br>
+            </td>
+            <td><br>
+            </td>
+            <td>26<br>
+            </td>
+            <td>IMO/289<br>
+            </td>
+            <td>Environmental - (IMO most copied from [366-33] including
+              errors !, check IMO/289)<br>
+            </td>
+            <td>Decoded<br>
+            </td>
+          </tr>
+          <tr>
+            <td><br>
+            </td>
+            <td><br>
+            </td>
+            <td>27<br>
+            </td>
+            <td>IMO/289<br>
+            </td>
+            <td>Route Information - broadcast <a href="https://arundaleais.github.io/docs/ais/binary_1_27.gif" onclick="javascript:
+                pageTracker._trackPageview(&#39;/docs/ais/binary_1_27.gif&#39;);
+                "><img alt="AIS Binary Message, DAC=1, FI=27" title="AIS
+                  Binary Message, DAC=1, FI=27" src="./Decoded Binary AIS Messages_files/view_example.gif" style="border: 0px solid ; width: 83px; height: 16px;"></a>
+            </td>
+            <td>Decoded<br>
+            </td>
+          </tr>
+          <tr>
+            <td><br>
+            </td>
+            <td><br>
+            </td>
+            <td>28<br>
+            </td>
+            <td>IMO/289<br>
+            </td>
+            <td><font style="font-family: Verdana;" size="-1">Route
+                Information - addressed&nbsp;</font><font style="font-family: Verdana;" size="-1"> (IMO spec says
+                27, corrected IMO/289) </font><a href="https://arundaleais.github.io/docs/ais/binary_1_28.gif"><font style="font-family: Verdana;" size="-1"></font></a><font style="font-family: Verdana;" size="-1"><a href="https://arundaleais.github.io/docs/ais/binary_1_28.gif" onclick="javascript:
+                    pageTracker._trackPageview(&#39;/docs/ais/binary_1_27.gif&#39;);
+                    "><img alt="AIS Binary Message, DAC=1, FI=28" title="AIS Binary Message, DAC=1, FI=28" src="./Decoded Binary AIS Messages_files/view_example.gif" style="border: 0px solid
+                      ; width: 83px; height: 16px;" border="0" height="16" width="97"></a></font></td>
+            <td>Decoded<br>
+            </td>
+          </tr>
+          <tr>
+            <td><br>
+            </td>
+            <td><br>
+            </td>
+            <td>29<br>
+            </td>
+            <td>IMO/289<br>
+            </td>
+            <td>Text Description - broadcast<br>
+            </td>
+            <td>Decoded<br>
+            </td>
+          </tr>
+          <tr>
+            <td><br>
+            </td>
+            <td><br>
+            </td>
+            <td>30<br>
+            </td>
+            <td>IMO/289<br>
+            </td>
+            <td>Text Description - addressed <a href="https://arundaleais.github.io/docs/ais/binary_1_30.gif"><font style="font-family: Verdana;" size="-1"><font style="font-family: Verdana;" size="-1"></font></font></a><font style="font-family: Verdana;" size="-1"><font style="font-family: Verdana;" size="-1"><a href="https://arundaleais.github.io/docs/ais/binary_1_30.gif" onclick="javascript:
+                      pageTracker._trackPageview(&#39;/docs/ais/binary_1_27.gif&#39;);
+                      "><img alt="AIS Binary Message, DAC=1, FI=30" title="AIS Binary Message, DAC=1, FI=30" src="./Decoded Binary AIS Messages_files/view_example.gif" style="border: 0px
+                        solid ; width: 83px; height: 16px;" border="0" height="16" width="97"></a></font></font> </td>
+            <td>Decoded<br>
+            </td>
+          </tr>
+          <tr>
+            <td><br>
+            </td>
+            <td><br>
+            </td>
+            <td>31<br>
+            </td>
+            <td>USCG/2009<br>
+              IMO/289<br>
+            </td>
+            <td>Met/Hydrographic - broadcast <span style="color:
+                rgb(51, 102, 255);"></span><span style="color: rgb(204,
+                102, 204);"></span><a href="https://arundaleais.github.io/docs/ais/binary_1_31.gif"><font style="font-family: Verdana;" size="-1"><img alt="AIS
+                    Binary Message, DAC=1, FI=31" title="AIS Binary
+                    Message, DAC=1, FI=31" src="./Decoded Binary AIS Messages_files/view_example.gif" style="border: 0px solid ; width: 97px; height:
+                    16px;"></font></a> </td>
+            <td>Decoded<br>
+            </td>
+          </tr>
+          <tr>
+            <td><br>
+            </td>
+            <td><br>
+            </td>
+            <td>32<br>
+            </td>
+            <td>USCG/2009<br>
+              IMO/289<br>
+            </td>
+            <td>Tidal Window - addressed<span style="color: rgb(51, 102,
+                255);"></span><br>
+            </td>
+            <td>Decoded<br>
+            </td>
+          </tr>
+          <tr>
+            <td><br>
+            </td>
+            <td><br>
+            </td>
+            <td>40<br>
+              <br>
+              <br>
+            </td>
+            <td>IALA/2002<br>
+              <br>
+              <br>
+            </td>
+            <td style="vertical-align: top; color: rgb(204, 51, 204);">Number
+of
+Persons
+on
+board
+
+
+
+              - <span style="color: rgb(51, 51, 255);">is used by
+                002655651 (Sweden shore station &amp; is responded to by
+                Swedish Vessels [MID 256])</span> <span style="color:
+                rgb(51, 51, 255);">also used by UK 002320706 [North
+                Foreland] &amp; responded</span> <span style="color:
+                rgb(51, 51, 255);">to by UK vessels</span> <a href="https://arundaleais.github.io/docs/ais/binary_1_40.gif" onclick="javascript:
+                pageTracker._trackPageview(&#39;/docs/ais/binary_1_40.gif&#39;);
+                "><img alt="AIS Binary Message, DAC=1, FI=40" title="AIS
+                  Binary Message, DAC=1, FI=40" src="./Decoded Binary AIS Messages_files/view_example.gif" style="border: 0px solid ; width: 83px; height: 16px;"></a>
+            </td>
+            <td>Decoded<br>
+            </td>
+          </tr>
+          <tr>
+            <td><font style="font-family: Verdana;" size="-1">200</font></td>
+            <td><font style="font-family: Verdana;" size="-1">Inland
+                Waterways</font></td>
+            <td>8<br>
+              <br>
+            </td>
+            <td>Assumpted<br>
+              <br>
+            </td>
+            <td><font style="font-family: Verdana;" size="-1">Inland
+                ship static and voyage related data - appears to be an
+                old format</font> <a href="https://arundaleais.github.io/docs/ais/binary_200_8.gif" onclick="javascript:
+                pageTracker._trackPageview(&#39;/docs/ais/binary_200_8.gif&#39;);
+                "><img alt="AIS Binary Message, DAC=200, FI=8" title="AIS Binary Message, DAC=200, FI=8" src="./Decoded Binary AIS Messages_files/view_example.gif" style="border: 0px solid ;
+                  width: 83px; height: 16px;"></a></td>
+            <td>Decoded<br>
+            </td>
+          </tr>
+          <tr>
+            <td><br>
+            </td>
+            <td><br>
+            </td>
+            <td>10<br>
+            </td>
+            <td>UN<br>
+            </td>
+            <td>Inland ship static and voyage related data <a href="https://arundaleais.github.io/docs/ais/binary_200_10.gif" onclick="javascript:
+                pageTracker._trackPageview(&#39;/docs/ais/binary_200_10.gif&#39;);
+                "><img alt="AIS Binary Message, DAC=200, FI=10" title="AIS Binary Message, DAC=200, FI=10" src="./Decoded Binary AIS Messages_files/view_example.gif" style="border: 0px solid ;
+                  width: 83px; height: 16px;"></a> </td>
+            <td>Decoded<br>
+            </td>
+          </tr>
+          <tr>
+            <td><br>
+            </td>
+            <td><br>
+            </td>
+            <td>21<br>
+            </td>
+            <td><br>
+            </td>
+            <td>ETA at lock/bridge/terminal<br>
+            </td>
+            <td>Decoded<br>
+            </td>
+          </tr>
+          <tr>
+            <td><br>
+            </td>
+            <td><br>
+            </td>
+            <td>22<br>
+            </td>
+            <td><br>
+            </td>
+            <td>RTA at lock/bridge/terminal<br>
+            </td>
+            <td>Decoded<br>
+            </td>
+          </tr>
+          <tr>
+            <td><br>
+            </td>
+            <td><br>
+            </td>
+            <td>23<br>
+            </td>
+            <td><br>
+            </td>
+            <td>EMMA warning<br>
+            </td>
+            <td>Decoded<br>
+            </td>
+          </tr>
+          <tr>
+            <td><br>
+            </td>
+            <td><br>
+            </td>
+            <td>24<br>
+            </td>
+            <td><br>
+            </td>
+            <td>Water level<br>
+            </td>
+            <td>Decoded<br>
+            </td>
+          </tr>
+          <tr>
+            <td><br>
+            </td>
+            <td><br>
+            </td>
+            <td>40<br>
+            </td>
+            <td><br>
+            </td>
+            <td>Signal status<br>
+            </td>
+            <td>Decoded<br>
+            </td>
+          </tr>
+          <tr>
+            <td><br>
+            </td>
+            <td><br>
+            </td>
+            <td>55<br>
+            </td>
+            <td><br>
+            </td>
+            <td>Inland number of persons on board<a href="https://arundaleais.github.io/docs/ais/binary_200_55.gif" onclick="javascript:
+                pageTracker._trackPageview(&#39;/docs/ais/binary_200_55.gif&#39;);
+                "><img alt="AIS Binary Message, DAC=200, FI=55" title="AIS Binary Message, DAC=200, FI=55" src="./Decoded Binary AIS Messages_files/view_example.gif" style="border: 0px solid ;
+                  width: 83px; height: 16px;"></a><br>
+            </td>
+            <td>Decoded<br>
+            </td>
+          </tr>
+          <tr>
+            <td>210<br>
+            </td>
+            <td>Cyprus<br>
+            </td>
+            <td>0<br>
+            </td>
+            <td><br>
+            </td>
+            <td>Text Telegram <a href="https://arundaleais.github.io/docs/ais/binary_210_0.gif" onclick="javascript:
+                pageTracker._trackPageview(&#39;/docs/ais/binary_210_0.gif&#39;);
+                "><img alt="AIS Binary Message, DAC=210, FI=0" title="AIS Binary Message, DAC=210, FI=0" src="./Decoded Binary AIS Messages_files/view_example.gif" style="border: 0px solid ;
+                  width: 83px; height: 16px;"></a> </td>
+            <td>Decoded<br>
+            </td>
+          </tr>
+          <tr>
+            <td style="vertical-align: top;">219<br>
+            </td>
+            <td style="vertical-align: top;">Denmark<br>
+            </td>
+            <td style="vertical-align: top;">1<br>
+            </td>
+            <td style="vertical-align: top;"><br>
+            </td>
+            <td style="vertical-align: top;">Intended Route<br>
+            </td>
+            <td style="vertical-align: top;">Awaiting Decoding<br>
+            </td>
+          </tr>
+          <tr>
+            <td style="vertical-align: top;"><br>
+            </td>
+            <td style="vertical-align: top;"><br>
+            </td>
+            <td style="vertical-align: top;">2<br>
+            </td>
+            <td style="vertical-align: top;"><br>
+            </td>
+            <td style="vertical-align: top;">Route suggestion<br>
+            </td>
+            <td style="vertical-align: top;">Awaiting Decoding<br>
+            </td>
+          </tr>
+          <tr>
+            <td style="vertical-align: top;"><br>
+            </td>
+            <td style="vertical-align: top;"><br>
+            </td>
+            <td style="vertical-align: top;">3<br>
+            </td>
+            <td style="vertical-align: top;"><br>
+            </td>
+            <td style="vertical-align: top;">Route suggestion reply<br>
+            </td>
+            <td style="vertical-align: top;">Awaiting Decoding<br>
+            </td>
+          </tr>
+          <tr>
+            <td>232<br>
+            </td>
+            <td>UK<br>
+            </td>
+            <td>1<br>
+            </td>
+            <td><br>
+            </td>
+            <td>Used by ferries within Port of London Authority (PLA)<br>
+            </td>
+            <td><br>
+            </td>
+          </tr>
+          <tr>
+            <td>235/250<br>
+            </td>
+            <td>UK/ROI<br>
+            </td>
+            <td><span style="text-decoration: underline;"></span>10<br>
+            </td>
+            <td><br>
+            </td>
+            <td>AtoN Status <a href="https://arundaleais.github.io/docs/ais/binary_235_10.gif" onclick="javascript:
+                pageTracker._trackPageview(&#39;/docs/ais/binary_235_10.gif&#39;);
+                "><img alt="AIS Binary Message, DAC=235, FI=10" title="AIS Binary Message, DAC=235, FI=10" src="./Decoded Binary AIS Messages_files/view_example.gif" style="border: 0px solid ;
+                  width: 83px; height: 16px;"></a> </td>
+            <td>Decoded<br>
+            </td>
+          </tr>
+          <tr>
+            <td>248<br>
+            </td>
+            <td>Malta<br>
+            </td>
+            <td>0<br>
+            </td>
+            <td><br>
+            </td>
+            <td><font style="font-family: Verdana;" size="-1">Text
+                Telegram</font> <a href="https://arundaleais.github.io/docs/ais/binary_248_0.gif" onclick="javascript:
+                pageTracker._trackPageview(&#39;/docs/ais/binary_248_0.gif&#39;);
+                "><img alt="AIS Binary Message, DAC=248, FI=0" title="AIS Binary Message, DAC=248, FI=0" src="./Decoded Binary AIS Messages_files/view_example.gif" style="border: 0px solid ;
+                  width: 83px; height: 16px;"></a> </td>
+            <td>Decoded<br>
+            </td>
+          </tr>
+          <tr>
+            <td>316/366<br>
+            </td>
+            <td>Canada/USA<br>
+            </td>
+            <td>1<br>
+            </td>
+            <td>USDoT<br>
+            </td>
+            <td>Metrological and Hydrological<br>
+            </td>
+            <td>Decoded<br>
+            </td>
+          </tr>
+          <tr>
+            <td><br>
+            </td>
+            <td><br>
+            </td>
+            <td><br>
+            </td>
+            <td>1<br>
+            </td>
+            <td>Weather station message<font style="font-family:
+                Verdana;" size="-1"><a href="https://arundaleais.github.io/docs/ais/binary_316_1_1.gif" onclick="javascript:
+                  pageTracker._trackPageview(&#39;/docs/ais/binary_316_1_1.gif&#39;);
+                  "><img alt="AIS Binary Message, DAC=316, FI=1, ID=1" title="AIS Binary Message, DAC=316, FI=1, ID=1" src="./Decoded Binary AIS Messages_files/view_example.gif" style="border: 0px solid ;
+                    width: 97px; height: 16px;"></a></font> </td>
+            <td>Decoded<br>
+            </td>
+          </tr>
+          <tr>
+            <td><br>
+            </td>
+            <td><br>
+            </td>
+            <td><br>
+            </td>
+            <td>2<br>
+            </td>
+            <td>Wind Information message <a href="https://arundaleais.github.io/docs/ais/binary_316_1_2.gif" onclick="javascript:
+                pageTracker._trackPageview(&#39;/docs/ais/binary_316_1_2.gif&#39;);
+                "><img alt="AIS Binary Message, DAC=316, FI=1, ID=2" title="AIS Binary Message, DAC=316, FI=1, ID=2" src="./Decoded Binary AIS Messages_files/view_example.gif" style="border: 0px solid ;
+                  width: 83px; height: 16px;"></a> </td>
+            <td>Decoded<br>
+            </td>
+          </tr>
+          <tr>
+            <td><br>
+            </td>
+            <td><br>
+            </td>
+            <td><br>
+            </td>
+            <td>3<br>
+            </td>
+            <td>Water level message <a href="https://arundaleais.github.io/docs/ais/binary_316_1_3.gif" onclick="javascript:
+                pageTracker._trackPageview(&#39;/docs/ais/binary_316_1_3.gif&#39;);
+                "><img alt="AIS Binary Message, DAC=316, FI=1, ID=3" title="AIS Binary Message, DAC=316, FI=1, ID=3" src="./Decoded Binary AIS Messages_files/view_example.gif" style="border: 0px solid ;
+                  width: 83px; height: 16px;"></a> </td>
+            <td>Decoded<br>
+            </td>
+          </tr>
+          <tr>
+            <td><br>
+            </td>
+            <td><br>
+            </td>
+            <td><br>
+            </td>
+            <td>4<br>
+            </td>
+            <td>PAWSS Hydro/Current<br>
+            </td>
+            <td>Decoded<br>
+            </td>
+          </tr>
+          <tr>
+            <td><br>
+            </td>
+            <td><br>
+            </td>
+            <td><br>
+            </td>
+            <td>5<br>
+            </td>
+            <td>PAWSS Hydro/salinity Temp<br>
+            </td>
+            <td>Decoded<br>
+            </td>
+          </tr>
+          <tr>
+            <td><br>
+            </td>
+            <td><br>
+            </td>
+            <td><br>
+            </td>
+            <td>6<br>
+            </td>
+            <td>Water Flow message <a href="https://arundaleais.github.io/docs/ais/binary_316_1_6.gif" onclick="javascript:
+                pageTracker._trackPageview(&#39;/docs/ais/binary_316_1_6.gif&#39;);
+                "><img alt="AIS Binary Message, DAC=316, FI=1, ID=6" title="AIS Binary Message, DAC=316, FI=1, ID=6" src="./Decoded Binary AIS Messages_files/view_example.gif" style="border: 0px solid ;
+                  width: 83px; height: 16px;"></a> </td>
+            <td>Decoded<br>
+            </td>
+          </tr>
+          <tr>
+            <td><br>
+            </td>
+            <td><br>
+            </td>
+            <td>2<br>
+            </td>
+            <td><br>
+            </td>
+            <td>Vessel/Lock Scheduling<br>
+            </td>
+            <td>Decoded<br>
+            </td>
+          </tr>
+          <tr>
+            <td><br>
+            </td>
+            <td><br>
+            </td>
+            <td><br>
+            </td>
+            <td>1<br>
+            </td>
+            <td>Lockage Order <a href="https://arundaleais.github.io/docs/ais/binary_316_2_1.gif" onclick="javascript:
+                pageTracker._trackPageview(&#39;/docs/ais/binary_316_2_1.gif&#39;);
+                "><img alt="AIS Binary Message, DAC=316, FI=2, ID=1" title="AIS Binary Message, DAC=316, FI=2, ID=1" src="./Decoded Binary AIS Messages_files/view_example.gif" style="border: 0px solid ;
+                  width: 83px; height: 16px;"></a> </td>
+            <td>Decoded<br>
+            </td>
+          </tr>
+          <tr>
+            <td><br>
+            </td>
+            <td><br>
+            </td>
+            <td><br>
+            </td>
+            <td>2<br>
+            </td>
+            <td>Estimated Lock Times <a href="https://arundaleais.github.io/docs/ais/binary_316_2_2.gif" onclick="javascript:
+                pageTracker._trackPageview(&#39;/docs/ais/binary_316_2_2.gif&#39;);
+                "><img alt="AIS Binary Message, DAC=316, FI=2, ID=2" title="AIS Binary Message, DAC=316, FI=2, ID=2" src="./Decoded Binary AIS Messages_files/view_example.gif" style="border: 0px solid ;
+                  width: 83px; height: 16px;"></a> </td>
+            <td>Decoded<br>
+            </td>
+          </tr>
+          <tr>
+            <td><br>
+            </td>
+            <td><br>
+            </td>
+            <td><br>
+            </td>
+            <td>3<br>
+            </td>
+            <td>Vessel Procession Order<br>
+            </td>
+            <td>Decoded<br>
+            </td>
+          </tr>
+          <tr>
+            <td><br>
+            </td>
+            <td><br>
+            </td>
+            <td>32<br>
+            </td>
+            <td><br>
+            </td>
+            <td>St Lawrence Seaway specific<br>
+            </td>
+            <td>Decoded<br>
+            </td>
+          </tr>
+          <tr>
+            <td><br>
+            </td>
+            <td><br>
+            </td>
+            <td><br>
+            </td>
+            <td>1<br>
+            </td>
+            <td>Message Specification Version <a href="https://arundaleais.github.io/docs/ais/binary_366_32_1.gif" onclick="javascript:
+                pageTracker._trackPageview(&#39;/docs/ais/binary_366_32_1.gif&#39;);
+                "><img alt="AIS Binary Message, DAC=366, FI=32, ID=1" title="AIS Binary Message, DAC=366, FI=32, ID=1" src="./Decoded Binary AIS Messages_files/view_example.gif" style="border: 0px solid ;
+                  width: 83px; height: 16px;"></a> </td>
+            <td>Decoded<br>
+            </td>
+          </tr>
+          <tr>
+            <td>353<br>
+            </td>
+            <td>Panama<br>
+            </td>
+            <td>0<br>
+            </td>
+            <td><br>
+            </td>
+            <td>Text Telegram<br>
+            </td>
+            <td>Decoded<br>
+            </td>
+          </tr>
+          <tr>
+            <td>366<br>
+            </td>
+            <td>USA<br>
+            </td>
+            <td>22<br>
+            </td>
+            <td><br>
+            </td>
+            <td>Area Notice USCG<br>
+            </td>
+            <td>Awaiting Decoding<br>
+            </td>
+          </tr>
+          <tr>
+            <td style="vertical-align: top;"><br>
+            </td>
+            <td style="vertical-align: top;"><br>
+            </td>
+            <td style="vertical-align: top;"><font style="font-family:
+                Verdana;" size="-1">33</font></td>
+            <td style="vertical-align: top;"><br>
+            </td>
+            <td style="vertical-align: top;"><font style="font-family:
+                Verdana;" size="-1">Environmental USCG</font></td>
+            <td style="vertical-align: top;"><font style="font-family:
+                Verdana;" size="-1">Decoded</font></td>
+          </tr>
+          <tr>
+            <td><br>
+            </td>
+            <td><br>
+            </td>
+            <td><br>
+            </td>
+            <td>0<br>
+            </td>
+            <td>Site Location<a href="https://arundaleais.github.io/docs/ais/binary_366_33_0.gif" onclick="javascript:
+                pageTracker._trackPageview(&#39;/docs/ais/binary_366_33_0.gif&#39;);
+                "><img alt="AIS Binary Message, DAC=366, FI=33, ID=0" title="AIS Binary Message, DAC=366, FI=33, ID=0" src="./Decoded Binary AIS Messages_files/view_example.gif" style="border: 0px solid ;
+                  width: 83px; height: 16px;"></a> </td>
+            <td>Decoded<br>
+            </td>
+          </tr>
+          <tr>
+            <td><br>
+            </td>
+            <td><br>
+            </td>
+            <td><br>
+            </td>
+            <td>1<br>
+            </td>
+            <td>Station ID <a href="https://arundaleais.github.io/docs/ais/binary_366_33_1.gif" onclick="javascript:
+                pageTracker._trackPageview(&#39;/docs/ais/binary_366_33_1.gif&#39;);
+                "><img alt="AIS Binary Message, DAC=366, FI=33, ID=1" title="AIS Binary Message, DAC=366, FI=33, ID=1" src="./Decoded Binary AIS Messages_files/view_example.gif" style="border: 0px solid ;
+                  width: 83px; height: 16px;"></a> </td>
+            <td>Decoded<br>
+            </td>
+          </tr>
+          <tr>
+            <td><br>
+            </td>
+            <td><br>
+            </td>
+            <td><br>
+            </td>
+            <td>2<br>
+            </td>
+            <td>Wind <a href="https://arundaleais.github.io/docs/ais/binary_366_33_2.gif" onclick="javascript:
+                pageTracker._trackPageview(&#39;/docs/ais/binary_366_33_2.gif&#39;);
+                "><img alt="AIS Binary Message, DAC=366, FI=33, ID=2" title="AIS Binary Message, DAC=366, FI=33, ID=2" src="./Decoded Binary AIS Messages_files/view_example.gif" style="border: 0px solid ;
+                  width: 83px; height: 16px;"></a> </td>
+            <td>Decoded<br>
+            </td>
+          </tr>
+          <tr>
+            <td><br>
+            </td>
+            <td><br>
+            </td>
+            <td><br>
+            </td>
+            <td>3<br>
+            </td>
+            <td>Water Level <a href="https://arundaleais.github.io/docs/ais/binary_366_33_3.gif" onclick="javascript:
+                pageTracker._trackPageview(&#39;/docs/ais/binary_366_33_3.gif&#39;);
+                "><img alt="AIS Binary Message, DAC=366, FI=33, ID=3" title="AIS Binary Message, DAC=366, FI=33, ID=3" src="./Decoded Binary AIS Messages_files/view_example.gif" style="border: 0px solid ;
+                  width: 83px; height: 16px;"></a> </td>
+            <td>Decoded<br>
+            </td>
+          </tr>
+          <tr>
+            <td><br>
+            </td>
+            <td><br>
+            </td>
+            <td><br>
+            </td>
+            <td>4<br>
+            </td>
+            <td>Current Flow 2D (x,y)<br>
+            </td>
+            <td>Decoded<br>
+            </td>
+          </tr>
+          <tr>
+            <td><br>
+            </td>
+            <td><br>
+            </td>
+            <td><br>
+            </td>
+            <td>5<br>
+            </td>
+            <td>Current Flow 3D (x,y,z)&nbsp; (up vector size incorrect)<br>
+            </td>
+            <td>Decoded<br>
+            </td>
+          </tr>
+          <tr>
+            <td><br>
+            </td>
+            <td><br>
+            </td>
+            <td><br>
+            </td>
+            <td>6<br>
+            </td>
+            <td>Horizontal Current Flow<br>
+            </td>
+            <td>Decoded<br>
+            </td>
+          </tr>
+          <tr>
+            <td><br>
+            </td>
+            <td><br>
+            </td>
+            <td><br>
+            </td>
+            <td>7<br>
+            </td>
+            <td>Sea State<br>
+            </td>
+            <td>Decoded<br>
+            </td>
+          </tr>
+          <tr>
+            <td><br>
+            </td>
+            <td><br>
+            </td>
+            <td><br>
+            </td>
+            <td>8<br>
+            </td>
+            <td>Salinity (record size incorrect)<br>
+            </td>
+            <td>Decoded<br>
+            </td>
+          </tr>
+          <tr>
+            <td><br>
+            </td>
+            <td><br>
+            </td>
+            <td><br>
+            </td>
+            <td>9<br>
+            </td>
+            <td>Weather <a href="https://arundaleais.github.io/docs/ais/binary_366_33_9.gif" onclick="javascript:
+                pageTracker._trackPageview(&#39;/docs/ais/binary_366_33_9.gif&#39;);
+                "><img alt="AIS Binary Message, DAC=366, FI=33, ID=9" title="AIS Binary Message, DAC=399, FI=33, ID=9" src="./Decoded Binary AIS Messages_files/view_example.gif" style="border: 0px solid ;
+                  width: 83px; height: 16px;"></a> </td>
+            <td>Decoded<br>
+            </td>
+          </tr>
+          <tr>
+            <td><br>
+            </td>
+            <td><br>
+            </td>
+            <td><br>
+            </td>
+            <td>10<br>
+            </td>
+            <td>Air Gap / Air Draft<br>
+            </td>
+            <td>Decoded<br>
+            </td>
+          </tr>
+          <tr>
+            <td style="vertical-align: top;"><br>
+            </td>
+            <td style="vertical-align: top;"><br>
+            </td>
+            <td style="vertical-align: top;">35<br>
+            </td>
+            <td style="vertical-align: top;"><br>
+            </td>
+            <td style="vertical-align: top;">Waterways Management USCG<br>
+            </td>
+            <td style="vertical-align: top;">Awaiting Decoding<br>
+            </td>
+          </tr>
+          <tr>
+            <td><br>
+            </td>
+            <td><br>
+            </td>
+            <td>55<br>
+            </td>
+            <td><br>
+            </td>
+            <td>USCG - Encrypted Text Message<br>
+            </td>
+            <td><br>
+            </td>
+          </tr>
+          <tr>
+            <td><br>
+            </td>
+            <td><br>
+            </td>
+            <td>56<br>
+            </td>
+            <td><br>
+            </td>
+            <td style="vertical-align: top; color: rgb(0, 0, 0);">USCG -
+              Encrypted Position Report<span style="color: rgb(255, 0,
+                0);"></span><br>
+            </td>
+            <td><br>
+            </td>
+          </tr>
+          <tr>
+            <td><br>
+            </td>
+            <td><br>
+            </td>
+            <td>57<br>
+            </td>
+            <td><br>
+            </td>
+            <td style="vertical-align: top; color: rgb(0, 0, 0);"><font style="font-family: Verdana;" size="-1">USCG - Encrypted
+                Static Data<span style="color: rgb(255, 0, 0);"><br>
+                </span></font></td>
+            <td><br>
+            </td>
+          </tr>
+          <tr>
+            <td><br>
+            </td>
+            <td><br>
+            </td>
+            <td>58<br>
+            </td>
+            <td><br>
+            </td>
+            <td>USCG - Encrypted Target of Interest<br>
+            </td>
+            <td><br>
+            </td>
+          </tr>
+          <tr>
+            <td><br>
+            </td>
+            <td><br>
+            </td>
+            <td>63<br>
+            </td>
+            <td><br>
+            </td>
+            <td>Water level<br>
+            </td>
+            <td><br>
+            </td>
+          </tr>
+          <tr>
+            <td><br>
+            </td>
+            <td><br>
+            </td>
+            <td><br>
+            </td>
+            <td>1<br>
+            </td>
+            <td>Timed Circular notice<br>
+            </td>
+            <td><br>
+            </td>
+          </tr>
+          <tr>
+            <td><br>
+            </td>
+            <td><br>
+            </td>
+            <td><br>
+            </td>
+            <td>2<br>
+            </td>
+            <td>Whale notice<br>
+            </td>
+            <td><br>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <br>
+      &nbsp;&nbsp;&nbsp; <span style="font-weight: bold;"><br>
+      </span><font style="font-family: Verdana;" size="-1"><span style="font-weight: bold;"></span></font><br>
+    </font> <br><div id="goog-gt-tt" class="skiptranslate" dir="ltr"><div style="padding: 8px;"><div><div class="logo"><img src="./Decoded Binary AIS Messages_files/translate_24dp.png" width="20" height="20" alt="Google Translate"></div></div></div><div class="top" style="padding: 8px; float: left; width: 100%;"><h1 class="title gray">Original text</h1></div><div class="middle" style="padding: 8px;"><div class="original-text"></div></div><div class="bottom" style="padding: 8px;"><div class="activity-links"><span class="activity-link">Contribute a better translation</span><span class="activity-link"></span></div><div class="started-activity-container"><hr style="color: #CCC; background-color: #CCC; height: 1px; border: none;"><div class="activity-root"></div></div></div><div class="status-message" style="display: none;"></div></div>
+  
+
+<div class="goog-te-spinner-pos"><div class="goog-te-spinner-animation"><svg xmlns="http://www.w3.org/2000/svg" class="goog-te-spinner" width="96px" height="96px" viewBox="0 0 66 66"><circle class="goog-te-spinner-path" fill="none" stroke-width="6" stroke-linecap="round" cx="33" cy="33" r="30"></circle></svg></div></div><iframe frameborder="0" class="goog-te-menu-frame skiptranslate" title="Language Translate Widget" style="visibility: visible; box-sizing: content-box; width: 1054px; height: 263px; display: none;" src="./Decoded Binary AIS Messages_files/saved_resource.html"></iframe></body></html>
