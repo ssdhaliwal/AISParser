@@ -265,7 +265,7 @@ public class PositionReportClassA extends AISMessage {
 	}
 	
 	private void setCommState(String bits) {
-		commState = CommunicationState.fromPayload(bits);
+		commState = CommunicationState.fromPayload(bits, getType());
 	}
 
 	private int type = 0;

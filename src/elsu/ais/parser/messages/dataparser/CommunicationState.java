@@ -3,16 +3,15 @@ package elsu.ais.parser.messages.dataparser;
 import java.util.ArrayList;
 
 import elsu.ais.parser.AISMessage;
-import elsu.ais.parser.messages.PositionReportClassA;
 import elsu.ais.parser.resources.LookupValues;
 import elsu.ais.parser.resources.PayloadBlock;
 
 public class CommunicationState {
 
-	public static CommunicationState fromPayload(String messageBits) {
+	public static CommunicationState fromPayload(String messageBits, int messageType) {
 		CommunicationState commState = new CommunicationState();
 
-		commState.parseMessage(messageBits);
+		commState.parseMessage(messageBits, messageType);
 
 		return commState;
 	}
@@ -25,12 +24,11 @@ public class CommunicationState {
 
 	private void initialize() {
 		messageBlocks.add(new PayloadBlock(0, 1, 2, "Sync State", "state", "u", "see Sync State values"));
-		messageBlocks.add(new PayloadBlock(2, 4, 3, "Slot time-out", "timeout", "u",
+		messageBlocks.add(new PayloadBlock(2, 18, 17, "message", "message", "m",
 				"Specifies frames remaining until a new slot is selected"));
-		messageBlocks.add(new PayloadBlock(5, 18, 14, "Sub message", "message", "u", "9 decimal digits"));
 	}
 
-	public void parseMessage(String message) {
+	public void parseMessage(String message, int messageType) {
 		for (PayloadBlock block : messageBlocks) {
 			if (block.getEnd() == -1) {
 				block.setBits(message.substring(block.getStart(), message.length()));
@@ -43,28 +41,12 @@ public class CommunicationState {
 				setState(AISMessage.unsigned_integer_decoder(block.getBits()));
 				break;
 			case 2:
-				setTimeout(AISMessage.unsigned_integer_decoder(block.getBits()));
-				break;
-			case 5:
-				switch (getTimeout()) {
-				case 0:
-					setMsgSlotOffset(AISMessage.unsigned_integer_decoder(block.getBits()));
-					break;
-				case 1:
-					int hour = AISMessage.unsigned_integer_decoder(block.getBits().substring(0, 10));
-					int minute = AISMessage.unsigned_integer_decoder(block.getBits().substring(10, 12));
-					setMsgUTCHourMinute(hour + ":" + minute);
-					break;
-				case 2:
-				case 4:
-				case 6:
-					setMsgSlotNumber(AISMessage.unsigned_integer_decoder(block.getBits()));
-					break;
-				case 3:
-				case 5:
-				case 7:
-					setMsgReceivedStations(AISMessage.unsigned_integer_decoder(block.getBits()));
-					break;
+				setMessage(AISMessage.unsigned_integer_decoder(block.getBits()));
+				
+				if ((messageType == 1) || (messageType == 2)) { // SOTDMA
+					setCommState_SOTDMA(block.getBits());
+				} else { // ITDMA					
+					setCommState_ITDMA(block.getBits());
 				}
 				break;
 			}
@@ -77,25 +59,11 @@ public class CommunicationState {
 
 		buffer.append("{ \"CommunicationState\": {");
 		buffer.append("\"syncstate\":\"" + getState() + "/" + LookupValues.getCommunicationSyncState(getState()) + "\"");
-		buffer.append(", \"timeout\":" + getTimeout());
 		buffer.append(", \"message\":" + getMessage());
-		switch(getTimeout()) {
-		case 0:
-			buffer.append(", \"slotoffset\":" + getMsgSlotOffset());
-			break;
-		case 1:
-			buffer.append(", \"UTChourmin\":" + getMsgUTCHourMinute());
-			break;
-		case 2:
-		case 4:
-		case 6:
-			buffer.append(", \"slotnumber\":" + getMsgSlotNumber());
-			break;
-		case 3:
-		case 5:
-		case 7:
-			buffer.append(", \"receivedstations\":" + getMsgReceivedStations());
-			break;
+		if (getCommStateSOTDMA() != null) { // SOTDMA
+			buffer.append(", \"csSOTDMA\":" + getCommStateSOTDMA().toString());
+		} else if (getCommStateITDMA() != null) { // ITDMA
+			buffer.append(", \"csITDMA\":" + getCommStateITDMA().toString());
 		}
 		buffer.append("}}");
 
@@ -110,14 +78,6 @@ public class CommunicationState {
 		this.state = state;
 	}
 
-	public int getTimeout() {
-		return timeout;
-	}
-
-	public void setTimeout(int timeout) {
-		this.timeout = timeout;
-	}
-
 	public int getMessage() {
 		return message;
 	}
@@ -125,45 +85,25 @@ public class CommunicationState {
 	public void setMessage(int message) {
 		this.message = message;
 	}
-
-	public int getMsgReceivedStations() {
-		return msgReceivedStations;
+	
+	public CommunicationState_SOTDMA getCommStateSOTDMA() {
+		return csSOTDMA;
 	}
-
-	public void setMsgReceivedStations(int msgReceivedStations) {
-		this.msgReceivedStations = msgReceivedStations;
+	
+	public void setCommState_SOTDMA(String bits) {
+		this.csSOTDMA = CommunicationState_SOTDMA.fromPayload(bits);
 	}
-
-	public int getMsgSlotNumber() {
-		return msgSlotNumber;
+	
+	public CommunicationState_ITDMA getCommStateITDMA() {
+		return csITDMA;
 	}
-
-	public void setMsgSlotNumber(int msgSlotNumber) {
-		this.msgSlotNumber = msgSlotNumber;
-	}
-
-	public String getMsgUTCHourMinute() {
-		return msgUTCHourMinute;
-	}
-
-	public void setMsgUTCHourMinute(String msgUTCHourMinute) {
-		this.msgUTCHourMinute = msgUTCHourMinute;
-	}
-
-	public int getMsgSlotOffset() {
-		return msgSlotOffset;
-	}
-
-	public void setMsgSlotOffset(int msgSlotOffset) {
-		this.msgSlotOffset = msgSlotOffset;
+	
+	public void setCommState_ITDMA(String bits) {
+		this.csITDMA = CommunicationState_ITDMA.fromPayload(bits);
 	}
 
 	private int state = 0;
-	private int timeout = 0;
 	private int message = 0;
-	private int msgReceivedStations = 0;
-	private int msgSlotNumber = 0;
-	private String msgUTCHourMinute = "";
-	private int msgSlotOffset = 0;
-
+	private CommunicationState_SOTDMA csSOTDMA = null;
+	private CommunicationState_ITDMA csITDMA = null;
 }

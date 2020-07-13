@@ -44,7 +44,7 @@ public class AISParser {
 					if (messageBits.length() > 0) {
 						msgNumber = AISMessageDecoders.getMessageNumber(messageBits);
 						System.out.println(message.getRawMessage() + "/" + msgNumber);
-						System.out.println(message.getBinaryMessage() + "/" + msgNumber);
+						//System.out.println(message.getBinaryMessage() + "/" + msgNumber);
 						// String encoded = AISDecoder.encodeMessagePayload(aisMessage);
 						switch (msgNumber) {
 						case 1:
