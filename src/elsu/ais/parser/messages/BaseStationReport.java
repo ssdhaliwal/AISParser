@@ -3,6 +3,7 @@ package elsu.ais.parser.messages;
 import java.util.*;
 
 import elsu.ais.parser.AISMessage;
+import elsu.ais.parser.messages.dataparser.CommunicationState;
 import elsu.ais.parser.resources.LookupValues;
 import elsu.ais.parser.resources.PayloadBlock;
 
@@ -101,6 +102,7 @@ public class BaseStationReport extends AISMessage {
 				break;
 			case 149:
 				setRadio(AISMessage.unsigned_integer_decoder(block.getBits()));
+				setCommState(block.getBits());
 				break;
 			}
 		}
@@ -126,6 +128,8 @@ public class BaseStationReport extends AISMessage {
 		buffer.append(", \"epfd\":\"" + getEpfd() + "/" + LookupValues.getEPFDFixType(getEpfd()) + "\"");
 		buffer.append(", \"raim\":" + isRaim());
 		buffer.append(", \"radio\":" + getRadio());
+		buffer.append(", \"commState\":" + getCommState().toString());
+		buffer.append(", \"commtech\":\"" + LookupValues.getCommunicationTechnology(getType()) + "\"");
 		buffer.append("}}");
 
 		return buffer.toString();
@@ -250,6 +254,14 @@ public class BaseStationReport extends AISMessage {
 	public void setRadio(int radio) {
 		this.radio = radio;
 	}
+	
+	public CommunicationState getCommState() {
+		return commState;
+	}
+	
+	private void setCommState(String bits) {
+		commState = CommunicationState.fromPayload(bits, getType());
+	}
 
 	private int type = 0;
 	private int repeat = 0;
@@ -266,4 +278,5 @@ public class BaseStationReport extends AISMessage {
 	private int epfd = 0;
 	private boolean raim = false;
 	private int radio = 0;
+	private CommunicationState commState = null;
 }

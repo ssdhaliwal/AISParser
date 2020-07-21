@@ -63,7 +63,7 @@ public class AISParser {
 							// System.out.println(decodedMessage.toString());
 							break;
 						case 6:
-							decodedMessage = BinaryAddressedMessage.fromAISMessage((AISMessage) message, messageBits);
+							decodedMessage = AddressedBinaryMessage.fromAISMessage((AISMessage) message, messageBits);
 							// System.out.println(decodedMessage.toString());
 							break;
 						case 8:

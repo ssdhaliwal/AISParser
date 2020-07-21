@@ -5,10 +5,10 @@ import java.util.*;
 import elsu.ais.parser.AISMessage;
 import elsu.ais.parser.resources.PayloadBlock;
 
-public class BinaryAddressedMessage extends AISMessage {
+public class AddressedBinaryMessage extends AISMessage {
 
 	public static AISMessage fromAISMessage(AISMessage aisMessage, String messageBits) {
-		BinaryAddressedMessage binaryMessage = new BinaryAddressedMessage();
+		AddressedBinaryMessage binaryMessage = new AddressedBinaryMessage();
 
 		binaryMessage.setRawMessage(aisMessage.getRawMessage());
 		binaryMessage.setBinaryMessage(aisMessage.getBinaryMessage());
@@ -20,7 +20,7 @@ public class BinaryAddressedMessage extends AISMessage {
 		return binaryMessage;
 	}
 
-	public BinaryAddressedMessage() {
+	public AddressedBinaryMessage() {
 		initialize();
 	}
 
