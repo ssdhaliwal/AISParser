@@ -43,67 +43,91 @@ public class AISParser {
 
 					if (messageBits.length() > 0) {
 						msgNumber = AISMessageDecoders.getMessageNumber(messageBits);
+						result.add(message.getRawMessage() + "/" + msgNumber);
 						System.out.println(message.getRawMessage() + "/" + msgNumber);
-						//System.out.println(message.getBinaryMessage() + "/" + msgNumber);
+						// System.out.println(message.getBinaryMessage() + "/" + msgNumber);
 						// String encoded = AISDecoder.encodeMessagePayload(aisMessage);
 						switch (msgNumber) {
 						case 1:
 						case 2:
 						case 3:
 							decodedMessage = PositionReportClassA.fromAISMessage((AISMessage) message, messageBits);
+							result.add(decodedMessage.toString());
 							System.out.println(decodedMessage.toString());
 							break;
 						case 4:
 							decodedMessage = BaseStationReport.fromAISMessage((AISMessage) message, messageBits);
-							// System.out.println(decodedMessage.toString());
+							result.add(decodedMessage.toString());
+							System.out.println(decodedMessage.toString());
 							break;
 						case 5:
 							decodedMessage = StaticAndVoyageRelatedData.fromAISMessage((AISMessage) message,
 									messageBits);
-							// System.out.println(decodedMessage.toString());
+							result.add(decodedMessage.toString());
+							System.out.println(decodedMessage.toString());
 							break;
 						case 6:
 							decodedMessage = AddressedBinaryMessage.fromAISMessage((AISMessage) message, messageBits);
-							// System.out.println(decodedMessage.toString());
+							result.add(decodedMessage.toString());
+							System.out.println(decodedMessage.toString());
 							break;
 						case 8:
 							decodedMessage = BinaryBroadCastMessage.fromAISMessage((AISMessage) message, messageBits);
-							// System.out.println(decodedMessage.toString());
+							result.add(decodedMessage.toString());
+							System.out.println(decodedMessage.toString());
 
-							// if (((BinaryBroadCastMessage) decodedMessage).getDac() == 1
-							// 		&& ((BinaryBroadCastMessage) decodedMessage).getFid() == 11) {
-							// 	Type8_Dac1_Fid11 tdf = (Type8_Dac1_Fid11) Type8_Dac1_Fid11
-							// 			.fromAISMessage(decodedMessage, messageBits);
-							// 	System.out.println(tdf.toString());
-							// }
+							if (((BinaryBroadCastMessage) decodedMessage).getDac() == 1
+									&& ((BinaryBroadCastMessage) decodedMessage).getFid() == 11) {
+								Type8_Dac1_Fid11 tdf = (Type8_Dac1_Fid11) Type8_Dac1_Fid11
+										.fromAISMessage(decodedMessage, messageBits);
+								result.add(decodedMessage.toString());
+							 	System.out.println(tdf.toString());
+							}
+							break;
+						case 9:
+							decodedMessage = StandardSARPositionReport.fromAISMessage((AISMessage) message, messageBits);
+							result.add(decodedMessage.toString());
+							System.out.println(decodedMessage.toString());
+							break;
+						case 11:
+							decodedMessage = CoordinatedUniversalTimeDateResponse.fromAISMessage((AISMessage) message,
+									messageBits);
+							result.add(decodedMessage.toString());
+							System.out.println(decodedMessage.toString());
 							break;
 						case 18:
 							decodedMessage = StandardClassBCSPositionReport.fromAISMessage((AISMessage) message,
 									messageBits);
-							// System.out.println(decodedMessage.toString());
+							result.add(decodedMessage.toString());
+							System.out.println(decodedMessage.toString());
 							break;
 						case 19:
 							decodedMessage = ExtendedClassBCSPositionReport.fromAISMessage((AISMessage) message,
 									messageBits);
-							// System.out.println(decodedMessage.toString());
+							result.add(decodedMessage.toString());
+							System.out.println(decodedMessage.toString());
 							break;
 						case 21:
 							decodedMessage = AidToNavigationReport.fromAISMessage((AISMessage) message, messageBits);
-							// System.out.println(decodedMessage.toString());
+							result.add(decodedMessage.toString());
+							System.out.println(decodedMessage.toString());
 							break;
 						case 24:
 							decodedMessage = StaticDataReport.fromAISMessage((AISMessage) message, messageBits);
-							// System.out.println(decodedMessage.toString());
+							result.add(decodedMessage.toString());
+							System.out.println(decodedMessage.toString());
 							
-							// if (((StaticDataReport) decodedMessage).getPartno() == 0) {
-							// 	StaticDataReportPartA sdrPartA = (StaticDataReportPartA) StaticDataReportPartA
-							// 			.fromAISMessage(decodedMessage, messageBits);
-							// 	System.out.println(sdrPartA);
-							// } else if (((StaticDataReport) decodedMessage).getPartno() == 1) {
-							// 	StaticDataReportPartB sdrPartB = (StaticDataReportPartB) StaticDataReportPartB
-							// 			.fromAISMessage(decodedMessage, messageBits);
-							// 	System.out.println(sdrPartB);
-							// }
+							if (((StaticDataReport) decodedMessage).getPartno() == 0) {
+								StaticDataReportPartA sdrPartA = (StaticDataReportPartA) StaticDataReportPartA
+										.fromAISMessage(decodedMessage, messageBits);
+								result.add(sdrPartA.toString());
+								System.out.println(sdrPartA.toString());
+							} else if (((StaticDataReport) decodedMessage).getPartno() == 1) {
+								StaticDataReportPartB sdrPartB = (StaticDataReportPartB) StaticDataReportPartB
+										.fromAISMessage(decodedMessage, messageBits);
+								result.add(sdrPartB.toString());
+								System.out.println(sdrPartB.toString());
+							}
 							break;
 						default:
 							System.out.println(message.getRawMessage() + "/" + msgNumber);

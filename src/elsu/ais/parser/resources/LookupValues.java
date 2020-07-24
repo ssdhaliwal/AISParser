@@ -53,6 +53,17 @@ public class LookupValues {
 		return CommunicationTechnology.get(commState);
 	}
 
+	private static HashMap<Integer, String> DTE = new HashMap<Integer, String>() {
+		{
+			put(0, "Available");
+			put(1, "Not Available");
+		}
+	};
+
+	public static String getDte(Integer dte) {
+		return DTE.get(dte);
+	}
+
 	private static HashMap<Integer, String> CommunicationSyncState = new HashMap<Integer, String>() {
 		{
 			put(0, "UTC direct");
@@ -83,6 +94,17 @@ public class LookupValues {
 
 	public static String getEPFDFixType(Integer epfd) {
 		return EPFDFixTypes.get(epfd);
+	}
+
+	private static HashMap<Integer, String> LRBControl = new HashMap<Integer, String>() {
+		{
+			put(0, "default – Class-A AIS station stops transmission of Message 27 within an AIS base station coverage area.");
+			put(1, "Request Class-A station to transmit Message 27 within an AIS base station coverage area");
+		}
+	};
+
+	public static String getLRBControl(Integer lrbcontrol) {
+		return LRBControl.get(lrbcontrol);
 	}
 
 	private static HashMap<Integer, String> ShipTypes = new HashMap<Integer, String>() {
@@ -244,5 +266,27 @@ public class LookupValues {
 
 	public static String getAssignedMode(Integer maneuver) {
 		return AssignedMode.get(maneuver);
+	}
+
+	private static HashMap<Integer, String> AltitudeSensor = new HashMap<Integer, String>() {
+		{
+			put(0, "GNSS");
+			put(1, "Barometric");
+		}
+	};
+
+	public static String getAltitudeSensor(Integer altitudeSensor) {
+		return AltitudeSensor.get(altitudeSensor);
+	}
+
+	private static HashMap<Integer, String> CommunicationFlag = new HashMap<Integer, String>() {
+		{
+			put(0, "SOTDMA");
+			put(1, "ITDMA");
+		}
+	};
+
+	public static String getCommunicationFlag(Integer commFlag) {
+		return CommunicationFlag.get(commFlag);
 	}
 }

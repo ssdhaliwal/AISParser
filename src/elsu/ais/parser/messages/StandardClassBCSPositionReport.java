@@ -3,6 +3,8 @@ package elsu.ais.parser.messages;
 import java.util.*;
 
 import elsu.ais.parser.AISMessage;
+import elsu.ais.parser.messages.dataparser.CommunicationState;
+import elsu.ais.parser.resources.LookupValues;
 import elsu.ais.parser.resources.PayloadBlock;
 
 public class StandardClassBCSPositionReport extends AISMessage {
@@ -54,7 +56,8 @@ public class StandardClassBCSPositionReport extends AISMessage {
 		messageBlocks.add(new PayloadBlock(146, 146, 1, "Assigned", "assigned", "b",
 				"Assigned-mode flag: 0 = autonomous mode (default), 1 = assigned mode."));
 		messageBlocks.add(new PayloadBlock(147, 147, 1, "RAIM flag", "raim", "b", "As for common navigation block"));
-		messageBlocks.add(new PayloadBlock(148, 167, 20, "Radio status", "radio", "u", "See [IALA] for details."));
+		messageBlocks.add(new PayloadBlock(148, 148, 1, "Comm State Selector", "commflag", "u", "0=SOTDMA, 1=ITDMA"));
+		messageBlocks.add(new PayloadBlock(149, 167, 19, "Radio status", "radio", "u", "See [IALA] for details."));
 	}
 
 	public void parseMessage(String message) {
@@ -121,7 +124,11 @@ public class StandardClassBCSPositionReport extends AISMessage {
 				setRaim(AISMessage.boolean_decoder(block.getBits()));
 				break;
 			case 148:
+				setCommflag(AISMessage.unsigned_integer_decoder(block.getBits()));
+				break;
+			case 149:
 				setRadio(AISMessage.unsigned_integer_decoder(block.getBits()));
+				setCommState(block.getBits());
 				break;
 			}
 		}
@@ -151,7 +158,10 @@ public class StandardClassBCSPositionReport extends AISMessage {
 		buffer.append(", \"msg22\":" + isMsg22());
 		buffer.append(", \"assigned\":" + isAssigned());
 		buffer.append(", \"raim\":" + isRaim());
+		buffer.append(", \"commflag\":\"" + getCommflag() + "/" + LookupValues.getCommunicationFlag(getCommflag()) + "\"");
 		buffer.append(", \"radio\":" + getRadio());
+		buffer.append(", \"commState\":" + getCommState().toString());
+		buffer.append(", \"commtech\":\"" + LookupValues.getCommunicationTechnology(getType()) + "\"");
 		buffer.append("}}");
 
 		return buffer.toString();
@@ -305,12 +315,28 @@ public class StandardClassBCSPositionReport extends AISMessage {
 		this.raim = raim;
 	}
 
+	public int getCommflag() {
+		return commflag;
+	}
+
+	public void setCommflag(int commflag) {
+		this.commflag = commflag;
+	}
+
 	public int getRadio() {
 		return radio;
 	}
 
 	public void setRadio(int radio) {
 		this.radio = radio;
+	}
+
+	public CommunicationState getCommState() {
+		return commState;
+	}
+	
+	private void setCommState(String bits) {
+		commState = CommunicationState.fromPayload(bits, getType());
 	}
 
 	private int type = 0;
@@ -331,5 +357,7 @@ public class StandardClassBCSPositionReport extends AISMessage {
 	private boolean msg22 = false;
 	private boolean assigned = false;
 	private boolean raim = false;
+	private int commflag = 0;
 	private int radio = 0;
+	private CommunicationState commState = null;
 }

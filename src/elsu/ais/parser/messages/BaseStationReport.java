@@ -42,7 +42,8 @@ public class BaseStationReport extends AISMessage {
 		messageBlocks.add(new PayloadBlock(79, 106, 28, "Longitude", "lon", "I4", "As in Common Navigation Block"));
 		messageBlocks.add(new PayloadBlock(107, 133, 27, "Latitude", "lat", "I4", "As in Common Navigation Block"));
 		messageBlocks.add(new PayloadBlock(134, 137, 4, "Type of EPFD", "epfd", "e", "See \"EPFD Fix Types\""));
-		messageBlocks.add(new PayloadBlock(138, 147, 10, "Spare", "", "x", "Not used"));
+		messageBlocks.add(new PayloadBlock(138, 138, 1, "Control for Long Range Broadcast", "lrbcontrol", "u", ""));
+		messageBlocks.add(new PayloadBlock(139, 147, 9, "Spare", "", "x", "Not used"));
 		messageBlocks.add(new PayloadBlock(148, 148, 1, "RAIM flag", "raim", "b", "As for common navigation block"));
 		messageBlocks.add(new PayloadBlock(149, 167, 19, "SOTDMA state", "radio", "u", "As in same bits for Type 1"));
 	}
@@ -126,6 +127,7 @@ public class BaseStationReport extends AISMessage {
 		buffer.append(", \"lon\":" + getLon());
 		buffer.append(", \"lat\":" + getLat());
 		buffer.append(", \"epfd\":\"" + getEpfd() + "/" + LookupValues.getEPFDFixType(getEpfd()) + "\"");
+		buffer.append(", \"lrbcontrol\":\"" + getLrbcontrol() + "/" + LookupValues.getLRBControl(getLrbcontrol()) + "\"");
 		buffer.append(", \"raim\":" + isRaim());
 		buffer.append(", \"radio\":" + getRadio());
 		buffer.append(", \"commState\":" + getCommState().toString());
@@ -239,6 +241,14 @@ public class BaseStationReport extends AISMessage {
 		this.epfd = epfd;
 	}
 
+	public int getLrbcontrol() {
+		return lrbcontrol;
+	}
+
+	public void setLrbcontrol(int lrbcontrol) {
+		this.lrbcontrol = lrbcontrol;
+	}
+
 	public boolean isRaim() {
 		return raim;
 	}
@@ -276,6 +286,7 @@ public class BaseStationReport extends AISMessage {
 	private float lon = 0.0f;
 	private float lat = 0.0f;
 	private int epfd = 0;
+	private int lrbcontrol = 0;
 	private boolean raim = false;
 	private int radio = 0;
 	private CommunicationState commState = null;

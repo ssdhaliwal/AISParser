@@ -3,6 +3,8 @@ package elsu.ais.parser.messages;
 import java.util.*;
 
 import elsu.ais.parser.AISMessage;
+import elsu.ais.parser.messages.dataparser.CommunicationState;
+import elsu.ais.parser.messages.dataparser.VesselDimensions;
 import elsu.ais.parser.resources.LookupValues;
 import elsu.ais.parser.resources.PayloadBlock;
 
@@ -35,10 +37,7 @@ public class StaticAndVoyageRelatedData extends AISMessage {
 		messageBlocks.add(new PayloadBlock(70, 111, 42, "Call Sign", "callsign", "t", "7 six-bit characters"));
 		messageBlocks.add(new PayloadBlock(112, 231, 120, "Vessel Name", "shipname", "t", "20 six-bit characters"));
 		messageBlocks.add(new PayloadBlock(232, 239, 8, "Ship Type", "shiptype", "e", "See \"Codes for Ship Type\""));
-		messageBlocks.add(new PayloadBlock(240, 248, 9, "Dimension to Bow", "to_bow", "u", "Meters"));
-		messageBlocks.add(new PayloadBlock(249, 257, 9, "Dimension to Stern", "to_stern", "u", "Meters"));
-		messageBlocks.add(new PayloadBlock(258, 263, 6, "Dimension to Port", "to_port", "u", "Meters"));
-		messageBlocks.add(new PayloadBlock(264, 269, 6, "Dimension to Starboard", "to_starboard", "u", "Meters"));
+		messageBlocks.add(new PayloadBlock(240, 269, 30, "Vessel Dimensions", "dimension", "u", "Meters"));
 		messageBlocks.add(new PayloadBlock(270, 273, 4, "Position Fix Type", "epfd", "e", "See \"EPFD Fix Types\""));
 		messageBlocks.add(new PayloadBlock(274, 277, 4, "ETA month (UTC)", "month", "u", "1-12, 0=N/A (default)"));
 		messageBlocks.add(new PayloadBlock(278, 282, 5, "ETA day (UTC)", "day", "u", "1-31, 0=N/A (default)"));
@@ -47,7 +46,7 @@ public class StaticAndVoyageRelatedData extends AISMessage {
 		messageBlocks.add(new PayloadBlock(294, 301, 8, "Draught", "draught", "U1", "Meters/10"));
 		messageBlocks.add(new PayloadBlock(302, 421, 120, "Destination", "destination", "t", "20 6-bit characters"));
 		messageBlocks.add(
-				new PayloadBlock(422, 422, 1, "DTE", "dte", "b", "0=Data terminal ready, 1=Not ready (default)."));
+				new PayloadBlock(422, 422, 1, "DTE", "dte", "u", "0=Data terminal ready, 1=Not ready (default)."));
 		messageBlocks.add(new PayloadBlock(423, 423, 1, "Spare", "", "x", "Not used"));
 	}
 
@@ -85,16 +84,7 @@ public class StaticAndVoyageRelatedData extends AISMessage {
 				setShiptype(AISMessage.unsigned_integer_decoder(block.getBits()));
 				break;
 			case 240:
-				setToBow(AISMessage.unsigned_integer_decoder(block.getBits()));
-				break;
-			case 249:
-				setToStern(AISMessage.unsigned_integer_decoder(block.getBits()));
-				break;
-			case 258:
-				setToPort(AISMessage.unsigned_integer_decoder(block.getBits()));
-				break;
-			case 264:
-				setToStarboard(AISMessage.unsigned_integer_decoder(block.getBits()));
+				setDimension(block.getBits());
 				break;
 			case 270:
 				setEpfd(AISMessage.unsigned_integer_decoder(block.getBits()));
@@ -118,7 +108,7 @@ public class StaticAndVoyageRelatedData extends AISMessage {
 				setDestination(AISMessage.text_decoder(block.getBits()));
 				break;
 			case 422:
-				setDte(AISMessage.boolean_decoder(block.getBits()));
+				setDte(AISMessage.unsigned_integer_decoder(block.getBits()));
 				break;
 			}
 		}
@@ -137,10 +127,7 @@ public class StaticAndVoyageRelatedData extends AISMessage {
 		buffer.append(", \"callSign\":\"" + getCallsign().trim() + "\"");
 		buffer.append(", \"shipName\":\"" + getShipname().trim() + "\"");
 		buffer.append(", \"shipType\":\"" + getShiptype() + "/" + LookupValues.getShipType(getShiptype()) + "\"");
-		buffer.append(", \"to_bow\":" + getToBow());
-		buffer.append(", \"to_stern\":" + getToStern());
-		buffer.append(", \"to_port\":" + getToPort());
-		buffer.append(", \"to_starboard\":" + getToStarboard());
+		buffer.append(", \"dimension\":" + getDimension().toString());
 		buffer.append(", \"epfd\":\"" + getEpfd() + "/" + LookupValues.getEPFDFixType(getEpfd()) + "\"");
 		buffer.append(", \"month\":" + getMonth());
 		buffer.append(", \"hour\":" + getHour());
@@ -148,7 +135,7 @@ public class StaticAndVoyageRelatedData extends AISMessage {
 		buffer.append(", \"minute\":" + getMinute());
 		buffer.append(", \"draught\":" + getDraught());
 		buffer.append(", \"destination\":\"" + getDestination().trim() + "\"");
-		buffer.append(", \"dte\":" + isDte());
+		buffer.append(", \"dte\":\"" + getDte() + "/" + LookupValues.getDte(getDte()) + "\"");
 		buffer.append("}}");
 
 		return buffer.toString();
@@ -218,36 +205,12 @@ public class StaticAndVoyageRelatedData extends AISMessage {
 		this.shiptype = shiptype;
 	}
 
-	public int getToBow() {
-		return to_bow;
+	public VesselDimensions getDimension() {
+		return dimension;
 	}
 
-	public void setToBow(int to_bow) {
-		this.to_bow = to_bow;
-	}
-
-	public int getToStern() {
-		return to_stern;
-	}
-
-	public void setToStern(int to_stern) {
-		this.to_stern = to_stern;
-	}
-
-	public int getToPort() {
-		return to_port;
-	}
-
-	public void setToPort(int to_port) {
-		this.to_port = to_port;
-	}
-
-	public int getToStarboard() {
-		return to_starboard;
-	}
-
-	public void setToStarboard(int to_starboard) {
-		this.to_starboard = to_starboard;
+	public void setDimension(String bits) {
+		this.dimension = VesselDimensions.fromPayload(bits, getType());
 	}
 
 	public int getEpfd() {
@@ -306,11 +269,11 @@ public class StaticAndVoyageRelatedData extends AISMessage {
 		this.destination = destination.replace("@", "");
 	}
 
-	public boolean isDte() {
+	public int getDte() {
 		return dte;
 	}
 
-	public void setDte(boolean dte) {
+	public void setDte(int dte) {
 		this.dte = dte;
 	}
 
@@ -322,10 +285,7 @@ public class StaticAndVoyageRelatedData extends AISMessage {
 	private String callsign = "";
 	private String shipname = "";
 	private int shiptype = 0;
-	private int to_bow = 0;
-	private int to_stern = 0;
-	private int to_port = 0;
-	private int to_starboard = 0;
+	private VesselDimensions dimension = null;
 	private int epfd = 0;
 	private int month = 0;
 	private int day = 0;
@@ -333,5 +293,5 @@ public class StaticAndVoyageRelatedData extends AISMessage {
 	private int minute = 0;
 	private float draught = 0;
 	private String destination = "";
-	private boolean dte = false;
+	private int dte = 1;
 }

@@ -3,6 +3,7 @@ package elsu.ais.parser.messages;
 import java.util.*;
 
 import elsu.ais.parser.AISMessage;
+import elsu.ais.parser.messages.dataparser.VesselDimensions;
 import elsu.ais.parser.resources.LookupValues;
 import elsu.ais.parser.resources.PayloadBlock;
 
@@ -26,36 +27,26 @@ public class ExtendedClassBCSPositionReport extends AISMessage {
 	}
 
 	private void initialize() {
-		messageBlocks.add(new PayloadBlock(0, 5, 6, "Message Type", "type", "u", "Constant: 18"));
-		messageBlocks
-				.add(new PayloadBlock(6, 7, 2, "Repeat Indicator", "repeat", "u", "As in Common Navigation Block"));
-		messageBlocks.add(new PayloadBlock(8, 37, 30, "MMSI", "mmsi", "u", "9 decimal digits"));
-		messageBlocks.add(new PayloadBlock(38, 45, 8, "Regional Reserved", "reserved", "x", "Not used"));
-		messageBlocks.add(
-				new PayloadBlock(46, 55, 10, "Speed Over Ground", "speed", "U1", "As in common navigation block"));
-		messageBlocks.add(new PayloadBlock(56, 56, 1, "Position Accuracy", "accuracy", "b", "See below"));
+		messageBlocks.add(new PayloadBlock(0, 5, 6, "Message Type", "type", "u", "Constant: 19"));
+		messageBlocks.add(new PayloadBlock(6, 7, 2, "Repeat Indicator", "repeat", "u", "As in CNN"));
+		messageBlocks.add(new PayloadBlock(8, 37, 30, "MMSI", "mmsi", "u", "9 digits"));
+		messageBlocks.add(new PayloadBlock(38, 45, 8, "Regional Reserved", "reserved", "u", ""));
+		messageBlocks.add(new PayloadBlock(46, 55, 10, "Speed Over Ground", "speed", "U1", "As in CNB."));
+		messageBlocks.add(new PayloadBlock(56, 56, 1, "Position Accuracy", "accuracy", "b", "As in CNB."));
 		messageBlocks.add(new PayloadBlock(57, 84, 28, "Longitude", "lon", "I4", "Minutes/10000 (as in CNB)"));
 		messageBlocks.add(new PayloadBlock(85, 111, 27, "Latitude", "lat", "I4", "Minutes/10000 (as in CNB)"));
-		messageBlocks.add(
-				new PayloadBlock(112, 123, 12, "Course Over Ground", "course", "U1", "0.1 degrees from true north"));
-		messageBlocks
-				.add(new PayloadBlock(124, 132, 9, "True Heading", "heading", "u", "0 to 359 degrees, 511 = N/A"));
+		messageBlocks.add(new PayloadBlock(112, 123, 12, "Course Over Ground", "course", "U1", "Relative to true north, units of 0.1 degrees"));
+		messageBlocks.add(new PayloadBlock(124, 132, 9, "True Heading", "heading", "u", "0 to 359 degrees, 511 = N/A"));
 		messageBlocks.add(new PayloadBlock(133, 138, 6, "Time Stamp", "second", "u", "Second of UTC timestamp."));
-		messageBlocks.add(new PayloadBlock(139, 140, 2, "Regional reserved", "regional", "u", "Uninterpreted"));
-		messageBlocks.add(new PayloadBlock(141, 141, 1, "CS Unit", "cs", "b",
-				"0=Class B SOTDMA unit 1=Class B CS (Carrier Sense) unit"));
-		messageBlocks.add(new PayloadBlock(142, 142, 1, "Display flag", "display", "b",
-				"0=No visual display, 1=Has display, (Probably not reliable)."));
-		messageBlocks.add(new PayloadBlock(143, 143, 1, "DSC Flag", "dsc", "b",
-				"If 1, unit is attached to a VHF voice radio with DSC capability."));
-		messageBlocks.add(new PayloadBlock(144, 144, 1, "Band flag", "band", "b",
-				"Base stations can command units to switch frequency. If this flag is 1, the unit can use any part of the marine channel."));
-		messageBlocks.add(new PayloadBlock(145, 145, 1, "Message 22 flag", "msg22", "b",
-				"If 1, unit can accept a channel assignment via Message Type 22."));
-		messageBlocks.add(new PayloadBlock(146, 146, 1, "Assigned", "assigned", "b",
-				"Assigned-mode flag: 0 = autonomous mode (default), 1 = assigned mode."));
-		messageBlocks.add(new PayloadBlock(147, 147, 1, "RAIM flag", "raim", "b", "As for common navigation block"));
-		messageBlocks.add(new PayloadBlock(148, 167, 20, "Radio status", "radio", "u", "See [IALA] for details."));
+		messageBlocks.add(new PayloadBlock(139, 142, 4, "Regional reserved", "regional", "u", "Uninterpreted"));
+		messageBlocks.add(new PayloadBlock(143, 262, 120, "Name", "shipname", "s", "20 6-bit characters"));
+		messageBlocks.add(new PayloadBlock(263, 270, 8, "Type of ship and cargo", "shiptype", "u", "As in Message 5"));
+		messageBlocks.add(new PayloadBlock(300, 30, 30, "Vessel Dimensions", "dimension", "u", "Meters"));
+		messageBlocks.add(new PayloadBlock(301, 304, 4, "Position Fix Type", "epfd", "e", "See \"EPFD Fix Types\""));
+		messageBlocks.add(new PayloadBlock(305, 305, 1, "RAIM flag", "raim", "b", "As in CNB."));
+		messageBlocks.add(new PayloadBlock(306, 306, 1, "DTE", "dte", "u", "0=Data terminal ready, 1=Not ready (default)."));
+		messageBlocks.add(new PayloadBlock(307, 307, 1, "Assigned mode flag", "assigned", "u", "See [IALA] for details"));
+		messageBlocks.add(new PayloadBlock(308, 311, 4, "Spare", "", "x", "Unused, should be zero"));
 	}
 
 	public void parseMessage(String message) {
@@ -107,16 +98,7 @@ public class ExtendedClassBCSPositionReport extends AISMessage {
 				setShiptype(AISMessage.unsigned_integer_decoder(block.getBits()));
 				break;
 			case 271:
-				setToBow(AISMessage.unsigned_integer_decoder(block.getBits()));
-				break;
-			case 280:
-				setToStern(AISMessage.unsigned_integer_decoder(block.getBits()));
-				break;
-			case 289:
-				setToPort(AISMessage.unsigned_integer_decoder(block.getBits()));
-				break;
-			case 295:
-				setToStarboard(AISMessage.unsigned_integer_decoder(block.getBits()));
+				setDimension(block.getBits());
 				break;
 			case 301:
 				setEpfd(AISMessage.unsigned_integer_decoder(block.getBits()));
@@ -125,7 +107,7 @@ public class ExtendedClassBCSPositionReport extends AISMessage {
 				setRaim(AISMessage.boolean_decoder(block.getBits()));
 				break;
 			case 306:
-				setDte(AISMessage.boolean_decoder(block.getBits()));
+				setDte(AISMessage.unsigned_integer_decoder(block.getBits()));
 				break;
 			case 307:
 				setAssigned(AISMessage.unsigned_integer_decoder(block.getBits()));
@@ -153,13 +135,10 @@ public class ExtendedClassBCSPositionReport extends AISMessage {
 		buffer.append(", \"regional\":" + getRegional());
 		buffer.append(", \"shipName\":\"" + getShipname().trim() + "\"");
 		buffer.append(", \"shipType\":\"" + getShiptype() + "/" + LookupValues.getShipType(getShiptype()) + "\"");
-		buffer.append(", \"to_bow\":" + getToBow());
-		buffer.append(", \"to_stern\":" + getToStern());
-		buffer.append(", \"to_port\":" + getToPort());
-		buffer.append(", \"to_starboard\":" + getToStarboard());
+		buffer.append(", \"dimension\":" + getDimension().toString());
 		buffer.append(", \"epfd\":\"" + getEpfd() + "/" + LookupValues.getEPFDFixType(getEpfd()) + "\"");
 		buffer.append(", \"raim\":" + isRaim());
-		buffer.append(", \"dte\":" + isDte());
+		buffer.append(", \"dte\":\"" + getDte() + "/" + LookupValues.getDte(getDte()) + "\"");
 		buffer.append(", \"assigned\":\"" + getAssigned() + "/" + LookupValues.getAssignedMode(getAssigned()) + "\"");
 		buffer.append("}}");
 
@@ -274,36 +253,12 @@ public class ExtendedClassBCSPositionReport extends AISMessage {
 		this.shiptype = shiptype;
 	}
 
-	public int getToBow() {
-		return to_bow;
+	public VesselDimensions getDimension() {
+		return dimension;
 	}
 
-	public void setToBow(int to_bow) {
-		this.to_bow = to_bow;
-	}
-
-	public int getToStern() {
-		return to_stern;
-	}
-
-	public void setToStern(int to_stern) {
-		this.to_stern = to_stern;
-	}
-
-	public int getToPort() {
-		return to_port;
-	}
-
-	public void setToPort(int to_port) {
-		this.to_port = to_port;
-	}
-
-	public int getToStarboard() {
-		return to_starboard;
-	}
-
-	public void setToStarboard(int to_starboard) {
-		this.to_starboard = to_starboard;
+	public void setDimension(String bits) {
+		this.dimension = VesselDimensions.fromPayload(bits, getType());
 	}
 
 	public int getEpfd() {
@@ -322,11 +277,11 @@ public class ExtendedClassBCSPositionReport extends AISMessage {
 		this.raim = raim;
 	}
 
-	public boolean isDte() {
+	public int getDte() {
 		return dte;
 	}
 
-	public void setDte(boolean dte) {
+	public void setDte(int dte) {
 		this.dte = dte;
 	}
 
@@ -351,12 +306,9 @@ public class ExtendedClassBCSPositionReport extends AISMessage {
 	private int regional = 0;
 	private String shipname = "";
 	private int shiptype = 0;
-	private int to_bow = 0;
-	private int to_stern = 0;
-	private int to_port = 0;
-	private int to_starboard = 0;
+	private VesselDimensions dimension = null;
 	private int epfd = 0;
 	private boolean raim = false;
-	private boolean dte = false;
+	private int dte = 1;
 	private int assigned = 0;
 }

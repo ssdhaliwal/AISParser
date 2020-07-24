@@ -231,7 +231,8 @@ public class Type8_Dac1_Fid11 extends BinaryBroadCastMessage {
 		buffer.append("\"type\":" + getType());
 		buffer.append(", \"repeat\":" + getRepeat());
 		buffer.append(", \"mmsi\":" + getMmsi());
-		buffer.append(", \"dac\":" + getAppId());
+		buffer.append(", \"dac\":" + getDac());
+		buffer.append(", \"fid\":" + getFid());
 		buffer.append(", \"data_bits\":\"" + getData() + "\"");
 		buffer.append(", \"data_raw\":\"" + getDataRaw() + "\"");
 		buffer.append(", \"lat\":" + getLat());

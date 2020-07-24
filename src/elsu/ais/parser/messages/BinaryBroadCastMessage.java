@@ -30,7 +30,8 @@ public class BinaryBroadCastMessage extends AISMessage {
 				.add(new PayloadBlock(6, 7, 2, "Repeat Indicator", "repeat", "u", "As in Common Navigation Block"));
 		messageBlocks.add(new PayloadBlock(8, 37, 30, "Source MMSI", "mmsi", "u", "9 decimal digits"));
 		messageBlocks.add(new PayloadBlock(38, 39, 2, "Spare", "", "x", "Not used"));
-		messageBlocks.add(new PayloadBlock(40, 49, 16, "Application ID", "app_id", "u", "Unsigned integer"));
+		messageBlocks.add(new PayloadBlock(40, 49, 10, "Designated Area Code", "dac", "u", "Unsigned integer"));
+		messageBlocks.add(new PayloadBlock(50, 55, 6, "Functional ID", "fid", "u", "Unsigned integer"));
 		messageBlocks
 				.add(new PayloadBlock(56, -1, 952, "Data", "data", "d", "Binary data, May be shorter than 952 bits."));
 	}
@@ -54,7 +55,10 @@ public class BinaryBroadCastMessage extends AISMessage {
 				setMmsi(AISMessage.unsigned_integer_decoder(block.getBits()));
 				break;
 			case 40:
-				setAppId(AISMessage.unsigned_integer_decoder(block.getBits()));
+				setDac(AISMessage.unsigned_integer_decoder(block.getBits()));
+				break;
+			case 50:
+				setFid(AISMessage.unsigned_integer_decoder(block.getBits()));
 				break;
 			case 56:
 				setData(AISMessage.bit_decoder(block.getBits()));
@@ -67,7 +71,6 @@ public class BinaryBroadCastMessage extends AISMessage {
 		this.type = message.getType();
 		this.repeat = message.getRepeat();
 		this.mmsi = message.getMmsi();
-		this.app_id = message.getAppId();
 		this.data = message.getData();
 		this.data_raw = message.getDataRaw();
 	}
@@ -80,7 +83,8 @@ public class BinaryBroadCastMessage extends AISMessage {
 		buffer.append("\"type\":" + getType());
 		buffer.append(", \"repeat\":" + getRepeat());
 		buffer.append(", \"mmsi\":" + getMmsi());
-		buffer.append(", \"app_id\":" + getAppId());
+		buffer.append(", \"dac\":" + getDac());
+		buffer.append(", \"fid\":" + getFid());
 		buffer.append(", \"data_bits\":\"" + getData() + "\"");
 		buffer.append(", \"data_raw\":\"" + getDataRaw() + "\"");
 		buffer.append("}}");
@@ -112,12 +116,20 @@ public class BinaryBroadCastMessage extends AISMessage {
 		this.mmsi = mmsi;
 	}
 
-	public int getAppId() {
-		return app_id;
+	public int getDac() {
+		return dac;
 	}
 
-	public void setAppId(int app_id) {
-		this.app_id = app_id;
+	public void setDac(int dac) {
+		this.dac = dac;
+	}
+
+	public int getFid() {
+		return fid;
+	}
+
+	public void setFid(int fid) {
+		this.fid = fid;
 	}
 
 	public String getData() {
@@ -136,7 +148,8 @@ public class BinaryBroadCastMessage extends AISMessage {
 	private int type = 0;
 	private int repeat = 0;
 	private int mmsi = 0;
-	private int app_id = 0;
+	private int dac = 0;
+	private int fid = 0;
 	private String data = "";
 	private String data_raw = "";
 }
