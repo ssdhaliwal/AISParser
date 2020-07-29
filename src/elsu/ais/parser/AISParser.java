@@ -3,10 +3,16 @@ package elsu.ais.parser;
 import java.io.*;
 import java.util.*;
 
+import elsu.ais.parser.sentence.AISSentenceFactory;
+import elsu.ais.parser.sentence.IEventListener;
 import elsu.common.*;
 import elsu.support.*;
 
-public class AISParser {
+public class AISParser implements IEventListener {
+	public AISParser() {
+		getSentenceFactory().addEventListener(this);
+	}
+	
 	private void parseMessageFile(ConfigLoader config, InputStream stream, String fileOut) {
 		ArrayList<String> result = new ArrayList();
 
@@ -17,26 +23,12 @@ public class AISParser {
 			reader = new BufferedReader(new InputStreamReader(stream));
 
 			String line;
-			AISSentence message = null;
 			while ((line = reader.readLine()) != null) {
 				if (line.isEmpty()) {
 					continue;
 				}
 
-				try {
-					if (message != null) {
-						message = AISSentence.fromString(line, message);
-					} else {
-						message = AISSentence.fromString(line);
-					}
-					
-					System.out.println(message);
-					if (message.isComplete() && message.isValid()) {
-						message = null;
-					}
-				} catch (Exception ex) {
-					System.out.println("!ERROR!; " + ex.getMessage() + " \n" + line);
-				}
+				getSentenceFactory().parseSentence(line);
 			}
 		} catch (Exception ex) {
 			// Do something
@@ -82,9 +74,26 @@ public class AISParser {
 		try {
 			File initialFile = new File(path + "/" + fileIn);
 			InputStream targetStream = new FileInputStream(initialFile);
+			
 			aisparser.parseMessageFile(config, targetStream, path + "/" + fileOut);
 		} catch (Exception ex) {
 			System.out.println(ex.getMessage());
 		}
 	}
+
+	@Override
+	public void onError(Exception ex, Object o) {
+		System.out.println("error, " + ex.getMessage() + ", " + o);
+	}
+
+	@Override
+	public void onComplete(Object o) {
+		System.out.println("complete, " + o);
+	}
+
+	public AISSentenceFactory getSentenceFactory() {
+		return sentenceFactory;
+	}
+	
+	private AISSentenceFactory sentenceFactory = new AISSentenceFactory();
 }
