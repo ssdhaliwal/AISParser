@@ -7,8 +7,14 @@ import elsu.ais.parser.resources.PayloadBlock;
 
 public class BinaryBroadCastMessage extends AISMessage {
 
-	public static AISMessage fromAISMessage(String messageBits) {
+	public static AISMessage fromAISMessage(AISMessage aisMessage, String messageBits) {
 		BinaryBroadCastMessage binaryMessage = new BinaryBroadCastMessage();
+
+		binaryMessage.setRawMessage(aisMessage.getRawMessage());
+		binaryMessage.setBinaryMessage(aisMessage.getBinaryMessage());
+		binaryMessage.setEncodedMessage(aisMessage.getEncodedMessage());
+		binaryMessage.setErrorMessage(aisMessage.getErrorMessage());
+
 		binaryMessage.parseMessage(messageBits);
 
 		return binaryMessage;
@@ -19,19 +25,19 @@ public class BinaryBroadCastMessage extends AISMessage {
 	}
 
 	private void initialize() {
-		getMessageBlocks().add(new PayloadBlock(0, 5, 6, "Message Type", "type", "u", "Constant: 8"));
-		getMessageBlocks()
+		messageBlocks.add(new PayloadBlock(0, 5, 6, "Message Type", "type", "u", "Constant: 8"));
+		messageBlocks
 				.add(new PayloadBlock(6, 7, 2, "Repeat Indicator", "repeat", "u", "As in Common Navigation Block"));
-		getMessageBlocks().add(new PayloadBlock(8, 37, 30, "Source MMSI", "mmsi", "u", "9 decimal digits"));
-		getMessageBlocks().add(new PayloadBlock(38, 39, 2, "Spare", "", "x", "Not used"));
-		getMessageBlocks().add(new PayloadBlock(40, 49, 10, "Designated Area Code", "dac", "u", "Unsigned integer"));
-		getMessageBlocks().add(new PayloadBlock(50, 55, 6, "Functional ID", "fid", "u", "Unsigned integer"));
-		getMessageBlocks()
+		messageBlocks.add(new PayloadBlock(8, 37, 30, "Source MMSI", "mmsi", "u", "9 decimal digits"));
+		messageBlocks.add(new PayloadBlock(38, 39, 2, "Spare", "", "x", "Not used"));
+		messageBlocks.add(new PayloadBlock(40, 49, 10, "Designated Area Code", "dac", "u", "Unsigned integer"));
+		messageBlocks.add(new PayloadBlock(50, 55, 6, "Functional ID", "fid", "u", "Unsigned integer"));
+		messageBlocks
 				.add(new PayloadBlock(56, -1, 952, "Data", "data", "d", "Binary data, May be shorter than 952 bits."));
 	}
 
 	public void parseMessage(String message) {
-		for (PayloadBlock block : getMessageBlocks()) {
+		for (PayloadBlock block : messageBlocks) {
 			if (block.getEnd() == -1) {
 				block.setBits(message.substring(block.getStart(), message.length()));
 			} else {

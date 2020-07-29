@@ -1,15 +1,22 @@
 package elsu.ais.parser.messages;
 
-import elsu.ais.parser.AISBase;
+import java.util.*;
+
 import elsu.ais.parser.AISMessage;
-import elsu.ais.parser.messages.data.CommunicationState;
+import elsu.ais.parser.messages.dataparser.CommunicationState;
 import elsu.ais.parser.resources.LookupValues;
 import elsu.ais.parser.resources.PayloadBlock;
 
 public class PositionReportClassA extends AISMessage {
 
-	public static AISMessage fromAISMessage(String messageBits) {
+	public static AISMessage fromAISMessage(AISMessage aisMessage, String messageBits) {
 		PositionReportClassA positionReport = new PositionReportClassA();
+
+		positionReport.setRawMessage(aisMessage.getRawMessage());
+		positionReport.setBinaryMessage(aisMessage.getBinaryMessage());
+		positionReport.setEncodedMessage(aisMessage.getEncodedMessage());
+		positionReport.setErrorMessage(aisMessage.getErrorMessage());
+
 		positionReport.parseMessage(messageBits);
 
 		return positionReport;
@@ -20,29 +27,29 @@ public class PositionReportClassA extends AISMessage {
 	}
 
 	private void initialize() {
-		getMessageBlocks().add(new PayloadBlock(0, 5, 6, "Message Type", "type", "u", "Constant: 1-3"));
-		getMessageBlocks().add(new PayloadBlock(6, 7, 2, "Repeat Indicator", "repeat", "u", "Message repeat count"));
-		getMessageBlocks().add(new PayloadBlock(8, 37, 30, "MMSI", "mmsi", "u", "9 decimal digits"));
-		getMessageBlocks().add(new PayloadBlock(38, 41, 4, "Navigation Status", "status", "e", "See Navigation Status"));
-		getMessageBlocks().add(new PayloadBlock(42, 49, 8, "Rate of Turn (ROT)", "turn", "I3", "See below"));
-		getMessageBlocks().add(new PayloadBlock(50, 59, 10, "Speed Over Ground (SOG)", "speed", "U1", "See below"));
-		getMessageBlocks().add(new PayloadBlock(60, 60, 1, "Position Accuracy", "accuracy", "b", "See below"));
-		getMessageBlocks().add(new PayloadBlock(61, 88, 28, "Longitude", "lon", "I4", "Minutes/10000 (see below)"));
-		getMessageBlocks().add(new PayloadBlock(89, 115, 27, "Latitude", "lat", "I4", "Minutes/10000 (see below)"));
-		getMessageBlocks().add(new PayloadBlock(116, 127, 12, "Course Over Ground (COG)", "course", "U1",
+		messageBlocks.add(new PayloadBlock(0, 5, 6, "Message Type", "type", "u", "Constant: 1-3"));
+		messageBlocks.add(new PayloadBlock(6, 7, 2, "Repeat Indicator", "repeat", "u", "Message repeat count"));
+		messageBlocks.add(new PayloadBlock(8, 37, 30, "MMSI", "mmsi", "u", "9 decimal digits"));
+		messageBlocks.add(new PayloadBlock(38, 41, 4, "Navigation Status", "status", "e", "See Navigation Status"));
+		messageBlocks.add(new PayloadBlock(42, 49, 8, "Rate of Turn (ROT)", "turn", "I3", "See below"));
+		messageBlocks.add(new PayloadBlock(50, 59, 10, "Speed Over Ground (SOG)", "speed", "U1", "See below"));
+		messageBlocks.add(new PayloadBlock(60, 60, 1, "Position Accuracy", "accuracy", "b", "See below"));
+		messageBlocks.add(new PayloadBlock(61, 88, 28, "Longitude", "lon", "I4", "Minutes/10000 (see below)"));
+		messageBlocks.add(new PayloadBlock(89, 115, 27, "Latitude", "lat", "I4", "Minutes/10000 (see below)"));
+		messageBlocks.add(new PayloadBlock(116, 127, 12, "Course Over Ground (COG)", "course", "U1",
 				"Relative to true north, to 0.1 degree precision"));
-		getMessageBlocks().add(new PayloadBlock(128, 136, 9, "True Heading (HDG)", "heading", "u",
+		messageBlocks.add(new PayloadBlock(128, 136, 9, "True Heading (HDG)", "heading", "u",
 				"0 to 359 degrees, 511 = not available."));
-		getMessageBlocks().add(new PayloadBlock(137, 142, 6, "Time Stamp", "second", "u", "Second of UTC timestamp"));
-		getMessageBlocks()
+		messageBlocks.add(new PayloadBlock(137, 142, 6, "Time Stamp", "second", "u", "Second of UTC timestamp"));
+		messageBlocks
 				.add(new PayloadBlock(143, 144, 2, "Maneuver Indicator", "maneuver", "e", "See Maneuver Indicator"));
-		getMessageBlocks().add(new PayloadBlock(145, 147, 3, "Spare", "", "x", "Not used"));
-		getMessageBlocks().add(new PayloadBlock(148, 148, 1, "RAIM flag", "raim", "b", "See below"));
-		getMessageBlocks().add(new PayloadBlock(149, 167, 19, "Radio status", "radio", "u", "See below"));
+		messageBlocks.add(new PayloadBlock(145, 147, 3, "Spare", "", "x", "Not used"));
+		messageBlocks.add(new PayloadBlock(148, 148, 1, "RAIM flag", "raim", "b", "See below"));
+		messageBlocks.add(new PayloadBlock(149, 167, 19, "Radio status", "radio", "u", "See below"));
 	}
 
 	public void parseMessage(String message) {
-		for (PayloadBlock block : getMessageBlocks()) {
+		for (PayloadBlock block : messageBlocks) {
 			if (block.getEnd() == -1) {
 				block.setBits(message.substring(block.getStart(), message.length()));
 			} else {
@@ -51,49 +58,49 @@ public class PositionReportClassA extends AISMessage {
 
 			switch (block.getStart()) {
 			case 0:
-				setType(AISBase.unsigned_integer_decoder(block.getBits()));
+				setType(AISMessage.unsigned_integer_decoder(block.getBits()));
 				break;
 			case 6:
-				setRepeat(AISBase.unsigned_integer_decoder(block.getBits()));
+				setRepeat(AISMessage.unsigned_integer_decoder(block.getBits()));
 				break;
 			case 8:
-				setMmsi(AISBase.unsigned_integer_decoder(block.getBits()));
+				setMmsi(AISMessage.unsigned_integer_decoder(block.getBits()));
 				break;
 			case 38:
-				setStatus(AISBase.unsigned_integer_decoder(block.getBits()));
+				setStatus(AISMessage.unsigned_integer_decoder(block.getBits()));
 				break;
 			case 42:
-				setTurn(AISBase.integer_decoder(block.getBits()));
+				setTurn(AISMessage.integer_decoder(block.getBits()));
 				break;
 			case 50:
-				setSpeed(AISBase.unsigned_float_decoder(block.getBits()) / 10f);
+				setSpeed(AISMessage.unsigned_float_decoder(block.getBits()) / 10f);
 				break;
 			case 60:
-				setAccuracy(AISBase.boolean_decoder(block.getBits()));
+				setAccuracy(AISMessage.boolean_decoder(block.getBits()));
 				break;
 			case 61:
-				setLon(AISBase.float_decoder(block.getBits()) / 600000f);
+				setLon(AISMessage.float_decoder(block.getBits()) / 600000f);
 				break;
 			case 89:
-				setLat(AISBase.float_decoder(block.getBits()) / 600000f);
+				setLat(AISMessage.float_decoder(block.getBits()) / 600000f);
 				break;
 			case 116:
-				setCourse(AISBase.unsigned_float_decoder(block.getBits()) / 10f);
+				setCourse(AISMessage.unsigned_float_decoder(block.getBits()) / 10f);
 				break;
 			case 128:
-				setHeading(AISBase.unsigned_integer_decoder(block.getBits()));
+				setHeading(AISMessage.unsigned_integer_decoder(block.getBits()));
 				break;
 			case 137:
-				setSecond(AISBase.unsigned_integer_decoder(block.getBits()));
+				setSecond(AISMessage.unsigned_integer_decoder(block.getBits()));
 				break;
 			case 143:
-				setManeuver(AISBase.unsigned_integer_decoder(block.getBits()));
+				setManeuver(AISMessage.unsigned_integer_decoder(block.getBits()));
 				break;
 			case 148:
-				setRaim(AISBase.boolean_decoder(block.getBits()));
+				setRaim(AISMessage.boolean_decoder(block.getBits()));
 				break;
 			case 149:
-				setRadio(AISBase.unsigned_integer_decoder(block.getBits()));
+				setRadio(AISMessage.unsigned_integer_decoder(block.getBits()));
 				setCommState(block.getBits());
 				break;
 			}
