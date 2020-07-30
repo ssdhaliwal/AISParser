@@ -32,7 +32,7 @@ public class AISSentence extends AISBase {
 
 	private void validateMessage(String message) throws Exception {
 		// validate single or multiple messages
-		String[] messageArray = message.split(",");
+		String[] params = message.split(",");
 		boolean valid = false, complete = false;
 		String protocol = "", radioChannelCode = "", payload = "";
 		int fragments = 0, fragmentNumber = 0, sequenceNumber = 0, checksum = 0;
@@ -42,9 +42,27 @@ public class AISSentence extends AISBase {
 			throw new Exception("message field length is < 7; " + message);
 		}
 
+		// extract and update last field of checksum
+		String[] cValues = params[params.length - 1].split("\\*");
+		
+		// remove * from last field in params
+		params[params.length - 1] = params[params.length - 1].replaceAll("\\*.*", "");
+		
+		try {
+			setChecksum(cValues[1]);
+			checksum = Integer.valueOf(cValues[1], 16);
+			
+			int calcChecksum = AISBase.calculateChecksum(message);
+			if (calcChecksum != checksum) {
+				setChecksumError(true);
+			}
+		} catch (Exception exi) {
+			setChecksumError(true);
+		}
+
 		// check message type
 		try {
-			protocol = !messageArray[1].isEmpty() ? messageArray[0].replaceAll("[\\!\\$]", "") : "";
+			protocol = !params[1].isEmpty() ? params[0].replaceAll("[\\!\\$]", "") : "";
 
 			if ((protocol == null) || (protocol.length() != 5)) {
 				valid = false;
@@ -60,7 +78,7 @@ public class AISSentence extends AISBase {
 
 		// check fragment count
 		try {
-			fragments = !messageArray[1].isEmpty() ? Integer.valueOf(messageArray[1]) : 0;
+			fragments = !params[1].isEmpty() ? Integer.valueOf(params[1]) : 0;
 
 			if (fragments <= 0) {
 				throw new Exception("message fragment count less than equal to 0; " + message);
@@ -71,7 +89,7 @@ public class AISSentence extends AISBase {
 
 		// check fragment number
 		try {
-			fragmentNumber = !messageArray[2].isEmpty() ? Integer.valueOf(messageArray[2]) : 0;
+			fragmentNumber = !params[2].isEmpty() ? Integer.valueOf(params[2]) : 0;
 
 			// check if partial fragment is invalid?
 			if ((fragmentNumber == 1) && (fragments == 1)) {
@@ -88,7 +106,9 @@ public class AISSentence extends AISBase {
 				complete = true;
 			} else {
 				if (fragmentNumber < getFragmentNumber()) {
-					throw new IncompleteFragmentException("message fragment missing; ");
+					throw new IncompleteFragmentException("message fragment out of sequence; ");
+				} else if (fragmentNumber != getMessages().size() + 1) {
+					throw new IncompleteFragmentException("message fragment out of sequence; ");
 				}
 				
 				complete = false;
@@ -101,21 +121,21 @@ public class AISSentence extends AISBase {
 
 		// check sequence number
 		try {
-			sequenceNumber = !messageArray[3].isEmpty() ? Integer.valueOf(messageArray[3]) : 0;
+			sequenceNumber = !params[3].isEmpty() ? Integer.valueOf(params[3]) : 0;
 		} catch (Exception ex) {
 			throw new Exception("message sequence number is invalid; " + message);
 		}
 
 		// check radio channel code
 		try {
-			radioChannelCode = messageArray[4];
+			radioChannelCode = params[4];
 		} catch (Exception ex) {
 			throw new Exception("message radio channel code is invalid; " + message);
 		}
 
 		// check payload
 		try {
-			payload = messageArray[5];
+			payload = params[5];
 
 			if (payload.isEmpty()) {
 				throw new Exception("message payload is empty; " + message);
@@ -124,25 +144,12 @@ public class AISSentence extends AISBase {
 			throw new Exception("message payload is invalid; " + message);
 		}
 
-		// check checksum
-		try {
-			checksum = !messageArray[6].isEmpty() ? Integer.valueOf(messageArray[6].replaceAll("^.*\\*", ""), 16) : 0;
-
-			int calcChecksum = calculateChecksum(message);
-			if (calcChecksum != checksum) {
-				throw new Exception("message checksum does not match; " + message);
-			}
-		} catch (Exception ex) {
-			throw new Exception("message checksum is invalid; " + message);
-		}
-
 		// update class variables and decode the message
 		setProtocol(protocol);
 		setFragments(fragments);
 		setFragmentNumber(fragmentNumber);
 		setSequenceNumber(sequenceNumber);
 		setRadioChannelCode(radioChannelCode);
-		setChecksum(checksum);
 		setPayload(payload);
 
 		if (complete) {
@@ -151,6 +158,44 @@ public class AISSentence extends AISBase {
 		}
 
 		setValid(true);
+	}
+
+	@Override
+	public String toString() {
+		StringBuilder result = new StringBuilder();
+		int counter = 0;
+
+		result.append("{AISSentence: {");
+		result.append("complete: " + isComplete());
+		result.append(", valid: " + isValid());
+		result.append(", messages: [");
+
+		counter = 0;
+		for (String message : getMessages()) {
+			if (counter > 0) {
+				result.append(",");
+			}
+			result.append("\"" + message + "\"");
+			counter++;
+		}
+
+		result.append("], fieldCount: " + getFieldCount());
+		result.append(", header: \"" + getHeader() + "\"");
+		result.append(", protocol: " + getProtocol());
+		result.append(", fragments: " + getFragments());
+		result.append(", fragmentNumber: " + getFragmentNumber());
+		result.append(", sequenceNumber: " + getSequenceNumber());
+		result.append(", radioChannelCode: " + getRadioChannelCode());
+		result.append(", payload: \"" + getPayload() + "\"");
+		result.append(", checksum: " + getChecksum());
+		result.append(", bitString: \"" + getBitString() + "\"");
+		result.append(", messageNumber: " + getMessageNumber());
+		result.append(", aisMessage: " + getAISMessage());
+		result.append(", tagBlock: " + getTagBlock());
+		result.append(", vdlInfo: " + getVDLInfo());
+		result.append("}}");
+
+		return result.toString();
 	}
 
 	public ArrayList<String> getMessages() {
@@ -241,11 +286,11 @@ public class AISSentence extends AISBase {
 		this.payload += payload;
 	}
 
-	public int getChecksum() {
+	public String getChecksum() {
 		return checksum;
 	}
 
-	public void setChecksum(int checksum) {
+	public void setChecksum(String checksum) {
 		this.checksum = checksum;
 	}
 
@@ -289,42 +334,16 @@ public class AISSentence extends AISBase {
 		return this.vdlInfo;
 	}
 
-	@Override
-	public String toString() {
-		StringBuilder result = new StringBuilder();
-		int counter = 0;
+	public void setVDLInfo(VDLSignalInformation vdlInfo) {
+		this.vdlInfo = vdlInfo;
+	}
 
-		result.append("{AISSentence: {");
-		result.append("complete: " + isComplete());
-		result.append(", valid: " + isValid());
-		result.append(", messages: [");
+	public boolean isChecksumError() {
+		return checksumError;
+	}
 
-		counter = 0;
-		for (String message : getMessages()) {
-			if (counter > 0) {
-				result.append(",");
-			}
-			result.append("\"" + message + "\"");
-			counter++;
-		}
-
-		result.append("], fieldCount: " + getFieldCount());
-		result.append(", header: \"" + getHeader() + "\"");
-		result.append(", protocol: " + getProtocol());
-		result.append(", fragments: " + getFragments());
-		result.append(", fragmentNumber: " + getFragmentNumber());
-		result.append(", sequenceNumber: " + getSequenceNumber());
-		result.append(", radioChannelCode: " + getRadioChannelCode());
-		result.append(", payload: \"" + getPayload() + "\"");
-		result.append(", checksum: " + getChecksum());
-		result.append(", bitString: \"" + getBitString() + "\"");
-		result.append(", messageNumber: " + getMessageNumber());
-		result.append(", aisMessage: " + getAISMessage());
-		result.append(", tagBlock: " + getTagBlock());
-		result.append(", vdlInfo: " + getVDLInfo());
-		result.append("}}");
-
-		return result.toString();
+	public void setChecksumError(boolean error) {
+		this.checksumError = error;
 	}
 
 	private ArrayList<String> messages = new ArrayList<String>();
@@ -340,7 +359,8 @@ public class AISSentence extends AISBase {
 	private int sequenceNumber = 0;
 	private String radioChannelCode = "";
 	private String payload = "";
-	private int checksum = 0;
+	private String checksum = "";
+	private boolean checksumError = false;
 	private String bitString = "";
 	private int messageNumber = 0;
 
