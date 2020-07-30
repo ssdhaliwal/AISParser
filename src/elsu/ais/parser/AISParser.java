@@ -45,7 +45,7 @@ public class AISParser implements IEventListener {
 
 			// save the output to file
 			try {
-				FileUtils.writeFile(fileOut, result, false);
+				FileUtils.writeFile(fileOut, result, true);
 				System.out.println("Total Records: " + result.size());
 			} catch (Exception ex) {
 				System.out.println(ex.getMessage());
