@@ -155,6 +155,9 @@ public class AISSentence extends AISBase {
 		if (complete) {
 			setComplete(true);
 			setBitString();
+			
+			setMessageNumber();
+			AISMessage.fromSentence(this);
 		}
 
 		setValid(true);
@@ -188,6 +191,7 @@ public class AISSentence extends AISBase {
 		result.append(", radioChannelCode: " + getRadioChannelCode());
 		result.append(", payload: \"" + getPayload() + "\"");
 		result.append(", checksum: " + getChecksum());
+		result.append(", checksumError: " + isChecksumError());
 		result.append(", bitString: \"" + getBitString() + "\"");
 		result.append(", messageNumber: " + getMessageNumber());
 		result.append(", aisMessage: " + getAISMessage());
@@ -320,6 +324,10 @@ public class AISSentence extends AISBase {
 
 	public AISMessage getAISMessage() {
 		return this.aisMessage;
+	}
+
+	public void setAISMessage(AISMessage message) {
+		this.aisMessage = message;
 	}
 
 	public SentenceTagBlock getTagBlock() {

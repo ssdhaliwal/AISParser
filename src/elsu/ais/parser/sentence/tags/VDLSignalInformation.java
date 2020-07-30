@@ -3,32 +3,32 @@ package elsu.ais.parser.sentence.tags;
 import elsu.ais.parser.AISBase;
 
 public class VDLSignalInformation {
-	
+
 	public static VDLSignalInformation fromString(String message) {
 		return new VDLSignalInformation(message);
 	}
 
 	public VDLSignalInformation() {
 	}
-	
+
 	public VDLSignalInformation(String message) {
 		parseMessage(message);
 	}
-	
+
 	private void parseMessage(String message) {
 		String[] params = message.split(",");
 
 		// extract and update last field of checksum
 		String[] cValues = params[params.length - 1].split("\\*");
 		int checksum = 0;
-		
+
 		// remove * from last field in params
 		params[params.length - 1] = params[params.length - 1].replaceAll("\\*.*", "");
-		
+
 		try {
 			setChecksum(cValues[1]);
 			checksum = Integer.valueOf(cValues[1], 16);
-			
+
 			int calcChecksum = AISBase.calculateChecksum(message);
 			if (calcChecksum != checksum) {
 				setChecksumError(true);
@@ -36,9 +36,9 @@ public class VDLSignalInformation {
 		} catch (Exception exi) {
 			setChecksumError(true);
 		}
-		
+
 		// parse all the values
-		for(int i = 0; i < params.length; i++) {
+		for (int i = 0; i < params.length; i++) {
 			switch (i) {
 			case 0:
 				break;
@@ -46,19 +46,44 @@ public class VDLSignalInformation {
 				setId(params[i]);
 				break;
 			case 2:
-				setLink(Integer.valueOf(params[i]));
+				try {
+					setLink(Integer.valueOf(params[i]));
+				} catch (Exception exi) {
+					setLink(0);
+					setExceptions("link value invalid (" + params[i] + ")");
+				}
 				break;
 			case 3:
-				setUtc(Float.valueOf(params[i]));
+				try {
+					setUtc(Float.valueOf(params[i]));
+				} catch (Exception exi) {
+					setLink(0);
+					setExceptions("utc value invalid (" + params[i] + ")");
+				}
 				break;
 			case 4:
-				setSlotnumber(Integer.valueOf(params[i]));
+				try {
+					setSlotnumber(Integer.valueOf(params[i]));
+				} catch (Exception exi) {
+					setSlotnumber(0);
+					setExceptions("slownumber value invalid (" + params[i] + ")");
+				}
 				break;
 			case 5:
-				setSignalstrength(Float.valueOf(params[i]));
+				try {
+					setSignalstrength(Float.valueOf(params[i]));
+				} catch (Exception exi) {
+					setSignalstrength(0);
+					setExceptions("signalstrength value invalid (" + params[i] + ")");
+				}
 				break;
 			case 6:
-				setSignalnoiseratio(Float.valueOf(params[i]));
+				try {
+					setSignalnoiseratio(Float.valueOf(params[i]));
+				} catch (Exception exi) {
+					setSignalnoiseratio(0);
+					setExceptions("signalnoiseratio value invalid (" + params[i] + ")");
+				}
 				break;
 			}
 		}
@@ -66,20 +91,21 @@ public class VDLSignalInformation {
 
 	@Override
 	public String toString() {
-		StringBuilder sb = new StringBuilder();
-		
-		sb.append("{ VDLSignalInformation: {");
-		sb.append(" id: \"" + getId() + "\"");
-		sb.append(", link: " + getLink());
-		sb.append(", utc: " + getUtc());
-		sb.append(", slotnumber: " + getSlotnumber());
-		sb.append(", signalstrength: " + getSignalstrength());
-		sb.append(", signalnoiseratio: \"" + getSignalnoiseratio() + "\"");
-		sb.append(", checksum: \"" + getChecksum() + "\"");
-		sb.append(", checksumError: " + isChecksumError());
-		sb.append("}}");
-		
-		return sb.toString();
+		StringBuilder result = new StringBuilder();
+
+		result.append("{ VDLSignalInformation: {");
+		result.append(" id: \"" + getId() + "\"");
+		result.append(", link: " + getLink());
+		result.append(", utc: " + getUtc());
+		result.append(", slotnumber: " + getSlotnumber());
+		result.append(", signalstrength: " + getSignalstrength());
+		result.append(", signalnoiseratio: \"" + getSignalnoiseratio() + "\"");
+		result.append(", checksum: \"" + getChecksum() + "\"");
+		result.append(", checksumError: " + isChecksumError());
+		result.append(", exceptions: \"" + getExceptions() + "\"");
+		result.append("}}");
+
+		return result.toString();
 	}
 
 	public String getId() {
@@ -146,6 +172,14 @@ public class VDLSignalInformation {
 		this.checksumError = error;
 	}
 
+	public String getExceptions() {
+		return this.exceptions;
+	}
+
+	public void setExceptions(String error) {
+		this.exceptions += (this.exceptions.isEmpty() ? "" : ", ") + error;
+	}
+
 	private String id = "";
 	private int link = 0;
 	private float utc = 0;
@@ -154,4 +188,5 @@ public class VDLSignalInformation {
 	private float signalnoiseratio = 0;
 	private String checksum = "";
 	private boolean checksumError = false;
+	private String exceptions = "";
 }

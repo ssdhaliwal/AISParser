@@ -43,52 +43,88 @@ public class SentenceTagBlock {
 		for (String tag : params) {
 			// unix time c:
 			if (tag.startsWith("c:")) {
+				try {
 				setTime(Integer.valueOf(tag.replace("c:", "")));
+				} catch (Exception exi) {
+					setTime(0);
+					setExceptions("time value invalid (" + tag + ")");
+				}
 			}
 			// destination d:
 			else if (tag.startsWith("d:")) {
+				try {
 				setDestination(tag.replace("d:", ""));
+				} catch (Exception exi) {
+					setDestination("");
+					setExceptions("destination value invalid (" + tag + ")");
+				}
 			}
 			// sentence goup g:
 			else if (tag.startsWith("g:")) {
+				try {
 				setSentenceGroup(SentenceGroup.fromString(tag.replace("g:", "")));
+				} catch (Exception exi) {
+					setSentenceGroup(null);
+					setExceptions("sentenceGroup value invalid (" + tag + ")");
+				}
 			}
 			// line-count n:
 			if (tag.startsWith("n:")) {
+				try {
 				setLinecount(Integer.valueOf(tag.replace("n:", "")));
+				} catch (Exception exi) {
+					setLinecount(0);
+					setExceptions("linecount value invalid (" + tag + ")");
+				}
 			}
 			// relative time r:
 			if (tag.startsWith("r:")) {
+				try {
 				setRelativetime(Integer.valueOf(tag.replace("r:", "")));
+				} catch (Exception exi) {
+					setRelativetime(0);
+					setExceptions("relativetime value invalid (" + tag + ")");
+				}
 			}
 			// source s:
 			else if (tag.startsWith("s:")) {
+				try {
 				setDestination(tag.replace("s:", ""));
+				} catch (Exception exi) {
+					setDestination("");
+					setExceptions("destination value invalid (" + tag + ")");
+				}
 			}
 			// text t:
 			else if (tag.startsWith("t:")) {
+				try {
 				setText(tag.replace("t:", ""));
+				} catch (Exception exi) {
+					setText("");
+					setExceptions("text value invalid (" + tag + ")");
+				}
 			}
 		}
 	}
 
 	@Override
 	public String toString() {
-		StringBuilder sb = new StringBuilder();
+		StringBuilder result = new StringBuilder();
 		
-		sb.append("{ SentenceTagBlock: {");
-		sb.append(" time: \"" + AISBase.getFormattedDate(getTime()) + "\"");
-		sb.append(", destination: \"" + getDestination() + "\"");
-		sb.append(", group: " + getSentenceGroup());
-		sb.append(", linecount: " + getLinecount());
-		sb.append(", relativetime: " + getRelativetime());
-		sb.append(", source: \"" + getSource() + "\"");
-		sb.append(", text: \"" + getText() + "\"");
-		sb.append(", checksum: \"" + getChecksum() + "\"");
-		sb.append(", checksumError: " + isChecksumError());
-		sb.append("}}");
+		result.append("{ SentenceTagBlock: {");
+		result.append(" time: \"" + AISBase.getFormattedDate(getTime()) + "\"");
+		result.append(", destination: \"" + getDestination() + "\"");
+		result.append(", group: " + getSentenceGroup());
+		result.append(", linecount: " + getLinecount());
+		result.append(", relativetime: " + getRelativetime());
+		result.append(", source: \"" + getSource() + "\"");
+		result.append(", text: \"" + getText() + "\"");
+		result.append(", checksum: \"" + getChecksum() + "\"");
+		result.append(", checksumError: " + isChecksumError());
+		result.append(", exceptions: \"" + getExceptions() + "\"");
+		result.append("}}");
 		
-		return sb.toString();
+		return result.toString();
 	}
 
 	public int getTime() {
@@ -163,6 +199,14 @@ public class SentenceTagBlock {
 		this.checksumError = error;
 	}
 
+	public String getExceptions() {
+		return this.exceptions;
+	}
+
+	public void setExceptions(String error) {
+		this.exceptions += (this.exceptions.isEmpty() ? "" : ", ") + error;
+	}
+
 	private int time = 0;
 	private String destination = "";
 	private SentenceGroup grouping = null;
@@ -172,4 +216,5 @@ public class SentenceTagBlock {
 	private String text = "";
 	private String checksum = "";
 	private boolean checksumError = false;
+	private String exceptions = "";
 }

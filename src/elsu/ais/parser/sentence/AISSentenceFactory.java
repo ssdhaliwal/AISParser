@@ -33,8 +33,6 @@ public class AISSentenceFactory {
 	}
 
 	private void validateSentence(String message) throws Exception {
-		System.out.println(message);
-
 		// if message has tag blocks
 		String tags = "";
 		SentenceTagBlock tagBlock = null;
@@ -111,23 +109,43 @@ public class AISSentenceFactory {
 				tags = hMatch.group(0);
 
 				if (sentence == null) {
-					sentence = AISSentence.fromString(message);
+					sentence = AISSentence.fromString(tags);
 				} else {
 					try {
-						sentence = AISSentence.appendString(message, sentence);
+						sentence = AISSentence.appendString(tags, sentence);
 					} catch (IncompleteFragmentException ife) {
 						notifyError(ife, sentence, message);
 					}
 				}
+				
+				sentence.setTagBlock(tagBlock);
 			}
 
-			// see if the tag is complete
+			hMatch = AISBase.messageVSIPattern.matcher(message);
+			while (hMatch.find()) {
+				tags = hMatch.group(0);
+
+				if (sentence == null) {
+					throw new Exception("$..VSI messages with no VDO/VDM");
+				}
+				
+				VDLSignalInformation vsi = VDLSignalInformation.fromString(tags);
+				sentence.setVDLInfo(vsi);
+			}
+			
 			// -- send complete
 			if (sentence.isComplete() && sentence.isValid() && (getTagBlock().getSentenceGroup()
 					.getLinenumber() == getTagBlock().getSentenceGroup().getTotallines())) {
 				notifyComplete(sentence);
 			}
 		}
+	}
+	
+	private void doCleanup() {
+		// clear the existing sentence
+		sentence = null;
+		tagBlock = null;
+		vdlInfo = null;
 	}
 
 	public void addEventListener(IEventListener listener) {
@@ -142,24 +160,17 @@ public class AISSentenceFactory {
 		for (IEventListener listener : listeners) {
 			listener.onError(ex, o, message);
 		}
-
-		// clear the existing sentence
-		lastSentence = null;
-		sentence = null;
-		tagBlock = null;
-		vdlInfo = null;
+		
+		this.doCleanup();
 	}
 
 	public void notifyComplete(Object o) {
 		for (IEventListener listener : listeners) {
 			listener.onComplete(o);
 		}
-
-		// clear the existing sentence
+		
 		lastSentence = sentence;
-		sentence = null;
-		tagBlock = null;
-		vdlInfo = null;
+		this.doCleanup();
 	}
 
 	public void notifyUpdate(Object o) {

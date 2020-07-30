@@ -18,26 +18,42 @@ public class SentenceGroup {
 		
 		for(int i = 0; i < params.length; i++) {
 			if (i == 0) {
+				try {
 				setLinenumber(Integer.valueOf(params[i]));
+				} catch (Exception exi) {
+					setLinenumber(0);
+					setExceptions("linenumber value invalid (" + params[i] + ")");
+				}
 			} else if (i == 1) {
+				try {
 				setTotallines(Integer.valueOf(params[i]));
+				} catch (Exception exi) {
+					setTotallines(0);
+					setExceptions("totallines value invalid (" + params[i] + ")");
+				}
 			} else if (i == 2) {
+				try {
 				setCode(params[i]);
+				} catch (Exception exi) {
+					setCode("");
+					setExceptions("code value invalid (" + params[i] + ")");
+				}
 			}
 		}
 	}
 	
 	@Override
 	public String toString() {
-		StringBuilder sb = new StringBuilder();
+		StringBuilder result = new StringBuilder();
 		
-		sb.append("{ SentenceGroup: {");
-		sb.append(" linenumber: " + getLinenumber());
-		sb.append(", totallines: " + getTotallines());
-		sb.append(", code: \"" + getCode() + "\"");
-		sb.append("}}");
+		result.append("{ SentenceGroup: {");
+		result.append(" linenumber: " + getLinenumber());
+		result.append(", totallines: " + getTotallines());
+		result.append(", code: \"" + getCode() + "\"");
+		result.append(", exceptions: \"" + getExceptions() + "\"");
+		result.append("}}");
 		
-		return sb.toString();
+		return result.toString();
 	}
 	
 	public int getLinenumber() {
@@ -64,7 +80,16 @@ public class SentenceGroup {
 		this.code = code;
 	}
 
+	public String getExceptions() {
+		return this.exceptions;
+	}
+
+	public void setExceptions(String error) {
+		this.exceptions += (this.exceptions.isEmpty() ? "" : ", ") + error;
+	}
+
 	private int linenumber = 0;
 	private int totallines = 0;
 	private String code = "";
+	private String exceptions = "";
 }

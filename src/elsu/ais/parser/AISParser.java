@@ -9,12 +9,13 @@ import elsu.common.*;
 import elsu.support.*;
 
 public class AISParser implements IEventListener {
+	ArrayList<String> result = new ArrayList();
+
 	public AISParser() {
 		getSentenceFactory().addEventListener(this);
 	}
 	
 	private void parseMessageFile(ConfigLoader config, InputStream stream, String fileOut) {
-		ArrayList<String> result = new ArrayList();
 
 		BufferedReader reader = null;
 		try {
@@ -83,17 +84,17 @@ public class AISParser implements IEventListener {
 
 	@Override
 	public void onError(Exception ex, Object o, String message) {
-		System.out.println("error, " + ex.getMessage() + ", " + o + ", " + message);
+		result.add("error, " + ex.getMessage() + ", " + o + ", " + message);
 	}
 
 	@Override
 	public void onComplete(Object o) {
-		System.out.println("complete, " + o);
+		result.add("complete, " + o);
 	}
 
 	@Override
 	public void onUpdate(Object o) {
-		System.out.println("update, " + o);
+		result.add("update, " + o);
 	}
 
 	public AISSentenceFactory getSentenceFactory() {
