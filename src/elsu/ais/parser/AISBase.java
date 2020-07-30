@@ -1,9 +1,12 @@
 package elsu.ais.parser;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.TimeZone;
 import java.util.regex.Pattern;
 
 public class AISBase {
-
+	
 	static public String[] payloadBits = new String[] {
 			/*
 			 * numeric values "0","1","2","3","4","5","6","7","8","9" ASCII
@@ -49,10 +52,12 @@ public class AISBase {
 			"\"", "#", "$", "%", "&", "'", "(", ")", "*", "+", ",", "-", ".", "/", "0", "1", "2", "3", "4", "5", "6",
 			"7", "8", "9", ":", ";", "<", "=", ">", "?" };
 
-	public static final String headerRegex = "^.*\\!";
+	public static final String headerRegex = "\\\\.*\\\\";
 	public static final Pattern headerPattern = Pattern.compile(headerRegex);
-	public static final String messageRegex = "^!..VD[OM]\\,\\d+\\,\\d+,\\d*,[12AB]\\,[0-9:;<=>?@A-W`a-w]{1,}\\,[0-9]\\*[0-9a-zA-Z]{2}$";
-	public static final Pattern messagePattern = Pattern.compile(messageRegex);
+	public static final String messageVDORegex = "^!..VD[OM]\\,\\d+\\,\\d+,\\d*,[12AB]\\,[0-9:;<=>?@A-W`a-w]{1,}\\,[0-9]\\*[0-9a-zA-Z]{2}$";
+	public static final Pattern messageVDOPattern = Pattern.compile(messageVDORegex);
+	public static final String messageVSIRegex = "^\\$..VSI\\,\\s+\\,\\d+,\\d+,\\d+,\\d+,,$";
+	public static final Pattern messageVSIPattern = Pattern.compile(messageVSIRegex);
 
 	public static String decodeMessage(String message) {
 		StringBuilder builder = new StringBuilder();
@@ -195,4 +200,13 @@ public class AISBase {
 	public static String bit_decoder(String bits) {
 		return bits;
 	}
+	
+	public static String getFormattedDate(int epoch) {
+		dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
+		Date date = new Date(epoch);
+		
+		return dateFormat.format(date);
+	}
+	
+	public static SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.sss z");
 }

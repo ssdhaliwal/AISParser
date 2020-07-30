@@ -1,8 +1,10 @@
 package elsu.ais.parser.sentence;
 
 import java.util.ArrayList;
+import java.util.regex.Matcher;
 
 import elsu.ais.parser.AISBase;
+import elsu.ais.parser.exceptions.IncompleteFragmentException;
 import elsu.ais.parser.message.AISMessage;
 import elsu.ais.parser.sentence.tags.SentenceTagBlock;
 import elsu.ais.parser.sentence.tags.VDLSignalInformation;
@@ -34,9 +36,9 @@ public class AISSentence extends AISBase {
 		boolean valid = false, complete = false;
 		String protocol = "", radioChannelCode = "", payload = "";
 		int fragments = 0, fragmentNumber = 0, sequenceNumber = 0, checksum = 0;
-		
+
 		// check message fields
-		if (!message.matches(messageRegex)) {
+		if (!message.matches(messageVDORegex)) {
 			throw new Exception("message field length is < 7; " + message);
 		}
 
@@ -70,19 +72,29 @@ public class AISSentence extends AISBase {
 		// check fragment number
 		try {
 			fragmentNumber = !messageArray[2].isEmpty() ? Integer.valueOf(messageArray[2]) : 0;
-			
-			// check if partial fragment is invalid?
-			if ((fragmentNumber == 1) && (fragments == fragmentNumber)) {
-				complete = true;
-			} else if ((fragmentNumber == fragments) && (getMessages().size() + 1 == fragmentNumber)) {
-				complete = true;
-			} else if (fragments > fragmentNumber) {
-				if (getMessages().size() + 1 != fragmentNumber) {
-					throw new Exception("message fragment missing; " + message);
-				}
 
+			// check if partial fragment is invalid?
+			if ((fragmentNumber == 1) && (fragments == 1)) {
+				if (getMessages().size() != 0) {
+					throw new IncompleteFragmentException("message fragment missing; ");
+				}
+				
+				complete = true;
+			} else if ((fragmentNumber == fragments) && (getMessages().size() + 1 == fragments)) {
+				if (getFragments() != fragments) {
+					throw new IncompleteFragmentException("message fragment missing; ");
+				}
+				
+				complete = true;
+			} else {
+				if (fragmentNumber < getFragmentNumber()) {
+					throw new IncompleteFragmentException("message fragment missing; ");
+				}
+				
 				complete = false;
 			}
+		} catch (IncompleteFragmentException ife) {
+			throw ife;
 		} catch (Exception ex) {
 			throw new Exception("message fragment number is invalid; " + ex.getMessage() + "; " + message);
 		}
@@ -125,28 +137,20 @@ public class AISSentence extends AISBase {
 		}
 
 		// update class variables and decode the message
+		setProtocol(protocol);
+		setFragments(fragments);
+		setFragmentNumber(fragmentNumber);
+		setSequenceNumber(sequenceNumber);
+		setRadioChannelCode(radioChannelCode);
+		setChecksum(checksum);
+		setPayload(payload);
+
 		if (complete) {
 			setComplete(true);
-			setProtocol(protocol);
-			setFragments(fragments);
-			setFragmentNumber(fragmentNumber);
-			setSequenceNumber(sequenceNumber);
-			setRadioChannelCode(radioChannelCode);
-			setChecksum(checksum);
-			setPayload(payload);
-			
 			setBitString();
 		}
-		
+
 		setValid(true);
-	}
-
-	public ArrayList<String> getSentences() {
-		return this.sentences;
-	}
-
-	protected void setSentence(String sentence) {
-		this.sentences.add(sentence);
 	}
 
 	public ArrayList<String> getMessages() {
@@ -273,6 +277,18 @@ public class AISSentence extends AISBase {
 		return this.aisMessage;
 	}
 
+	public SentenceTagBlock getTagBlock() {
+		return this.tagBlock;
+	}
+
+	public void setTagBlock(SentenceTagBlock tagBlock) {
+		this.tagBlock = tagBlock;
+	}
+
+	public VDLSignalInformation getVDLInfo() {
+		return this.vdlInfo;
+	}
+
 	@Override
 	public String toString() {
 		StringBuilder result = new StringBuilder();
@@ -304,12 +320,13 @@ public class AISSentence extends AISBase {
 		result.append(", bitString: \"" + getBitString() + "\"");
 		result.append(", messageNumber: " + getMessageNumber());
 		result.append(", aisMessage: " + getAISMessage());
+		result.append(", tagBlock: " + getTagBlock());
+		result.append(", vdlInfo: " + getVDLInfo());
 		result.append("}}");
 
 		return result.toString();
 	}
 
-	private ArrayList<String> sentences = new ArrayList<String>();
 	private ArrayList<String> messages = new ArrayList<String>();
 	private String binaryMessage = "";
 
@@ -326,7 +343,7 @@ public class AISSentence extends AISBase {
 	private int checksum = 0;
 	private String bitString = "";
 	private int messageNumber = 0;
-	
+
 	private SentenceTagBlock tagBlock = null;
 	private VDLSignalInformation vdlInfo = null;
 	private AISMessage aisMessage = null;
