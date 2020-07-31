@@ -203,8 +203,8 @@ public class AISBase {
 
 	public static String getFormattedDate(int epoch) {
 		dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
-		Date date = new Date(epoch);
 
+		Date date = new Date(Long.parseLong(epoch + "") * 1000);
 		return dateFormat.format(date);
 	}
 

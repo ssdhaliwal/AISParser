@@ -18,6 +18,7 @@ public abstract class AISMessage extends AISBase {
 			sentence.setAISMessage(PositionReportClassA.fromAISMessage(sentence.getBitString()));
 			break;
 		case 4:
+		case 11:
 			sentence.setAISMessage(BaseStationReport.fromAISMessage(sentence.getBitString()));
 			break;
 		case 5:
@@ -27,6 +28,8 @@ public abstract class AISMessage extends AISBase {
 			sentence.setAISMessage(AddressedBinaryMessage.fromAISMessage(sentence.getBitString()));
 			break;
 		case 7:
+		case 13:
+			sentence.setAISMessage(BinaryAcknowledge.fromAISMessage(sentence.getBitString()));
 			break;
 		case 8:
 			sentence.setAISMessage(BinaryBroadCastMessage.fromAISMessage(sentence.getBitString()));
@@ -42,15 +45,13 @@ public abstract class AISMessage extends AISBase {
 			sentence.setAISMessage(StandardSARPositionReport.fromAISMessage(sentence.getBitString()));
 			break;
 		case 10:
-			break;
-		case 11:
-			sentence.setAISMessage(CoordinatedUniversalTimeDateResponse.fromAISMessage(sentence.getBitString()));
+			sentence.setAISMessage(CoordinatedUTCInquiry.fromAISMessage(sentence.getBitString()));
 			break;
 		case 12:
-			break;
-		case 13:
+			sentence.setAISMessage(AddressedSafetyRelatedMessage.fromAISMessage(sentence.getBitString()));
 			break;
 		case 14:
+			sentence.setAISMessage(SafetyRelatedMessage.fromAISMessage(sentence.getBitString()));
 			break;
 		case 15:
 			break;
