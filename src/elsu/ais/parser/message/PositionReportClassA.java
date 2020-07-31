@@ -22,7 +22,8 @@ public class PositionReportClassA extends AISMessage {
 		getMessageBlocks().add(new PayloadBlock(0, 5, 6, "Message Type", "type", "u", "Constant: 1-3"));
 		getMessageBlocks().add(new PayloadBlock(6, 7, 2, "Repeat Indicator", "repeat", "u", "Message repeat count"));
 		getMessageBlocks().add(new PayloadBlock(8, 37, 30, "MMSI", "mmsi", "u", "9 decimal digits"));
-		getMessageBlocks().add(new PayloadBlock(38, 41, 4, "Navigation Status", "status", "e", "See Navigation Status"));
+		getMessageBlocks()
+				.add(new PayloadBlock(38, 41, 4, "Navigation Status", "status", "e", "See Navigation Status"));
 		getMessageBlocks().add(new PayloadBlock(42, 49, 8, "Rate of Turn (ROT)", "turn", "I3", "See below"));
 		getMessageBlocks().add(new PayloadBlock(50, 59, 10, "Speed Over Ground (SOG)", "speed", "U1", "See below"));
 		getMessageBlocks().add(new PayloadBlock(60, 60, 1, "Position Accuracy", "accuracy", "b", "See below"));
@@ -103,12 +104,14 @@ public class PositionReportClassA extends AISMessage {
 	public String toString() {
 		StringBuilder buffer = new StringBuilder();
 
-		buffer.append("{ \"PositionReportClassA\": {");
-		buffer.append("\"transponder\":" + getTransponderType());
+		buffer.append("{");
+		buffer.append("\"transponder\":\"" + getTransponderType() + "\"");
 		buffer.append(", \"type\":" + getType());
+		buffer.append(", \"typeText\":\"" + LookupValues.getMessageType(getType()) + "\"");
 		buffer.append(", \"repeat\":" + getRepeat());
 		buffer.append(", \"mmsi\":" + getMmsi());
-		buffer.append(", \"status\":\"" + getStatus() + "/" + LookupValues.getNavigationStatus(getStatus()) + "\"");
+		buffer.append(", \"status\":" + getStatus());
+		buffer.append(", \"statusText\":\"" + LookupValues.getNavigationStatus(getStatus()) + "\"");
 		buffer.append(", \"turn\":" + getTurn());
 		buffer.append(", \"speed\":" + getSpeed());
 		buffer.append(", \"accuracy\":" + isAccuracy());
@@ -118,12 +121,14 @@ public class PositionReportClassA extends AISMessage {
 		buffer.append(", \"heading\":" + getHeading());
 		buffer.append(", \"second\":" + getSecond());
 		buffer.append(
-				", \"maneuver\":\"" + getManeuver() + "/" + LookupValues.getManeuverIndicator(getManeuver()) + "\"");
+				", \"maneuver\":" + getManeuver());
+		buffer.append(
+				", \"maneuverText\":\"" + LookupValues.getManeuverIndicator(getManeuver()) + "\"");
 		buffer.append(", \"raim\":" + isRaim());
 		buffer.append(", \"radio\":" + getRadio());
 		buffer.append(", \"commState\":" + getCommState().toString());
 		buffer.append(", \"commtech\":\"" + LookupValues.getCommunicationTechnology(getType()) + "\"");
-		buffer.append("}}");
+		buffer.append("}");
 
 		return buffer.toString();
 	}
@@ -251,11 +256,11 @@ public class PositionReportClassA extends AISMessage {
 	public void setRadio(int radio) {
 		this.radio = radio;
 	}
-	
+
 	public CommunicationState getCommState() {
 		return commState;
 	}
-	
+
 	private void setCommState(String bits) {
 		commState = CommunicationState.fromPayload(bits, getType());
 	}

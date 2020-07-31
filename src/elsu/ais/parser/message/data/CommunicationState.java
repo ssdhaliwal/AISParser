@@ -57,15 +57,16 @@ public class CommunicationState {
 	public String toString() {
 		StringBuilder buffer = new StringBuilder();
 
-		buffer.append("{ \"CommunicationState\": {");
-		buffer.append("\"syncstate\":\"" + getState() + "/" + LookupValues.getCommunicationSyncState(getState()) + "\"");
-		buffer.append(", \"message\":" + getMessage());
+		buffer.append("{");
+		buffer.append("\"syncState\":" + getState());
+		buffer.append(", \"syncStateText\":\"" + LookupValues.getCommunicationSyncState(getState()) + "\"");
+		buffer.append(", \"commState\":" + getMessage());
 		if (getCommStateSOTDMA() != null) { // SOTDMA
 			buffer.append(", \"csSOTDMA\":" + getCommStateSOTDMA().toString());
 		} else if (getCommStateITDMA() != null) { // ITDMA
 			buffer.append(", \"csITDMA\":" + getCommStateITDMA().toString());
 		}
-		buffer.append("}}");
+		buffer.append("}");
 
 		return buffer.toString();
 	}

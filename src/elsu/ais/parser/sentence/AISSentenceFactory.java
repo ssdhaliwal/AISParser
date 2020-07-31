@@ -117,7 +117,7 @@ public class AISSentenceFactory {
 						notifyError(ife, sentence, message);
 					}
 				}
-				
+
 				sentence.setTagBlock(tagBlock);
 			}
 
@@ -128,11 +128,11 @@ public class AISSentenceFactory {
 				if (sentence == null) {
 					throw new Exception("$..VSI messages with no VDO/VDM");
 				}
-				
+
 				VDLSignalInformation vsi = VDLSignalInformation.fromString(tags);
 				sentence.setVDLInfo(vsi);
 			}
-			
+
 			// -- send complete
 			if (sentence.isComplete() && sentence.isValid() && (getTagBlock().getSentenceGroup()
 					.getLinenumber() == getTagBlock().getSentenceGroup().getTotallines())) {
@@ -140,7 +140,7 @@ public class AISSentenceFactory {
 			}
 		}
 	}
-	
+
 	private void doCleanup() {
 		// clear the existing sentence
 		sentence = null;
@@ -160,7 +160,7 @@ public class AISSentenceFactory {
 		for (IEventListener listener : listeners) {
 			listener.onError(ex, o, message);
 		}
-		
+
 		this.doCleanup();
 	}
 
@@ -168,7 +168,7 @@ public class AISSentenceFactory {
 		for (IEventListener listener : listeners) {
 			listener.onComplete(o);
 		}
-		
+
 		lastSentence = sentence;
 		this.doCleanup();
 	}

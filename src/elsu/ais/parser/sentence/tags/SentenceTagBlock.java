@@ -24,14 +24,14 @@ public class SentenceTagBlock {
 		// extract and update last field of checksum
 		String[] cValues = params[params.length - 1].split("\\*");
 		int checksum = 0;
-		
+
 		// remove * from last field in params
 		params[params.length - 1] = params[params.length - 1].replaceAll("\\*.*", "");
-		
+
 		try {
 			setChecksum(cValues[1]);
 			checksum = Integer.valueOf(cValues[1], 16);
-			
+
 			int calcChecksum = AISBase.calculateChecksum(tags);
 			if (calcChecksum != checksum) {
 				setChecksumError(true);
@@ -39,12 +39,12 @@ public class SentenceTagBlock {
 		} catch (Exception exi) {
 			setChecksumError(true);
 		}
-				
+
 		for (String tag : params) {
 			// unix time c:
 			if (tag.startsWith("c:")) {
 				try {
-				setTime(Integer.valueOf(tag.replace("c:", "")));
+					setTime(Integer.valueOf(tag.replace("c:", "")));
 				} catch (Exception exi) {
 					setTime(0);
 					setExceptions("time value invalid (" + tag + ")");
@@ -53,7 +53,7 @@ public class SentenceTagBlock {
 			// destination d:
 			else if (tag.startsWith("d:")) {
 				try {
-				setDestination(tag.replace("d:", ""));
+					setDestination(tag.replace("d:", ""));
 				} catch (Exception exi) {
 					setDestination("");
 					setExceptions("destination value invalid (" + tag + ")");
@@ -62,7 +62,7 @@ public class SentenceTagBlock {
 			// sentence goup g:
 			else if (tag.startsWith("g:")) {
 				try {
-				setSentenceGroup(SentenceGroup.fromString(tag.replace("g:", "")));
+					setSentenceGroup(SentenceGroup.fromString(tag.replace("g:", "")));
 				} catch (Exception exi) {
 					setSentenceGroup(null);
 					setExceptions("sentenceGroup value invalid (" + tag + ")");
@@ -71,7 +71,7 @@ public class SentenceTagBlock {
 			// line-count n:
 			if (tag.startsWith("n:")) {
 				try {
-				setLinecount(Integer.valueOf(tag.replace("n:", "")));
+					setLinecount(Integer.valueOf(tag.replace("n:", "")));
 				} catch (Exception exi) {
 					setLinecount(0);
 					setExceptions("linecount value invalid (" + tag + ")");
@@ -80,7 +80,7 @@ public class SentenceTagBlock {
 			// relative time r:
 			if (tag.startsWith("r:")) {
 				try {
-				setRelativetime(Integer.valueOf(tag.replace("r:", "")));
+					setRelativetime(Integer.valueOf(tag.replace("r:", "")));
 				} catch (Exception exi) {
 					setRelativetime(0);
 					setExceptions("relativetime value invalid (" + tag + ")");
@@ -89,7 +89,7 @@ public class SentenceTagBlock {
 			// source s:
 			else if (tag.startsWith("s:")) {
 				try {
-				setDestination(tag.replace("s:", ""));
+					setDestination(tag.replace("s:", ""));
 				} catch (Exception exi) {
 					setDestination("");
 					setExceptions("destination value invalid (" + tag + ")");
@@ -98,7 +98,7 @@ public class SentenceTagBlock {
 			// text t:
 			else if (tag.startsWith("t:")) {
 				try {
-				setText(tag.replace("t:", ""));
+					setText(tag.replace("t:", ""));
 				} catch (Exception exi) {
 					setText("");
 					setExceptions("text value invalid (" + tag + ")");
@@ -109,22 +109,22 @@ public class SentenceTagBlock {
 
 	@Override
 	public String toString() {
-		StringBuilder result = new StringBuilder();
-		
-		result.append("{ SentenceTagBlock: {");
-		result.append(" time: \"" + AISBase.getFormattedDate(getTime()) + "\"");
-		result.append(", destination: \"" + getDestination() + "\"");
-		result.append(", group: " + getSentenceGroup());
-		result.append(", linecount: " + getLinecount());
-		result.append(", relativetime: " + getRelativetime());
-		result.append(", source: \"" + getSource() + "\"");
-		result.append(", text: \"" + getText() + "\"");
-		result.append(", checksum: \"" + getChecksum() + "\"");
-		result.append(", checksumError: " + isChecksumError());
-		result.append(", exceptions: \"" + getExceptions() + "\"");
-		result.append("}}");
-		
-		return result.toString();
+		StringBuilder buffer = new StringBuilder();
+
+		buffer.append("{");
+		buffer.append("\"time\": \"" + AISBase.getFormattedDate(getTime()) + "\"");
+		buffer.append(", \"destination\": \"" + getDestination() + "\"");
+		buffer.append(", \"group\": " + getSentenceGroup());
+		buffer.append(", \"lineCount\": " + getLinecount());
+		buffer.append(", \"relativeTime\": " + getRelativetime());
+		buffer.append(", \"source\": \"" + getSource() + "\"");
+		buffer.append(", \"text\": \"" + getText() + "\"");
+		buffer.append(", \"checksum\": \"" + getChecksum() + "\"");
+		buffer.append(", \"checksumError\": " + isChecksumError());
+		buffer.append(", \"exceptions\": \"" + getExceptions() + "\"");
+		buffer.append("}");
+
+		return buffer.toString();
 	}
 
 	public int getTime() {

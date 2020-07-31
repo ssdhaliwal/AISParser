@@ -84,16 +84,19 @@ public class AISParser implements IEventListener {
 
 	@Override
 	public void onError(Exception ex, Object o, String message) {
+		System.out.println("error, " + ex.getMessage() + ", " + o + ", " + message);
 		result.add("error, " + ex.getMessage() + ", " + o + ", " + message);
 	}
 
 	@Override
 	public void onComplete(Object o) {
+		System.out.println("complete, " + o);
 		result.add("complete, " + o);
 	}
 
 	@Override
 	public void onUpdate(Object o) {
+		System.out.println("update, " + o);
 		result.add("update, " + o);
 	}
 

@@ -19,7 +19,7 @@ public class SentenceGroup {
 		for(int i = 0; i < params.length; i++) {
 			if (i == 0) {
 				try {
-				setLinenumber(Integer.valueOf(params[i]));
+					setLinenumber(Integer.valueOf(params[i]));
 				} catch (Exception exi) {
 					setLinenumber(0);
 					setExceptions("linenumber value invalid (" + params[i] + ")");
@@ -44,16 +44,16 @@ public class SentenceGroup {
 	
 	@Override
 	public String toString() {
-		StringBuilder result = new StringBuilder();
+		StringBuilder buffer = new StringBuilder();
 		
-		result.append("{ SentenceGroup: {");
-		result.append(" linenumber: " + getLinenumber());
-		result.append(", totallines: " + getTotallines());
-		result.append(", code: \"" + getCode() + "\"");
-		result.append(", exceptions: \"" + getExceptions() + "\"");
-		result.append("}}");
+		buffer.append("{");
+		buffer.append("\"lineNumber\": " + getLinenumber());
+		buffer.append(", \"totalLines\": " + getTotallines());
+		buffer.append(", \"code\": \"" + getCode() + "\"");
+		buffer.append(", \"exceptions\": \"" + getExceptions() + "\"");
+		buffer.append("}");
 		
-		return result.toString();
+		return buffer.toString();
 	}
 	
 	public int getLinenumber() {

@@ -91,21 +91,21 @@ public class VDLSignalInformation {
 
 	@Override
 	public String toString() {
-		StringBuilder result = new StringBuilder();
+		StringBuilder buffer = new StringBuilder();
 
-		result.append("{ VDLSignalInformation: {");
-		result.append(" id: \"" + getId() + "\"");
-		result.append(", link: " + getLink());
-		result.append(", utc: " + getUtc());
-		result.append(", slotnumber: " + getSlotnumber());
-		result.append(", signalstrength: " + getSignalstrength());
-		result.append(", signalnoiseratio: \"" + getSignalnoiseratio() + "\"");
-		result.append(", checksum: \"" + getChecksum() + "\"");
-		result.append(", checksumError: " + isChecksumError());
-		result.append(", exceptions: \"" + getExceptions() + "\"");
-		result.append("}}");
+		buffer.append("{");
+		buffer.append("\"id\": \"" + getId() + "\"");
+		buffer.append(", \"link\": " + getLink());
+		buffer.append(", \"utc\": " + getUtc());
+		buffer.append(", \"slotNumber\": " + getSlotnumber());
+		buffer.append(", \"signalStrength\": " + getSignalstrength());
+		buffer.append(", \"signalNoiseRatio\": \"" + getSignalnoiseratio() + "\"");
+		buffer.append(", \"checksum\": \"" + getChecksum() + "\"");
+		buffer.append(", \"checksumError\": " + isChecksumError());
+		buffer.append(", \"exceptions\": \"" + getExceptions() + "\"");
+		buffer.append("}");
 
-		return result.toString();
+		return buffer.toString();
 	}
 
 	public String getId() {

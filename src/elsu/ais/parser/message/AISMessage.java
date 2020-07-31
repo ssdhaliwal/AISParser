@@ -10,7 +10,7 @@ public abstract class AISMessage extends AISBase {
 	
 	public static AISSentence fromSentence(AISSentence sentence) {
 		// call appropriate message class
-		switch (sentence.getMessageNumber()) {
+		switch (sentence.getType()) {
 		case 1:
 			sentence.setAISMessage(PositionReportClassA.fromAISMessage(sentence.getBitString()));
 			break;

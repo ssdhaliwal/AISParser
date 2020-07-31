@@ -67,27 +67,28 @@ public class CommunicationState_SOTDMA {
 	public String toString() {
 		StringBuilder buffer = new StringBuilder();
 
-		buffer.append("{ \"CommunicationState_SOTDMA\": {");
-		buffer.append("\"timeout\":" + getTimeout());
+		buffer.append("{");
+		buffer.append("\"accessScheme\":\"SOTDMA\"");
+		buffer.append(", \"timeout\":" + getTimeout());
 		switch(getTimeout()) {
 		case 0:
-			buffer.append(", \"slotoffset\":" + getSlotOffset());
+			buffer.append(", \"slotOffset\":" + getSlotOffset());
 			break;
 		case 1:
-			buffer.append(", \"UTChourmin\":" + getUtcHourMinute());
+			buffer.append(", \"UTCHourMin\":" + getUtcHourMinute());
 			break;
 		case 2:
 		case 4:
 		case 6:
-			buffer.append(", \"slotnumber\":" + getSlotNumber());
+			buffer.append(", \"slotNumber\":" + getSlotNumber());
 			break;
 		case 3:
 		case 5:
 		case 7:
-			buffer.append(", \"receivedstations\":" + getReceivedStations());
+			buffer.append(", \"receivedStations\":" + getReceivedStations());
 			break;
 		}
-		buffer.append("}}");
+		buffer.append("}");
 
 		return buffer.toString();
 	}

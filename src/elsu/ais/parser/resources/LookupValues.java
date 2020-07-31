@@ -4,6 +4,42 @@ import java.util.HashMap;
 
 public class LookupValues {
 
+	private static HashMap<Integer, String> messageType = new HashMap<Integer, String>() {
+		{
+			put(1, "Position report - Class A Scheduled");
+			put(2, "Position report - Class A Assigned");
+			put(3, "Position report - Class A Special");
+			put(4, "Base station report");
+			put(5, "Static and voyage related data");
+			put(6, "Binary addressed message");
+			put(7, "Binary acknowledge-ment");
+			put(8, "Binary broadcast message");
+			put(9, "Standard SAR aircraft position report");
+			put(10, "UTC/date inquiry");
+			put(11, "UTC/date response");
+			put(12, "Addressed safety related message");
+			put(13, "Safety related acknowledge-ment");
+			put(14, "Safety related broadcast message");
+			put(15, "Interrogation");
+			put(16, "Assignment mode command");
+			put(17, "DGNSS broadcast binary message");
+			put(18, "Standard Class B equipment position report");
+			put(19, "Extended Class B equipment position report");
+			put(20, "Data link management message");
+			put(21, "Aids-to-navigation report");
+			put(22, "Channel management(6)");
+			put(23, "Group assignment command");
+			put(24, "Static data report");
+			put(25, "Single slot binary message");
+			put(26, "Multiple slot binary message with Communi-cations State");
+			put(27, "Position report for long-range applications");
+		}
+	};
+
+	public static String getMessageType(Integer number) {
+		return messageType.get(number);
+	}
+
 	private static HashMap<Integer, String> navigationStatus = new HashMap<Integer, String>() {
 		{
 			put(0, "Under way using engine");

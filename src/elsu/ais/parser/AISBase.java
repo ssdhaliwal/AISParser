@@ -6,7 +6,7 @@ import java.util.TimeZone;
 import java.util.regex.Pattern;
 
 public class AISBase {
-	
+
 	static public String[] payloadBits = new String[] {
 			/*
 			 * numeric values "0","1","2","3","4","5","6","7","8","9" ASCII
@@ -93,25 +93,25 @@ public class AISBase {
 
 	public static int calculateChecksum(String message) {
 		int checksum = 0;
-	
+
 		char c = 0;
-		
+
 		for (int i = 1; i < message.length(); i++) {
 			c = message.charAt(i);
-			
+
 			// if delimiter is not at the start; return 0
 			if ((i > 1) && (c == '!' || c == '*')) {
 				return checksum;
 			}
-			
+
 			// compute checksum
 			checksum ^= c;
 		}
-		
+
 		// return 0; invalid
 		return 0;
 	}
-	
+
 	public static int unsigned_integer_decoder(String bits) {
 		return Integer.valueOf(bits, 2);
 	}
@@ -200,13 +200,13 @@ public class AISBase {
 	public static String bit_decoder(String bits) {
 		return bits;
 	}
-	
+
 	public static String getFormattedDate(int epoch) {
 		dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
 		Date date = new Date(epoch);
-		
+
 		return dateFormat.format(date);
 	}
-	
+
 	public static SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.sss z");
 }

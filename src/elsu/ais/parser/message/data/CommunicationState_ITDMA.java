@@ -55,11 +55,12 @@ public class CommunicationState_ITDMA {
 	public String toString() {
 		StringBuilder buffer = new StringBuilder();
 
-		buffer.append("{ \"CommunicationState_ITDMA\": {");
-		buffer.append("\"increment\":" + getIncrement());
+		buffer.append("{");
+		buffer.append("\"accessScheme\":\"ITDMA\"");
+		buffer.append(", \"increment\":" + getIncrement());
 		buffer.append(", \"slots\":" + getSlots());
 		buffer.append(", \"keep\":" + isKeep());
-		buffer.append("}}");
+		buffer.append("}");
 
 		return buffer.toString();
 	}

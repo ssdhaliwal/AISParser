@@ -57,12 +57,12 @@ public class VesselDimensions {
 	public String toString() {
 		StringBuilder buffer = new StringBuilder();
 
-		buffer.append("{ \"dimensions\": {");
+		buffer.append("{");
 		buffer.append("\"to_bow\":" + getToBow());
 		buffer.append(", \"to_stern\":" + getToStern());
 		buffer.append(", \"to_port\":" + getToPort());
 		buffer.append(", \"to_starboard\":" + getToStarboard());
-		buffer.append("}}");
+		buffer.append("}");
 
 		return buffer.toString();
 	}

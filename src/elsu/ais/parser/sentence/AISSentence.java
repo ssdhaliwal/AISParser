@@ -1,11 +1,11 @@
 package elsu.ais.parser.sentence;
 
 import java.util.ArrayList;
-import java.util.regex.Matcher;
 
 import elsu.ais.parser.AISBase;
 import elsu.ais.parser.exceptions.IncompleteFragmentException;
 import elsu.ais.parser.message.AISMessage;
+import elsu.ais.parser.resources.LookupValues;
 import elsu.ais.parser.sentence.tags.SentenceTagBlock;
 import elsu.ais.parser.sentence.tags.VDLSignalInformation;
 
@@ -44,14 +44,14 @@ public class AISSentence extends AISBase {
 
 		// extract and update last field of checksum
 		String[] cValues = params[params.length - 1].split("\\*");
-		
+
 		// remove * from last field in params
 		params[params.length - 1] = params[params.length - 1].replaceAll("\\*.*", "");
-		
+
 		try {
 			setChecksum(cValues[1]);
 			checksum = Integer.valueOf(cValues[1], 16);
-			
+
 			int calcChecksum = AISBase.calculateChecksum(message);
 			if (calcChecksum != checksum) {
 				setChecksumError(true);
@@ -96,13 +96,13 @@ public class AISSentence extends AISBase {
 				if (getMessages().size() != 0) {
 					throw new IncompleteFragmentException("message fragment missing; ");
 				}
-				
+
 				complete = true;
 			} else if ((fragmentNumber == fragments) && (getMessages().size() + 1 == fragments)) {
 				if (getFragments() != fragments) {
 					throw new IncompleteFragmentException("message fragment missing; ");
 				}
-				
+
 				complete = true;
 			} else {
 				if (fragmentNumber < getFragmentNumber()) {
@@ -110,7 +110,7 @@ public class AISSentence extends AISBase {
 				} else if (fragmentNumber != getMessages().size() + 1) {
 					throw new IncompleteFragmentException("message fragment out of sequence; ");
 				}
-				
+
 				complete = false;
 			}
 		} catch (IncompleteFragmentException ife) {
@@ -155,8 +155,8 @@ public class AISSentence extends AISBase {
 		if (complete) {
 			setComplete(true);
 			setBitString();
-			
-			setMessageNumber();
+
+			setType();
 			AISMessage.fromSentence(this);
 		}
 
@@ -168,10 +168,10 @@ public class AISSentence extends AISBase {
 		StringBuilder result = new StringBuilder();
 		int counter = 0;
 
-		result.append("{AISSentence: {");
-		result.append("complete: " + isComplete());
-		result.append(", valid: " + isValid());
-		result.append(", messages: [");
+		result.append("{");
+		result.append("\"complete\": " + isComplete());
+		result.append(", \"valid\": " + isValid());
+		result.append(", \"messages\": [");
 
 		counter = 0;
 		for (String message : getMessages()) {
@@ -182,22 +182,23 @@ public class AISSentence extends AISBase {
 			counter++;
 		}
 
-		result.append("], fieldCount: " + getFieldCount());
-		result.append(", header: \"" + getHeader() + "\"");
-		result.append(", protocol: " + getProtocol());
-		result.append(", fragments: " + getFragments());
-		result.append(", fragmentNumber: " + getFragmentNumber());
-		result.append(", sequenceNumber: " + getSequenceNumber());
-		result.append(", radioChannelCode: " + getRadioChannelCode());
-		result.append(", payload: \"" + getPayload() + "\"");
-		result.append(", checksum: " + getChecksum());
-		result.append(", checksumError: " + isChecksumError());
-		result.append(", bitString: \"" + getBitString() + "\"");
-		result.append(", messageNumber: " + getMessageNumber());
-		result.append(", aisMessage: " + getAISMessage());
-		result.append(", tagBlock: " + getTagBlock());
-		result.append(", vdlInfo: " + getVDLInfo());
-		result.append("}}");
+		result.append("], \"fieldCount\": " + getFieldCount());
+		result.append(", \"header\": \"" + getHeader() + "\"");
+		result.append(", \"protocol\": \"" + getProtocol() + "\"");
+		result.append(", \"fragments\": " + getFragments());
+		result.append(", \"fragmentNumber\": " + getFragmentNumber());
+		result.append(", \"sequenceNumber\": " + getSequenceNumber());
+		result.append(", \"radioChannelCode\": \"" + getRadioChannelCode() + "\"");
+		result.append(", \"payload\": \"" + getPayload() + "\"");
+		result.append(", \"checksum\": \"" + getChecksum() + "\"");
+		result.append(", \"checksumError\": " + isChecksumError());
+		result.append(", \"bitString\": \"" + getBitString() + "\"");
+		result.append(", \"type\":" + getType());
+		result.append(", \"typeText\":\"" + LookupValues.getMessageType(getType())  + "\"");
+		result.append(", \"aisMessage\": " + getAISMessage());
+		result.append(", \"tagBlock\": " + getTagBlock());
+		result.append(", \"vdlInfo\": " + getVDLInfo());
+		result.append("}");
 
 		return result.toString();
 	}
@@ -314,12 +315,12 @@ public class AISSentence extends AISBase {
 		this.bitString = decodeMessage(payload);
 	}
 
-	public int getMessageNumber() {
-		return messageNumber;
+	public int getType() {
+		return type;
 	}
 
-	private void setMessageNumber() {
-		this.messageNumber = AISBase.unsigned_integer_decoder(this.bitString.substring(0, 6));
+	private void setType() {
+		this.type = AISBase.unsigned_integer_decoder(this.bitString.substring(0, 6));
 	}
 
 	public AISMessage getAISMessage() {
@@ -370,7 +371,7 @@ public class AISSentence extends AISBase {
 	private String checksum = "";
 	private boolean checksumError = false;
 	private String bitString = "";
-	private int messageNumber = 0;
+	private int type = 0;
 
 	private SentenceTagBlock tagBlock = null;
 	private VDLSignalInformation vdlInfo = null;

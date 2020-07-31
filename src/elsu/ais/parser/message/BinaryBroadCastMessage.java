@@ -2,6 +2,7 @@ package elsu.ais.parser.message;
 
 import java.util.*;
 
+import elsu.ais.parser.resources.LookupValues;
 import elsu.ais.parser.resources.PayloadBlock;
 
 public class BinaryBroadCastMessage extends AISMessage {
@@ -72,15 +73,16 @@ public class BinaryBroadCastMessage extends AISMessage {
 	public String toString() {
 		StringBuilder buffer = new StringBuilder();
 
-		buffer.append("{ \"BinaryBroadCastMessage\": {");
+		buffer.append("{");
 		buffer.append("\"type\":" + getType());
+		buffer.append(", \"typeText\":\"" + LookupValues.getMessageType(getType()) + "\"");
 		buffer.append(", \"repeat\":" + getRepeat());
 		buffer.append(", \"mmsi\":" + getMmsi());
 		buffer.append(", \"dac\":" + getDac());
 		buffer.append(", \"fid\":" + getFid());
-		buffer.append(", \"data_bits\":\"" + getData() + "\"");
-		buffer.append(", \"data_raw\":\"" + getDataRaw() + "\"");
-		buffer.append("}}");
+		buffer.append(", \"dataBits\":\"" + getData() + "\"");
+		buffer.append(", \"dataRaw\":\"" + getDataRaw() + "\"");
+		buffer.append("}");
 
 		return buffer.toString();
 	}
