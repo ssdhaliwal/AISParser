@@ -1,4 +1,4 @@
-package elsu.ais.parser;
+package elsu.ais.parser.base;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -56,7 +56,7 @@ public class AISBase {
 	public static final Pattern headerPattern = Pattern.compile(headerRegex);
 	public static final String messageVDORegex = "!..VD[OM]\\,\\d+\\,\\d+,\\d*,[12AB]\\,[0-9:;<=>?@A-W`a-w]{1,}\\,[0-9]\\*[0-9a-zA-Z]{2}$";
 	public static final Pattern messageVDOPattern = Pattern.compile(messageVDORegex);
-	public static final String messageVSIRegex = "\\$..VSI\\,\\w+\\,\\d+\\,\\d*\\.?\\d*\\,\\d+\\,[-+]?\\d*\\.?\\d*\\,\\,\\*[0-9a-zA-Z]{2}$";
+	public static final String messageVSIRegex = "\\$..VSI\\,(\\w+(-\\w+)*)\\,\\d+\\,\\d*\\.?\\d*\\,\\d+\\,[-+]?\\d*\\.?\\d*\\,\\d+\\*[0-9a-zA-Z]{2}";
 	public static final Pattern messageVSIPattern = Pattern.compile(messageVSIRegex);
 
 	public static String decodeMessage(String message) {

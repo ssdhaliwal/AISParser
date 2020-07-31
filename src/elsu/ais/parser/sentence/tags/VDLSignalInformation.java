@@ -1,6 +1,6 @@
 package elsu.ais.parser.sentence.tags;
 
-import elsu.ais.parser.AISBase;
+import elsu.ais.parser.base.AISBase;
 
 public class VDLSignalInformation {
 

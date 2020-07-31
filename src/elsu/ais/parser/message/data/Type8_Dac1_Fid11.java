@@ -2,8 +2,8 @@ package elsu.ais.parser.message.data;
 
 import java.util.ArrayList;
 
-import elsu.ais.parser.message.AISMessage;
-import elsu.ais.parser.message.BinaryBroadCastMessage;
+import elsu.ais.parser.base.AISMessage;
+import elsu.ais.parser.messages.BinaryBroadCastMessage;
 import elsu.ais.parser.resources.LookupValues;
 import elsu.ais.parser.resources.PayloadBlock;
 

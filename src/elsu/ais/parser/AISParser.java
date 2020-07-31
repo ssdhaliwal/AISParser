@@ -3,8 +3,8 @@ package elsu.ais.parser;
 import java.io.*;
 import java.util.*;
 
+import elsu.ais.parser.base.IEventListener;
 import elsu.ais.parser.sentence.AISSentenceFactory;
-import elsu.ais.parser.sentence.IEventListener;
 import elsu.common.*;
 import elsu.support.*;
 

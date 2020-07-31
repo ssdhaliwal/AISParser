@@ -1,6 +1,7 @@
-package elsu.ais.parser.message;
+package elsu.ais.parser.messages;
 
-import elsu.ais.parser.AISBase;
+import elsu.ais.parser.base.AISBase;
+import elsu.ais.parser.base.AISMessage;
 import elsu.ais.parser.message.data.CommunicationState;
 import elsu.ais.parser.resources.LookupValues;
 import elsu.ais.parser.resources.PayloadBlock;
@@ -72,10 +73,10 @@ public class PositionReportClassA extends AISMessage {
 				setAccuracy(AISBase.boolean_decoder(block.getBits()));
 				break;
 			case 61:
-				setLon(AISBase.float_decoder(block.getBits()) / 600000f);
+				setLongitude(AISBase.float_decoder(block.getBits()) / 600000f);
 				break;
 			case 89:
-				setLat(AISBase.float_decoder(block.getBits()) / 600000f);
+				setLatitude(AISBase.float_decoder(block.getBits()) / 600000f);
 				break;
 			case 116:
 				setCourse(AISBase.unsigned_float_decoder(block.getBits()) / 10f);
@@ -115,8 +116,8 @@ public class PositionReportClassA extends AISMessage {
 		buffer.append(", \"turn\":" + getTurn());
 		buffer.append(", \"speed\":" + getSpeed());
 		buffer.append(", \"accuracy\":" + isAccuracy());
-		buffer.append(", \"lon\":" + getLon());
-		buffer.append(", \"lat\":" + getLat());
+		buffer.append(", \"longitude\":" + getLongitude());
+		buffer.append(", \"latitude\":" + getLatitude());
 		buffer.append(", \"course\":" + getCourse());
 		buffer.append(", \"heading\":" + getHeading());
 		buffer.append(", \"second\":" + getSecond());
@@ -193,20 +194,20 @@ public class PositionReportClassA extends AISMessage {
 		this.accuracy = accuracy;
 	}
 
-	public float getLon() {
-		return lon;
+	public float getLongitude() {
+		return longitude;
 	}
 
-	public void setLon(float lon) {
-		this.lon = lon;
+	public void setLongitude(float longitude) {
+		this.longitude = longitude;
 	}
 
-	public float getLat() {
-		return lat;
+	public float getLatitude() {
+		return latitude;
 	}
 
-	public void setLat(float lat) {
-		this.lat = lat;
+	public void setLatitude(float latitude) {
+		this.latitude = latitude;
 	}
 
 	public float getCourse() {
@@ -272,8 +273,8 @@ public class PositionReportClassA extends AISMessage {
 	private int turn = 0;
 	private float speed = 0.0f;
 	private boolean accuracy = false;
-	private float lon = 0.0f;
-	private float lat = 0.0f;
+	private float longitude = 0f;
+	private float latitude = 0f;
 	private float course = 0.0f;
 	private int heading = 0;
 	private int second = 0;

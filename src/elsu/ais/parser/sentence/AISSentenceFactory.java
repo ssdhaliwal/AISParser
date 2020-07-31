@@ -5,7 +5,8 @@ import java.util.concurrent.CopyOnWriteArraySet;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import elsu.ais.parser.AISBase;
+import elsu.ais.parser.base.AISBase;
+import elsu.ais.parser.base.IEventListener;
 import elsu.ais.parser.exceptions.IncompleteFragmentException;
 import elsu.ais.parser.sentence.tags.SentenceTagBlock;
 import elsu.ais.parser.sentence.tags.VDLSignalInformation;

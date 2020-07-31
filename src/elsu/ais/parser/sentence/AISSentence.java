@@ -2,9 +2,9 @@ package elsu.ais.parser.sentence;
 
 import java.util.ArrayList;
 
-import elsu.ais.parser.AISBase;
+import elsu.ais.parser.base.AISBase;
+import elsu.ais.parser.base.AISMessage;
 import elsu.ais.parser.exceptions.IncompleteFragmentException;
-import elsu.ais.parser.message.AISMessage;
 import elsu.ais.parser.resources.LookupValues;
 import elsu.ais.parser.sentence.tags.SentenceTagBlock;
 import elsu.ais.parser.sentence.tags.VDLSignalInformation;

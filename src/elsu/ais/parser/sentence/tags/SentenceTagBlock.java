@@ -2,7 +2,7 @@ package elsu.ais.parser.sentence.tags;
 
 import java.util.Date;
 
-import elsu.ais.parser.AISBase;
+import elsu.ais.parser.base.AISBase;
 
 public class SentenceTagBlock {
 
