@@ -30,7 +30,7 @@ public class VesselDimensions {
 
 	public void parseMessage(String message, int messageType) {
 		for (PayloadBlock block : messageBlocks) {
-			if (block.getEnd() == -1) {
+			if ((block.getEnd() == -1) || (block.getEnd() > message.length())) {
 				block.setBits(message.substring(block.getStart(), message.length()));
 			} else {
 				block.setBits(message.substring(block.getStart(), block.getEnd() + 1));

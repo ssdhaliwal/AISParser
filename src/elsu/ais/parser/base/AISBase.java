@@ -209,4 +209,6 @@ public class AISBase {
 	}
 
 	public static SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.sss z");
+	
+	public static boolean debug = false;
 }

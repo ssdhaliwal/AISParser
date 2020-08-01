@@ -2,6 +2,7 @@ package elsu.ais.parser.message.data;
 
 import java.util.ArrayList;
 
+import elsu.ais.parser.base.AISBase;
 import elsu.ais.parser.resources.LookupValues;
 import elsu.ais.parser.resources.PayloadBlock;
 import elsu.ais.parser.sentence.AISSentence;
@@ -30,7 +31,7 @@ public class CommunicationState {
 
 	public void parseMessage(String message, int messageType) {
 		for (PayloadBlock block : messageBlocks) {
-			if (block.getEnd() == -1) {
+			if ((block.getEnd() == -1) || (block.getEnd() > message.length())) {
 				block.setBits(message.substring(block.getStart(), message.length()));
 			} else {
 				block.setBits(message.substring(block.getStart(), block.getEnd() + 1));
@@ -60,7 +61,9 @@ public class CommunicationState {
 		buffer.append("{");
 		buffer.append("\"syncState\":" + getState());
 		buffer.append(", \"syncStateText\":\"" + LookupValues.getCommunicationSyncState(getState()) + "\"");
-		buffer.append(", \"data\":" + getMessage());
+		if (AISBase.debug) {
+			buffer.append(", \"message\":" + getMessage());
+		}
 		if (getCommStateSOTDMA() != null) { // SOTDMA
 			buffer.append(", \"csSOTDMA\":" + getCommStateSOTDMA().toString());
 		} else if (getCommStateITDMA() != null) { // ITDMA

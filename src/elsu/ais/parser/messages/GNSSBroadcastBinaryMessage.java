@@ -34,7 +34,7 @@ public class GNSSBroadcastBinaryMessage extends AISMessage {
 
 	public void parseMessage(String message) {
 		for (PayloadBlock block : getMessageBlocks()) {
-			if (block.getEnd() == -1) {
+			if ((block.getEnd() == -1) || (block.getEnd() > message.length())) {
 				block.setBits(message.substring(block.getStart(), message.length()));
 			} else {
 				block.setBits(message.substring(block.getStart(), block.getEnd() + 1));
@@ -51,10 +51,10 @@ public class GNSSBroadcastBinaryMessage extends AISMessage {
 				setMmsi(AISMessage.unsigned_integer_decoder(block.getBits()));
 				break;
 			case 40:
-				setLongitude(AISBase.float_decoder(block.getBits()) / 600000f);
+				setLongitude(AISBase.float_decoder(block.getBits()) / 600f);
 				break;
 			case 58:
-				setLatitude(AISBase.float_decoder(block.getBits()) / 600000f);
+				setLatitude(AISBase.float_decoder(block.getBits()) / 600f);
 				break;
 			case 80:
 				setData(AISMessage.bit_decoder(block.getBits()));
@@ -75,8 +75,10 @@ public class GNSSBroadcastBinaryMessage extends AISMessage {
 		buffer.append(", \"longitude\":" + getLongitude());
 		buffer.append(", \"latitude\":" + getLatitude());
 		buffer.append(", \"gnssMessage\":\"" + getGNSSMessage() + "\"");
-		buffer.append(", \"dataBits\":\"" + getData() + "\"");
-		buffer.append(", \"dataRaw\":\"" + getDataRaw() + "\"");
+		if (AISBase.debug) {
+			buffer.append(", \"data\":\"" + getData() + "\"");
+			buffer.append(", \"dataRaw\":\"" + getDataRaw() + "\"");
+		}
 		buffer.append("}");
 
 		return buffer.toString();

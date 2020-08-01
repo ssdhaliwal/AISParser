@@ -2,6 +2,7 @@ package elsu.ais.parser.message.data;
 
 import java.util.ArrayList;
 
+import elsu.ais.parser.base.AISBase;
 import elsu.ais.parser.resources.LookupValues;
 import elsu.ais.parser.resources.PayloadBlock;
 import elsu.ais.parser.sentence.AISSentence;
@@ -34,7 +35,7 @@ public class GNSSMessage {
 	public void parseMessage(String message) {
 		for (PayloadBlock block : messageBlocks) {
 			try {
-				if (block.getEnd() == -1) {
+				if ((block.getEnd() == -1) || (block.getEnd() > message.length())) {
 					block.setBits(message.substring(block.getStart(), message.length()));
 				} else {
 					block.setBits(message.substring(block.getStart(), block.getEnd() + 1));
@@ -83,6 +84,9 @@ public class GNSSMessage {
 		buffer.append(", \"seqno\":" + getSeqno());
 		buffer.append(", \"words\":" + getWords());
 		buffer.append(", \"health\":" + getHealth());
+		if (AISBase.debug) {
+			buffer.append(", \"data\":" + getData());
+		}
 		buffer.append("}");
 
 		return buffer.toString();

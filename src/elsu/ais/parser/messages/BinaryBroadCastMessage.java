@@ -2,6 +2,7 @@ package elsu.ais.parser.messages;
 
 import java.util.*;
 
+import elsu.ais.parser.base.AISBase;
 import elsu.ais.parser.base.AISMessage;
 import elsu.ais.parser.resources.LookupValues;
 import elsu.ais.parser.resources.PayloadBlock;
@@ -43,7 +44,7 @@ public class BinaryBroadCastMessage extends AISMessage {
 
 	public void parseMessage(String message) {
 		for (PayloadBlock block : getMessageBlocks()) {
-			if (block.getEnd() == -1) {
+			if ((block.getEnd() == -1) || (block.getEnd() > message.length())) {
 				block.setBits(message.substring(block.getStart(), message.length()));
 			} else {
 				block.setBits(message.substring(block.getStart(), block.getEnd() + 1));
@@ -83,8 +84,10 @@ public class BinaryBroadCastMessage extends AISMessage {
 		buffer.append(", \"mmsi\":" + getMmsi());
 		buffer.append(", \"dac\":" + getDac());
 		buffer.append(", \"fid\":" + getFid());
-		buffer.append(", \"dataBits\":\"" + getData() + "\"");
-		buffer.append(", \"dataRaw\":\"" + getDataRaw() + "\"");
+		if (AISBase.debug) {
+			buffer.append(", \"data\":\"" + getData() + "\"");
+			buffer.append(", \"dataRaw\":\"" + getDataRaw() + "\"");
+		}
 		buffer.append("}");
 
 		return buffer.toString();

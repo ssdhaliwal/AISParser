@@ -44,7 +44,7 @@ public class StaticDataReportPartB extends StaticDataReport {
 
 	public void parseMessage(String message) {
 		for (PayloadBlock block : getMessageBlocks()) {
-			if (block.getEnd() == -1) {
+			if ((block.getEnd() == -1) || (block.getEnd() > message.length())) {
 				block.setBits(message.substring(block.getStart(), message.length()));
 			} else {
 				block.setBits(message.substring(block.getStart(), block.getEnd() + 1));

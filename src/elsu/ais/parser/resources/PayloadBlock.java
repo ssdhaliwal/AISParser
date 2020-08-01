@@ -13,6 +13,25 @@ public class PayloadBlock {
 		setType(type);
 		setUnits(units);
 	}
+	
+	@Override
+	public String toString() {
+		StringBuilder buffer = new StringBuilder();
+		
+		buffer.append("{");
+		buffer.append("\"start\":" + getStart());
+		buffer.append(", \"end\":" + getEnd());
+		buffer.append(", \"length\":" + getLength());
+		buffer.append(", \"description\":\"" + getDescription() + "\"");
+		buffer.append(", \"member\":\"" + getMember() + "\"");
+		buffer.append(", \"type\":\"" + getType() + "\"");
+		buffer.append(", \"units\":\"" + getUnits() + "\"");
+		buffer.append(", \"bits\":\"" + getBits() + "\"");
+		buffer.append(", \"hexValue\":\"" + getHexValue() + "\"");
+		buffer.append("}");
+		
+		return buffer.toString();
+	}
 
 	public int getStart() {
 		return start;
@@ -75,7 +94,13 @@ public class PayloadBlock {
 	}
 
 	public void setBits(String bits) {
-		this.bits = bits;
+		// stuff bits to length if needed
+		if ((bits.length() > 0) && (bits.length() < getLength())) {
+			this.bits = String.format("%-" + getLength() + "s", bits).replace(' ', '0');
+		} else {
+			this.bits = bits;
+		}
+		
 		this.hex_value = new BigInteger(bits, 2).toString(16);
 	}
 

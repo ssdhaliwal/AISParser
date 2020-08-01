@@ -2,6 +2,7 @@ package elsu.ais.parser.messages;
 
 import java.util.*;
 
+import elsu.ais.parser.base.AISBase;
 import elsu.ais.parser.base.AISMessage;
 import elsu.ais.parser.resources.LookupValues;
 import elsu.ais.parser.resources.PayloadBlock;
@@ -37,7 +38,7 @@ public class AddressedBinaryMessage extends AISMessage {
 
 	public void parseMessage(String message) {
 		for (PayloadBlock block : getMessageBlocks()) {
-			if (block.getEnd() == -1) {
+			if ((block.getEnd() == -1) || (block.getEnd() > message.length())) {
 				block.setBits(message.substring(block.getStart(), message.length()));
 			} else {
 				block.setBits(message.substring(block.getStart(), block.getEnd() + 1));
@@ -89,8 +90,10 @@ public class AddressedBinaryMessage extends AISMessage {
 		buffer.append(", \"retransmit\":" + isRetransmit());
 		buffer.append(", \"dac\":" + getDac());
 		buffer.append(", \"fid\":" + getFid());
-		buffer.append(", \"dataBits\":\"" + getData() + "\"");
-		buffer.append(", \"dataRaw\":\"" + getDataRaw() + "\"");
+		if (AISBase.debug) {
+			buffer.append(", \"data\":\"" + getData() + "\"");
+			buffer.append(", \"dataRaw\":\"" + getDataRaw() + "\"");
+		}
 		buffer.append("}");
 
 		return buffer.toString();
@@ -165,12 +168,12 @@ public class AddressedBinaryMessage extends AISMessage {
 	}
 
 	public String getDataRaw() {
-		return dataRaw;
+		return data;
 	}
 
-	public void setData(String data) {
-		this.data = data;
-		this.dataRaw = text_decoder_8bit(data);
+	public void setData(String bits) {
+		this.data = bits;
+		this.dataRaw = text_decoder_8bit(bits);
 	}
 
 	private int type = 0;

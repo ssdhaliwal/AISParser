@@ -69,6 +69,7 @@ public abstract class AISMessage extends AISBase {
 			sentence.setAISMessage(ExtendedClassBCSPositionReport.fromAISMessage(sentence.getBitString()));
 			break;
 		case 20:
+			sentence.setAISMessage(DataLinkManagementMessage.fromAISMessage(sentence.getBitString()));
 			break;
 		case 21:
 			sentence.setAISMessage(AidToNavigationReport.fromAISMessage(sentence.getBitString()));

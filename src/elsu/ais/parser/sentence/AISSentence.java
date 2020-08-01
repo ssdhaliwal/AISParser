@@ -192,12 +192,14 @@ public class AISSentence extends AISBase {
 		result.append(", \"payload\": \"" + getPayload() + "\"");
 		result.append(", \"checksum\": \"" + getChecksum() + "\"");
 		result.append(", \"checksumError\": " + isChecksumError());
-		result.append(", \"bitString\": \"" + getBitString() + "\"");
 		result.append(", \"type\":" + getType());
 		result.append(", \"typeText\":\"" + LookupValues.getMessageType(getType())  + "\"");
 		result.append(", \"aisMessage\": " + getAISMessage());
 		result.append(", \"tagBlock\": " + getTagBlock());
 		result.append(", \"vdlInfo\": " + getVDLInfo());
+		if (AISBase.debug) {
+			result.append(", \"bitString\": \"" + getBitString() + "\"");
+		}
 		result.append("}");
 
 		return result.toString();

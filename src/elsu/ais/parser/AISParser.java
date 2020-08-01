@@ -3,6 +3,7 @@ package elsu.ais.parser;
 import java.io.*;
 import java.util.*;
 
+import elsu.ais.parser.base.AISBase;
 import elsu.ais.parser.base.IEventListener;
 import elsu.ais.parser.sentence.AISSentenceFactory;
 import elsu.common.*;
@@ -70,6 +71,12 @@ public class AISParser implements IEventListener {
 			path = args[0];
 			fileIn = args[1];
 			fileOut = args[2];
+			
+			if (args.length == 4) {
+				if (args[4].toLowerCase().equals("debug") || args[4].toLowerCase().equals("true")) {
+					AISBase.debug = true;
+				}
+			}
 		}
 
 		try {
