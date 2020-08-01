@@ -119,6 +119,7 @@ public class AISBase {
 	public static int integer_decoder(String bits) {
 		int result = 0;
 
+		// 2's complement for negative numbers
 		if (bits.substring(0, 1).equals("1")) {
 			String value = bits.substring(1).replace("0", "x").replace("1", "0").replace("x", "1");
 			result = -1 - unsigned_integer_decoder(value);

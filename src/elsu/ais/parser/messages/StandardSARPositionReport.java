@@ -108,8 +108,7 @@ public class StandardSARPositionReport extends AISMessage {
 		StringBuilder buffer = new StringBuilder();
 
 		buffer.append("{");
-		buffer.append("\"transponder\":" + getTransponderType());
-		buffer.append(", \"type\":" + getType());
+		buffer.append("\"type\":" + getType());
 		buffer.append(", \"typeText\":\"" + LookupValues.getMessageType(getType()) + "\"");
 		buffer.append(", \"repeat\":" + getRepeat());
 		buffer.append(", \"mmsi\":" + getMmsi());
@@ -134,10 +133,6 @@ public class StandardSARPositionReport extends AISMessage {
 		buffer.append("}");
 
 		return buffer.toString();
-	}
-
-	public String getTransponderType() {
-		return "A";
 	}
 
 	public int getType() {

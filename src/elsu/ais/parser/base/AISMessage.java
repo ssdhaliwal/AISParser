@@ -75,8 +75,10 @@ public abstract class AISMessage extends AISBase {
 			sentence.setAISMessage(AidToNavigationReport.fromAISMessage(sentence.getBitString()));
 			break;
 		case 22:
+			sentence.setAISMessage(ChannelManagement.fromAISMessage(sentence.getBitString()));
 			break;
 		case 23:
+			sentence.setAISMessage(GroupAssignmentControl.fromAISMessage(sentence.getBitString()));
 			break;
 		case 24:
 			sentence.setAISMessage(StaticDataReport.fromAISMessage(sentence.getBitString()));

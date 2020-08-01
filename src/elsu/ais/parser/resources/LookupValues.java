@@ -37,6 +37,10 @@ public class LookupValues {
 	};
 
 	public static String getMessageType(Integer number) {
+		if (!messageType.containsKey(number)) {
+			return "--";
+		}
+
 		return messageType.get(number);
 	}
 
@@ -62,6 +66,10 @@ public class LookupValues {
 	};
 
 	public static String getNavigationStatus(Integer status) {
+		if (!navigationStatus.containsKey(status)) {
+			return "--";
+		}
+
 		return navigationStatus.get(status);
 	}
 
@@ -74,6 +82,10 @@ public class LookupValues {
 	};
 
 	public static String getManeuverIndicator(Integer maneuver) {
+		if (!maneuverIndicator.containsKey(maneuver)) {
+			return "--";
+		}
+
 		return maneuverIndicator.get(maneuver);
 	}
 
@@ -86,6 +98,10 @@ public class LookupValues {
 	};
 
 	public static String getCommunicationTechnology(Integer commState) {
+		if (!CommunicationTechnology.containsKey(commState)) {
+			return "--";
+		}
+
 		return CommunicationTechnology.get(commState);
 	}
 
@@ -97,6 +113,10 @@ public class LookupValues {
 	};
 
 	public static String getDte(Integer dte) {
+		if (!DTE.containsKey(dte)) {
+			return "--";
+		}
+
 		return DTE.get(dte);
 	}
 
@@ -110,6 +130,10 @@ public class LookupValues {
 	};
 
 	public static String getCommunicationSyncState(Integer commState) {
+		if (!CommunicationSyncState.containsKey(commState)) {
+			return "--";
+		}
+
 		return CommunicationSyncState.get(commState);
 	}
 
@@ -129,6 +153,10 @@ public class LookupValues {
 	};
 
 	public static String getEPFDFixType(Integer epfd) {
+		if (!EPFDFixTypes.containsKey(epfd)) {
+			return "--";
+		}
+
 		return EPFDFixTypes.get(epfd);
 	}
 
@@ -140,6 +168,10 @@ public class LookupValues {
 	};
 
 	public static String getLRBControl(Integer lrbcontrol) {
+		if (!LRBControl.containsKey(lrbcontrol)) {
+			return "--";
+		}
+
 		return LRBControl.get(lrbcontrol);
 	}
 
@@ -249,6 +281,10 @@ public class LookupValues {
 	};
 
 	public static String getShipType(Integer shipType) {
+		if (!ShipTypes.containsKey(shipType)) {
+			return "--";
+		}
+
 		return ShipTypes.get(shipType);
 	}
 
@@ -290,6 +326,10 @@ public class LookupValues {
 	};
 
 	public static String getNavAidType(Integer navaidType) {
+		if (!NavaidTypes.containsKey(navaidType)) {
+			return "--";
+		}
+
 		return NavaidTypes.get(navaidType);
 	}
 
@@ -301,6 +341,10 @@ public class LookupValues {
 	};
 
 	public static String getAssignedMode(Integer maneuver) {
+		if (!AssignedMode.containsKey(maneuver)) {
+			return "--";
+		}
+
 		return AssignedMode.get(maneuver);
 	}
 
@@ -312,6 +356,10 @@ public class LookupValues {
 	};
 
 	public static String getAltitudeSensor(Integer altitudeSensor) {
+		if (!AltitudeSensor.containsKey(altitudeSensor)) {
+			return "--";
+		}
+
 		return AltitudeSensor.get(altitudeSensor);
 	}
 
@@ -323,6 +371,10 @@ public class LookupValues {
 	};
 
 	public static String getCommunicationFlag(Integer commFlag) {
+		if (!CommunicationFlag.containsKey(commFlag)) {
+			return "--";
+		}
+
 		return CommunicationFlag.get(commFlag);
 	}
 
@@ -353,7 +405,76 @@ public class LookupValues {
 		}
 	};
 
-	public static String getGNSSMessageType(Integer number) {
-		return GNSSMessageType.get(number);
+	public static String getGNSSMessageType(Integer type) {
+		if (!GNSSMessageType.containsKey(type)) {
+			return "--";
+		}
+
+		return GNSSMessageType.get(type);
+	}
+
+	private static HashMap<Integer, String> TXRXMode = new HashMap<Integer, String>() {
+		{
+			put(0, "Tx A/Tx B, Rx A/Rx B (default)");
+			put(1, "Tx A, Rx A/Rx B");
+			put(2, "Tx B, Rx A/Rx B");
+		}
+	};
+
+	public static String getTXRXMode(Integer txrx) {
+		if (!TXRXMode.containsKey(txrx)) {
+			return "--";
+		}
+
+		return TXRXMode.get(txrx);
+	}
+
+	private static HashMap<Integer, String> StationType = new HashMap<Integer, String>() {
+		{
+			put(0, "all types of mobiles (default)");
+			put(1, "Class A mobile stations only");
+			put(2, "all types of Class B mobile stations");
+			put(3, "SAR airborne mobile station");
+			put(4, "Class B “SO” mobile stations only");
+			put(5, "Class B “CS” shipborne mobile station only");
+			put(6, "inland waterways");
+			put(7, "regional use");
+			put(8, "regional use");
+			put(9, "regional use");
+			put(10, "base station coverage area (see Message 4 and Message 27)");
+		}
+	};
+
+	public static String getStationType(Integer type) {
+		if (!StationType.containsKey(type)) {
+			return "--";
+		}
+
+		return StationType.get(type);
+	}
+
+	private static HashMap<Integer, String> ReportingInterval = new HashMap<Integer, String>() {
+		{
+			put(0, "As given by the autonomous mode");
+			put(1, "10 min");
+			put(2, "6 min");
+			put(3, "3 min");
+			put(4, "1 min");
+			put(5, "30 s");
+			put(6, "15 s");
+			put(7, "10 s");
+			put(8, "5 s");
+			put(9, "Next shorter reporting interval");
+			put(10, "Next longer reporting interval");
+			put(11, "2s");
+		}
+	};
+
+	public static String getReportingInterval(Integer interval) {
+		if (!ReportingInterval.containsKey(interval)) {
+			return "--";
+		}
+
+		return ReportingInterval.get(interval);
 	}
 }
