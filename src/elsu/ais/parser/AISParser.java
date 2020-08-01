@@ -84,20 +84,32 @@ public class AISParser implements IEventListener {
 
 	@Override
 	public void onError(Exception ex, Object o, String message) {
-		System.out.println("error, " + ex.getMessage() + ", " + o + ", " + message);
-		result.add("error, " + ex.getMessage() + ", " + o + ", " + message);
+		try {
+			System.out.println("error, " + ex.getMessage() + ", " + o + ", " + message);
+			result.add("error, " + ex.getMessage() + ", " + o + ", " + message);
+		} catch (Exception exi) {
+			System.out.println("message error notification exception; " + message);
+		}
 	}
 
 	@Override
 	public void onComplete(Object o) {
-		System.out.println("complete, " + o);
-		result.add("complete, " + o);
+		try {
+			System.out.println("complete, " + o);
+			result.add("complete, " + o);
+		} catch (Exception exi) {
+			System.out.println("message complete notification exception; ");
+		}
 	}
 
 	@Override
 	public void onUpdate(Object o) {
-		System.out.println("update, " + o);
-		result.add("update, " + o);
+		try {
+			System.out.println("update, " + o);
+			result.add("update, " + o);
+		} catch (Exception exi) {
+			System.out.println("message update notification exception; ");
+		}
 	}
 
 	public AISSentenceFactory getSentenceFactory() {

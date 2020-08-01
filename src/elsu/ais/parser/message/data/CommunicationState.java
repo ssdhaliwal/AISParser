@@ -60,7 +60,7 @@ public class CommunicationState {
 		buffer.append("{");
 		buffer.append("\"syncState\":" + getState());
 		buffer.append(", \"syncStateText\":\"" + LookupValues.getCommunicationSyncState(getState()) + "\"");
-		buffer.append(", \"commState\":" + getMessage());
+		buffer.append(", \"data\":" + getMessage());
 		if (getCommStateSOTDMA() != null) { // SOTDMA
 			buffer.append(", \"csSOTDMA\":" + getCommStateSOTDMA().toString());
 		} else if (getCommStateITDMA() != null) { // ITDMA

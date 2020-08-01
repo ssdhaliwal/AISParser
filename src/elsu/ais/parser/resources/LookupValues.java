@@ -325,4 +325,35 @@ public class LookupValues {
 	public static String getCommunicationFlag(Integer commFlag) {
 		return CommunicationFlag.get(commFlag);
 	}
+
+	private static HashMap<Integer, String> GNSSMessageType = new HashMap<Integer, String>() {
+		{
+			// GPS Message Number
+			put(1, "Differential GNSS corrections (full set of satellites)");
+			put(3, "Reference station parameters");
+			put(4, "Reference Station Datum");
+			put(5, "Constellation health");
+			put(6, "Null frame");
+			put(7, "Radio beacon almanacs");
+			put(9, "Subset differential GNSS corrections (this may replace Types 1 or 31)");
+			put(16, "Special message");
+
+			// GLONASS Message Number
+			put(31, "Differential GNSS corrections (full set of satellites)");
+			put(32, "Reference station parameters");
+			put(4, "Reference Station Datum");
+			put(33, "Constellation health");
+			put(34, "Null frame");
+			put(35, "Radio beacon almanacs");
+			put(34, "Subset differential GNSS corrections (this may replace Types 1 or 31)");
+			put(36, "Special message");
+
+			// GPS/GLONASS message Number
+			put(27, "Extended radio beacon almanac");
+		}
+	};
+
+	public static String getGNSSMessageType(Integer number) {
+		return GNSSMessageType.get(number);
+	}
 }

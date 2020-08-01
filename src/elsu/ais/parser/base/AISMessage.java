@@ -54,10 +54,13 @@ public abstract class AISMessage extends AISBase {
 			sentence.setAISMessage(SafetyRelatedMessage.fromAISMessage(sentence.getBitString()));
 			break;
 		case 15:
+			sentence.setAISMessage(Interrogation.fromAISMessage(sentence.getBitString()));
 			break;
 		case 16:
+			sentence.setAISMessage(AssignedModeCommand.fromAISMessage(sentence.getBitString()));
 			break;
 		case 17:
+			sentence.setAISMessage(GNSSBroadcastBinaryMessage.fromAISMessage(sentence.getBitString()));
 			break;
 		case 18:
 			sentence.setAISMessage(StandardClassBCSPositionReport.fromAISMessage(sentence.getBitString()));
