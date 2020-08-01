@@ -477,4 +477,49 @@ public class LookupValues {
 
 		return ReportingInterval.get(interval);
 	}
+
+	private static HashMap<Integer, String> DestinationIndicator = new HashMap<Integer, String>() {
+		{
+			put(0, "Broadcast (no Destination ID field used)");
+			put(1, "Addressed (Destination ID uses 30 data bits for MMSI)");
+		}
+	};
+
+	public static String getDestinationIndicator(Integer indicator) {
+		if (!DestinationIndicator.containsKey(indicator)) {
+			return "--";
+		}
+
+		return DestinationIndicator.get(indicator);
+	}
+
+	private static HashMap<Integer, String> BinaryDataFlag = new HashMap<Integer, String>() {
+		{
+			put(0, "unstructured binary data (no Application Identifier bits used)");
+			put(1, "binary data coded as defined by using the 16-bit Application identifier");
+		}
+	};
+
+	public static String getBinaryDataFlag(Integer dataFlag) {
+		if (!BinaryDataFlag.containsKey(dataFlag)) {
+			return "--";
+		}
+
+		return BinaryDataFlag.get(dataFlag);
+	}
+
+	private static HashMap<Integer, String> PositionLatency = new HashMap<Integer, String>() {
+		{
+			put(0, "Reported position latency is less than 5 seconds");
+			put(1, "Reported position latency is greater than 5 seconds = default");
+		}
+	};
+
+	public static String getPositionLatency(Integer positionLatency) {
+		if (!PositionLatency.containsKey(positionLatency)) {
+			return "--";
+		}
+
+		return PositionLatency.get(positionLatency);
+	}
 }

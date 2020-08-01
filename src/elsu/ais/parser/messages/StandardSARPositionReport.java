@@ -128,7 +128,7 @@ public class StandardSARPositionReport extends AISMessage {
 		buffer.append(", \"commFlag\":" + getCommFlag());
 		buffer.append(", \"commFlagText\":\"" + LookupValues.getCommunicationFlag(getCommFlag()) + "\"");
 		buffer.append(", \"radio\":" + getRadio());
-		buffer.append(", \"commState\":" + getCommState().toString());
+		buffer.append(", \"commState\":" + getCommState());
 		buffer.append(", \"commtech\":\"" + LookupValues.getCommunicationTechnology(getType()) + "\"");
 		buffer.append("}");
 

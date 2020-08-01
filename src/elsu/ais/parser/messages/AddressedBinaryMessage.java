@@ -58,7 +58,7 @@ public class AddressedBinaryMessage extends AISMessage {
 				setSeqno(AISMessage.unsigned_integer_decoder(block.getBits()));
 				break;
 			case 40:
-				setDestMmsi(AISMessage.unsigned_integer_decoder(block.getBits()));
+				setDestinationMmsi(AISMessage.unsigned_integer_decoder(block.getBits()));
 				break;
 			case 70:
 				setRetransmit(AISMessage.boolean_decoder(block.getBits()));
@@ -86,7 +86,7 @@ public class AddressedBinaryMessage extends AISMessage {
 		buffer.append(", \"repeat\":" + getRepeat());
 		buffer.append(", \"mmsi\":" + getMmsi());
 		buffer.append(", \"seqno\":" + getSeqno());
-		buffer.append(", \"dest_mmsi\":" + getDestMmsi());
+		buffer.append(", \"destinationMmsi\":" + getDestinationMmsi());
 		buffer.append(", \"retransmit\":" + isRetransmit());
 		buffer.append(", \"dac\":" + getDac());
 		buffer.append(", \"fid\":" + getFid());
@@ -131,12 +131,12 @@ public class AddressedBinaryMessage extends AISMessage {
 		this.seqno = seqno;
 	}
 
-	public int getDestMmsi() {
-		return dest_mmsi;
+	public int getDestinationMmsi() {
+		return destinationMmsi;
 	}
 
-	public void setDestMmsi(int dest_mmsi) {
-		this.dest_mmsi = dest_mmsi;
+	public void setDestinationMmsi(int mmsi) {
+		this.destinationMmsi = mmsi;
 	}
 
 	public boolean isRetransmit() {
@@ -180,7 +180,7 @@ public class AddressedBinaryMessage extends AISMessage {
 	private int repeat = 0;
 	private int mmsi = 0;
 	private int seqno = 0;
-	private int dest_mmsi = 0;
+	private int destinationMmsi = 0;
 	private boolean retransmit = false;
 	private int dac = 0;
 	private int fid = 0;

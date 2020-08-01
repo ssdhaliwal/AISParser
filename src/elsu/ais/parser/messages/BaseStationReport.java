@@ -127,7 +127,7 @@ public class BaseStationReport extends AISMessage {
 		buffer.append(", \"lrbControlText\":\"" + LookupValues.getLRBControl(getLrbControl()) + "\"");
 		buffer.append(", \"raim\":" + isRaim());
 		buffer.append(", \"radio\":" + getRadio());
-		buffer.append(", \"commState\":" + getCommState().toString());
+		buffer.append(", \"commState\":" + getCommState());
 		buffer.append(", \"commtech\":\"" + LookupValues.getCommunicationTechnology(getType()) + "\"");
 		buffer.append("}");
 

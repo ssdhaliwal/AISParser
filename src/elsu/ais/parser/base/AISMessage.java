@@ -95,10 +95,13 @@ public abstract class AISMessage extends AISBase {
 			}
 			break;
 		case 25:
+			sentence.setAISMessage(SingleSlotBinaryMessage.fromAISMessage(sentence.getBitString()));
 			break;
 		case 26:
+			sentence.setAISMessage(MultipleSlotBinaryMessage.fromAISMessage(sentence.getBitString()));
 			break;
 		case 27:
+			sentence.setAISMessage(LongRangeAISBroadcastMessage.fromAISMessage(sentence.getBitString()));
 			break;
 		default:
 			throw new Exception("invalid message number");

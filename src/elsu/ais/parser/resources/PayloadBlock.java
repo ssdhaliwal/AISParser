@@ -4,12 +4,23 @@ import java.math.BigInteger;
 
 public class PayloadBlock {
 
-	public PayloadBlock(int start, int end, int length, String description, String member, String type, String units) {
+	public PayloadBlock(int start, int end, int length, String description, String name, String type, String units) {
 		setStart(start);
 		setEnd(end);
 		setLength(length);
 		setDescription(description);
-		setMember(member);
+		setName(name);
+		setType(type);
+		setUnits(units);
+	}
+
+	public PayloadBlock(int start, int end, int length, int group, String description, String name, String type, String units) {
+		setStart(start);
+		setEnd(end);
+		setLength(length);
+		setGroup(group);
+		setDescription(description);
+		setName(name);
 		setType(type);
 		setUnits(units);
 	}
@@ -22,8 +33,9 @@ public class PayloadBlock {
 		buffer.append("\"start\":" + getStart());
 		buffer.append(", \"end\":" + getEnd());
 		buffer.append(", \"length\":" + getLength());
+		buffer.append(", \"group\":" + getGroup());
 		buffer.append(", \"description\":\"" + getDescription() + "\"");
-		buffer.append(", \"member\":\"" + getMember() + "\"");
+		buffer.append(", \"name\":\"" + getName() + "\"");
 		buffer.append(", \"type\":\"" + getType() + "\"");
 		buffer.append(", \"units\":\"" + getUnits() + "\"");
 		buffer.append(", \"bits\":\"" + getBits() + "\"");
@@ -57,6 +69,14 @@ public class PayloadBlock {
 		this.length = length;
 	}
 
+	public int getGroup() {
+		return group;
+	}
+
+	public void setGroup(int group) {
+		this.group = group;
+	}
+
 	public String getDescription() {
 		return description;
 	}
@@ -65,12 +85,12 @@ public class PayloadBlock {
 		this.description = description;
 	}
 
-	public String getMember() {
-		return member;
+	public String getName() {
+		return name;
 	}
 
-	public void setMember(String member) {
-		this.member = member;
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	public String getType() {
@@ -111,8 +131,9 @@ public class PayloadBlock {
 	private int start = 0;
 	private int end = 0;
 	private int length = 0;
+	private int group = 0;
 	private String description = "";
-	private String member = "";
+	private String name = "";
 	private String type = "";
 	private String units = "";
 	private String bits = "";

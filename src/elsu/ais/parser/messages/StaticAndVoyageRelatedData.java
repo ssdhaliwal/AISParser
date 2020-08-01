@@ -123,7 +123,7 @@ public class StaticAndVoyageRelatedData extends AISMessage {
 		buffer.append(", \"shipName\":\"" + getShipName().trim() + "\"");
 		buffer.append(", \"shipType\":" + getShipType());
 		buffer.append(", \"shipTypeText\":\"" + LookupValues.getShipType(getShipType()) + "\"");
-		buffer.append(", \"dimension\":" + getDimension().toString());
+		buffer.append(", \"dimension\":" + getDimension());
 		buffer.append(", \"epfd\":" + getEpfd());
 		buffer.append(", \"epfdText\":\"" + LookupValues.getEPFDFixType(getEpfd()) + "\"");
 		buffer.append(", \"month\":" + getMonth());

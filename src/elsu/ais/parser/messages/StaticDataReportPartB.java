@@ -3,6 +3,7 @@ package elsu.ais.parser.messages;
 import java.util.ArrayList;
 
 import elsu.ais.parser.base.AISMessage;
+import elsu.ais.parser.message.data.VesselDimensions;
 import elsu.ais.parser.messages.StaticDataReport;
 import elsu.ais.parser.resources.LookupValues;
 import elsu.ais.parser.resources.PayloadBlock;
@@ -33,13 +34,8 @@ public class StaticDataReportPartB extends StaticDataReport {
 		getMessageBlocks().add(new PayloadBlock(70, 89, 20, "Serial Number", "serial", "u", "(Part B)"));
 		getMessageBlocks()
 				.add(new PayloadBlock(90, 131, 42, "Call Sign", "callsign", "t", "(Part B) As in Message Type 5"));
-		getMessageBlocks().add(new PayloadBlock(132, 140, 9, "Dimension to Bow", "to_bow", "u", "(Part B) Meters"));
-		getMessageBlocks().add(new PayloadBlock(141, 149, 9, "Dimension to Stern", "to_stern", "u", "(Part B) Meters"));
-		getMessageBlocks().add(new PayloadBlock(150, 155, 6, "Dimension to Port", "to_port", "u", "(Part B) Meters"));
-		getMessageBlocks()
-				.add(new PayloadBlock(156, 161, 6, "Dimension to Starboard", "to_starboard", "u", "(Part B) Meters"));
-		getMessageBlocks()
-				.add(new PayloadBlock(132, 161, 30, "Mothership MMSI", "mothership_mmsi", "u", "(Part B) See below"));
+		getMessageBlocks().add(new PayloadBlock(40, 69, 30, "Destination MMSI", "dest_mmsi", "u", "Message destination"));
+		getMessageBlocks().add(new PayloadBlock(162, 165, 4, "Position Fix Type", "epfd", "u", "(Part B) See below"));
 	}
 
 	public void parseMessage(String message) {
@@ -66,27 +62,8 @@ public class StaticDataReportPartB extends StaticDataReport {
 			case 90:
 				setCallSign(AISMessage.text_decoder(block.getBits()));
 				break;
-			case 132:
-				if (isAuxiliary()) {
-					setMothershipMmsi(AISMessage.unsigned_integer_decoder(block.getBits()));
-				} else {
-					setToBow(AISMessage.unsigned_integer_decoder(block.getBits()));
-				}
-				break;
-			case 141:
-				if (!isAuxiliary()) {
-					setToStern(AISMessage.unsigned_integer_decoder(block.getBits()));
-				}
-				break;
-			case 150:
-				if (!isAuxiliary()) {
-					setToPort(AISMessage.unsigned_integer_decoder(block.getBits()));
-				}
-				break;
-			case 156:
-				if (!isAuxiliary()) {
-					setToStarboard(AISMessage.unsigned_integer_decoder(block.getBits()));
-				}
+			case 162:
+				setEpfd(AISMessage.unsigned_integer_decoder(block.getBits()));
 				break;
 			}
 		}
@@ -107,11 +84,9 @@ public class StaticDataReportPartB extends StaticDataReport {
 		buffer.append(", \"vendorId\":\"" + getVendorId().trim() + "\"");
 		buffer.append(", \"model\":" + getModel());
 		buffer.append(", \"serial\":" + getSerial());
-		buffer.append(", \"to_bow\":" + getToBow());
-		buffer.append(", \"to_stern\":" + getToStern());
-		buffer.append(", \"to_port\":" + getToPort());
-		buffer.append(", \"to_starboard\":" + getToStarboard());
-		buffer.append(", \"mothership_mmsi\":" + getMothershipMmsi());
+		buffer.append(", \"dimension\":" + getDimension());
+		buffer.append(", \"epfd\":" + getEpfd());
+		buffer.append(", \"epfdText\":\"" + LookupValues.getEPFDFixType(getEpfd()) + "\"");
 		buffer.append("}");
 
 		return buffer.toString();
@@ -157,44 +132,20 @@ public class StaticDataReportPartB extends StaticDataReport {
 		this.callSign = callSign.replace("@", "");
 	}
 
-	public int getToBow() {
-		return to_bow;
+	public VesselDimensions getDimension() {
+		return dimension;
 	}
 
-	public void setToBow(int to_bow) {
-		this.to_bow = to_bow;
+	public void setDimension(String bits) {
+		this.dimension = VesselDimensions.fromPayload(bits, getType());
 	}
 
-	public int getToStern() {
-		return to_stern;
+	public int getEpfd() {
+		return epfd;
 	}
 
-	public void setToStern(int to_stern) {
-		this.to_stern = to_stern;
-	}
-
-	public int getToPort() {
-		return to_port;
-	}
-
-	public void setToPort(int to_port) {
-		this.to_port = to_port;
-	}
-
-	public int getToStarboard() {
-		return to_starboard;
-	}
-
-	public void setToStarboard(int to_starboard) {
-		this.to_starboard = to_starboard;
-	}
-
-	public int getMothershipMmsi() {
-		return mothership_mmsi;
-	}
-
-	public void setMothershipMmsi(int mothership_mmsi) {
-		this.mothership_mmsi = mothership_mmsi;
+	public void setEpfd(int epfd) {
+		this.epfd = epfd;
 	}
 
 	private int shiptype = 0;
@@ -202,9 +153,6 @@ public class StaticDataReportPartB extends StaticDataReport {
 	private int model = 0;
 	private int serial = 0;
 	private String callSign = "";
-	private int to_bow = 0;
-	private int to_stern = 0;
-	private int to_port = 0;
-	private int to_starboard = 0;
-	private int mothership_mmsi = 0;
+	private VesselDimensions dimension = null;
+	private int epfd = 0;
 }

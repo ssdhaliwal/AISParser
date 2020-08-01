@@ -127,7 +127,7 @@ public class PositionReportClassA extends AISMessage {
 				", \"maneuverText\":\"" + LookupValues.getManeuverIndicator(getManeuver()) + "\"");
 		buffer.append(", \"raim\":" + isRaim());
 		buffer.append(", \"radio\":" + getRadio());
-		buffer.append(", \"commState\":" + getCommState().toString());
+		buffer.append(", \"commState\":" + getCommState());
 		buffer.append(", \"commtech\":\"" + LookupValues.getCommunicationTechnology(getType()) + "\"");
 		buffer.append("}");
 
