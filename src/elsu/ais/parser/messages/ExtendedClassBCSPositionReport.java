@@ -24,7 +24,6 @@ public class ExtendedClassBCSPositionReport extends AISMessage {
 		getMessageBlocks().add(new PayloadBlock(0, 5, 6, "Message Type", "type", "u", "Constant: 19"));
 		getMessageBlocks().add(new PayloadBlock(6, 7, 2, "Repeat Indicator", "repeat", "u", "As in CNN"));
 		getMessageBlocks().add(new PayloadBlock(8, 37, 30, "MMSI", "mmsi", "u", "9 digits"));
-		getMessageBlocks().add(new PayloadBlock(38, 45, 8, "Regional Reserved", "reserved", "u", ""));
 		getMessageBlocks().add(new PayloadBlock(46, 55, 10, "Speed Over Ground", "speed", "U1", "As in CNB."));
 		getMessageBlocks().add(new PayloadBlock(56, 56, 1, "Position Accuracy", "accuracy", "b", "As in CNB."));
 		getMessageBlocks().add(new PayloadBlock(57, 84, 28, "Longitude", "lon", "I4", "Minutes/10000 (as in CNB)"));
@@ -35,7 +34,7 @@ public class ExtendedClassBCSPositionReport extends AISMessage {
 		getMessageBlocks().add(new PayloadBlock(139, 142, 4, "Regional reserved", "regional", "u", "Uninterpreted"));
 		getMessageBlocks().add(new PayloadBlock(143, 262, 120, "Name", "shipname", "s", "20 6-bit characters"));
 		getMessageBlocks().add(new PayloadBlock(263, 270, 8, "Type of ship and cargo", "shiptype", "u", "As in Message 5"));
-		getMessageBlocks().add(new PayloadBlock(300, 30, 30, "Vessel Dimensions", "dimension", "u", "Meters"));
+		getMessageBlocks().add(new PayloadBlock(271, 300, 30, "Vessel Dimensions", "dimension", "u", "Meters"));
 		getMessageBlocks().add(new PayloadBlock(301, 304, 4, "Position Fix Type", "epfd", "e", "See \"EPFD Fix Types\""));
 		getMessageBlocks().add(new PayloadBlock(305, 305, 1, "RAIM flag", "raim", "b", "As in CNB."));
 		getMessageBlocks().add(new PayloadBlock(306, 306, 1, "DTE", "dte", "u", "0=Data terminal ready, 1=Not ready (default)."));
@@ -295,6 +294,7 @@ public class ExtendedClassBCSPositionReport extends AISMessage {
 	private int type = 0;
 	private int repeat = 0;
 	private int mmsi = 0;
+	private int regional = 0;
 	private float speed = 0.0f;
 	private boolean accuracy = false;
 	private float longitude = 0f;
@@ -302,7 +302,6 @@ public class ExtendedClassBCSPositionReport extends AISMessage {
 	private float course = 0.0f;
 	private int heading = 0;
 	private int second = 0;
-	private int regional = 0;
 	private String shipName = "";
 	private int shipType = 0;
 	private VesselDimensions dimension = null;
