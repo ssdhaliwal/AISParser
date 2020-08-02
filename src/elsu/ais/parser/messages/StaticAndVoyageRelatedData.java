@@ -96,7 +96,7 @@ public class StaticAndVoyageRelatedData extends AISMessage {
 				setMinute(AISMessage.unsigned_integer_decoder(block.getBits()));
 				break;
 			case 294:
-				setDraught(AISMessage.unsigned_float_decoder(block.getBits()));
+				setDraught(AISMessage.unsigned_float_decoder(block.getBits()) / 10f);
 				break;
 			case 302:
 				setDestination(AISMessage.text_decoder(block.getBits()));

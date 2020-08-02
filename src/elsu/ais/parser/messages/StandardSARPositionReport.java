@@ -63,7 +63,7 @@ public class StandardSARPositionReport extends AISMessage {
 				setAltitude(AISMessage.unsigned_integer_decoder(block.getBits()));
 				break;
 			case 50:
-				setSpeed(AISMessage.unsigned_float_decoder(block.getBits()) / 10f);
+				setSpeed(AISMessage.unsigned_float_decoder(block.getBits()));
 				break;
 			case 60:
 				setAccuracy(AISMessage.boolean_decoder(block.getBits()));

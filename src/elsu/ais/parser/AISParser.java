@@ -54,6 +54,48 @@ public class AISParser implements IEventListener {
 		}
 	}
 
+	@Override
+	public void onError(Exception ex, Object o, String message) {
+		try {
+			if (AISBase.debug) {
+				System.out.println("error, " + ex.getMessage() + ", " + o + ", " + message);
+			}
+			result.add("error, " + ex.getMessage() + ", " + o + ", " + message);
+		} catch (Exception exi) {
+			System.out.println("message error notification exception; " + message);
+		}
+	}
+
+	@Override
+	public void onComplete(Object o) {
+		try {
+			if (AISBase.debug) {
+				System.out.println("complete, " + o);
+			}
+			result.add("complete, " + o);
+		} catch (Exception exi) {
+			System.out.println("message complete notification exception; ");
+		}
+	}
+
+	@Override
+	public void onUpdate(Object o) {
+		try {
+			if (AISBase.debug) {
+				System.out.println("update, " + o);
+			}
+			result.add("update, " + o);
+		} catch (Exception exi) {
+			System.out.println("message update notification exception; ");
+		}
+	}
+
+	public AISSentenceFactory getSentenceFactory() {
+		return sentenceFactory;
+	}
+	
+	private AISSentenceFactory sentenceFactory = new AISSentenceFactory();
+
 	public static void main(String[] args) throws Exception {
 		ConfigLoader config = null;
 		try {
@@ -65,15 +107,15 @@ public class AISParser implements IEventListener {
 		AISParser aisparser = new AISParser();
 		String path, fileIn, fileOut;
 
-		if (args.length != 3) {
-			throw new Exception("invalid arguments: java -jar AISParser.jar path file-in file-out");
+		if (args.length < 3) {
+			throw new Exception("invalid arguments: java -jar AISParser.jar path file-in file-out [debug]");
 		} else {
 			path = args[0];
 			fileIn = args[1];
 			fileOut = args[2];
 			
 			if (args.length == 4) {
-				if (args[4].toLowerCase().equals("debug") || args[4].toLowerCase().equals("true")) {
+				if (args[3].toLowerCase().equals("debug") || args[3].toLowerCase().equals("true")) {
 					AISBase.debug = true;
 				}
 			}
@@ -88,40 +130,4 @@ public class AISParser implements IEventListener {
 			System.out.println(ex.getMessage());
 		}
 	}
-
-	@Override
-	public void onError(Exception ex, Object o, String message) {
-		try {
-			System.out.println("error, " + ex.getMessage() + ", " + o + ", " + message);
-			result.add("error, " + ex.getMessage() + ", " + o + ", " + message);
-		} catch (Exception exi) {
-			System.out.println("message error notification exception; " + message);
-		}
-	}
-
-	@Override
-	public void onComplete(Object o) {
-		try {
-			System.out.println("complete, " + o);
-			result.add("complete, " + o);
-		} catch (Exception exi) {
-			System.out.println("message complete notification exception; ");
-		}
-	}
-
-	@Override
-	public void onUpdate(Object o) {
-		try {
-			System.out.println("update, " + o);
-			result.add("update, " + o);
-		} catch (Exception exi) {
-			System.out.println("message update notification exception; ");
-		}
-	}
-
-	public AISSentenceFactory getSentenceFactory() {
-		return sentenceFactory;
-	}
-	
-	private AISSentenceFactory sentenceFactory = new AISSentenceFactory();
 }

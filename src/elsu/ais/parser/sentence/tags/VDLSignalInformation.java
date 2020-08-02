@@ -55,7 +55,7 @@ public class VDLSignalInformation {
 				break;
 			case 3:
 				try {
-					setUtc(Float.valueOf(params[i]));
+					setUtcTime(Float.valueOf(params[i]));
 				} catch (Exception exi) {
 					setLink(0);
 					setExceptions("utc value invalid (" + params[i] + ")");
@@ -96,7 +96,7 @@ public class VDLSignalInformation {
 		buffer.append("{");
 		buffer.append("\"id\": \"" + getId() + "\"");
 		buffer.append(", \"link\": " + getLink());
-		buffer.append(", \"utc\": " + getUtc());
+		buffer.append(", \"utcTime\": " + getUtcTime());
 		buffer.append(", \"slotNumber\": " + getSlotnumber());
 		buffer.append(", \"signalStrength\": " + getSignalstrength());
 		buffer.append(", \"signalNoiseRatio\": \"" + getSignalnoiseratio() + "\"");
@@ -124,12 +124,12 @@ public class VDLSignalInformation {
 		this.link = link;
 	}
 
-	public float getUtc() {
-		return utc;
+	public float getUtcTime() {
+		return utcTime;
 	}
 
-	public void setUtc(float utc) {
-		this.utc = utc;
+	public void setUtcTime(float utcTime) {
+		this.utcTime = utcTime;
 	}
 
 	public int getSlotnumber() {
@@ -182,7 +182,7 @@ public class VDLSignalInformation {
 
 	private String id = "";
 	private int link = 0;
-	private float utc = 0;
+	private float utcTime = 0;
 	private int slotnumber = 9999;
 	private float signalstrength = 0;
 	private float signalnoiseratio = 0;

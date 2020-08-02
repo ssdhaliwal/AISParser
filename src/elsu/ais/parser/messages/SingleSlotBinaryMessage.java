@@ -30,7 +30,8 @@ public class SingleSlotBinaryMessage extends AISMessage {
 		// w/+Destination +ApplicationId
 		getMessageBlocks().add(new PayloadBlock(40, 69, 30, 0, "Destination MMSI", "dest_mmsi", "u", "Message destination"));
 		// getMessageBlocks().add(new PayloadBlock(70, 71, 2, 0, "Spare", "", "x", "Byte Alignment"));
-		getMessageBlocks().add(new PayloadBlock(72, 87, 16, 0, "Application ID", "app_id", "u", "Unsigned integer"));
+		getMessageBlocks().add(new PayloadBlock(72, 81, 10, "Designated Area Code", "dac", "u", "Unsigned integer"));
+		getMessageBlocks().add(new PayloadBlock(82, 87, 6, "Functional ID", "fid", "u", "Unsigned integer"));
 		getMessageBlocks().add(new PayloadBlock(88, 167, 112, 0, "Data", "data", "d", "Binary data"));
 		
 		// w/Destination -ApplicationId
@@ -42,7 +43,8 @@ public class SingleSlotBinaryMessage extends AISMessage {
 		// w/-Destination +ApplicationId
 		// getMessageBlocks().add(new PayloadBlock(40, 39, 0, 2, "Destination MMSI", "dest_mmsi", "u", "Message destination"));
 		// getMessageBlocks().add(new PayloadBlock(40, 39, 0, 2, "Spare", "", "x", "Byte Alignment"));
-		getMessageBlocks().add(new PayloadBlock(40, 55, 16, 2, "Application ID", "app_id", "u", "Unsigned integer"));
+		getMessageBlocks().add(new PayloadBlock(40, 49, 10, "Designated Area Code", "dac", "u", "Unsigned integer"));
+		getMessageBlocks().add(new PayloadBlock(50, 55, 6, "Functional ID", "fid", "u", "Unsigned integer"));
 		getMessageBlocks().add(new PayloadBlock(56, 167, 112, 2, "Data", "data", "d", "Binary data"));
 
 		// w/-Destination -ApplicationId
@@ -78,7 +80,9 @@ public class SingleSlotBinaryMessage extends AISMessage {
 				break;
 			case 40:
 			case 72:
+			case 82:
 			case 88:
+			case 50:
 			case 56:
 				if (isAddressed() && isStructured() && (block.getGroup() == 0)) {
 					switch (block.getStart()) {
@@ -86,7 +90,10 @@ public class SingleSlotBinaryMessage extends AISMessage {
 						setDestinationMmsi(AISMessage.unsigned_integer_decoder(block.getBits()));
 						break;
 					case 72:
-						setApplicationId(AISMessage.unsigned_integer_decoder(block.getBits()));
+						setDac(AISMessage.unsigned_integer_decoder(block.getBits()));
+						break;
+					case 82:
+						setFid(AISMessage.unsigned_integer_decoder(block.getBits()));
 						break;
 					case 88:
 						setData(AISMessage.bit_decoder(block.getBits()));
@@ -104,7 +111,10 @@ public class SingleSlotBinaryMessage extends AISMessage {
 				} else if (!isAddressed() && isStructured() && (block.getGroup() == 2)) {
 					switch (block.getStart()) {
 					case 40:
-						setApplicationId(AISMessage.unsigned_integer_decoder(block.getBits()));
+						setDac(AISMessage.unsigned_integer_decoder(block.getBits()));
+						break;
+					case 50:
+						setFid(AISMessage.unsigned_integer_decoder(block.getBits()));
 						break;
 					case 56:
 						setData(AISMessage.bit_decoder(block.getBits()));
@@ -134,7 +144,8 @@ public class SingleSlotBinaryMessage extends AISMessage {
 		buffer.append(", \"addressed\":" + isAddressed());
 		buffer.append(", \"strictured\":" + isStructured());
 		buffer.append(", \"destinationMmsi\":" + getDestinationMmsi());
-		buffer.append(", \"applicationId\":" + getApplicationId());
+		buffer.append(", \"dac\":" + getDac());
+		buffer.append(", \"fid\":" + getFid());
 			buffer.append(", \"data\":\"" + getData() + "\"");
 			if (AISBase.debug) {
 			buffer.append(", \"dataRaw\":\"" + getDataRaw() + "\"");
@@ -192,12 +203,20 @@ public class SingleSlotBinaryMessage extends AISMessage {
 		this.destinationMmsi = mmsi;
 	}
 
-	public int getApplicationId() {
-		return applicationId;
+	public int getDac() {
+		return dac;
 	}
 
-	public void setApplicationId(int applicationId) {
-		this.applicationId = applicationId;
+	public void setDac(int dac) {
+		this.dac = dac;
+	}
+
+	public int getFid() {
+		return fid;
+	}
+
+	public void setFid(int fid) {
+		this.fid = fid;
 	}
 
 	public String getData() {
@@ -219,7 +238,8 @@ public class SingleSlotBinaryMessage extends AISMessage {
 	private boolean addressed = false;
 	private boolean structured = false;
 	private int destinationMmsi = 0;
-	private int applicationId = 0;
+	private int dac = 0;
+	private int fid = 0;
 	private String data = "";
 	private String dataRaw = "";
 }
