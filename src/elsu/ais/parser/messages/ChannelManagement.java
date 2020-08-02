@@ -1,14 +1,12 @@
 package elsu.ais.parser.messages;
 
-import elsu.ais.parser.base.AISBase;
 import elsu.ais.parser.base.AISMessage;
-import elsu.ais.parser.message.data.CommunicationState;
 import elsu.ais.parser.resources.LookupValues;
 import elsu.ais.parser.resources.PayloadBlock;
 
 public class ChannelManagement extends AISMessage {
 
-	public static AISMessage fromAISMessage(String messageBits) {
+	public static AISMessage fromAISMessage(String messageBits) throws Exception {
 		ChannelManagement positionReport = new ChannelManagement();
 		positionReport.parseMessage(messageBits);
 
@@ -21,79 +19,82 @@ public class ChannelManagement extends AISMessage {
 
 	private void initialize() {
 		getMessageBlocks().add(new PayloadBlock(0, 5, 6, "Message Type", "type", "u", "Constant: 22"));
-		getMessageBlocks().add(new PayloadBlock(6, 7, 2, "Repeat Indicator", "repeat", "u", "As in Common Navigation Block"));
+		getMessageBlocks()
+				.add(new PayloadBlock(6, 7, 2, "Repeat Indicator", "repeat", "u", "As in Common Navigation Block"));
 		getMessageBlocks().add(new PayloadBlock(8, 37, 30, "MMSI", "mmsi", "u", "9 decimal digits"));
 		getMessageBlocks().add(new PayloadBlock(38, 39, 2, "Spare", "", "x", "Not used"));
 		getMessageBlocks().add(new PayloadBlock(40, 51, 12, "Channel A", "channel_a", "u", "Channel number"));
 		getMessageBlocks().add(new PayloadBlock(52, 63, 12, "Channel B", "channel_b", "u", "Channel number"));
 		getMessageBlocks().add(new PayloadBlock(64, 67, 4, "Tx/Rx mode", "txrx", "u", "Transmit/receive mode"));
 		getMessageBlocks().add(new PayloadBlock(68, 68, 1, "Power", "power", "b", "Low=0, high=1"));
-		getMessageBlocks().add(new PayloadBlock(69, 86, 18, "NE Longitude", "ne_lon", "I1", "NE longitude to 0.1 minutes"));
-		getMessageBlocks().add(new PayloadBlock(87, 103, 17, "NE Latitude", "ne_lat", "I1", "NE latitude to 0.1 minutes"));
-		getMessageBlocks().add(new PayloadBlock(104, 121, 18, "SW Longitude", "sw_lon", "I1", "SW longitude to 0.1 minutes"));
-		getMessageBlocks().add(new PayloadBlock(122, 138, 17, "SW Latitude", "sw_lat", "I1", "SW latitude to 0.1 minutes"));
-		getMessageBlocks().add(new PayloadBlock(139, 139, 1, "Addressed", "addressed", "b", "0=Broadcast, 1=Addressed"));
+		getMessageBlocks()
+				.add(new PayloadBlock(69, 86, 18, "NE Longitude", "ne_lon", "I1", "NE longitude to 0.1 minutes"));
+		getMessageBlocks()
+				.add(new PayloadBlock(87, 103, 17, "NE Latitude", "ne_lat", "I1", "NE latitude to 0.1 minutes"));
+		getMessageBlocks()
+				.add(new PayloadBlock(104, 121, 18, "SW Longitude", "sw_lon", "I1", "SW longitude to 0.1 minutes"));
+		getMessageBlocks()
+				.add(new PayloadBlock(122, 138, 17, "SW Latitude", "sw_lat", "I1", "SW latitude to 0.1 minutes"));
+		getMessageBlocks()
+				.add(new PayloadBlock(139, 139, 1, "Addressed", "addressed", "b", "0=Broadcast, 1=Addressed"));
 		getMessageBlocks().add(new PayloadBlock(140, 140, 1, "Channel A Band", "band_a", "b", "0=Default, 1=12.5kHz"));
 		getMessageBlocks().add(new PayloadBlock(141, 141, 1, "Channel B Band", "band_b", "b", "0=Default, 1=12.5kHz"));
-		getMessageBlocks().add(new PayloadBlock(142, 144, 3, "Zone size", "zonesize", "u", "Size of transitional zone"));
+		getMessageBlocks()
+				.add(new PayloadBlock(142, 144, 3, "Zone size", "zonesize", "u", "Size of transitional zone"));
 		getMessageBlocks().add(new PayloadBlock(145, 167, 23, "Spare", "", "x", "Reserved for future use"));
 	}
 
-	public void parseMessage(String message) {
-		for (PayloadBlock block : getMessageBlocks()) {
-			if ((block.getEnd() == -1) || (block.getEnd() > message.length())) {
-				block.setBits(message.substring(block.getStart(), message.length()));
-			} else {
-				block.setBits(message.substring(block.getStart(), block.getEnd() + 1));
-			}
+	public void parseMessageBlock(PayloadBlock block) throws Exception {
+		if (block.isException()) {
+			throw new Exception("parsing error; " + block);
+		}
 
-			switch (block.getStart()) {
-			case 0:
-				setType(AISBase.unsigned_integer_decoder(block.getBits()));
-				break;
-			case 6:
-				setRepeat(AISBase.unsigned_integer_decoder(block.getBits()));
-				break;
-			case 8:
-				setMmsi(AISBase.unsigned_integer_decoder(block.getBits()));
-				break;
-			case 40:
-				setChannelA(AISBase.unsigned_integer_decoder(block.getBits()));
-				break;
-			case 52:
-				setChannelB(AISBase.unsigned_integer_decoder(block.getBits()));
-				break;
-			case 64:
-				setTxRx(AISBase.unsigned_integer_decoder(block.getBits()));
-				break;
-			case 68:
-				setPower(AISBase.boolean_decoder(block.getBits()));
-				break;
-			case 69:
-				setNELongitude(AISBase.float_decoder(block.getBits()) / 600f);
-				break;
-			case 87:
-				setNELatitude(AISBase.float_decoder(block.getBits()) / 600f);
-				break;
-			case 104:
-				setSWLongitude(AISBase.float_decoder(block.getBits()) / 600f);
-				break;
-			case 122:
-				setSWLatitude(AISBase.float_decoder(block.getBits()) / 600f);
-				break;
-			case 139:
-				setAddressed(AISBase.boolean_decoder(block.getBits()));
-				break;
-			case 140:
-				setBandA(AISBase.boolean_decoder(block.getBits()));
-				break;
-			case 141:
-				setBandB(AISBase.boolean_decoder(block.getBits()));
-				break;
-			case 142:
-				setZoneSize(AISBase.unsigned_integer_decoder(block.getBits()));
-				break;
-			}
+		switch (block.getStart()) {
+		case 0:
+			setType(unsigned_integer_decoder(block.getBits()));
+			break;
+		case 6:
+			setRepeat(unsigned_integer_decoder(block.getBits()));
+			break;
+		case 8:
+			setMmsi(unsigned_integer_decoder(block.getBits()));
+			break;
+		case 40:
+			setChannelA(unsigned_integer_decoder(block.getBits()));
+			break;
+		case 52:
+			setChannelB(unsigned_integer_decoder(block.getBits()));
+			break;
+		case 64:
+			setTxRx(unsigned_integer_decoder(block.getBits()));
+			break;
+		case 68:
+			setPower(boolean_decoder(block.getBits()));
+			break;
+		case 69:
+			setNELongitude(float_decoder(block.getBits()) / 600f);
+			break;
+		case 87:
+			setNELatitude(float_decoder(block.getBits()) / 600f);
+			break;
+		case 104:
+			setSWLongitude(float_decoder(block.getBits()) / 600f);
+			break;
+		case 122:
+			setSWLatitude(float_decoder(block.getBits()) / 600f);
+			break;
+		case 139:
+			setAddressed(boolean_decoder(block.getBits()));
+			break;
+		case 140:
+			setBandA(boolean_decoder(block.getBits()));
+			break;
+		case 141:
+			setBandB(boolean_decoder(block.getBits()));
+			break;
+		case 142:
+			setZoneSize(unsigned_integer_decoder(block.getBits()));
+			break;
 		}
 	}
 

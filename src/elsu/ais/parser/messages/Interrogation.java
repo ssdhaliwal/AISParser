@@ -1,14 +1,12 @@
 package elsu.ais.parser.messages;
 
-import java.util.*;
-
 import elsu.ais.parser.base.AISMessage;
 import elsu.ais.parser.resources.LookupValues;
 import elsu.ais.parser.resources.PayloadBlock;
 
 public class Interrogation extends AISMessage {
 
-	public static AISMessage fromAISMessage(String messageBits) {
+	public static AISMessage fromAISMessage(String messageBits) throws Exception {
 		Interrogation binaryMessage = new Interrogation();
 		binaryMessage.parseMessage(messageBits);
 
@@ -21,7 +19,8 @@ public class Interrogation extends AISMessage {
 
 	private void initialize() {
 		getMessageBlocks().add(new PayloadBlock(0, 5, 6, "Message Type", "type", "u", "Constant: 15"));
-		getMessageBlocks().add(new PayloadBlock(6, 7, 2, "Repeat Indicator", "repeat", "u", "As in Common Navigation Block"));
+		getMessageBlocks()
+				.add(new PayloadBlock(6, 7, 2, "Repeat Indicator", "repeat", "u", "As in Common Navigation Block"));
 		getMessageBlocks().add(new PayloadBlock(8, 37, 30, "Source MMSI", "mmsi", "u", "9 decimal digits"));
 		getMessageBlocks().add(new PayloadBlock(38, 39, 2, "Spare", "", "x", "Not used"));
 		getMessageBlocks().add(new PayloadBlock(40, 69, 30, "Interrogated MMSI", "mmsi1", "u", "9 decimal digits"));
@@ -29,63 +28,59 @@ public class Interrogation extends AISMessage {
 		getMessageBlocks().add(new PayloadBlock(76, 87, 12, "First slot offset", "offset1_1", "u", "Unsigned integer"));
 		getMessageBlocks().add(new PayloadBlock(88, 89, 2, "Spare", "", "x", "Not used"));
 		getMessageBlocks().add(new PayloadBlock(90, 95, 6, "Second message type", "type1_2", "u", "Unsigned integer"));
-		getMessageBlocks().add(new PayloadBlock(96, 107, 12, "Second slot offset", "offset1_2", "u", "Unsigned integer"));
+		getMessageBlocks()
+				.add(new PayloadBlock(96, 107, 12, "Second slot offset", "offset1_2", "u", "Unsigned integer"));
 		getMessageBlocks().add(new PayloadBlock(108, 109, 2, "Spare", "", "x", "Not used"));
 		getMessageBlocks().add(new PayloadBlock(110, 139, 30, "Interrogated MMSI", "mmsi2", "u", "9 decimal digits"));
 		getMessageBlocks().add(new PayloadBlock(140, 145, 6, "First message type", "type2_1", "u", "Unsigned integer"));
-		getMessageBlocks().add(new PayloadBlock(146, 157, 12, "First slot offset", "offset2_1", "u", "Unsigned integer"));
+		getMessageBlocks()
+				.add(new PayloadBlock(146, 157, 12, "First slot offset", "offset2_1", "u", "Unsigned integer"));
 		getMessageBlocks().add(new PayloadBlock(158, 159, 2, "Spare", "", "x", "Not used"));
 	}
 
-	public void parseMessage(String message) {
-		for (PayloadBlock block : getMessageBlocks()) {
-			try {
-				if ((block.getEnd() == -1) || (block.getEnd() > message.length())) {
-					block.setBits(message.substring(block.getStart(), message.length()));
-				} else {
-					block.setBits(message.substring(block.getStart(), block.getEnd() + 1));
-				}
-			} catch (IndexOutOfBoundsException iobe) {
-				if (block.getStart() >= 76) {
-					continue;
-				}
+	public void parseMessageBlock(PayloadBlock block) throws Exception {
+		if (block.isException()) {
+			if (block.getStart() >= 76) {
+				return;
+			} else {
+				throw new Exception("parsing error; " + block);
 			}
+		}
 
-			switch (block.getStart()) {
-			case 0:
-				setType(AISMessage.unsigned_integer_decoder(block.getBits()));
-				break;
-			case 6:
-				setRepeat(AISMessage.unsigned_integer_decoder(block.getBits()));
-				break;
-			case 8:
-				setMmsi(AISMessage.unsigned_integer_decoder(block.getBits()));
-				break;
-			case 40:
-				setMmsi1(AISMessage.unsigned_integer_decoder(block.getBits()));
-				break;
-			case 70:
-				setType11(AISMessage.unsigned_integer_decoder(block.getBits()));
-				break;
-			case 76:
-				setOffset11(AISMessage.unsigned_integer_decoder(block.getBits()));
-				break;
-			case 90:
-				setType12(AISMessage.unsigned_integer_decoder(block.getBits()));
-				break;
-			case 96:
-				setOffset12(AISMessage.unsigned_integer_decoder(block.getBits()));
-				break;
-			case 110:
-				setMmsi2(AISMessage.unsigned_integer_decoder(block.getBits()));
-				break;
-			case 140:
-				setType21(AISMessage.unsigned_integer_decoder(block.getBits()));
-				break;
-			case 146:
-				setOffset21(AISMessage.unsigned_integer_decoder(block.getBits()));
-				break;
-			}
+		switch (block.getStart()) {
+		case 0:
+			setType(unsigned_integer_decoder(block.getBits()));
+			break;
+		case 6:
+			setRepeat(unsigned_integer_decoder(block.getBits()));
+			break;
+		case 8:
+			setMmsi(unsigned_integer_decoder(block.getBits()));
+			break;
+		case 40:
+			setMmsi1(unsigned_integer_decoder(block.getBits()));
+			break;
+		case 70:
+			setType11(unsigned_integer_decoder(block.getBits()));
+			break;
+		case 76:
+			setOffset11(unsigned_integer_decoder(block.getBits()));
+			break;
+		case 90:
+			setType12(unsigned_integer_decoder(block.getBits()));
+			break;
+		case 96:
+			setOffset12(unsigned_integer_decoder(block.getBits()));
+			break;
+		case 110:
+			setMmsi2(unsigned_integer_decoder(block.getBits()));
+			break;
+		case 140:
+			setType21(unsigned_integer_decoder(block.getBits()));
+			break;
+		case 146:
+			setOffset21(unsigned_integer_decoder(block.getBits()));
+			break;
 		}
 	}
 

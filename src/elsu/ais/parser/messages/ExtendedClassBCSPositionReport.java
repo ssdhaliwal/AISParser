@@ -1,7 +1,5 @@
 package elsu.ais.parser.messages;
 
-import java.util.*;
-
 import elsu.ais.parser.base.AISMessage;
 import elsu.ais.parser.message.data.VesselDimensions;
 import elsu.ais.parser.resources.LookupValues;
@@ -9,7 +7,7 @@ import elsu.ais.parser.resources.PayloadBlock;
 
 public class ExtendedClassBCSPositionReport extends AISMessage {
 
-	public static AISMessage fromAISMessage(String messageBits) {
+	public static AISMessage fromAISMessage(String messageBits) throws Exception {
 		ExtendedClassBCSPositionReport positionReport = new ExtendedClassBCSPositionReport();
 		positionReport.parseMessage(messageBits);
 
@@ -28,84 +26,86 @@ public class ExtendedClassBCSPositionReport extends AISMessage {
 		getMessageBlocks().add(new PayloadBlock(56, 56, 1, "Position Accuracy", "accuracy", "b", "As in CNB."));
 		getMessageBlocks().add(new PayloadBlock(57, 84, 28, "Longitude", "lon", "I4", "Minutes/10000 (as in CNB)"));
 		getMessageBlocks().add(new PayloadBlock(85, 111, 27, "Latitude", "lat", "I4", "Minutes/10000 (as in CNB)"));
-		getMessageBlocks().add(new PayloadBlock(112, 123, 12, "Course Over Ground", "course", "U1", "Relative to true north, units of 0.1 degrees"));
-		getMessageBlocks().add(new PayloadBlock(124, 132, 9, "True Heading", "heading", "u", "0 to 359 degrees, 511 = N/A"));
+		getMessageBlocks().add(new PayloadBlock(112, 123, 12, "Course Over Ground", "course", "U1",
+				"Relative to true north, units of 0.1 degrees"));
+		getMessageBlocks()
+				.add(new PayloadBlock(124, 132, 9, "True Heading", "heading", "u", "0 to 359 degrees, 511 = N/A"));
 		getMessageBlocks().add(new PayloadBlock(133, 138, 6, "Time Stamp", "second", "u", "Second of UTC timestamp."));
 		getMessageBlocks().add(new PayloadBlock(139, 142, 4, "Regional reserved", "regional", "u", "Uninterpreted"));
 		getMessageBlocks().add(new PayloadBlock(143, 262, 120, "Name", "shipname", "s", "20 6-bit characters"));
-		getMessageBlocks().add(new PayloadBlock(263, 270, 8, "Type of ship and cargo", "shiptype", "u", "As in Message 5"));
+		getMessageBlocks()
+				.add(new PayloadBlock(263, 270, 8, "Type of ship and cargo", "shiptype", "u", "As in Message 5"));
 		getMessageBlocks().add(new PayloadBlock(271, 300, 30, "Vessel Dimensions", "dimension", "u", "Meters"));
-		getMessageBlocks().add(new PayloadBlock(301, 304, 4, "Position Fix Type", "epfd", "e", "See \"EPFD Fix Types\""));
+		getMessageBlocks()
+				.add(new PayloadBlock(301, 304, 4, "Position Fix Type", "epfd", "e", "See \"EPFD Fix Types\""));
 		getMessageBlocks().add(new PayloadBlock(305, 305, 1, "RAIM flag", "raim", "b", "As in CNB."));
-		getMessageBlocks().add(new PayloadBlock(306, 306, 1, "DTE", "dte", "u", "0=Data terminal ready, 1=Not ready (default)."));
-		getMessageBlocks().add(new PayloadBlock(307, 307, 1, "Assigned mode flag", "assigned", "u", "See [IALA] for details"));
+		getMessageBlocks()
+				.add(new PayloadBlock(306, 306, 1, "DTE", "dte", "u", "0=Data terminal ready, 1=Not ready (default)."));
+		getMessageBlocks()
+				.add(new PayloadBlock(307, 307, 1, "Assigned mode flag", "assigned", "u", "See [IALA] for details"));
 		getMessageBlocks().add(new PayloadBlock(308, 311, 4, "Spare", "", "x", "Unused, should be zero"));
 	}
 
-	public void parseMessage(String message) {
-		for (PayloadBlock block : getMessageBlocks()) {
-			if ((block.getEnd() == -1) || (block.getEnd() > message.length())) {
-				block.setBits(message.substring(block.getStart(), message.length()));
-			} else {
-				block.setBits(message.substring(block.getStart(), block.getEnd() + 1));
-			}
+	public void parseMessageBlock(PayloadBlock block) throws Exception {
+		if (block.isException()) {
+			throw new Exception("parsing error; " + block);
+		}
 
-			switch (block.getStart()) {
-			case 0:
-				setType(AISMessage.unsigned_integer_decoder(block.getBits()));
-				break;
-			case 6:
-				setRepeat(AISMessage.unsigned_integer_decoder(block.getBits()));
-				break;
-			case 8:
-				setMmsi(AISMessage.unsigned_integer_decoder(block.getBits()));
-				break;
-			case 46:
-				setSpeed(AISMessage.unsigned_float_decoder(block.getBits()) / 10f);
-				break;
-			case 56:
-				setAccuracy(AISMessage.boolean_decoder(block.getBits()));
-				break;
-			case 57:
-				setLongitude(AISMessage.float_decoder(block.getBits()) / 600000f);
-				break;
-			case 85:
-				setLatitude(AISMessage.float_decoder(block.getBits()) / 600000f);
-				break;
-			case 112:
-				setCourse(AISMessage.unsigned_float_decoder(block.getBits()) / 10f);
-				break;
-			case 124:
-				setHeading(AISMessage.unsigned_integer_decoder(block.getBits()));
-				break;
-			case 133:
-				setSecond(AISMessage.unsigned_integer_decoder(block.getBits()));
-				break;
-			case 139:
-				setRegional(AISMessage.unsigned_integer_decoder(block.getBits()));
-				break;
-			case 143:
-				setShipName(AISMessage.text_decoder(block.getBits()));
-				break;
-			case 263:
-				setShipType(AISMessage.unsigned_integer_decoder(block.getBits()));
-				break;
-			case 271:
-				setDimension(block.getBits());
-				break;
-			case 301:
-				setEpfd(AISMessage.unsigned_integer_decoder(block.getBits()));
-				break;
-			case 305:
-				setRaim(AISMessage.boolean_decoder(block.getBits()));
-				break;
-			case 306:
-				setDte(AISMessage.unsigned_integer_decoder(block.getBits()));
-				break;
-			case 307:
-				setAssigned(AISMessage.unsigned_integer_decoder(block.getBits()));
-				break;
-			}
+		switch (block.getStart()) {
+		case 0:
+			setType(unsigned_integer_decoder(block.getBits()));
+			break;
+		case 6:
+			setRepeat(unsigned_integer_decoder(block.getBits()));
+			break;
+		case 8:
+			setMmsi(unsigned_integer_decoder(block.getBits()));
+			break;
+		case 46:
+			setSpeed(unsigned_float_decoder(block.getBits()) / 10f);
+			break;
+		case 56:
+			setAccuracy(boolean_decoder(block.getBits()));
+			break;
+		case 57:
+			setLongitude(float_decoder(block.getBits()) / 600000f);
+			break;
+		case 85:
+			setLatitude(float_decoder(block.getBits()) / 600000f);
+			break;
+		case 112:
+			setCourse(unsigned_float_decoder(block.getBits()) / 10f);
+			break;
+		case 124:
+			setHeading(unsigned_integer_decoder(block.getBits()));
+			break;
+		case 133:
+			setSecond(unsigned_integer_decoder(block.getBits()));
+			break;
+		case 139:
+			setRegional(unsigned_integer_decoder(block.getBits()));
+			break;
+		case 143:
+			setShipName(text_decoder(block.getBits()));
+			break;
+		case 263:
+			setShipType(unsigned_integer_decoder(block.getBits()));
+			break;
+		case 271:
+			setDimension(block.getBits());
+			break;
+		case 301:
+			setEpfd(unsigned_integer_decoder(block.getBits()));
+			break;
+		case 305:
+			setRaim(boolean_decoder(block.getBits()));
+			break;
+		case 306:
+			setDte(unsigned_integer_decoder(block.getBits()));
+			break;
+		case 307:
+			setAssigned(unsigned_integer_decoder(block.getBits()));
+			break;
 		}
 	}
 
@@ -256,7 +256,9 @@ public class ExtendedClassBCSPositionReport extends AISMessage {
 	}
 
 	public void setDimension(String bits) {
-		this.dimension = VesselDimensions.fromPayload(bits, getType());
+		try {
+			this.dimension = VesselDimensions.fromPayload(bits);
+		} catch (Exception exi) {}
 	}
 
 	public int getEpfd() {

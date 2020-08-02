@@ -1,7 +1,5 @@
 package elsu.ais.parser.messages;
 
-import java.util.*;
-
 import elsu.ais.parser.base.AISBase;
 import elsu.ais.parser.base.AISMessage;
 import elsu.ais.parser.resources.LookupValues;
@@ -9,7 +7,7 @@ import elsu.ais.parser.resources.PayloadBlock;
 
 public class SingleSlotBinaryMessage extends AISMessage {
 
-	public static AISMessage fromAISMessage(String messageBits) {
+	public static AISMessage fromAISMessage(String messageBits) throws Exception {
 		SingleSlotBinaryMessage binaryMessage = new SingleSlotBinaryMessage();
 		binaryMessage.parseMessage(messageBits);
 
@@ -24,111 +22,118 @@ public class SingleSlotBinaryMessage extends AISMessage {
 		getMessageBlocks().add(new PayloadBlock(0, 5, 6, "Message Type", "type", "u", "Constant: 25"));
 		getMessageBlocks().add(new PayloadBlock(6, 7, 2, "Repeat Indicator", "repeat", "u", "As in CNB"));
 		getMessageBlocks().add(new PayloadBlock(8, 37, 30, "MMSI", "mmsi", "u", "9 digits"));
-		getMessageBlocks().add(new PayloadBlock(38, 38, 1, "Destination indicator", "addressed", "b", "0=broadcast, 1=addressed."));
+		getMessageBlocks().add(
+				new PayloadBlock(38, 38, 1, "Destination indicator", "addressed", "b", "0=broadcast, 1=addressed."));
 		getMessageBlocks().add(new PayloadBlock(39, 39, 1, "Binary data flag", "structured", "b", "See below"));
 
 		// w/+Destination +ApplicationId
-		getMessageBlocks().add(new PayloadBlock(40, 69, 30, 0, "Destination MMSI", "dest_mmsi", "u", "Message destination"));
-		// getMessageBlocks().add(new PayloadBlock(70, 71, 2, 0, "Spare", "", "x", "Byte Alignment"));
+		getMessageBlocks()
+				.add(new PayloadBlock(40, 69, 30, 0, "Destination MMSI", "dest_mmsi", "u", "Message destination"));
+		// getMessageBlocks().add(new PayloadBlock(70, 71, 2, 0, "Spare", "",
+		// "x", "Byte Alignment"));
 		getMessageBlocks().add(new PayloadBlock(72, 81, 10, "Designated Area Code", "dac", "u", "Unsigned integer"));
 		getMessageBlocks().add(new PayloadBlock(82, 87, 6, "Functional ID", "fid", "u", "Unsigned integer"));
 		getMessageBlocks().add(new PayloadBlock(88, 167, 112, 0, "Data", "data", "d", "Binary data"));
-		
+
 		// w/Destination -ApplicationId
-		getMessageBlocks().add(new PayloadBlock(40, 69, 30, 1, "Destination MMSI", "dest_mmsi", "u", "Message destination"));
-		// getMessageBlocks().add(new PayloadBlock(70, 71, 2, 1, "Spare", "", "x", "Byte Alignment"));
-		// getMessageBlocks().add(new PayloadBlock(72, 71, 0, 1, "Application ID", "app_id", "u", "Unsigned integer"));
+		getMessageBlocks()
+				.add(new PayloadBlock(40, 69, 30, 1, "Destination MMSI", "dest_mmsi", "u", "Message destination"));
+		// getMessageBlocks().add(new PayloadBlock(70, 71, 2, 1, "Spare", "",
+		// "x", "Byte Alignment"));
+		// getMessageBlocks().add(new PayloadBlock(72, 71, 0, 1, "Application
+		// ID", "app_id", "u", "Unsigned integer"));
 		getMessageBlocks().add(new PayloadBlock(72, 167, 96, 1, "Data", "data", "d", "Binary data"));
-		
+
 		// w/-Destination +ApplicationId
-		// getMessageBlocks().add(new PayloadBlock(40, 39, 0, 2, "Destination MMSI", "dest_mmsi", "u", "Message destination"));
-		// getMessageBlocks().add(new PayloadBlock(40, 39, 0, 2, "Spare", "", "x", "Byte Alignment"));
+		// getMessageBlocks().add(new PayloadBlock(40, 39, 0, 2, "Destination
+		// MMSI", "dest_mmsi", "u", "Message destination"));
+		// getMessageBlocks().add(new PayloadBlock(40, 39, 0, 2, "Spare", "",
+		// "x", "Byte Alignment"));
 		getMessageBlocks().add(new PayloadBlock(40, 49, 10, "Designated Area Code", "dac", "u", "Unsigned integer"));
 		getMessageBlocks().add(new PayloadBlock(50, 55, 6, "Functional ID", "fid", "u", "Unsigned integer"));
 		getMessageBlocks().add(new PayloadBlock(56, 167, 112, 2, "Data", "data", "d", "Binary data"));
 
 		// w/-Destination -ApplicationId
-		// getMessageBlocks().add(new PayloadBlock(40, 39, 0, 3, "Destination MMSI", "dest_mmsi", "u", "Message destination"));
-		// getMessageBlocks().add(new PayloadBlock(40, 39, 0, 3, "Spare", "", "x", "Byte Alignment"));
-		// getMessageBlocks().add(new PayloadBlock(40, 39, 0, 3, "Application ID", "app_id", "u", "Unsigned integer"));
+		// getMessageBlocks().add(new PayloadBlock(40, 39, 0, 3, "Destination
+		// MMSI", "dest_mmsi", "u", "Message destination"));
+		// getMessageBlocks().add(new PayloadBlock(40, 39, 0, 3, "Spare", "",
+		// "x", "Byte Alignment"));
+		// getMessageBlocks().add(new PayloadBlock(40, 39, 0, 3, "Application
+		// ID", "app_id", "u", "Unsigned integer"));
 		getMessageBlocks().add(new PayloadBlock(40, 167, 128, 3, "Data", "data", "d", "Binary data"));
 	}
 
-	public void parseMessage(String message) {
-		for (PayloadBlock block : getMessageBlocks()) {
-			if ((block.getEnd() == -1) || (block.getEnd() > message.length())) {
-				block.setBits(message.substring(block.getStart(), message.length()));
-			} else {
-				block.setBits(message.substring(block.getStart(), block.getEnd() + 1));
-			}
+	public void parseMessageBlock(PayloadBlock block) throws Exception {
+		if (block.isException()) {
+			throw new Exception("parsing error; " + block);
+		}
 
-			switch (block.getStart()) {
-			case 0:
-				setType(AISMessage.unsigned_integer_decoder(block.getBits()));
-				break;
-			case 6:
-				setRepeat(AISMessage.unsigned_integer_decoder(block.getBits()));
-				break;
-			case 8:
-				setMmsi(AISMessage.unsigned_integer_decoder(block.getBits()));
-				break;
-			case 38:
-				setAddressed(AISMessage.boolean_decoder(block.getBits()));
-				break;
-			case 39:
-				setStructured(AISMessage.boolean_decoder(block.getBits()));
-				break;
-			case 40:
-			case 72:
-			case 82:
-			case 88:
-			case 50:
-			case 56:
-				if (isAddressed() && isStructured() && (block.getGroup() == 0)) {
-					switch (block.getStart()) {
-					case 40:
-						setDestinationMmsi(AISMessage.unsigned_integer_decoder(block.getBits()));
-						break;
-					case 72:
-						setDac(AISMessage.unsigned_integer_decoder(block.getBits()));
-						break;
-					case 82:
-						setFid(AISMessage.unsigned_integer_decoder(block.getBits()));
-						break;
-					case 88:
-						setData(AISMessage.bit_decoder(block.getBits()));
-						return;
-					}
-				} else if (isAddressed() && !isStructured() && (block.getGroup() == 1)) {
-					switch (block.getStart()) {
-					case 40:
-						setDestinationMmsi(AISMessage.unsigned_integer_decoder(block.getBits()));
-						break;
-					case 72:
-						setData(AISMessage.bit_decoder(block.getBits()));
-						return;
-					}
-				} else if (!isAddressed() && isStructured() && (block.getGroup() == 2)) {
-					switch (block.getStart()) {
-					case 40:
-						setDac(AISMessage.unsigned_integer_decoder(block.getBits()));
-						break;
-					case 50:
-						setFid(AISMessage.unsigned_integer_decoder(block.getBits()));
-						break;
-					case 56:
-						setData(AISMessage.bit_decoder(block.getBits()));
-						return;
-					}
-				} else if (!isAddressed() && !isStructured() && (block.getGroup() == 3)) {
-					switch (block.getStart()) {
-					case 40:
-						setData(AISMessage.bit_decoder(block.getBits()));
-						return;
-					}
+		switch (block.getStart()) {
+		case 0:
+			setType(unsigned_integer_decoder(block.getBits()));
+			break;
+		case 6:
+			setRepeat(unsigned_integer_decoder(block.getBits()));
+			break;
+		case 8:
+			setMmsi(unsigned_integer_decoder(block.getBits()));
+			break;
+		case 38:
+			setAddressed(boolean_decoder(block.getBits()));
+			break;
+		case 39:
+			setStructured(boolean_decoder(block.getBits()));
+			break;
+		case 40:
+		case 72:
+		case 82:
+		case 88:
+		case 50:
+		case 56:
+			if (isAddressed() && isStructured() && (block.getGroup() == 0)) {
+				switch (block.getStart()) {
+				case 40:
+					setDestinationMmsi(unsigned_integer_decoder(block.getBits()));
+					break;
+				case 72:
+					setDac(unsigned_integer_decoder(block.getBits()));
+					break;
+				case 82:
+					setFid(unsigned_integer_decoder(block.getBits()));
+					break;
+				case 88:
+					setData(bit_decoder(block.getBits()));
+					return;
 				}
-				break;
+			} else if (isAddressed() && !isStructured() && (block.getGroup() == 1)) {
+				switch (block.getStart()) {
+				case 40:
+					setDestinationMmsi(unsigned_integer_decoder(block.getBits()));
+					break;
+				case 72:
+					setData(bit_decoder(block.getBits()));
+					return;
+				}
+			} else if (!isAddressed() && isStructured() && (block.getGroup() == 2)) {
+				switch (block.getStart()) {
+				case 40:
+					setDac(unsigned_integer_decoder(block.getBits()));
+					break;
+				case 50:
+					setFid(unsigned_integer_decoder(block.getBits()));
+					break;
+				case 56:
+					setData(bit_decoder(block.getBits()));
+					return;
+				}
+			} else if (!isAddressed() && !isStructured() && (block.getGroup() == 3)) {
+				switch (block.getStart()) {
+				case 40:
+					setData(bit_decoder(block.getBits()));
+					return;
+				}
 			}
+			break;
 		}
 	}
 
@@ -146,8 +151,8 @@ public class SingleSlotBinaryMessage extends AISMessage {
 		buffer.append(", \"destinationMmsi\":" + getDestinationMmsi());
 		buffer.append(", \"dac\":" + getDac());
 		buffer.append(", \"fid\":" + getFid());
-			buffer.append(", \"data\":\"" + getData() + "\"");
-			if (AISBase.debug) {
+		buffer.append(", \"data\":\"" + getData() + "\"");
+		if (AISBase.debug) {
 			buffer.append(", \"dataRaw\":\"" + getDataRaw() + "\"");
 		}
 		buffer.append("}");

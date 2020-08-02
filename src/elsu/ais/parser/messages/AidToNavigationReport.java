@@ -1,14 +1,12 @@
 package elsu.ais.parser.messages;
 
-import java.util.*;
-
 import elsu.ais.parser.base.AISMessage;
 import elsu.ais.parser.resources.LookupValues;
 import elsu.ais.parser.resources.PayloadBlock;
 
 public class AidToNavigationReport extends AISMessage {
 
-	public static AISMessage fromAISMessage(String messageBits) {
+	public static AISMessage fromAISMessage(String messageBits) throws Exception {
 		AidToNavigationReport atonMessage = new AidToNavigationReport();
 		atonMessage.parseMessage(messageBits);
 
@@ -34,7 +32,8 @@ public class AidToNavigationReport extends AISMessage {
 		getMessageBlocks().add(new PayloadBlock(243, 248, 6, "Dimension to Starboard", "to_starboard", "u", "Meters"));
 		getMessageBlocks().add(new PayloadBlock(249, 252, 4, "Type of EPFD", "epfd", "e", "As in Message Type 4"));
 		getMessageBlocks().add(new PayloadBlock(253, 258, 6, "UTC second", "second", "u", "As in Message Types 1-3"));
-		getMessageBlocks().add(new PayloadBlock(259, 259, 1, "Off-Position Indicator", "off_position", "b", "See Below"));
+		getMessageBlocks()
+				.add(new PayloadBlock(259, 259, 1, "Off-Position Indicator", "off_position", "b", "See Below"));
 		getMessageBlocks().add(new PayloadBlock(260, 267, 8, "Regional reserved", "regional", "u", "Uninterpreted"));
 		getMessageBlocks().add(new PayloadBlock(268, 268, 1, "RAIM flag", "raim", "b", "As in CNB"));
 		getMessageBlocks().add(new PayloadBlock(269, 269, 1, "Virtual-aid flag", "virtual_aid", "b", "See Below"));
@@ -44,76 +43,72 @@ public class AidToNavigationReport extends AISMessage {
 		getMessageBlocks().add(new PayloadBlock(272, -1, 88, "Name Extension", "", "t", "See Below"));
 	}
 
-	public void parseMessage(String message) {
-		for (PayloadBlock block : getMessageBlocks()) {
-			if ((block.getEnd() == -1) || (block.getEnd() > message.length())) {
-				block.setBits(message.substring(block.getStart(), message.length()));
-			} else {
-				block.setBits(message.substring(block.getStart(), block.getEnd() + 1));
-			}
+	public void parseMessageBlock(PayloadBlock block) throws Exception {
+		if (block.isException()) {
+			throw new Exception("parsing error; " + block);
+		}
 
-			switch (block.getStart()) {
-			case 0:
-				setType(AISMessage.unsigned_integer_decoder(block.getBits()));
-				break;
-			case 6:
-				setRepeat(AISMessage.unsigned_integer_decoder(block.getBits()));
-				break;
-			case 8:
-				setMmsi(AISMessage.unsigned_integer_decoder(block.getBits()));
-				break;
-			case 38:
-				setAidType(AISMessage.unsigned_integer_decoder(block.getBits()));
-				break;
-			case 43:
-				setName(AISMessage.text_decoder(block.getBits()));
-				break;
-			case 163:
-				setAccuracy(AISMessage.boolean_decoder(block.getBits()));
-				break;
-			case 164:
-				setLongitude(AISMessage.float_decoder(block.getBits()) / 600000f);
-				break;
-			case 192:
-				setLatitude(AISMessage.float_decoder(block.getBits()) / 600000f);
-				break;
-			case 219:
-				setToBow(AISMessage.unsigned_integer_decoder(block.getBits()));
-				break;
-			case 228:
-				setToStern(AISMessage.unsigned_integer_decoder(block.getBits()));
-				break;
-			case 237:
-				setToPort(AISMessage.unsigned_integer_decoder(block.getBits()));
-				break;
-			case 243:
-				setToStarboard(AISMessage.unsigned_integer_decoder(block.getBits()));
-				break;
-			case 249:
-				setEpfd(AISMessage.unsigned_integer_decoder(block.getBits()));
-				break;
-			case 253:
-				setSecond(AISMessage.unsigned_integer_decoder(block.getBits()));
-				break;
-			case 259:
-				setOffPosition(AISMessage.boolean_decoder(block.getBits()));
-				break;
-			case 260:
-				setRegional(AISMessage.unsigned_integer_decoder(block.getBits()));
-				break;
-			case 268:
-				setRaim(AISMessage.boolean_decoder(block.getBits()));
-				break;
-			case 269:
-				setVirtualAid(AISMessage.boolean_decoder(block.getBits()));
-				break;
-			case 270:
-				setAssigned(AISMessage.boolean_decoder(block.getBits()));
-				break;
-			case 272:
-				setNameExtension(AISMessage.text_decoder(block.getBits()));
-				break;
-			}
+		switch (block.getStart()) {
+		case 0:
+			setType(unsigned_integer_decoder(block.getBits()));
+			break;
+		case 6:
+			setRepeat(unsigned_integer_decoder(block.getBits()));
+			break;
+		case 8:
+			setMmsi(unsigned_integer_decoder(block.getBits()));
+			break;
+		case 38:
+			setAidType(unsigned_integer_decoder(block.getBits()));
+			break;
+		case 43:
+			setName(text_decoder(block.getBits()));
+			break;
+		case 163:
+			setAccuracy(boolean_decoder(block.getBits()));
+			break;
+		case 164:
+			setLongitude(float_decoder(block.getBits()) / 600000f);
+			break;
+		case 192:
+			setLatitude(float_decoder(block.getBits()) / 600000f);
+			break;
+		case 219:
+			setToBow(unsigned_integer_decoder(block.getBits()));
+			break;
+		case 228:
+			setToStern(unsigned_integer_decoder(block.getBits()));
+			break;
+		case 237:
+			setToPort(unsigned_integer_decoder(block.getBits()));
+			break;
+		case 243:
+			setToStarboard(unsigned_integer_decoder(block.getBits()));
+			break;
+		case 249:
+			setEpfd(unsigned_integer_decoder(block.getBits()));
+			break;
+		case 253:
+			setSecond(unsigned_integer_decoder(block.getBits()));
+			break;
+		case 259:
+			setOffPosition(boolean_decoder(block.getBits()));
+			break;
+		case 260:
+			setRegional(unsigned_integer_decoder(block.getBits()));
+			break;
+		case 268:
+			setRaim(boolean_decoder(block.getBits()));
+			break;
+		case 269:
+			setVirtualAid(boolean_decoder(block.getBits()));
+			break;
+		case 270:
+			setAssigned(boolean_decoder(block.getBits()));
+			break;
+		case 272:
+			setNameExtension(text_decoder(block.getBits()));
+			break;
 		}
 	}
 

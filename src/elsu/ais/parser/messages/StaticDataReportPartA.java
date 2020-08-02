@@ -1,7 +1,5 @@
 package elsu.ais.parser.messages;
 
-import java.util.ArrayList;
-
 import elsu.ais.parser.base.AISMessage;
 import elsu.ais.parser.messages.StaticDataReport;
 import elsu.ais.parser.resources.LookupValues;
@@ -9,7 +7,7 @@ import elsu.ais.parser.resources.PayloadBlock;
 
 public class StaticDataReportPartA extends StaticDataReport {
 
-	public static AISMessage fromAISMessage(AISMessage aisMessage, String messageBits) {
+	public static AISMessage fromAISMessage(AISMessage aisMessage, String messageBits) throws Exception {
 		StaticDataReportPartA staticPartAReport = new StaticDataReportPartA();
 
 		if (aisMessage instanceof StaticDataReport) {
@@ -27,22 +25,19 @@ public class StaticDataReportPartA extends StaticDataReport {
 	}
 
 	private void initialize() {
-		getMessageBlocks().add(new PayloadBlock(40, 159, 120, "Vessel Name", "shipname", "t", "(Part A) 20 sixbit chars"));
+		getMessageBlocks()
+				.add(new PayloadBlock(40, 159, 120, "Vessel Name", "shipname", "t", "(Part A) 20 sixbit chars"));
 	}
 
-	public void parseMessage(String message) {
-		for (PayloadBlock block : getMessageBlocks()) {
-			if ((block.getEnd() == -1) || (block.getEnd() > message.length())) {
-				block.setBits(message.substring(block.getStart(), message.length()));
-			} else {
-				block.setBits(message.substring(block.getStart(), block.getEnd() + 1));
-			}
+	public void parseMessageBlock(PayloadBlock block) throws Exception {
+		if (block.isException()) {
+			throw new Exception("parsing error; " + block);
+		}
 
-			switch (block.getStart()) {
-			case 40:
-				setShipname(AISMessage.text_decoder(block.getBits()));
-				break;
-			}
+		switch (block.getStart()) {
+		case 40:
+			setShipname(text_decoder(block.getBits()));
+			break;
 		}
 	}
 

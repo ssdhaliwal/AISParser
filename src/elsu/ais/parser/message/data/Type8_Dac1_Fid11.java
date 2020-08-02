@@ -1,7 +1,5 @@
 package elsu.ais.parser.message.data;
 
-import java.util.ArrayList;
-
 import elsu.ais.parser.base.AISMessage;
 import elsu.ais.parser.messages.BinaryBroadCastMessage;
 import elsu.ais.parser.resources.LookupValues;
@@ -9,7 +7,7 @@ import elsu.ais.parser.resources.PayloadBlock;
 
 public class Type8_Dac1_Fid11 extends BinaryBroadCastMessage {
 
-	public static AISMessage fromAISMessage(AISMessage aisMessage, String messageBits) {
+	public static AISMessage fromAISMessage(AISMessage aisMessage, String messageBits) throws Exception {
 		Type8_Dac1_Fid11 binaryMessage = new Type8_Dac1_Fid11();
 
 		if (aisMessage instanceof BinaryBroadCastMessage) {
@@ -98,124 +96,120 @@ public class Type8_Dac1_Fid11 extends BinaryBroadCastMessage {
 		getMessageBlocks().add(new PayloadBlock(346, 351, 6, "Spare", "", "x", "Not used"));
 	}
 
-	public void parseMessage(String message) {
-		for (PayloadBlock block : getMessageBlocks()) {
-			if ((block.getEnd() == -1) || (block.getEnd() > message.length())) {
-				block.setBits(message.substring(block.getStart(), message.length()));
-			} else {
-				block.setBits(message.substring(block.getStart(), block.getEnd() + 1));
-			}
+	public void parseMessageBlock(PayloadBlock block) throws Exception {
+		if (block.isException()) {
+			throw new Exception("parsing error; " + block);
+		}
 
-			switch (block.getStart()) {
-			case 56:
-				setLat(AISMessage.float_decoder(block.getBits()) / 60000f);
-				break;
-			case 80:
-				setLon(AISMessage.float_decoder(block.getBits()) / 60000f);
-				break;
-			case 105:
-				setDay(AISMessage.unsigned_integer_decoder(block.getBits()));
-				break;
-			case 110:
-				setHour(AISMessage.unsigned_integer_decoder(block.getBits()));
-				break;
-			case 115:
-				setMinute(AISMessage.unsigned_integer_decoder(block.getBits()));
-				break;
-			case 121:
-				setWspeed(AISMessage.unsigned_integer_decoder(block.getBits()));
-				break;
-			case 128:
-				setWgust(AISMessage.unsigned_integer_decoder(block.getBits()));
-				break;
-			case 135:
-				setWdir(AISMessage.unsigned_integer_decoder(block.getBits()));
-				break;
-			case 144:
-				setWgustdir(AISMessage.unsigned_integer_decoder(block.getBits()));
-				break;
-			case 153:
-				setTemperature(AISMessage.unsigned_integer_decoder(block.getBits()));
-				break;
-			case 164:
-				setHumidity(AISMessage.unsigned_integer_decoder(block.getBits()));
-				break;
-			case 171:
-				setDewpoint(AISMessage.unsigned_integer_decoder(block.getBits()));
-				break;
-			case 181:
-				setPressure(AISMessage.unsigned_integer_decoder(block.getBits()));
-				break;
-			case 190:
-				setPressuretend(AISMessage.unsigned_integer_decoder(block.getBits()));
-				break;
-			case 192:
-				setVisibility(AISMessage.unsigned_float_decoder(block.getBits()));
-				break;
-			case 200:
-				setWaterlevel(AISMessage.float_decoder(block.getBits()));
-				break;
-			case 209:
-				setLeveltrend(AISMessage.unsigned_integer_decoder(block.getBits()));
-				break;
-			case 211:
-				setCspeed(AISMessage.unsigned_float_decoder(block.getBits()));
-				break;
-			case 219:
-				setCdir(AISMessage.unsigned_integer_decoder(block.getBits()));
-				break;
-			case 228:
-				setCspeed2(AISMessage.unsigned_float_decoder(block.getBits()));
-				break;
-			case 236:
-				setCdir2(AISMessage.unsigned_integer_decoder(block.getBits()));
-				break;
-			case 245:
-				setCdepth2(AISMessage.unsigned_float_decoder(block.getBits()));
-				break;
-			case 250:
-				setCspeed3(AISMessage.unsigned_float_decoder(block.getBits()));
-				break;
-			case 258:
-				setCdir3(AISMessage.unsigned_integer_decoder(block.getBits()));
-				break;
-			case 267:
-				setCdepth3(AISMessage.unsigned_float_decoder(block.getBits()));
-				break;
-			case 272:
-				setWaveheight(AISMessage.unsigned_float_decoder(block.getBits()));
-				break;
-			case 280:
-				setWaveperiod(AISMessage.unsigned_integer_decoder(block.getBits()));
-				break;
-			case 286:
-				setWavedir(AISMessage.unsigned_integer_decoder(block.getBits()));
-				break;
-			case 295:
-				setSwellheight(AISMessage.unsigned_float_decoder(block.getBits()));
-				break;
-			case 303:
-				setSwellperiod(AISMessage.unsigned_integer_decoder(block.getBits()));
-				break;
-			case 309:
-				setSwelldir(AISMessage.unsigned_integer_decoder(block.getBits()));
-				break;
-			case 318:
-				setSeastate(AISMessage.unsigned_integer_decoder(block.getBits()));
-				break;
-			case 322:
-				setWatertemp(AISMessage.unsigned_float_decoder(block.getBits()));
-				break;
-			case 332:
-				setPreciptype(AISMessage.unsigned_integer_decoder(block.getBits()));
-				break;
-			case 335:
-				setSalinity(AISMessage.unsigned_float_decoder(block.getBits()));
-				break;
-			case 344:
-				setIce(AISMessage.unsigned_integer_decoder(block.getBits()));
-				break;
-			}
+		switch (block.getStart()) {
+		case 56:
+			setLatitude(float_decoder(block.getBits()) / 600f);
+			break;
+		case 80:
+			setLongitude(float_decoder(block.getBits()) / 600f);
+			break;
+		case 105:
+			setDay(unsigned_integer_decoder(block.getBits()));
+			break;
+		case 110:
+			setHour(unsigned_integer_decoder(block.getBits()));
+			break;
+		case 115:
+			setMinute(unsigned_integer_decoder(block.getBits()));
+			break;
+		case 121:
+			setAverageWindSpeed(unsigned_integer_decoder(block.getBits()));
+			break;
+		case 128:
+			setWindGust(unsigned_integer_decoder(block.getBits()));
+			break;
+		case 135:
+			setWindDirection(unsigned_integer_decoder(block.getBits()));
+			break;
+		case 144:
+			setWindGustDirection(unsigned_integer_decoder(block.getBits()));
+			break;
+		case 153:
+			setAirTemperature(unsigned_integer_decoder(block.getBits()));
+			break;
+		case 164:
+			setRelativeHumidity(unsigned_integer_decoder(block.getBits()));
+			break;
+		case 171:
+			setDewPoint(unsigned_integer_decoder(block.getBits()));
+			break;
+		case 181:
+			setAirPressure(unsigned_integer_decoder(block.getBits()));
+			break;
+		case 190:
+			setAirPressureTendency(unsigned_integer_decoder(block.getBits()));
+			break;
+		case 192:
+			setHorizontalVisibility(unsigned_float_decoder(block.getBits()));
+			break;
+		case 200:
+			setWaterLevel(float_decoder(block.getBits()));
+			break;
+		case 209:
+			setWaterLevelTrend(unsigned_integer_decoder(block.getBits()));
+			break;
+		case 211:
+			setSurfaceCurrentSpeed(unsigned_float_decoder(block.getBits()));
+			break;
+		case 219:
+			setSurfaceCurrentDirection(unsigned_integer_decoder(block.getBits()));
+			break;
+		case 228:
+			setCurrentSpeed2(unsigned_float_decoder(block.getBits()));
+			break;
+		case 236:
+			setCurrentDirection2(unsigned_integer_decoder(block.getBits()));
+			break;
+		case 245:
+			setCurrentMeasurementLevel2(unsigned_float_decoder(block.getBits()));
+			break;
+		case 250:
+			setCurrentSpeed3(unsigned_float_decoder(block.getBits()));
+			break;
+		case 258:
+			setCurrentDirection3(unsigned_integer_decoder(block.getBits()));
+			break;
+		case 267:
+			setCurrentSpeed3(unsigned_float_decoder(block.getBits()));
+			break;
+		case 272:
+			setSignificantWaveHeight(unsigned_float_decoder(block.getBits()));
+			break;
+		case 280:
+			setWavePeriod(unsigned_integer_decoder(block.getBits()));
+			break;
+		case 286:
+			setWaveDirection(unsigned_integer_decoder(block.getBits()));
+			break;
+		case 295:
+			setSwellHeight(unsigned_float_decoder(block.getBits()));
+			break;
+		case 303:
+			setSwellPeriod(unsigned_integer_decoder(block.getBits()));
+			break;
+		case 309:
+			setSwellDirection(unsigned_integer_decoder(block.getBits()));
+			break;
+		case 318:
+			setSeaState(unsigned_integer_decoder(block.getBits()));
+			break;
+		case 322:
+			setWaterTemperature(unsigned_float_decoder(block.getBits()));
+			break;
+		case 332:
+			setPrecipitationType(unsigned_integer_decoder(block.getBits()));
+			break;
+		case 335:
+			setSalinity(unsigned_float_decoder(block.getBits()));
+			break;
+		case 344:
+			setIce(unsigned_integer_decoder(block.getBits()));
+			break;
 		}
 	}
 
@@ -225,47 +219,47 @@ public class Type8_Dac1_Fid11 extends BinaryBroadCastMessage {
 
 		buffer.append("{");
 		buffer.append("\"type\":" + getType());
-		buffer.append(", \"typeText\":\"" + LookupValues.getMessageType(getType())  + "\"");
+		buffer.append(", \"typeText\":\"" + LookupValues.getMessageType(getType()) + "\"");
 		buffer.append(", \"repeat\":" + getRepeat());
 		buffer.append(", \"mmsi\":" + getMmsi());
 		buffer.append(", \"dac\":" + getDac());
 		buffer.append(", \"fid\":" + getFid());
 		buffer.append(", \"dataBits\":\"" + getData() + "\"");
 		buffer.append(", \"dataRaw\":\"" + getDataRaw() + "\"");
-		buffer.append(", \"latitude\":" + getLat());
-		buffer.append(", \"longitude\":" + getLon());
+		buffer.append(", \"latitude\":" + getLatitude());
+		buffer.append(", \"longitude\":" + getLongitude());
 		buffer.append(", \"day\":" + getDay());
 		buffer.append(", \"hour\":" + getHour());
 		buffer.append(", \"minute\":" + getMinute());
-		buffer.append(", \"windSpeed\":" + getWspeed());
-		buffer.append(", \"windGust\":" + getWgust());
-		buffer.append(", \"windDir\":" + getWdir());
-		buffer.append(", \"windGustRir\":" + getWgustdir());
-		buffer.append(", \"temperature\":" + getTemperature());
-		buffer.append(", \"humidity\":" + getHumidity());
-		buffer.append(", \"dewPoint\":" + getDewpoint());
-		buffer.append(", \"pressure\":" + getPressure());
-		buffer.append(", \"pressureTrendency\":" + getPressuretend());
-		buffer.append(", \"visibility\":" + getVisibility());
-		buffer.append(", \"waterLevel\":" + getWaterlevel());
-		buffer.append(", \"levelTrend\":" + getLeveltrend());
-		buffer.append(", \"currentSpeed\":" + getCspeed());
-		buffer.append(", \"currentDir\":" + getCdir());
-		buffer.append(", \"currentSpeed2\":" + getCspeed2());
-		buffer.append(", \"currentDir2\":" + getCdir2());
-		buffer.append(", \"currentDepth2\":" + getCdepth2());
-		buffer.append(", \"currentSpeed3\":" + getCspeed3());
-		buffer.append(", \"currentDir3\":" + getCdir3());
-		buffer.append(", \"currentDepth3\":" + getCdepth3());
-		buffer.append(", \"waveHeight\":" + getWaveheight());
-		buffer.append(", \"wavePeriod\":" + getWaveperiod());
-		buffer.append(", \"waveDir\":" + getWavedir());
-		buffer.append(", \"swellHeight\":" + getSwellheight());
-		buffer.append(", \"swellPeriod\":" + getSwellperiod());
-		buffer.append(", \"swellDir\":" + getSwelldir());
-		buffer.append(", \"seaState\":" + getSeastate());
-		buffer.append(", \"waterTemp\":" + getWatertemp());
-		buffer.append(", \"preciptype\":" + getPreciptype());
+		buffer.append(", \"averageWindSpeed\":" + getAverageWindSpeed());
+		buffer.append(", \"windGust\":" + getWindGust());
+		buffer.append(", \"windDirection\":" + getWindDirection());
+		buffer.append(", \"windGustDirection\":" + getWindGustDirection());
+		buffer.append(", \"airTemperature\":" + getAirTemperature());
+		buffer.append(", \"relativeHumidity\":" + getRelativeHumidity());
+		buffer.append(", \"dewPoint\":" + getDewPoint());
+		buffer.append(", \"airPressure\":" + getAirPressure());
+		buffer.append(", \"airPressureTrendency\":" + getAirPressureTendency());
+		buffer.append(", \"horizontalVisibility\":" + getHorizontalVisibility());
+		buffer.append(", \"waterLevel\":" + getWaterLevel());
+		buffer.append(", \"waterLevelTrend\":" + getWaterLevelTrend());
+		buffer.append(", \"surfaceCurrentSpeed\":" + getSurfaceCurrentSpeed());
+		buffer.append(", \"surfaceCurrentDirection\":" + getSurfaceCurrentDirection());
+		buffer.append(", \"currentSpeed2\":" + getCurrentSpeed2());
+		buffer.append(", \"currentDirection2\":" + getCurrentDirection2());
+		buffer.append(", \"currentMeasurementLevel2\":" + getCurrentMeasurementLevel2());
+		buffer.append(", \"currentSpeed3\":" + getCurrentSpeed3());
+		buffer.append(", \"currentDirection3\":" + getCurrentDirection3());
+		buffer.append(", \"currentMeasurementLevel3\":" + getCurrentMeasurementLevel3());
+		buffer.append(", \"significantWaveHeight\":" + getSignificantWaveHeight());
+		buffer.append(", \"wavePeriod\":" + getWavePeriod());
+		buffer.append(", \"waveDirection\":" + getWaveDirection());
+		buffer.append(", \"swellHeight\":" + getSwellHeight());
+		buffer.append(", \"swellPeriod\":" + getSwellPeriod());
+		buffer.append(", \"swellDirection\":" + getSwellDirection());
+		buffer.append(", \"seaState\":" + getSeaState());
+		buffer.append(", \"waterTemperature\":" + getWaterTemperature());
+		buffer.append(", \"precipitationType\":" + getPrecipitationType());
 		buffer.append(", \"salinity\":" + getSalinity());
 		buffer.append(", \"ice\":" + getIce());
 		buffer.append("}");
@@ -273,20 +267,20 @@ public class Type8_Dac1_Fid11 extends BinaryBroadCastMessage {
 		return buffer.toString();
 	}
 
-	public float getLat() {
-		return lat;
+	public float getLatitude() {
+		return latitude;
 	}
 
-	public void setLat(float lat) {
-		this.lat = lat;
+	public void setLatitude(float latitude) {
+		this.latitude = latitude;
 	}
 
-	public float getLon() {
-		return lon;
+	public float getLongitude() {
+		return longitude;
 	}
 
-	public void setLon(float lon) {
-		this.lon = lon;
+	public void setLongitude(float longitude) {
+		this.longitude = longitude;
 	}
 
 	public int getDay() {
@@ -313,236 +307,236 @@ public class Type8_Dac1_Fid11 extends BinaryBroadCastMessage {
 		this.minute = minute;
 	}
 
-	public int getWspeed() {
-		return wspeed;
+	public int getAverageWindSpeed() {
+		return averageWindSpeed;
 	}
 
-	public void setWspeed(int wspeed) {
-		this.wspeed = wspeed;
+	public void setAverageWindSpeed(int averageWindSpeed) {
+		this.averageWindSpeed = averageWindSpeed;
 	}
 
-	public int getWgust() {
-		return wgust;
+	public int getWindGust() {
+		return windGust;
 	}
 
-	public void setWgust(int wgust) {
-		this.wgust = wgust;
+	public void setWindGust(int windGust) {
+		this.windGust = windGust;
 	}
 
-	public int getWdir() {
-		return wdir;
+	public int getWindDirection() {
+		return windDirection;
 	}
 
-	public void setWdir(int wdir) {
-		this.wdir = wdir;
+	public void setWindDirection(int windDirection) {
+		this.windDirection = windDirection;
 	}
 
-	public int getWgustdir() {
-		return wgustdir;
+	public int getWindGustDirection() {
+		return windGustDirection;
 	}
 
-	public void setWgustdir(int wgustdir) {
-		this.wgustdir = wgustdir;
+	public void setWindGustDirection(int windGustDirection) {
+		this.windGustDirection = windGustDirection;
 	}
 
-	public int getTemperature() {
-		return temperature;
+	public int getAirTemperature() {
+		return airTemperature;
 	}
 
-	public void setTemperature(int temperature) {
-		this.temperature = temperature;
+	public void setAirTemperature(int airTemperature) {
+		this.airTemperature = airTemperature;
 	}
 
-	public int getHumidity() {
-		return humidity;
+	public int getRelativeHumidity() {
+		return relativeHumidity;
 	}
 
-	public void setHumidity(int humidity) {
-		this.humidity = humidity;
+	public void setRelativeHumidity(int relativeHumidity) {
+		this.relativeHumidity = relativeHumidity;
 	}
 
-	public int getDewpoint() {
-		return dewpoint;
+	public int getDewPoint() {
+		return dewPoint;
 	}
 
-	public void setDewpoint(int dewpoint) {
-		this.dewpoint = dewpoint;
+	public void setDewPoint(int dewPoint) {
+		this.dewPoint = dewPoint;
 	}
 
-	public int getPressure() {
-		return pressure;
+	public int getAirPressure() {
+		return airPressure;
 	}
 
-	public void setPressure(int pressure) {
-		this.pressure = pressure;
+	public void setAirPressure(int airPressure) {
+		this.airPressure = airPressure;
 	}
 
-	public int getPressuretend() {
-		return pressuretend;
+	public int getAirPressureTendency() {
+		return airPressureTendency;
 	}
 
-	public void setPressuretend(int pressuretend) {
-		this.pressuretend = pressuretend;
+	public void setAirPressureTendency(int airPressureTendency) {
+		this.airPressureTendency = airPressureTendency;
 	}
 
-	public float getVisibility() {
-		return visibility;
+	public float getHorizontalVisibility() {
+		return horizontalVisibility;
 	}
 
-	public void setVisibility(float visibility) {
-		this.visibility = visibility;
+	public void setHorizontalVisibility(float horizontalVisibility) {
+		this.horizontalVisibility = horizontalVisibility;
 	}
 
-	public float getWaterlevel() {
-		return waterlevel;
+	public float getWaterLevel() {
+		return waterLevel;
 	}
 
-	public void setWaterlevel(float waterlevel) {
-		this.waterlevel = waterlevel;
+	public void setWaterLevel(float waterLevel) {
+		this.waterLevel = waterLevel;
 	}
 
-	public int getLeveltrend() {
-		return leveltrend;
+	public int getWaterLevelTrend() {
+		return waterLevelTrend;
 	}
 
-	public void setLeveltrend(int leveltrend) {
-		this.leveltrend = leveltrend;
+	public void setWaterLevelTrend(int waterLevelTrend) {
+		this.waterLevelTrend = waterLevelTrend;
 	}
 
-	public float getCspeed() {
-		return cspeed;
+	public float getSurfaceCurrentSpeed() {
+		return surfaceCurrentSpeed;
 	}
 
-	public void setCspeed(float cspeed) {
-		this.cspeed = cspeed;
+	public void setSurfaceCurrentSpeed(float surfaceCurrentSpeed) {
+		this.surfaceCurrentSpeed = surfaceCurrentSpeed;
 	}
 
-	public int getCdir() {
-		return cdir;
+	public int getSurfaceCurrentDirection() {
+		return surfaceCurrentDirection;
 	}
 
-	public void setCdir(int cdir) {
-		this.cdir = cdir;
+	public void setSurfaceCurrentDirection(int surfaceCurrentDirection) {
+		this.surfaceCurrentDirection = surfaceCurrentDirection;
 	}
 
-	public float getCspeed2() {
-		return cspeed2;
+	public float getCurrentSpeed2() {
+		return currentSpeed2;
 	}
 
-	public void setCspeed2(float cspeed2) {
-		this.cspeed2 = cspeed2;
+	public void setCurrentSpeed2(float currentSpeed2) {
+		this.currentSpeed2 = currentSpeed2;
 	}
 
-	public int getCdir2() {
-		return cdir2;
+	public int getCurrentDirection2() {
+		return currentDirection2;
 	}
 
-	public void setCdir2(int cdir2) {
-		this.cdir2 = cdir2;
+	public void setCurrentDirection2(int currentDirection2) {
+		this.currentDirection2 = currentDirection2;
 	}
 
-	public float getCdepth2() {
-		return cdepth2;
+	public float getCurrentMeasurementLevel2() {
+		return currentMeasurementLevel2;
 	}
 
-	public void setCdepth2(float cdepth2) {
-		this.cdepth2 = cdepth2;
+	public void setCurrentMeasurementLevel2(float currentMeasurementLevel2) {
+		this.currentMeasurementLevel2 = currentMeasurementLevel2;
 	}
 
-	public float getCspeed3() {
-		return cspeed3;
+	public float getCurrentSpeed3() {
+		return currentSpeed3;
 	}
 
-	public void setCspeed3(float cspeed3) {
-		this.cspeed3 = cspeed3;
+	public void setCurrentSpeed3(float currentSpeed3) {
+		this.currentSpeed3 = currentSpeed3;
 	}
 
-	public int getCdir3() {
-		return cdir3;
+	public int getCurrentDirection3() {
+		return currentDirection3;
 	}
 
-	public void setCdir3(int cdir3) {
-		this.cdir3 = cdir3;
+	public void setCurrentDirection3(int currentDirection3) {
+		this.currentDirection3 = currentDirection3;
 	}
 
-	public float getCdepth3() {
-		return cdepth3;
+	public float getCurrentMeasurementLevel3() {
+		return currentMeasurementLevel3;
 	}
 
-	public void setCdepth3(float cdepth3) {
-		this.cdepth3 = cdepth3;
+	public void setCurrentMeasurementLevel3(float currentMeasurementLevel3) {
+		this.currentMeasurementLevel3 = currentMeasurementLevel3;
 	}
 
-	public float getWaveheight() {
-		return waveheight;
+	public float getSignificantWaveHeight() {
+		return significantWaveHeight;
 	}
 
-	public void setWaveheight(float waveheight) {
-		this.waveheight = waveheight;
+	public void setSignificantWaveHeight(float significantWaveHeight) {
+		this.significantWaveHeight = significantWaveHeight;
 	}
 
-	public int getWaveperiod() {
-		return waveperiod;
+	public int getWavePeriod() {
+		return wavePeriod;
 	}
 
-	public void setWaveperiod(int waveperiod) {
-		this.waveperiod = waveperiod;
+	public void setWavePeriod(int wavePeriod) {
+		this.wavePeriod = wavePeriod;
 	}
 
-	public int getWavedir() {
-		return wavedir;
+	public int getWaveDirection() {
+		return waveDirection;
 	}
 
-	public void setWavedir(int wavedir) {
-		this.wavedir = wavedir;
+	public void setWaveDirection(int waveDirection) {
+		this.waveDirection = waveDirection;
 	}
 
-	public float getSwellheight() {
-		return swellheight;
+	public float getSwellHeight() {
+		return swellHeight;
 	}
 
-	public void setSwellheight(float swellheight) {
-		this.swellheight = swellheight;
+	public void setSwellHeight(float swellHeight) {
+		this.swellHeight = swellHeight;
 	}
 
-	public int getSwellperiod() {
-		return swellperiod;
+	public int getSwellPeriod() {
+		return swellPeriod;
 	}
 
-	public void setSwellperiod(int swellperiod) {
-		this.swellperiod = swellperiod;
+	public void setSwellPeriod(int swellPeriod) {
+		this.swellPeriod = swellPeriod;
 	}
 
-	public int getSwelldir() {
-		return swelldir;
+	public int getSwellDirection() {
+		return swellDirection;
 	}
 
-	public void setSwelldir(int swelldir) {
-		this.swelldir = swelldir;
+	public void setSwellDirection(int swellDirection) {
+		this.swellDirection = swellDirection;
 	}
 
-	public int getSeastate() {
-		return seastate;
+	public int getSeaState() {
+		return seaState;
 	}
 
-	public void setSeastate(int seastate) {
-		this.seastate = seastate;
+	public void setSeaState(int seaState) {
+		this.seaState = seaState;
 	}
 
-	public float getWatertemp() {
-		return watertemp;
+	public float getWaterTemperature() {
+		return waterTemperature;
 	}
 
-	public void setWatertemp(float watertemp) {
-		this.watertemp = watertemp;
+	public void setWaterTemperature(float waterTemperature) {
+		this.waterTemperature = waterTemperature;
 	}
 
-	public int getPreciptype() {
-		return preciptype;
+	public int getPrecipitationType() {
+		return precipitationType;
 	}
 
-	public void setPreciptype(int preciptype) {
-		this.preciptype = preciptype;
+	public void setPrecipitationType(int precipitationType) {
+		this.precipitationType = precipitationType;
 	}
 
 	public float getSalinity() {
@@ -561,40 +555,40 @@ public class Type8_Dac1_Fid11 extends BinaryBroadCastMessage {
 		this.ice = ice;
 	}
 
-	private float lat = 0.0f;
-	private float lon = 0.0f;
+	private float latitude = 0.0f;
+	private float longitude = 0.0f;
 	private int day = 0;
 	private int hour = 0;
 	private int minute = 0;
-	private int wspeed = 0;
-	private int wgust = 0;
-	private int wdir = 0;
-	private int wgustdir = 0;
-	private int temperature = 0;
-	private int humidity = 0;
-	private int dewpoint = 0;
-	private int pressure = 0;
-	private int pressuretend = 0;
-	private float visibility = 0.0f;
-	private float waterlevel = 0;
-	private int leveltrend = 0;
-	private float cspeed = 0.0f;
-	private int cdir = 0;
-	private float cspeed2 = 0.0f;
-	private int cdir2 = 0;
-	private float cdepth2 = 0.0f;
-	private float cspeed3 = 0.0f;
-	private int cdir3 = 0;
-	private float cdepth3 = 0.0f;
-	private float waveheight = 0.0f;
-	private int waveperiod = 0;
-	private int wavedir = 0;
-	private float swellheight = 0.0f;
-	private int swellperiod = 0;
-	private int swelldir = 0;
-	private int seastate = 0;
-	private float watertemp = 0.0f;
-	private int preciptype = 0;
+	private int averageWindSpeed = 0;
+	private int windGust = 0;
+	private int windDirection = 0;
+	private int windGustDirection = 0;
+	private int airTemperature = 0;
+	private int relativeHumidity = 0;
+	private int dewPoint = 0;
+	private int airPressure = 0;
+	private int airPressureTendency = 0;
+	private float horizontalVisibility = 0.0f;
+	private float waterLevel = 0;
+	private int waterLevelTrend = 0;
+	private float surfaceCurrentSpeed = 0.0f;
+	private int surfaceCurrentDirection = 0;
+	private float currentSpeed2 = 0.0f;
+	private int currentDirection2 = 0;
+	private float currentMeasurementLevel2 = 0.0f;
+	private float currentSpeed3 = 0.0f;
+	private int currentDirection3 = 0;
+	private float currentMeasurementLevel3 = 0.0f;
+	private float significantWaveHeight = 0.0f;
+	private int wavePeriod = 0;
+	private int waveDirection = 0;
+	private float swellHeight = 0.0f;
+	private int swellPeriod = 0;
+	private int swellDirection = 0;
+	private int seaState = 0;
+	private float waterTemperature = 0.0f;
+	private int precipitationType = 0;
 	private float salinity = 0.0f;
 	private int ice = 0;
 

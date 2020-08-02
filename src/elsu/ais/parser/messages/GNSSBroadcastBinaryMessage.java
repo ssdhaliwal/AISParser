@@ -1,7 +1,5 @@
 package elsu.ais.parser.messages;
 
-import java.util.*;
-
 import elsu.ais.parser.base.AISBase;
 import elsu.ais.parser.base.AISMessage;
 import elsu.ais.parser.message.data.GNSSMessage;
@@ -10,7 +8,7 @@ import elsu.ais.parser.resources.PayloadBlock;
 
 public class GNSSBroadcastBinaryMessage extends AISMessage {
 
-	public static AISMessage fromAISMessage(String messageBits) {
+	public static AISMessage fromAISMessage(String messageBits) throws Exception {
 		GNSSBroadcastBinaryMessage binaryMessage = new GNSSBroadcastBinaryMessage();
 		binaryMessage.parseMessage(messageBits);
 
@@ -23,7 +21,8 @@ public class GNSSBroadcastBinaryMessage extends AISMessage {
 
 	private void initialize() {
 		getMessageBlocks().add(new PayloadBlock(0, 5, 6, "Message Type", "type", "u", "Constant: 17"));
-		getMessageBlocks().add(new PayloadBlock(6, 7, 2, "Repeat Indicator", "repeat", "u", "As in Common Navigation Block"));
+		getMessageBlocks()
+				.add(new PayloadBlock(6, 7, 2, "Repeat Indicator", "repeat", "u", "As in Common Navigation Block"));
 		getMessageBlocks().add(new PayloadBlock(8, 37, 30, "Source MMSI", "mmsi", "u", "9 decimal digits"));
 		getMessageBlocks().add(new PayloadBlock(38, 39, 2, "Spare", "", "x", "Not used"));
 		getMessageBlocks().add(new PayloadBlock(40, 57, 18, "Longitude", "lon", "I1", "Signed: minutes/10"));
@@ -32,34 +31,30 @@ public class GNSSBroadcastBinaryMessage extends AISMessage {
 		getMessageBlocks().add(new PayloadBlock(80, -1, 736, "Payload", "data", "d", "DGNSS correction data"));
 	}
 
-	public void parseMessage(String message) {
-		for (PayloadBlock block : getMessageBlocks()) {
-			if ((block.getEnd() == -1) || (block.getEnd() > message.length())) {
-				block.setBits(message.substring(block.getStart(), message.length()));
-			} else {
-				block.setBits(message.substring(block.getStart(), block.getEnd() + 1));
-			}
+	public void parseMessageBlock(PayloadBlock block) throws Exception {
+		if (block.isException()) {
+			throw new Exception("parsing error; " + block);
+		}
 
-			switch (block.getStart()) {
-			case 0:
-				setType(AISMessage.unsigned_integer_decoder(block.getBits()));
-				break;
-			case 6:
-				setRepeat(AISMessage.unsigned_integer_decoder(block.getBits()));
-				break;
-			case 8:
-				setMmsi(AISMessage.unsigned_integer_decoder(block.getBits()));
-				break;
-			case 40:
-				setLongitude(AISBase.float_decoder(block.getBits()) / 600f);
-				break;
-			case 58:
-				setLatitude(AISBase.float_decoder(block.getBits()) / 600f);
-				break;
-			case 80:
-				setData(AISMessage.bit_decoder(block.getBits()));
-				break;
-			}
+		switch (block.getStart()) {
+		case 0:
+			setType(unsigned_integer_decoder(block.getBits()));
+			break;
+		case 6:
+			setRepeat(unsigned_integer_decoder(block.getBits()));
+			break;
+		case 8:
+			setMmsi(unsigned_integer_decoder(block.getBits()));
+			break;
+		case 40:
+			setLongitude(AISBase.float_decoder(block.getBits()) / 600f);
+			break;
+		case 58:
+			setLatitude(AISBase.float_decoder(block.getBits()) / 600f);
+			break;
+		case 80:
+			setData(bit_decoder(block.getBits()));
+			break;
 		}
 	}
 
@@ -123,11 +118,11 @@ public class GNSSBroadcastBinaryMessage extends AISMessage {
 	public void setLatitude(float latitude) {
 		this.latitude = latitude;
 	}
-	
+
 	public GNSSMessage getGNSSMessage() {
 		return gnssMessage;
 	}
-	
+
 	public void setGNSSMessage(GNSSMessage message) {
 		this.gnssMessage = message;
 	}
@@ -143,7 +138,7 @@ public class GNSSBroadcastBinaryMessage extends AISMessage {
 	public void setData(String data) {
 		this.data = data;
 		this.dataRaw = text_decoder_8bit(data);
-		
+
 		gnssMessage = GNSSMessage.fromPayload(getData());
 	}
 

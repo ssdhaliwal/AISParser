@@ -1,7 +1,5 @@
 package elsu.ais.parser.messages;
 
-import java.util.*;
-
 import elsu.ais.parser.base.AISMessage;
 import elsu.ais.parser.message.data.CommunicationState;
 import elsu.ais.parser.resources.LookupValues;
@@ -9,7 +7,7 @@ import elsu.ais.parser.resources.PayloadBlock;
 
 public class BaseStationReport extends AISMessage {
 
-	public static AISMessage fromAISMessage(String messageBits) {
+	public static AISMessage fromAISMessage(String messageBits) throws Exception {
 		BaseStationReport stationReport = new BaseStationReport();
 		stationReport.parseMessage(messageBits);
 
@@ -25,7 +23,8 @@ public class BaseStationReport extends AISMessage {
 		getMessageBlocks()
 				.add(new PayloadBlock(6, 7, 2, "Repeat Indicator", "repeat", "u", "As in Common Navigation Block"));
 		getMessageBlocks().add(new PayloadBlock(8, 37, 30, "MMSI", "mmsi", "u", "9 decimal digits"));
-		getMessageBlocks().add(new PayloadBlock(38, 51, 14, "Year (UTC)", "year", "u", "UTC, 1-9999, 0 = N/A (default)"));
+		getMessageBlocks()
+				.add(new PayloadBlock(38, 51, 14, "Year (UTC)", "year", "u", "UTC, 1-9999, 0 = N/A (default)"));
 		getMessageBlocks().add(new PayloadBlock(52, 55, 4, "Month (UTC)", "month", "u", "1-12; 0 = N/A (default)"));
 		getMessageBlocks().add(new PayloadBlock(56, 60, 5, "Day (UTC)", "day", "u", "1-31; 0 = N/A (default)"));
 		getMessageBlocks().add(new PayloadBlock(61, 65, 5, "Hour (UTC)", "hour", "u", "0-23; 24 = N/A (default)"));
@@ -33,73 +32,74 @@ public class BaseStationReport extends AISMessage {
 		getMessageBlocks().add(new PayloadBlock(72, 77, 6, "Second (UTC)", "second", "u", "0-59; 60 = N/A (default)"));
 		getMessageBlocks()
 				.add(new PayloadBlock(78, 78, 1, "Fix quality", "accuracy", "b", "As in Common Navigation Block"));
-		getMessageBlocks().add(new PayloadBlock(79, 106, 28, "Longitude", "lon", "I4", "As in Common Navigation Block"));
-		getMessageBlocks().add(new PayloadBlock(107, 133, 27, "Latitude", "lat", "I4", "As in Common Navigation Block"));
+		getMessageBlocks()
+				.add(new PayloadBlock(79, 106, 28, "Longitude", "lon", "I4", "As in Common Navigation Block"));
+		getMessageBlocks()
+				.add(new PayloadBlock(107, 133, 27, "Latitude", "lat", "I4", "As in Common Navigation Block"));
 		getMessageBlocks().add(new PayloadBlock(134, 137, 4, "Type of EPFD", "epfd", "e", "See \"EPFD Fix Types\""));
-		getMessageBlocks().add(new PayloadBlock(138, 138, 1, "Control for Long Range Broadcast", "lrbcontrol", "u", ""));
+		getMessageBlocks()
+				.add(new PayloadBlock(138, 138, 1, "Control for Long Range Broadcast", "lrbcontrol", "u", ""));
 		getMessageBlocks().add(new PayloadBlock(139, 147, 9, "Spare", "", "x", "Not used"));
-		getMessageBlocks().add(new PayloadBlock(148, 148, 1, "RAIM flag", "raim", "b", "As for common navigation block"));
-		getMessageBlocks().add(new PayloadBlock(149, 167, 19, "SOTDMA state", "radio", "u", "As in same bits for Type 1"));
+		getMessageBlocks()
+				.add(new PayloadBlock(148, 148, 1, "RAIM flag", "raim", "b", "As for common navigation block"));
+		getMessageBlocks()
+				.add(new PayloadBlock(149, 167, 19, "SOTDMA state", "radio", "u", "As in same bits for Type 1"));
 	}
 
-	public void parseMessage(String message) {
-		for (PayloadBlock block : getMessageBlocks()) {
-			if ((block.getEnd() == -1) || (block.getEnd() > message.length())) {
-				block.setBits(message.substring(block.getStart(), message.length()));
-			} else {
-				block.setBits(message.substring(block.getStart(), block.getEnd() + 1));
-			}
+	public void parseMessageBlock(PayloadBlock block) throws Exception {
+		if (block.isException()) {
+			throw new Exception("parsing error; " + block);
+		}
 
-			switch (block.getStart()) {
-			case 0:
-				setType(AISMessage.unsigned_integer_decoder(block.getBits()));
-				break;
-			case 6:
-				setRepeat(AISMessage.unsigned_integer_decoder(block.getBits()));
-				break;
-			case 8:
-				setMmsi(AISMessage.unsigned_integer_decoder(block.getBits()));
-				break;
-			case 38:
-				setYear(AISMessage.unsigned_integer_decoder(block.getBits()));
-				break;
-			case 52:
-				setMonth(AISMessage.unsigned_integer_decoder(block.getBits()));
-				break;
-			case 56:
-				setDay(AISMessage.unsigned_integer_decoder(block.getBits()));
-				break;
-			case 61:
-				setHour(AISMessage.unsigned_integer_decoder(block.getBits()));
-				break;
-			case 66:
-				setMinute(AISMessage.unsigned_integer_decoder(block.getBits()));
-				break;
-			case 72:
-				setSecond(AISMessage.unsigned_integer_decoder(block.getBits()));
-				break;
-			case 78:
-				setAccuracy(AISMessage.boolean_decoder(block.getBits()));
-				break;
-			case 79:
-				setLongitude(AISMessage.float_decoder(block.getBits()) / 600000f);
-				break;
-			case 107:
-				setLatitude(AISMessage.float_decoder(block.getBits()) / 600000f);
-				break;
-			case 134:
-				setEpfd(AISMessage.unsigned_integer_decoder(block.getBits()));
-				break;
-			case 138:
-				break;
-			case 148:
-				setRaim(AISMessage.boolean_decoder(block.getBits()));
-				break;
-			case 149:
-				setRadio(AISMessage.unsigned_integer_decoder(block.getBits()));
-				setCommState(block.getBits());
-				break;
-			}
+		switch (block.getStart()) {
+		case 0:
+			setType(unsigned_integer_decoder(block.getBits()));
+			break;
+		case 6:
+			setRepeat(unsigned_integer_decoder(block.getBits()));
+			break;
+		case 8:
+			setMmsi(unsigned_integer_decoder(block.getBits()));
+			break;
+		case 38:
+			setYear(unsigned_integer_decoder(block.getBits()));
+			break;
+		case 52:
+			setMonth(unsigned_integer_decoder(block.getBits()));
+			break;
+		case 56:
+			setDay(unsigned_integer_decoder(block.getBits()));
+			break;
+		case 61:
+			setHour(unsigned_integer_decoder(block.getBits()));
+			break;
+		case 66:
+			setMinute(unsigned_integer_decoder(block.getBits()));
+			break;
+		case 72:
+			setSecond(unsigned_integer_decoder(block.getBits()));
+			break;
+		case 78:
+			setAccuracy(boolean_decoder(block.getBits()));
+			break;
+		case 79:
+			setLongitude(float_decoder(block.getBits()) / 600000f);
+			break;
+		case 107:
+			setLatitude(float_decoder(block.getBits()) / 600000f);
+			break;
+		case 134:
+			setEpfd(unsigned_integer_decoder(block.getBits()));
+			break;
+		case 138:
+			break;
+		case 148:
+			setRaim(boolean_decoder(block.getBits()));
+			break;
+		case 149:
+			setRadio(unsigned_integer_decoder(block.getBits()));
+			setCommState(block.getBits());
+			break;
 		}
 	}
 
@@ -261,11 +261,11 @@ public class BaseStationReport extends AISMessage {
 	public void setRadio(int radio) {
 		this.radio = radio;
 	}
-	
+
 	public CommunicationState getCommState() {
 		return commState;
 	}
-	
+
 	private void setCommState(String bits) {
 		commState = CommunicationState.fromPayload(bits, getType());
 	}

@@ -8,7 +8,7 @@ import elsu.ais.parser.resources.PayloadBlock;
 
 public class PositionReportClassA extends AISMessage {
 
-	public static AISMessage fromAISMessage(String messageBits) {
+	public static AISMessage fromAISMessage(String messageBits) throws Exception {
 		PositionReportClassA positionReport = new PositionReportClassA();
 		positionReport.parseMessage(messageBits);
 
@@ -42,62 +42,58 @@ public class PositionReportClassA extends AISMessage {
 		getMessageBlocks().add(new PayloadBlock(149, 167, 19, "Radio status", "radio", "u", "See below"));
 	}
 
-	public void parseMessage(String message) {
-		for (PayloadBlock block : getMessageBlocks()) {
-			if ((block.getEnd() == -1) || (block.getEnd() > message.length())) {
-				block.setBits(message.substring(block.getStart(), message.length()));
-			} else {
-				block.setBits(message.substring(block.getStart(), block.getEnd() + 1));
-			}
+	public void parseMessageBlock(PayloadBlock block) throws Exception {
+		if (block.isException()) {
+			throw new Exception("parsing error; " + block);
+		}
 
-			switch (block.getStart()) {
-			case 0:
-				setType(AISBase.unsigned_integer_decoder(block.getBits()));
-				break;
-			case 6:
-				setRepeat(AISBase.unsigned_integer_decoder(block.getBits()));
-				break;
-			case 8:
-				setMmsi(AISBase.unsigned_integer_decoder(block.getBits()));
-				break;
-			case 38:
-				setStatus(AISBase.unsigned_integer_decoder(block.getBits()));
-				break;
-			case 42:
-				setTurn(AISBase.integer_decoder(block.getBits()));
-				break;
-			case 50:
-				setSpeed(AISBase.unsigned_float_decoder(block.getBits()) / 10f);
-				break;
-			case 60:
-				setAccuracy(AISBase.boolean_decoder(block.getBits()));
-				break;
-			case 61:
-				setLongitude(AISBase.float_decoder(block.getBits()) / 600000f);
-				break;
-			case 89:
-				setLatitude(AISBase.float_decoder(block.getBits()) / 600000f);
-				break;
-			case 116:
-				setCourse(AISBase.unsigned_float_decoder(block.getBits()) / 10f);
-				break;
-			case 128:
-				setHeading(AISBase.unsigned_integer_decoder(block.getBits()));
-				break;
-			case 137:
-				setSecond(AISBase.unsigned_integer_decoder(block.getBits()));
-				break;
-			case 143:
-				setManeuver(AISBase.unsigned_integer_decoder(block.getBits()));
-				break;
-			case 148:
-				setRaim(AISBase.boolean_decoder(block.getBits()));
-				break;
-			case 149:
-				setRadio(AISBase.unsigned_integer_decoder(block.getBits()));
-				setCommState(block.getBits());
-				break;
-			}
+		switch (block.getStart()) {
+		case 0:
+			setType(unsigned_integer_decoder(block.getBits()));
+			break;
+		case 6:
+			setRepeat(unsigned_integer_decoder(block.getBits()));
+			break;
+		case 8:
+			setMmsi(unsigned_integer_decoder(block.getBits()));
+			break;
+		case 38:
+			setStatus(unsigned_integer_decoder(block.getBits()));
+			break;
+		case 42:
+			setTurn(integer_decoder(block.getBits()));
+			break;
+		case 50:
+			setSpeed(unsigned_float_decoder(block.getBits()) / 10f);
+			break;
+		case 60:
+			setAccuracy(boolean_decoder(block.getBits()));
+			break;
+		case 61:
+			setLongitude(float_decoder(block.getBits()) / 600000f);
+			break;
+		case 89:
+			setLatitude(float_decoder(block.getBits()) / 600000f);
+			break;
+		case 116:
+			setCourse(unsigned_float_decoder(block.getBits()) / 10f);
+			break;
+		case 128:
+			setHeading(unsigned_integer_decoder(block.getBits()));
+			break;
+		case 137:
+			setSecond(unsigned_integer_decoder(block.getBits()));
+			break;
+		case 143:
+			setManeuver(unsigned_integer_decoder(block.getBits()));
+			break;
+		case 148:
+			setRaim(boolean_decoder(block.getBits()));
+			break;
+		case 149:
+			setRadio(unsigned_integer_decoder(block.getBits()));
+			setCommState(block.getBits());
+			break;
 		}
 	}
 
@@ -121,10 +117,8 @@ public class PositionReportClassA extends AISMessage {
 		buffer.append(", \"course\":" + getCourse());
 		buffer.append(", \"heading\":" + getHeading());
 		buffer.append(", \"second\":" + getSecond());
-		buffer.append(
-				", \"maneuver\":" + getManeuver());
-		buffer.append(
-				", \"maneuverText\":\"" + LookupValues.getManeuverIndicator(getManeuver()) + "\"");
+		buffer.append(", \"maneuver\":" + getManeuver());
+		buffer.append(", \"maneuverText\":\"" + LookupValues.getManeuverIndicator(getManeuver()) + "\"");
 		buffer.append(", \"raim\":" + isRaim());
 		buffer.append(", \"radio\":" + getRadio());
 		buffer.append(", \"commState\":" + getCommState());

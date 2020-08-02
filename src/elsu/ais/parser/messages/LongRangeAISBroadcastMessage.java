@@ -2,13 +2,12 @@ package elsu.ais.parser.messages;
 
 import elsu.ais.parser.base.AISBase;
 import elsu.ais.parser.base.AISMessage;
-import elsu.ais.parser.message.data.CommunicationState;
 import elsu.ais.parser.resources.LookupValues;
 import elsu.ais.parser.resources.PayloadBlock;
 
 public class LongRangeAISBroadcastMessage extends AISMessage {
 
-	public static AISMessage fromAISMessage(String messageBits) {
+	public static AISMessage fromAISMessage(String messageBits) throws Exception {
 		LongRangeAISBroadcastMessage positionReport = new LongRangeAISBroadcastMessage();
 		positionReport.parseMessage(messageBits);
 
@@ -23,60 +22,63 @@ public class LongRangeAISBroadcastMessage extends AISMessage {
 		getMessageBlocks().add(new PayloadBlock(0, 5, 6, "Message Type", "type", "u", "Constant: 27"));
 		getMessageBlocks().add(new PayloadBlock(6, 7, 2, "Repeat Indicator", "repeat", "u", "As in CNB"));
 		getMessageBlocks().add(new PayloadBlock(8, 37, 30, "MMSI", "mmsi", "u", "9 decimal digits"));
-		getMessageBlocks().add(new PayloadBlock(38, 38, 1, "Position Accuracy", "accuracy", "u", "See Common Navigation Block"));
+		getMessageBlocks()
+				.add(new PayloadBlock(38, 38, 1, "Position Accuracy", "accuracy", "u", "See Common Navigation Block"));
 		getMessageBlocks().add(new PayloadBlock(39, 39, 1, "RAIM flag", "raim", "u", "See Common Navigation Block"));
-		getMessageBlocks().add(new PayloadBlock(40, 43, 4, "Navigation Status", "status", "u", "See Common Navigation Block"));
-		getMessageBlocks().add(new PayloadBlock(44, 61, 18, "Longitude", "lon", "I4", "minutes/10 East positive, West negative 181000 = N/A (default)"));
-		getMessageBlocks().add(new PayloadBlock(62, 78, 17, "Latitude", "lat", "I4", "minutes/10 North positive, South negative 91000 = N/A (default)"));
-		getMessageBlocks().add(new PayloadBlock(79, 84, 6, "Speed Over Ground", "speed", "u", "Knots (0-62); 63 = N/A (default)"));
-		getMessageBlocks().add(new PayloadBlock(85, 93, 9, "Course Over Ground", "course", "u", "0 to 359 degrees, 511 = not available."));
-		getMessageBlocks().add(new PayloadBlock(94, 94, 1, "GNSS Position status", "latency", "u", "0 = Reported position latency is less than 5 seconds; 1 = Reported position latency is greater than 5 seconds = default"));
+		getMessageBlocks()
+				.add(new PayloadBlock(40, 43, 4, "Navigation Status", "status", "u", "See Common Navigation Block"));
+		getMessageBlocks().add(new PayloadBlock(44, 61, 18, "Longitude", "lon", "I4",
+				"minutes/10 East positive, West negative 181000 = N/A (default)"));
+		getMessageBlocks().add(new PayloadBlock(62, 78, 17, "Latitude", "lat", "I4",
+				"minutes/10 North positive, South negative 91000 = N/A (default)"));
+		getMessageBlocks().add(
+				new PayloadBlock(79, 84, 6, "Speed Over Ground", "speed", "u", "Knots (0-62); 63 = N/A (default)"));
+		getMessageBlocks().add(new PayloadBlock(85, 93, 9, "Course Over Ground", "course", "u",
+				"0 to 359 degrees, 511 = not available."));
+		getMessageBlocks().add(new PayloadBlock(94, 94, 1, "GNSS Position status", "latency", "u",
+				"0 = Reported position latency is less than 5 seconds; 1 = Reported position latency is greater than 5 seconds = default"));
 		getMessageBlocks().add(new PayloadBlock(95, 95, 1, "Spare", "", "x", "Not used"));
 	}
 
-	public void parseMessage(String message) {
-		for (PayloadBlock block : getMessageBlocks()) {
-			if ((block.getEnd() == -1) || (block.getEnd() > message.length())) {
-				block.setBits(message.substring(block.getStart(), message.length()));
-			} else {
-				block.setBits(message.substring(block.getStart(), block.getEnd() + 1));
-			}
+	public void parseMessageBlock(PayloadBlock block) throws Exception {
+		if (block.isException()) {
+			throw new Exception("parsing error; " + block);
+		}
 
-			switch (block.getStart()) {
-			case 0:
-				setType(AISBase.unsigned_integer_decoder(block.getBits()));
-				break;
-			case 6:
-				setRepeat(AISBase.unsigned_integer_decoder(block.getBits()));
-				break;
-			case 8:
-				setMmsi(AISBase.unsigned_integer_decoder(block.getBits()));
-				break;
-			case 38:
-				setAccuracy(AISBase.boolean_decoder(block.getBits()));
-				break;
-			case 39:
-				setRaim(AISBase.boolean_decoder(block.getBits()));
-				break;
-			case 40:
-				setStatus(AISBase.unsigned_integer_decoder(block.getBits()));
-				break;
-			case 44:
-				setLongitude(AISBase.float_decoder(block.getBits()) / 600f);
-				break;
-			case 62:
-				setLatitude(AISBase.float_decoder(block.getBits()) / 600f);
-				break;
-			case 79:
-				setSpeed(AISBase.unsigned_float_decoder(block.getBits()));
-				break;
-			case 85:
-				setCourse(AISBase.unsigned_float_decoder(block.getBits()));
-				break;
-			case 94:
-				setPositionLatency(AISBase.unsigned_integer_decoder(block.getBits()));
-				break;
-			}
+		switch (block.getStart()) {
+		case 0:
+			setType(unsigned_integer_decoder(block.getBits()));
+			break;
+		case 6:
+			setRepeat(unsigned_integer_decoder(block.getBits()));
+			break;
+		case 8:
+			setMmsi(unsigned_integer_decoder(block.getBits()));
+			break;
+		case 38:
+			setAccuracy(boolean_decoder(block.getBits()));
+			break;
+		case 39:
+			setRaim(boolean_decoder(block.getBits()));
+			break;
+		case 40:
+			setStatus(unsigned_integer_decoder(block.getBits()));
+			break;
+		case 44:
+			setLongitude(float_decoder(block.getBits()) / 600f);
+			break;
+		case 62:
+			setLatitude(float_decoder(block.getBits()) / 600f);
+			break;
+		case 79:
+			setSpeed(unsigned_float_decoder(block.getBits()));
+			break;
+		case 85:
+			setCourse(unsigned_float_decoder(block.getBits()));
+			break;
+		case 94:
+			setPositionLatency(unsigned_integer_decoder(block.getBits()));
+			break;
 		}
 	}
 

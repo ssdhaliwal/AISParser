@@ -1,7 +1,5 @@
 package elsu.ais.parser.messages;
 
-import java.util.*;
-
 import elsu.ais.parser.base.AISBase;
 import elsu.ais.parser.base.AISMessage;
 import elsu.ais.parser.resources.LookupValues;
@@ -9,7 +7,7 @@ import elsu.ais.parser.resources.PayloadBlock;
 
 public class AddressedBinaryMessage extends AISMessage {
 
-	public static AISMessage fromAISMessage(String messageBits) {
+	public static AISMessage fromAISMessage(String messageBits) throws Exception {
 		AddressedBinaryMessage binaryMessage = new AddressedBinaryMessage();
 		binaryMessage.parseMessage(messageBits);
 
@@ -36,43 +34,39 @@ public class AddressedBinaryMessage extends AISMessage {
 				.add(new PayloadBlock(88, -1, 920, "Data", "data", "d", "Binary data May be shorter than 920 bits."));
 	}
 
-	public void parseMessage(String message) {
-		for (PayloadBlock block : getMessageBlocks()) {
-			if ((block.getEnd() == -1) || (block.getEnd() > message.length())) {
-				block.setBits(message.substring(block.getStart(), message.length()));
-			} else {
-				block.setBits(message.substring(block.getStart(), block.getEnd() + 1));
-			}
+	public void parseMessageBlock(PayloadBlock block) throws Exception {
+		if (block.isException()) {
+			throw new Exception("parsing error; " + block);
+		}
 
-			switch (block.getStart()) {
-			case 0:
-				setType(AISMessage.unsigned_integer_decoder(block.getBits()));
-				break;
-			case 6:
-				setRepeat(AISMessage.unsigned_integer_decoder(block.getBits()));
-				break;
-			case 8:
-				setMmsi(AISMessage.unsigned_integer_decoder(block.getBits()));
-				break;
-			case 38:
-				setSeqno(AISMessage.unsigned_integer_decoder(block.getBits()));
-				break;
-			case 40:
-				setDestinationMmsi(AISMessage.unsigned_integer_decoder(block.getBits()));
-				break;
-			case 70:
-				setRetransmit(AISMessage.boolean_decoder(block.getBits()));
-				break;
-			case 72:
-				setDac(AISMessage.unsigned_integer_decoder(block.getBits()));
-				break;
-			case 82:
-				setFid(AISMessage.unsigned_integer_decoder(block.getBits()));
-				break;
-			case 88:
-				setData(AISMessage.bit_decoder(block.getBits()));
-				break;
-			}
+		switch (block.getStart()) {
+		case 0:
+			setType(unsigned_integer_decoder(block.getBits()));
+			break;
+		case 6:
+			setRepeat(unsigned_integer_decoder(block.getBits()));
+			break;
+		case 8:
+			setMmsi(unsigned_integer_decoder(block.getBits()));
+			break;
+		case 38:
+			setSeqno(unsigned_integer_decoder(block.getBits()));
+			break;
+		case 40:
+			setDestinationMmsi(unsigned_integer_decoder(block.getBits()));
+			break;
+		case 70:
+			setRetransmit(boolean_decoder(block.getBits()));
+			break;
+		case 72:
+			setDac(unsigned_integer_decoder(block.getBits()));
+			break;
+		case 82:
+			setFid(unsigned_integer_decoder(block.getBits()));
+			break;
+		case 88:
+			setData(bit_decoder(block.getBits()));
+			break;
 		}
 	}
 

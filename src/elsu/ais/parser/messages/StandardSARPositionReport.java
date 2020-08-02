@@ -1,7 +1,5 @@
 package elsu.ais.parser.messages;
 
-import java.util.*;
-
 import elsu.ais.parser.base.AISMessage;
 import elsu.ais.parser.message.data.CommunicationState;
 import elsu.ais.parser.resources.LookupValues;
@@ -9,7 +7,7 @@ import elsu.ais.parser.resources.PayloadBlock;
 
 public class StandardSARPositionReport extends AISMessage {
 
-	public static AISMessage fromAISMessage(String messageBits) {
+	public static AISMessage fromAISMessage(String messageBits) throws Exception {
 		StandardSARPositionReport positionReport = new StandardSARPositionReport();
 		positionReport.parseMessage(messageBits);
 
@@ -22,84 +20,86 @@ public class StandardSARPositionReport extends AISMessage {
 
 	private void initialize() {
 		getMessageBlocks().add(new PayloadBlock(0, 5, 6, "Message Type", "type", "u", "Constant: 9"));
-		getMessageBlocks().add(new PayloadBlock(6, 7, 2, "Repeat Indicator", "repeat", "u", "As in Common Navigation Block"));
+		getMessageBlocks()
+				.add(new PayloadBlock(6, 7, 2, "Repeat Indicator", "repeat", "u", "As in Common Navigation Block"));
 		getMessageBlocks().add(new PayloadBlock(8, 37, 30, "MMSI", "mmsi", "u", "9 decimal digits"));
 		getMessageBlocks().add(new PayloadBlock(38, 49, 12, "Altitude", "alt", "u", "See below"));
 		getMessageBlocks().add(new PayloadBlock(50, 59, 10, "SOG", "speed", "u", "See below"));
 		getMessageBlocks().add(new PayloadBlock(60, 60, 1, "Position Accuracy", "accuracy", "u", "See below"));
 		getMessageBlocks().add(new PayloadBlock(61, 88, 28, "Longitude", "lon", "I4", "Minutes/10000 (as in CNB)"));
 		getMessageBlocks().add(new PayloadBlock(89, 115, 27, "Latitude", "lat", "I4", "Minutes/10000 (as in CNB)"));
-		getMessageBlocks().add(new PayloadBlock(116, 127, 12, "Course Over Ground", "course", "U1", "True bearing, 0.1 degree units"));
+		getMessageBlocks().add(
+				new PayloadBlock(116, 127, 12, "Course Over Ground", "course", "U1", "True bearing, 0.1 degree units"));
 		getMessageBlocks().add(new PayloadBlock(128, 133, 6, "Time Stamp", "second", "u", "UTC second."));
-		getMessageBlocks().add(new PayloadBlock(134, 134, 1, "Altitude Sensor", "altsensor", "u", "0=GNSS;1=barometric source"));
+		getMessageBlocks()
+				.add(new PayloadBlock(134, 134, 1, "Altitude Sensor", "altsensor", "u", "0=GNSS;1=barometric source"));
 		getMessageBlocks().add(new PayloadBlock(135, 141, 7, "Regional reserved", "regional", "x", "Reserved"));
-		getMessageBlocks().add(new PayloadBlock(142, 142, 1, "DTE", "dte", "u", "0=Data terminal ready, 1=Data terminal not ready (default)"));
+		getMessageBlocks().add(new PayloadBlock(142, 142, 1, "DTE", "dte", "u",
+				"0=Data terminal ready, 1=Data terminal not ready (default)"));
 		getMessageBlocks().add(new PayloadBlock(143, 145, 3, "Spare", "", "x", "Not used"));
 		getMessageBlocks().add(new PayloadBlock(146, 146, 1, "Assigned", "assigned", "b", "Assigned-mode flag"));
-		getMessageBlocks().add(new PayloadBlock(147, 147, 1, "RAIM flag", "raim", "b", "As for common navigation block"));
-		getMessageBlocks().add(new PayloadBlock(148, 148, 1, "Comm State Selector", "commflag", "u", "0=SOTDMA, 1=ITDMA"));
+		getMessageBlocks()
+				.add(new PayloadBlock(147, 147, 1, "RAIM flag", "raim", "b", "As for common navigation block"));
+		getMessageBlocks()
+				.add(new PayloadBlock(148, 148, 1, "Comm State Selector", "commflag", "u", "0=SOTDMA, 1=ITDMA"));
 		getMessageBlocks().add(new PayloadBlock(149, 167, 19, "Radio status", "radio", "u", "See [IALA] for details."));
 	}
 
-	public void parseMessage(String message) {
-		for (PayloadBlock block : getMessageBlocks()) {
-			if ((block.getEnd() == -1) || (block.getEnd() > message.length())) {
-				block.setBits(message.substring(block.getStart(), message.length()));
-			} else {
-				block.setBits(message.substring(block.getStart(), block.getEnd() + 1));
-			}
+	public void parseMessageBlock(PayloadBlock block) throws Exception {
+		if (block.isException()) {
+			throw new Exception("parsing error; " + block);
+		}
 
-			switch (block.getStart()) {
-			case 0:
-				setType(AISMessage.unsigned_integer_decoder(block.getBits()));
-				break;
-			case 6:
-				setRepeat(AISMessage.unsigned_integer_decoder(block.getBits()));
-				break;
-			case 8:
-				setMmsi(AISMessage.unsigned_integer_decoder(block.getBits()));
-				break;
-			case 38:
-				setAltitude(AISMessage.unsigned_integer_decoder(block.getBits()));
-				break;
-			case 50:
-				setSpeed(AISMessage.unsigned_float_decoder(block.getBits()));
-				break;
-			case 60:
-				setAccuracy(AISMessage.boolean_decoder(block.getBits()));
-				break;
-			case 61:
-				setLongitude(AISMessage.float_decoder(block.getBits()) / 600000f);
-				break;
-			case 89:
-				setLatitude(AISMessage.float_decoder(block.getBits()) / 600000f);
-				break;
-			case 116:
-				setCourse(AISMessage.unsigned_float_decoder(block.getBits()) / 10f);
-				break;
-			case 128:
-				setSecond(AISMessage.unsigned_integer_decoder(block.getBits()));
-				break;
-			case 134:
-				setAltitudeSensor(AISMessage.unsigned_integer_decoder(block.getBits()));
-				break;
-			case 142:
-				setDte(AISMessage.unsigned_integer_decoder(block.getBits()));
-				break;
-			case 146:
-				setAssigned(AISMessage.boolean_decoder(block.getBits()));
-				break;
-			case 147:
-				setRaim(AISMessage.boolean_decoder(block.getBits()));
-				break;
-			case 148:
-				setCommFlag(AISMessage.unsigned_integer_decoder(block.getBits()));
-				break;
-			case 149:
-				setRadio(AISMessage.unsigned_integer_decoder(block.getBits()));
-				setCommState(block.getBits());
-				break;
-			}
+		switch (block.getStart()) {
+		case 0:
+			setType(unsigned_integer_decoder(block.getBits()));
+			break;
+		case 6:
+			setRepeat(unsigned_integer_decoder(block.getBits()));
+			break;
+		case 8:
+			setMmsi(unsigned_integer_decoder(block.getBits()));
+			break;
+		case 38:
+			setAltitude(unsigned_integer_decoder(block.getBits()));
+			break;
+		case 50:
+			setSpeed(unsigned_float_decoder(block.getBits()));
+			break;
+		case 60:
+			setAccuracy(boolean_decoder(block.getBits()));
+			break;
+		case 61:
+			setLongitude(float_decoder(block.getBits()) / 600000f);
+			break;
+		case 89:
+			setLatitude(float_decoder(block.getBits()) / 600000f);
+			break;
+		case 116:
+			setCourse(unsigned_float_decoder(block.getBits()) / 10f);
+			break;
+		case 128:
+			setSecond(unsigned_integer_decoder(block.getBits()));
+			break;
+		case 134:
+			setAltitudeSensor(unsigned_integer_decoder(block.getBits()));
+			break;
+		case 142:
+			setDte(unsigned_integer_decoder(block.getBits()));
+			break;
+		case 146:
+			setAssigned(boolean_decoder(block.getBits()));
+			break;
+		case 147:
+			setRaim(boolean_decoder(block.getBits()));
+			break;
+		case 148:
+			setCommFlag(unsigned_integer_decoder(block.getBits()));
+			break;
+		case 149:
+			setRadio(unsigned_integer_decoder(block.getBits()));
+			setCommState(block.getBits());
+			break;
 		}
 	}
 
@@ -119,10 +119,8 @@ public class StandardSARPositionReport extends AISMessage {
 		buffer.append(", \"latitude\":" + getLatitude());
 		buffer.append(", \"course\":" + getCourse());
 		buffer.append(", \"second\":" + getSecond());
-		buffer.append(
-				", \"altitudeSensor\":" + getAltitudeSensor());
-		buffer.append(
-				", \"altitudeSensorText\":\"" + LookupValues.getAltitudeSensor(getAltitudeSensor()) + "\"");
+		buffer.append(", \"altitudeSensor\":" + getAltitudeSensor());
+		buffer.append(", \"altitudeSensorText\":\"" + LookupValues.getAltitudeSensor(getAltitudeSensor()) + "\"");
 		buffer.append(", \"assigned\":" + isAssigned());
 		buffer.append(", \"raim\":" + isRaim());
 		buffer.append(", \"commFlag\":" + getCommFlag());
@@ -266,7 +264,7 @@ public class StandardSARPositionReport extends AISMessage {
 	public CommunicationState getCommState() {
 		return commState;
 	}
-	
+
 	private void setCommState(String bits) {
 		commState = CommunicationState.fromPayload(bits, getType());
 	}

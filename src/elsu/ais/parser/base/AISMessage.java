@@ -110,6 +110,33 @@ public abstract class AISMessage extends AISBase {
 		return sentence;
 	}
 
+	public void parseMessage(String message) throws Exception  {
+		boolean exception = false;
+		
+		for (PayloadBlock block : getMessageBlocks()) {
+			try {
+				if ((block.getEnd() == -1) || (block.getEnd() > message.length())) {
+					block.setBits(message.substring(block.getStart(), message.length()));
+				} else if (block.getEnd() < -1) {
+					block.setEnd(message.length() + block.getEnd());
+					block.setBits(message.substring(block.getStart(), block.getEnd() + 1));
+				} else if (block.getStart() < 0) {
+					block.setStart(message.length() + block.getStart());
+					block.setBits(message.substring(block.getStart(), block.getEnd() + 1));
+				} else {
+					block.setBits(message.substring(block.getStart(), block.getEnd() + 1));
+				}
+			} catch (IndexOutOfBoundsException iobe) {
+				exception = true;
+			}
+			
+			block.setException(exception);
+			parseMessageBlock(block);
+		}
+	}
+	
+	public abstract void parseMessageBlock(PayloadBlock block) throws Exception ;
+	
 	public ArrayList<PayloadBlock> getMessageBlocks() {
 		return messageBlocks;
 	}

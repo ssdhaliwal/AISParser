@@ -1,7 +1,5 @@
 package elsu.ais.parser.messages;
 
-import java.util.ArrayList;
-
 import elsu.ais.parser.base.AISMessage;
 import elsu.ais.parser.message.data.VesselDimensions;
 import elsu.ais.parser.messages.StaticDataReport;
@@ -10,7 +8,7 @@ import elsu.ais.parser.resources.PayloadBlock;
 
 public class StaticDataReportPartB extends StaticDataReport {
 
-	public static AISMessage fromAISMessage(AISMessage aisMessage, String messageBits) {
+	public static AISMessage fromAISMessage(AISMessage aisMessage, String messageBits) throws Exception {
 		StaticDataReportPartB staticPartBReport = new StaticDataReportPartB();
 
 		if (aisMessage instanceof StaticDataReport) {
@@ -28,44 +26,42 @@ public class StaticDataReportPartB extends StaticDataReport {
 	}
 
 	private void initialize() {
-		getMessageBlocks().add(new PayloadBlock(40, 47, 8, "Ship Type", "shiptype", "e", "(Part B) See \"Ship Types\""));
+		getMessageBlocks()
+				.add(new PayloadBlock(40, 47, 8, "Ship Type", "shiptype", "e", "(Part B) See \"Ship Types\""));
 		getMessageBlocks().add(new PayloadBlock(48, 65, 18, "Vendor ID", "vendorid", "t", "(Part B) 3 six-bit chars"));
 		getMessageBlocks().add(new PayloadBlock(66, 69, 4, "Unit Model Code", "model", "u", "(Part B)"));
 		getMessageBlocks().add(new PayloadBlock(70, 89, 20, "Serial Number", "serial", "u", "(Part B)"));
 		getMessageBlocks()
 				.add(new PayloadBlock(90, 131, 42, "Call Sign", "callsign", "t", "(Part B) As in Message Type 5"));
-		getMessageBlocks().add(new PayloadBlock(40, 69, 30, "Destination MMSI", "dest_mmsi", "u", "Message destination"));
+		getMessageBlocks()
+				.add(new PayloadBlock(40, 69, 30, "Destination MMSI", "dest_mmsi", "u", "Message destination"));
 		getMessageBlocks().add(new PayloadBlock(162, 165, 4, "Position Fix Type", "epfd", "u", "(Part B) See below"));
 	}
 
-	public void parseMessage(String message) {
-		for (PayloadBlock block : getMessageBlocks()) {
-			if ((block.getEnd() == -1) || (block.getEnd() > message.length())) {
-				block.setBits(message.substring(block.getStart(), message.length()));
-			} else {
-				block.setBits(message.substring(block.getStart(), block.getEnd() + 1));
-			}
+	public void parseMessageBlock(PayloadBlock block) throws Exception {
+		if (block.isException()) {
+			throw new Exception("parsing error; " + block);
+		}
 
-			switch (block.getStart()) {
-			case 40:
-				setShiptype(AISMessage.unsigned_integer_decoder(block.getBits()));
-				break;
-			case 48:
-				setVendorId(AISMessage.text_decoder(block.getBits()));
-				break;
-			case 66:
-				setModel(AISMessage.unsigned_integer_decoder(block.getBits()));
-				break;
-			case 70:
-				setSerial(AISMessage.unsigned_integer_decoder(block.getBits()));
-				break;
-			case 90:
-				setCallSign(AISMessage.text_decoder(block.getBits()));
-				break;
-			case 162:
-				setEpfd(AISMessage.unsigned_integer_decoder(block.getBits()));
-				break;
-			}
+		switch (block.getStart()) {
+		case 40:
+			setShiptype(unsigned_integer_decoder(block.getBits()));
+			break;
+		case 48:
+			setVendorId(text_decoder(block.getBits()));
+			break;
+		case 66:
+			setModel(unsigned_integer_decoder(block.getBits()));
+			break;
+		case 70:
+			setSerial(unsigned_integer_decoder(block.getBits()));
+			break;
+		case 90:
+			setCallSign(text_decoder(block.getBits()));
+			break;
+		case 162:
+			setEpfd(unsigned_integer_decoder(block.getBits()));
+			break;
 		}
 	}
 
@@ -137,7 +133,9 @@ public class StaticDataReportPartB extends StaticDataReport {
 	}
 
 	public void setDimension(String bits) {
-		this.dimension = VesselDimensions.fromPayload(bits, getType());
+		try {
+			this.dimension = VesselDimensions.fromPayload(bits);
+		} catch (Exception exi) {}
 	}
 
 	public int getEpfd() {

@@ -1,7 +1,5 @@
 package elsu.ais.parser.messages;
 
-import java.util.*;
-
 import elsu.ais.parser.base.AISBase;
 import elsu.ais.parser.base.AISMessage;
 import elsu.ais.parser.message.data.GNSSMessage;
@@ -10,7 +8,7 @@ import elsu.ais.parser.resources.PayloadBlock;
 
 public class DataLinkManagementMessage extends AISMessage {
 
-	public static AISMessage fromAISMessage(String messageBits) {
+	public static AISMessage fromAISMessage(String messageBits) throws Exception {
 		DataLinkManagementMessage binaryMessage = new DataLinkManagementMessage();
 		binaryMessage.parseMessage(messageBits);
 
@@ -26,97 +24,99 @@ public class DataLinkManagementMessage extends AISMessage {
 		getMessageBlocks().add(new PayloadBlock(6, 7, 2, "Repeat Indicator", "repeat", "u", "As in CNB"));
 		getMessageBlocks().add(new PayloadBlock(8, 37, 30, "MMSI", "mmsi", "u", "9 decimal digits"));
 		getMessageBlocks().add(new PayloadBlock(38, 39, 2, "Spare", "", "x", "Not used"));
-		getMessageBlocks().add(new PayloadBlock(40, 51, 12, "Offset number 1", "offset1", "u", "Reserved offset number"));
+		getMessageBlocks()
+				.add(new PayloadBlock(40, 51, 12, "Offset number 1", "offset1", "u", "Reserved offset number"));
 		getMessageBlocks().add(new PayloadBlock(52, 55, 4, "Reserved slots", "number1", "u", "Consecutive slots"));
-		getMessageBlocks().add(new PayloadBlock(56, 58, 3, "Time-out", "timeout1", "u", "Allocation timeout in minutes"));
+		getMessageBlocks()
+				.add(new PayloadBlock(56, 58, 3, "Time-out", "timeout1", "u", "Allocation timeout in minutes"));
 		getMessageBlocks().add(new PayloadBlock(59, 69, 11, "Increment", "increment1", "u", "Repeat increment"));
-		getMessageBlocks().add(new PayloadBlock(70, 81, 12, "Offset number 2", "offset2", "u", "Reserved offset number"));
+		getMessageBlocks()
+				.add(new PayloadBlock(70, 81, 12, "Offset number 2", "offset2", "u", "Reserved offset number"));
 		getMessageBlocks().add(new PayloadBlock(82, 85, 4, "Reserved slots", "number2", "u", "Consecutive slots"));
-		getMessageBlocks().add(new PayloadBlock(86, 88, 3, "Time-out", "timeout2", "u", "Allocation timeout in minutes"));
+		getMessageBlocks()
+				.add(new PayloadBlock(86, 88, 3, "Time-out", "timeout2", "u", "Allocation timeout in minutes"));
 		getMessageBlocks().add(new PayloadBlock(89, 99, 11, "Increment", "increment2", "u", "Repeat increment"));
-		getMessageBlocks().add(new PayloadBlock(100, 111, 12, "Offset number 3", "offset3", "u", "Reserved offset number"));
+		getMessageBlocks()
+				.add(new PayloadBlock(100, 111, 12, "Offset number 3", "offset3", "u", "Reserved offset number"));
 		getMessageBlocks().add(new PayloadBlock(112, 115, 4, "Reserved slots", "number3", "u", "Consecutive slots"));
-		getMessageBlocks().add(new PayloadBlock(116, 118, 3, "Time-out", "timeout3", "u", "Allocation timeout in minutes"));
+		getMessageBlocks()
+				.add(new PayloadBlock(116, 118, 3, "Time-out", "timeout3", "u", "Allocation timeout in minutes"));
 		getMessageBlocks().add(new PayloadBlock(119, 129, 11, "Increment", "increment3", "u", "Repeat increment"));
-		getMessageBlocks().add(new PayloadBlock(130, 141, 12, "Offset number 4", "offset4", "u", "Reserved offset number"));
+		getMessageBlocks()
+				.add(new PayloadBlock(130, 141, 12, "Offset number 4", "offset4", "u", "Reserved offset number"));
 		getMessageBlocks().add(new PayloadBlock(142, 145, 4, "Reserved slots", "number4", "u", "Consecutive slots"));
-		getMessageBlocks().add(new PayloadBlock(146, 148, 3, "Time-out", "timeout4", "u", "Allocation timeout in minutes"));
+		getMessageBlocks()
+				.add(new PayloadBlock(146, 148, 3, "Time-out", "timeout4", "u", "Allocation timeout in minutes"));
 		getMessageBlocks().add(new PayloadBlock(149, 159, 11, "Increment", "increment4", "u", "Repeat increment"));
 	}
 
-	public void parseMessage(String message) {
-		for (PayloadBlock block : getMessageBlocks()) {
-			try {
-				if ((block.getEnd() == -1) || (block.getEnd() > message.length())) {
-					block.setBits(message.substring(block.getStart(), message.length()));
-				} else {
-					block.setBits(message.substring(block.getStart(), block.getEnd() + 1));
-				}
-			} catch (IndexOutOfBoundsException iobe) {
-				if (block.getStart() >= 70) {
-					continue;
-				}
+	public void parseMessageBlock(PayloadBlock block) throws Exception {
+		if (block.isException()) {
+			if (block.getStart() >= 70) {
+				return;
+			} else {
+				throw new Exception("parsing error; " + block);
 			}
+		}
 
-			switch (block.getStart()) {
-			case 0:
-				setType(AISMessage.unsigned_integer_decoder(block.getBits()));
-				break;
-			case 6:
-				setRepeat(AISMessage.unsigned_integer_decoder(block.getBits()));
-				break;
-			case 8:
-				setMmsi(AISMessage.unsigned_integer_decoder(block.getBits()));
-				break;
-			case 40:
-				setOffset1(AISMessage.unsigned_integer_decoder(block.getBits()));
-				break;
-			case 52:
-				setNumber1(AISMessage.unsigned_integer_decoder(block.getBits()));
-				break;
-			case 56:
-				setTimeout1(AISMessage.unsigned_integer_decoder(block.getBits()));
-				break;
-			case 59:
-				setIncrement1(AISMessage.unsigned_integer_decoder(block.getBits()));
-				break;
-			case 70:
-				setOffset2(AISMessage.unsigned_integer_decoder(block.getBits()));
-				break;
-			case 82:
-				setNumber2(AISMessage.unsigned_integer_decoder(block.getBits()));
-				break;
-			case 86:
-				setTimeout2(AISMessage.unsigned_integer_decoder(block.getBits()));
-				break;
-			case 89:
-				setIncrement2(AISMessage.unsigned_integer_decoder(block.getBits()));
-				break;
-			case 100:
-				setOffset3(AISMessage.unsigned_integer_decoder(block.getBits()));
-				break;
-			case 112:
-				setNumber3(AISMessage.unsigned_integer_decoder(block.getBits()));
-				break;
-			case 116:
-				setTimeout3(AISMessage.unsigned_integer_decoder(block.getBits()));
-				break;
-			case 119:
-				setIncrement3(AISMessage.unsigned_integer_decoder(block.getBits()));
-				break;
-			case 130:
-				setOffset4(AISMessage.unsigned_integer_decoder(block.getBits()));
-				break;
-			case 142:
-				setNumber4(AISMessage.unsigned_integer_decoder(block.getBits()));
-				break;
-			case 146:
-				setTimeout4(AISMessage.unsigned_integer_decoder(block.getBits()));
-				break;
-			case 149:
-				setIncrement4(AISMessage.unsigned_integer_decoder(block.getBits()));
-				break;
-			}
+		switch (block.getStart()) {
+		case 0:
+			setType(unsigned_integer_decoder(block.getBits()));
+			break;
+		case 6:
+			setRepeat(unsigned_integer_decoder(block.getBits()));
+			break;
+		case 8:
+			setMmsi(unsigned_integer_decoder(block.getBits()));
+			break;
+		case 40:
+			setOffset1(unsigned_integer_decoder(block.getBits()));
+			break;
+		case 52:
+			setNumber1(unsigned_integer_decoder(block.getBits()));
+			break;
+		case 56:
+			setTimeout1(unsigned_integer_decoder(block.getBits()));
+			break;
+		case 59:
+			setIncrement1(unsigned_integer_decoder(block.getBits()));
+			break;
+		case 70:
+			setOffset2(unsigned_integer_decoder(block.getBits()));
+			break;
+		case 82:
+			setNumber2(unsigned_integer_decoder(block.getBits()));
+			break;
+		case 86:
+			setTimeout2(unsigned_integer_decoder(block.getBits()));
+			break;
+		case 89:
+			setIncrement2(unsigned_integer_decoder(block.getBits()));
+			break;
+		case 100:
+			setOffset3(unsigned_integer_decoder(block.getBits()));
+			break;
+		case 112:
+			setNumber3(unsigned_integer_decoder(block.getBits()));
+			break;
+		case 116:
+			setTimeout3(unsigned_integer_decoder(block.getBits()));
+			break;
+		case 119:
+			setIncrement3(unsigned_integer_decoder(block.getBits()));
+			break;
+		case 130:
+			setOffset4(unsigned_integer_decoder(block.getBits()));
+			break;
+		case 142:
+			setNumber4(unsigned_integer_decoder(block.getBits()));
+			break;
+		case 146:
+			setTimeout4(unsigned_integer_decoder(block.getBits()));
+			break;
+		case 149:
+			setIncrement4(unsigned_integer_decoder(block.getBits()));
+			break;
 		}
 	}
 

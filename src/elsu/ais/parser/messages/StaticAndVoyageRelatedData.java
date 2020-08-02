@@ -1,16 +1,13 @@
 package elsu.ais.parser.messages;
 
-import java.util.*;
-
 import elsu.ais.parser.base.AISMessage;
-import elsu.ais.parser.message.data.CommunicationState;
 import elsu.ais.parser.message.data.VesselDimensions;
 import elsu.ais.parser.resources.LookupValues;
 import elsu.ais.parser.resources.PayloadBlock;
 
 public class StaticAndVoyageRelatedData extends AISMessage {
 
-	public static AISMessage fromAISMessage(String messageBits) {
+	public static AISMessage fromAISMessage(String messageBits) throws Exception {
 		StaticAndVoyageRelatedData voyageReport = new StaticAndVoyageRelatedData();
 		voyageReport.parseMessage(messageBits);
 
@@ -29,82 +26,83 @@ public class StaticAndVoyageRelatedData extends AISMessage {
 				new PayloadBlock(38, 39, 2, "AIS Version", "ais_version", "u", "0=[ITU1371], 1-3 = future editions"));
 		getMessageBlocks().add(new PayloadBlock(40, 69, 30, "IMO Number", "imo", "u", "IMO ship ID number"));
 		getMessageBlocks().add(new PayloadBlock(70, 111, 42, "Call Sign", "callsign", "t", "7 six-bit characters"));
-		getMessageBlocks().add(new PayloadBlock(112, 231, 120, "Vessel Name", "shipname", "t", "20 six-bit characters"));
-		getMessageBlocks().add(new PayloadBlock(232, 239, 8, "Ship Type", "shiptype", "e", "See \"Codes for Ship Type\""));
+		getMessageBlocks()
+				.add(new PayloadBlock(112, 231, 120, "Vessel Name", "shipname", "t", "20 six-bit characters"));
+		getMessageBlocks()
+				.add(new PayloadBlock(232, 239, 8, "Ship Type", "shiptype", "e", "See \"Codes for Ship Type\""));
 		getMessageBlocks().add(new PayloadBlock(240, 269, 30, "Vessel Dimensions", "dimension", "u", "Meters"));
-		getMessageBlocks().add(new PayloadBlock(270, 273, 4, "Position Fix Type", "epfd", "e", "See \"EPFD Fix Types\""));
+		getMessageBlocks()
+				.add(new PayloadBlock(270, 273, 4, "Position Fix Type", "epfd", "e", "See \"EPFD Fix Types\""));
 		getMessageBlocks().add(new PayloadBlock(274, 277, 4, "ETA month (UTC)", "month", "u", "1-12, 0=N/A (default)"));
 		getMessageBlocks().add(new PayloadBlock(278, 282, 5, "ETA day (UTC)", "day", "u", "1-31, 0=N/A (default)"));
 		getMessageBlocks().add(new PayloadBlock(283, 287, 5, "ETA hour (UTC)", "hour", "u", "0-23, 24=N/A (default)"));
-		getMessageBlocks().add(new PayloadBlock(288, 293, 6, "ETA minute (UTC)", "minute", "u", "0-59, 60=N/A (default)"));
+		getMessageBlocks()
+				.add(new PayloadBlock(288, 293, 6, "ETA minute (UTC)", "minute", "u", "0-59, 60=N/A (default)"));
 		getMessageBlocks().add(new PayloadBlock(294, 301, 8, "Draught", "draught", "U1", "Meters/10"));
-		getMessageBlocks().add(new PayloadBlock(302, 421, 120, "Destination", "destination", "t", "20 6-bit characters"));
-		getMessageBlocks().add(
-				new PayloadBlock(422, 422, 1, "DTE", "dte", "u", "0=Data terminal ready, 1=Not ready (default)."));
+		getMessageBlocks()
+				.add(new PayloadBlock(302, 421, 120, "Destination", "destination", "t", "20 6-bit characters"));
+		getMessageBlocks()
+				.add(new PayloadBlock(422, 422, 1, "DTE", "dte", "u", "0=Data terminal ready, 1=Not ready (default)."));
 		getMessageBlocks().add(new PayloadBlock(423, 423, 1, "Spare", "", "x", "Not used"));
 	}
 
-	public void parseMessage(String message) {
-		for (PayloadBlock block : getMessageBlocks()) {
-			if ((block.getEnd() == -1) || (block.getEnd() > message.length())) {
-				block.setBits(message.substring(block.getStart(), message.length()));
-			} else {
-				block.setBits(message.substring(block.getStart(), block.getEnd() + 1));
-			}
+	public void parseMessageBlock(PayloadBlock block) throws Exception {
+		if (block.isException()) {
+			throw new Exception("parsing error; " + block);
+		}
 
-			switch (block.getStart()) {
-			case 0:
-				setType(AISMessage.unsigned_integer_decoder(block.getBits()));
-				break;
-			case 6:
-				setRepeat(AISMessage.unsigned_integer_decoder(block.getBits()));
-				break;
-			case 8:
-				setMmsi(AISMessage.unsigned_integer_decoder(block.getBits()));
-				break;
-			case 38:
-				setAisVersion(AISMessage.unsigned_integer_decoder(block.getBits()));
-				break;
-			case 40:
-				setImo(AISMessage.unsigned_integer_decoder(block.getBits()));
-				break;
-			case 70:
-				setCallSign(AISMessage.text_decoder(block.getBits()));
-				break;
-			case 112:
-				setShipName(AISMessage.text_decoder(block.getBits()));
-				break;
-			case 232:
-				setShipType(AISMessage.unsigned_integer_decoder(block.getBits()));
-				break;
-			case 240:
-				setDimension(block.getBits());
-				break;
-			case 270:
-				setEpfd(AISMessage.unsigned_integer_decoder(block.getBits()));
-				break;
-			case 274:
-				setMonth(AISMessage.unsigned_integer_decoder(block.getBits()));
-				break;
-			case 278:
-				setDay(AISMessage.unsigned_integer_decoder(block.getBits()));
-				break;
-			case 283:
-				setHour(AISMessage.unsigned_integer_decoder(block.getBits()));
-				break;
-			case 288:
-				setMinute(AISMessage.unsigned_integer_decoder(block.getBits()));
-				break;
-			case 294:
-				setDraught(AISMessage.unsigned_float_decoder(block.getBits()) / 10f);
-				break;
-			case 302:
-				setDestination(AISMessage.text_decoder(block.getBits()));
-				break;
-			case 422:
-				setDte(AISMessage.unsigned_integer_decoder(block.getBits()));
-				break;
-			}
+		switch (block.getStart()) {
+		case 0:
+			setType(unsigned_integer_decoder(block.getBits()));
+			break;
+		case 6:
+			setRepeat(unsigned_integer_decoder(block.getBits()));
+			break;
+		case 8:
+			setMmsi(unsigned_integer_decoder(block.getBits()));
+			break;
+		case 38:
+			setAisVersion(unsigned_integer_decoder(block.getBits()));
+			break;
+		case 40:
+			setImo(unsigned_integer_decoder(block.getBits()));
+			break;
+		case 70:
+			setCallSign(text_decoder(block.getBits()));
+			break;
+		case 112:
+			setShipName(text_decoder(block.getBits()));
+			break;
+		case 232:
+			setShipType(unsigned_integer_decoder(block.getBits()));
+			break;
+		case 240:
+			setDimension(block.getBits());
+			break;
+		case 270:
+			setEpfd(unsigned_integer_decoder(block.getBits()));
+			break;
+		case 274:
+			setMonth(unsigned_integer_decoder(block.getBits()));
+			break;
+		case 278:
+			setDay(unsigned_integer_decoder(block.getBits()));
+			break;
+		case 283:
+			setHour(unsigned_integer_decoder(block.getBits()));
+			break;
+		case 288:
+			setMinute(unsigned_integer_decoder(block.getBits()));
+			break;
+		case 294:
+			setDraught(unsigned_float_decoder(block.getBits()) / 10f);
+			break;
+		case 302:
+			setDestination(text_decoder(block.getBits()));
+			break;
+		case 422:
+			setDte(unsigned_integer_decoder(block.getBits()));
+			break;
 		}
 	}
 
@@ -208,7 +206,9 @@ public class StaticAndVoyageRelatedData extends AISMessage {
 	}
 
 	public void setDimension(String bits) {
-		this.dimension = VesselDimensions.fromPayload(bits, getType());
+		try {
+			this.dimension = VesselDimensions.fromPayload(bits);
+		} catch (Exception exi) {}
 	}
 
 	public int getEpfd() {

@@ -40,6 +40,7 @@ public class PayloadBlock {
 		buffer.append(", \"units\":\"" + getUnits() + "\"");
 		buffer.append(", \"bits\":\"" + getBits() + "\"");
 		buffer.append(", \"hexValue\":\"" + getHexValue() + "\"");
+		buffer.append(", \"exception\":\"" + isException() + "\"");
 		buffer.append("}");
 		
 		return buffer.toString();
@@ -128,6 +129,14 @@ public class PayloadBlock {
 		return this.hex_value;
 	}
 
+	public boolean isException() {
+		return exception;
+	}
+	
+	public void setException(boolean exception) {
+		this.exception = exception;
+	}
+	
 	private int start = 0;
 	private int end = 0;
 	private int length = 0;
@@ -138,4 +147,5 @@ public class PayloadBlock {
 	private String units = "";
 	private String bits = "";
 	private String hex_value = "";
+	private boolean exception = false; 
 }
