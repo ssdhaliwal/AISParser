@@ -1,7 +1,7 @@
 # AISParser
 AIS Message Parser 1.0.0
 
-Requirements for AIS
+Requirements for AISParser
 - Support messages with Tag-block and non-tag-blocks.
 - Support messages with multiple fragments.
 - Support linking VSI/VDL info to messages.
@@ -10,3 +10,4 @@ Requirements for AIS
 - Support high-throughput; approx 500k messages or more per min.
 - Support all ITU-R M.1371-5 Messages (1..27)
 - Support all GNSS data reporting formats for Type 17 as per Recommendation ITU-R M.823
+
