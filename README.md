@@ -11,3 +11,6 @@ Requirements for AISParser
 - Support all ITU-R M.1371-5 Messages (1..27)
 - Support all GNSS data reporting formats for Type 17 as per Recommendation ITU-R M.823
 
+Dependencies
+- ElsuFoundation
+- Commons-codec 1.12
