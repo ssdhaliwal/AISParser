@@ -30,43 +30,28 @@ public class MultipleSlotBinaryMessage extends AISMessage {
 		// w/+Destination +ApplicationId
 		getMessageBlocks()
 				.add(new PayloadBlock(40, 69, 30, 0, "Destination MMSI", "dest_mmsi", "u", "Message destination"));
-		// getMessageBlocks().add(new PayloadBlock(70, 71, 2, 0, "Spare", "",
-		// "x", "Byte Alignment"));
-		getMessageBlocks().add(new PayloadBlock(72, 81, 10, "Designated Area Code", "dac", "u", "Unsigned integer"));
-		getMessageBlocks().add(new PayloadBlock(82, 87, 6, "Functional ID", "fid", "u", "Unsigned integer"));
+		getMessageBlocks().add(new PayloadBlock(70, 71, 2, 0, "Spare", "", "x", "Byte Alignment"));
+		getMessageBlocks().add(new PayloadBlock(72, 81, 10, 0, "Designated Area Code", "dac", "u", "Unsigned integer"));
+		getMessageBlocks().add(new PayloadBlock(82, 87, 6, 0, "Functional ID", "fid", "u", "Unsigned integer"));
 		getMessageBlocks().add(new PayloadBlock(88, -20, 952, 0, "Data", "data", "d", "Binary data"));
 
 		// w/Destination -ApplicationId
 		getMessageBlocks()
 				.add(new PayloadBlock(40, 69, 30, 1, "Destination MMSI", "dest_mmsi", "u", "Message destination"));
-		// getMessageBlocks().add(new PayloadBlock(70, 71, 2, 1, "Spare", "",
-		// "x", "Byte Alignment"));
-		// getMessageBlocks().add(new PayloadBlock(72, 71, 0, 1, "Application
-		// ID", "app_id", "u", "Unsigned integer"));
+		getMessageBlocks().add(new PayloadBlock(70, 71, 2, 1, "Spare", "", "x", "Byte Alignment"));
 		getMessageBlocks().add(new PayloadBlock(72, -20, 968, 1, "Data", "data", "d", "Binary data"));
 
 		// w/-Destination +ApplicationId
-		// getMessageBlocks().add(new PayloadBlock(40, 39, 0, 2, "Destination
-		// MMSI", "dest_mmsi", "u", "Message destination"));
-		// getMessageBlocks().add(new PayloadBlock(40, 39, 0, 2, "Spare", "",
-		// "x", "Byte Alignment"));
-		getMessageBlocks().add(new PayloadBlock(40, 49, 10, "Designated Area Code", "dac", "u", "Unsigned integer"));
-		getMessageBlocks().add(new PayloadBlock(50, 55, 6, "Functional ID", "fid", "u", "Unsigned integer"));
+		getMessageBlocks().add(new PayloadBlock(40, 49, 10, 2, "Designated Area Code", "dac", "u", "Unsigned integer"));
+		getMessageBlocks().add(new PayloadBlock(50, 55, 6, 2, "Functional ID", "fid", "u", "Unsigned integer"));
 		getMessageBlocks().add(new PayloadBlock(56, -20, 984, 2, "Data", "data", "d", "Binary data"));
 
 		// w/-Destination -ApplicationId
-		// getMessageBlocks().add(new PayloadBlock(40, 39, 0, 3, "Destination
-		// MMSI", "dest_mmsi", "u", "Message destination"));
-		// getMessageBlocks().add(new PayloadBlock(40, 39, 0, 3, "Spare", "",
-		// "x", "Byte Alignment"));
-		// getMessageBlocks().add(new PayloadBlock(40, 39, 0, 3, "Application
-		// ID", "app_id", "u", "Unsigned integer"));
 		getMessageBlocks().add(new PayloadBlock(40, -20, 1000, 3, "Data", "data", "d", "Binary data"));
 
 		// comm state (start offset start/end needs to be adjusted after data
 		// parsing)
-		// getMessageBlocks().add(new PayloadBlock(1040, 1043, 4, "Spare", "",
-		// "x", "Byte Alignment"));
+		// getMessageBlocks().add(new PayloadBlock(1040, 1043, 4, "Spare", "", "x", "Byte Alignment"));
 		getMessageBlocks().add(new PayloadBlock(-20, 0, 1, "Comm State Selector", "commflag", "d",
 				"Communication state selector flag"));
 		getMessageBlocks().add(new PayloadBlock(-19, 0, 19, "Radio status", "radio", "u", "See [IALA] for details."));

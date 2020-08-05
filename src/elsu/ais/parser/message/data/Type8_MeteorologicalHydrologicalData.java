@@ -5,22 +5,22 @@ import elsu.ais.parser.messages.BinaryBroadCastMessage;
 import elsu.ais.parser.resources.LookupValues;
 import elsu.ais.parser.resources.PayloadBlock;
 
-public class Type8_Dac1_Fid11 extends BinaryBroadCastMessage {
+public class Type8_MeteorologicalHydrologicalData extends BinaryBroadCastMessage {
 
 	public static AISMessage fromAISMessage(AISMessage aisMessage, String messageBits) throws Exception {
-		Type8_Dac1_Fid11 binaryMessage = new Type8_Dac1_Fid11();
+		Type8_MeteorologicalHydrologicalData binaryMessage = new Type8_MeteorologicalHydrologicalData();
 
 		if (aisMessage instanceof BinaryBroadCastMessage) {
 			binaryMessage.parseMessage((BinaryBroadCastMessage) aisMessage);
 		} else {
-			((BinaryBroadCastMessage) binaryMessage).parseMessage(messageBits);
+			throw new Exception("parent message not parsed!; ");
 		}
 		binaryMessage.parseMessage(messageBits);
 
 		return binaryMessage;
 	}
 
-	public Type8_Dac1_Fid11() {
+	public Type8_MeteorologicalHydrologicalData() {
 		initialize();
 	}
 

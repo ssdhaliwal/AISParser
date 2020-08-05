@@ -29,37 +29,23 @@ public class SingleSlotBinaryMessage extends AISMessage {
 		// w/+Destination +ApplicationId
 		getMessageBlocks()
 				.add(new PayloadBlock(40, 69, 30, 0, "Destination MMSI", "dest_mmsi", "u", "Message destination"));
-		// getMessageBlocks().add(new PayloadBlock(70, 71, 2, 0, "Spare", "",
-		// "x", "Byte Alignment"));
-		getMessageBlocks().add(new PayloadBlock(72, 81, 10, "Designated Area Code", "dac", "u", "Unsigned integer"));
-		getMessageBlocks().add(new PayloadBlock(82, 87, 6, "Functional ID", "fid", "u", "Unsigned integer"));
+		getMessageBlocks().add(new PayloadBlock(70, 71, 2, 0, "Spare", "", "x", "Byte Alignment"));
+		getMessageBlocks().add(new PayloadBlock(72, 81, 10, 0, "Designated Area Code", "dac", "u", "Unsigned integer"));
+		getMessageBlocks().add(new PayloadBlock(82, 87, 6, 0, "Functional ID", "fid", "u", "Unsigned integer"));
 		getMessageBlocks().add(new PayloadBlock(88, 167, 112, 0, "Data", "data", "d", "Binary data"));
 
 		// w/Destination -ApplicationId
 		getMessageBlocks()
 				.add(new PayloadBlock(40, 69, 30, 1, "Destination MMSI", "dest_mmsi", "u", "Message destination"));
-		// getMessageBlocks().add(new PayloadBlock(70, 71, 2, 1, "Spare", "",
-		// "x", "Byte Alignment"));
-		// getMessageBlocks().add(new PayloadBlock(72, 71, 0, 1, "Application
-		// ID", "app_id", "u", "Unsigned integer"));
+		getMessageBlocks().add(new PayloadBlock(70, 71, 2, 1, "Spare", "", "x", "Byte Alignment"));
 		getMessageBlocks().add(new PayloadBlock(72, 167, 96, 1, "Data", "data", "d", "Binary data"));
 
 		// w/-Destination +ApplicationId
-		// getMessageBlocks().add(new PayloadBlock(40, 39, 0, 2, "Destination
-		// MMSI", "dest_mmsi", "u", "Message destination"));
-		// getMessageBlocks().add(new PayloadBlock(40, 39, 0, 2, "Spare", "",
-		// "x", "Byte Alignment"));
-		getMessageBlocks().add(new PayloadBlock(40, 49, 10, "Designated Area Code", "dac", "u", "Unsigned integer"));
-		getMessageBlocks().add(new PayloadBlock(50, 55, 6, "Functional ID", "fid", "u", "Unsigned integer"));
+		getMessageBlocks().add(new PayloadBlock(40, 49, 10, 2, "Designated Area Code", "dac", "u", "Unsigned integer"));
+		getMessageBlocks().add(new PayloadBlock(50, 55, 6, 2, "Functional ID", "fid", "u", "Unsigned integer"));
 		getMessageBlocks().add(new PayloadBlock(56, 167, 112, 2, "Data", "data", "d", "Binary data"));
 
 		// w/-Destination -ApplicationId
-		// getMessageBlocks().add(new PayloadBlock(40, 39, 0, 3, "Destination
-		// MMSI", "dest_mmsi", "u", "Message destination"));
-		// getMessageBlocks().add(new PayloadBlock(40, 39, 0, 3, "Spare", "",
-		// "x", "Byte Alignment"));
-		// getMessageBlocks().add(new PayloadBlock(40, 39, 0, 3, "Application
-		// ID", "app_id", "u", "Unsigned integer"));
 		getMessageBlocks().add(new PayloadBlock(40, 167, 128, 3, "Data", "data", "d", "Binary data"));
 	}
 

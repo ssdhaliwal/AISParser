@@ -24,6 +24,17 @@ public class PayloadBlock {
 		setType(type);
 		setUnits(units);
 	}
+
+	public PayloadBlock(int start, int end, int length, int group, String description, String name, String type, String units, boolean padding) {
+		setStart(start);
+		setEnd(end);
+		setLength(length);
+		setGroup(group);
+		setDescription(description);
+		setName(name);
+		setType(type);
+		setUnits(units);
+	}
 	
 	@Override
 	public String toString() {
@@ -40,6 +51,7 @@ public class PayloadBlock {
 		buffer.append(", \"units\":\"" + getUnits() + "\"");
 		buffer.append(", \"bits\":\"" + getBits() + "\"");
 		buffer.append(", \"hexValue\":\"" + getHexValue() + "\"");
+		buffer.append(", \"padding\":\"" + isPadding() + "\"");
 		buffer.append(", \"exception\":\"" + isException() + "\"");
 		buffer.append("}");
 		
@@ -125,6 +137,14 @@ public class PayloadBlock {
 		this.hex_value = new BigInteger(bits, 2).toString(16);
 	}
 
+	public boolean isPadding() {
+		return padding;
+	}
+	
+	public void setPadding(boolean padding) {
+		this.padding = padding;
+	}
+
 	public String getHexValue() {
 		return this.hex_value;
 	}
@@ -147,5 +167,6 @@ public class PayloadBlock {
 	private String units = "";
 	private String bits = "";
 	private String hex_value = "";
+	private boolean padding = false;
 	private boolean exception = false; 
 }

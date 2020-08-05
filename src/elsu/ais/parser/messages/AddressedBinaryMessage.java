@@ -18,6 +18,19 @@ public class AddressedBinaryMessage extends AISMessage {
 		initialize();
 	}
 
+	public void parseMessage(AddressedBinaryMessage message) {
+		this.type = message.getType();
+		this.repeat = message.getRepeat();
+		this.mmsi = message.getMmsi();
+		this.seqno = message.getSeqno();
+		this.destinationMmsi = message.getDestinationMmsi();
+		this.retransmit = message.isRetransmit();
+		this.dac = message.getDac();
+		this.fid = message.getFid();
+		this.data = message.getData();
+		this.dataRaw = message.getDataRaw();
+	}
+
 	private void initialize() {
 		getMessageBlocks().add(new PayloadBlock(0, 5, 6, "Message Type", "type", "u", "Constant: 6"));
 		getMessageBlocks()

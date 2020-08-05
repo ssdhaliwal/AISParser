@@ -36,7 +36,7 @@ public abstract class AISMessage extends AISBase {
 
 			BinaryBroadCastMessage bbcm = (BinaryBroadCastMessage) sentence.getAISMessage();
 			if ((bbcm.getDac() == 1) && (bbcm.getFid() == 11)) {
-				Type8_Dac1_Fid11 tdf = (Type8_Dac1_Fid11) Type8_Dac1_Fid11.fromAISMessage(bbcm,
+				Type8_MeteorologicalHydrologicalData tdf = (Type8_MeteorologicalHydrologicalData) Type8_MeteorologicalHydrologicalData.fromAISMessage(bbcm,
 						sentence.getBitString());
 				sentence.setAISMessage(tdf);
 			}
