@@ -39,14 +39,14 @@ public class CommunicationState {
 
 			switch (block.getStart()) {
 			case 0:
-				setState(AISSentence.unsigned_integer_decoder(block.getBits()));
+				setState(AISSentence.parseUINT(block.getBits()));
 				break;
 			case 2:
-				setMessage(AISSentence.unsigned_integer_decoder(block.getBits()));
-				
+				setMessage(AISSentence.parseUINT(block.getBits()));
+
 				if ((messageType == 1) || (messageType == 2)) { // SOTDMA
 					setCommState_SOTDMA(block.getBits());
-				} else { // ITDMA					
+				} else { // ITDMA
 					setCommState_ITDMA(block.getBits());
 				}
 				break;
@@ -89,19 +89,19 @@ public class CommunicationState {
 	public void setMessage(int message) {
 		this.message = message;
 	}
-	
+
 	public CommunicationState_SOTDMA getCommStateSOTDMA() {
 		return csSOTDMA;
 	}
-	
+
 	public void setCommState_SOTDMA(String bits) {
 		this.csSOTDMA = CommunicationState_SOTDMA.fromPayload(bits);
 	}
-	
+
 	public CommunicationState_ITDMA getCommStateITDMA() {
 		return csITDMA;
 	}
-	
+
 	public void setCommState_ITDMA(String bits) {
 		this.csITDMA = CommunicationState_ITDMA.fromPayload(bits);
 	}

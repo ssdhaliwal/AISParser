@@ -37,7 +37,7 @@ public class PositionReportClassA extends AISMessage {
 		getMessageBlocks().add(new PayloadBlock(137, 142, 6, "Time Stamp", "second", "u", "Second of UTC timestamp"));
 		getMessageBlocks()
 				.add(new PayloadBlock(143, 144, 2, "Maneuver Indicator", "maneuver", "e", "See Maneuver Indicator"));
-		getMessageBlocks().add(new PayloadBlock(145, 147, 3, "Spare", "", "x", "Not used"));
+		// getMessageBlocks().add(new PayloadBlock(145, 147, 3, "Spare", "", "x", "Not used"));
 		getMessageBlocks().add(new PayloadBlock(148, 148, 1, "RAIM flag", "raim", "b", "See below"));
 		getMessageBlocks().add(new PayloadBlock(149, 167, 19, "Radio status", "radio", "u", "See below"));
 	}
@@ -49,49 +49,49 @@ public class PositionReportClassA extends AISMessage {
 
 		switch (block.getStart()) {
 		case 0:
-			setType(unsigned_integer_decoder(block.getBits()));
+			setType(parseUINT(block.getBits()));
 			break;
 		case 6:
-			setRepeat(unsigned_integer_decoder(block.getBits()));
+			setRepeat(parseUINT(block.getBits()));
 			break;
 		case 8:
-			setMmsi(unsigned_integer_decoder(block.getBits()));
+			setMmsi(parseUINT(block.getBits()));
 			break;
 		case 38:
-			setStatus(unsigned_integer_decoder(block.getBits()));
+			setStatus(parseUINT(block.getBits()));
 			break;
 		case 42:
-			setRateOfTurn(integer_decoder(block.getBits()));
+			setRateOfTurn(parseINT(block.getBits()));
 			break;
 		case 50:
-			setSpeed(unsigned_float_decoder(block.getBits()) / 10f);
+			setSpeed(parseUFLOAT(block.getBits()) / 10f);
 			break;
 		case 60:
-			setAccuracy(boolean_decoder(block.getBits()));
+			setAccuracy(parseBOOLEAN(block.getBits()));
 			break;
 		case 61:
-			setLongitude(float_decoder(block.getBits()) / 600000f);
+			setLongitude(parseFLOAT(block.getBits()) / 600000f);
 			break;
 		case 89:
-			setLatitude(float_decoder(block.getBits()) / 600000f);
+			setLatitude(parseFLOAT(block.getBits()) / 600000f);
 			break;
 		case 116:
-			setCourse(unsigned_float_decoder(block.getBits()) / 10f);
+			setCourse(parseUFLOAT(block.getBits()) / 10f);
 			break;
 		case 128:
-			setHeading(unsigned_integer_decoder(block.getBits()));
+			setHeading(parseUINT(block.getBits()));
 			break;
 		case 137:
-			setSecond(unsigned_integer_decoder(block.getBits()));
+			setSecond(parseUINT(block.getBits()));
 			break;
 		case 143:
-			setManeuver(unsigned_integer_decoder(block.getBits()));
+			setManeuver(parseUINT(block.getBits()));
 			break;
 		case 148:
-			setRaim(boolean_decoder(block.getBits()));
+			setRaim(parseBOOLEAN(block.getBits()));
 			break;
 		case 149:
-			setRadio(unsigned_integer_decoder(block.getBits()));
+			setRadio(parseUINT(block.getBits()));
 			setCommState(block.getBits());
 			break;
 		}

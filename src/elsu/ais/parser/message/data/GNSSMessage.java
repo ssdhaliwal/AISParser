@@ -48,25 +48,25 @@ public class GNSSMessage {
 
 			switch (block.getStart()) {
 			case 0:
-				setType(AISSentence.unsigned_integer_decoder(block.getBits()));
+				setType(AISSentence.parseUINT(block.getBits()));
 				break;
 			case 6:
-				setStationId(AISSentence.unsigned_integer_decoder(block.getBits()));
+				setStationId(AISSentence.parseUINT(block.getBits()));
 				break;
 			case 16:
-				setZCount(AISSentence.unsigned_integer_decoder(block.getBits()));
+				setZCount(AISSentence.parseUINT(block.getBits()));
 				break;
 			case 29:
-				setSeqno(AISSentence.unsigned_integer_decoder(block.getBits()));
+				setSeqno(AISSentence.parseUINT(block.getBits()));
 				break;
 			case 32:
-				setWords(AISSentence.unsigned_integer_decoder(block.getBits()));
+				setWords(AISSentence.parseUINT(block.getBits()));
 				break;
 			case 37:
-				setHealth(AISSentence.unsigned_integer_decoder(block.getBits()));
+				setHealth(AISSentence.parseUINT(block.getBits()));
 				break;
 			case 40:
-				setData(AISSentence.bit_decoder(block.getBits()));
+				setData(AISSentence.parseBITS(block.getBits()));
 				break;
 			}
 		}

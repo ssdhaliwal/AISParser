@@ -26,7 +26,7 @@ public class AddressedSafetyRelatedMessage extends AISMessage {
 		getMessageBlocks().add(new PayloadBlock(40, 69, 30, "Destination MMSI", "dest_mmsi", "u", "9 decimal digits"));
 		getMessageBlocks().add(new PayloadBlock(70, 70, 1, "Retransmit flag", "retransmit", "b",
 				"0 = no retransmit (default), 1 = retransmitted"));
-		getMessageBlocks().add(new PayloadBlock(71, 71, 1, "Spare", "", "x", "Not used"));
+		// getMessageBlocks().add(new PayloadBlock(71, 71, 1, "Spare", "", "x", "Not used"));
 		getMessageBlocks().add(new PayloadBlock(72, -1, 936, "Text", "text", "t",
 				"1-156 chars of six-bit text. May be shorter than 936 bits."));
 	}
@@ -38,25 +38,25 @@ public class AddressedSafetyRelatedMessage extends AISMessage {
 
 		switch (block.getStart()) {
 		case 0:
-			setType(unsigned_integer_decoder(block.getBits()));
+			setType(parseUINT(block.getBits()));
 			break;
 		case 6:
-			setRepeat(unsigned_integer_decoder(block.getBits()));
+			setRepeat(parseUINT(block.getBits()));
 			break;
 		case 8:
-			setMmsi(unsigned_integer_decoder(block.getBits()));
+			setMmsi(parseUINT(block.getBits()));
 			break;
 		case 38:
-			setSeqno(unsigned_integer_decoder(block.getBits()));
+			setSeqno(parseUINT(block.getBits()));
 			break;
 		case 40:
-			setDestinationMmsi(unsigned_integer_decoder(block.getBits()));
+			setDestinationMmsi(parseUINT(block.getBits()));
 			break;
 		case 70:
-			setRetransmit(boolean_decoder(block.getBits()));
+			setRetransmit(parseBOOLEAN(block.getBits()));
 			break;
 		case 72:
-			setText(text_decoder(block.getBits()));
+			setText(parseTEXT(block.getBits()));
 			break;
 		}
 	}

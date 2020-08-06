@@ -43,7 +43,7 @@ public class ExtendedClassBCSPositionReport extends AISMessage {
 				.add(new PayloadBlock(306, 306, 1, "DTE", "dte", "u", "0=Data terminal ready, 1=Not ready (default)."));
 		getMessageBlocks()
 				.add(new PayloadBlock(307, 307, 1, "Assigned mode flag", "assigned", "u", "See [IALA] for details"));
-		getMessageBlocks().add(new PayloadBlock(308, 311, 4, "Spare", "", "x", "Unused, should be zero"));
+		// getMessageBlocks().add(new PayloadBlock(308, 311, 4, "Spare", "", "x", "Unused, should be zero"));
 	}
 
 	public void parseMessageBlock(PayloadBlock block) throws Exception {
@@ -53,58 +53,58 @@ public class ExtendedClassBCSPositionReport extends AISMessage {
 
 		switch (block.getStart()) {
 		case 0:
-			setType(unsigned_integer_decoder(block.getBits()));
+			setType(parseUINT(block.getBits()));
 			break;
 		case 6:
-			setRepeat(unsigned_integer_decoder(block.getBits()));
+			setRepeat(parseUINT(block.getBits()));
 			break;
 		case 8:
-			setMmsi(unsigned_integer_decoder(block.getBits()));
+			setMmsi(parseUINT(block.getBits()));
 			break;
 		case 46:
-			setSpeed(unsigned_float_decoder(block.getBits()) / 10f);
+			setSpeed(parseUFLOAT(block.getBits()) / 10f);
 			break;
 		case 56:
-			setAccuracy(boolean_decoder(block.getBits()));
+			setAccuracy(parseBOOLEAN(block.getBits()));
 			break;
 		case 57:
-			setLongitude(float_decoder(block.getBits()) / 600000f);
+			setLongitude(parseFLOAT(block.getBits()) / 600000f);
 			break;
 		case 85:
-			setLatitude(float_decoder(block.getBits()) / 600000f);
+			setLatitude(parseFLOAT(block.getBits()) / 600000f);
 			break;
 		case 112:
-			setCourse(unsigned_float_decoder(block.getBits()) / 10f);
+			setCourse(parseUFLOAT(block.getBits()) / 10f);
 			break;
 		case 124:
-			setHeading(unsigned_integer_decoder(block.getBits()));
+			setHeading(parseUINT(block.getBits()));
 			break;
 		case 133:
-			setSecond(unsigned_integer_decoder(block.getBits()));
+			setSecond(parseUINT(block.getBits()));
 			break;
 		case 139:
-			setRegional(unsigned_integer_decoder(block.getBits()));
+			setRegional(parseUINT(block.getBits()));
 			break;
 		case 143:
-			setShipName(text_decoder(block.getBits()));
+			setShipName(parseTEXT(block.getBits()));
 			break;
 		case 263:
-			setShipType(unsigned_integer_decoder(block.getBits()));
+			setShipType(parseUINT(block.getBits()));
 			break;
 		case 271:
 			setDimension(block.getBits());
 			break;
 		case 301:
-			setEpfd(unsigned_integer_decoder(block.getBits()));
+			setEpfd(parseUINT(block.getBits()));
 			break;
 		case 305:
-			setRaim(boolean_decoder(block.getBits()));
+			setRaim(parseBOOLEAN(block.getBits()));
 			break;
 		case 306:
-			setDte(unsigned_integer_decoder(block.getBits()));
+			setDte(parseUINT(block.getBits()));
 			break;
 		case 307:
-			setAssigned(unsigned_integer_decoder(block.getBits()));
+			setAssigned(parseUINT(block.getBits()));
 			break;
 		}
 	}

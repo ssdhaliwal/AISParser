@@ -37,7 +37,7 @@ public class LongRangeAISBroadcastMessage extends AISMessage {
 				"0 to 359 degrees, 511 = not available."));
 		getMessageBlocks().add(new PayloadBlock(94, 94, 1, "GNSS Position status", "latency", "u",
 				"0 = Reported position latency is less than 5 seconds; 1 = Reported position latency is greater than 5 seconds = default"));
-		getMessageBlocks().add(new PayloadBlock(95, 95, 1, "Spare", "", "x", "Not used"));
+		// getMessageBlocks().add(new PayloadBlock(95, 95, 1, "Spare", "", "x", "Not used"));
 	}
 
 	public void parseMessageBlock(PayloadBlock block) throws Exception {
@@ -47,37 +47,37 @@ public class LongRangeAISBroadcastMessage extends AISMessage {
 
 		switch (block.getStart()) {
 		case 0:
-			setType(unsigned_integer_decoder(block.getBits()));
+			setType(parseUINT(block.getBits()));
 			break;
 		case 6:
-			setRepeat(unsigned_integer_decoder(block.getBits()));
+			setRepeat(parseUINT(block.getBits()));
 			break;
 		case 8:
-			setMmsi(unsigned_integer_decoder(block.getBits()));
+			setMmsi(parseUINT(block.getBits()));
 			break;
 		case 38:
-			setAccuracy(boolean_decoder(block.getBits()));
+			setAccuracy(parseBOOLEAN(block.getBits()));
 			break;
 		case 39:
-			setRaim(boolean_decoder(block.getBits()));
+			setRaim(parseBOOLEAN(block.getBits()));
 			break;
 		case 40:
-			setStatus(unsigned_integer_decoder(block.getBits()));
+			setStatus(parseUINT(block.getBits()));
 			break;
 		case 44:
-			setLongitude(float_decoder(block.getBits()) / 600f);
+			setLongitude(parseFLOAT(block.getBits()) / 600f);
 			break;
 		case 62:
-			setLatitude(float_decoder(block.getBits()) / 600f);
+			setLatitude(parseFLOAT(block.getBits()) / 600f);
 			break;
 		case 79:
-			setSpeed(unsigned_float_decoder(block.getBits()));
+			setSpeed(parseUFLOAT(block.getBits()));
 			break;
 		case 85:
-			setCourse(unsigned_float_decoder(block.getBits()));
+			setCourse(parseUFLOAT(block.getBits()));
 			break;
 		case 94:
-			setPositionLatency(unsigned_integer_decoder(block.getBits()));
+			setPositionLatency(parseUINT(block.getBits()));
 			break;
 		}
 	}

@@ -34,6 +34,7 @@ public class PayloadBlock {
 		setName(name);
 		setType(type);
 		setUnits(units);
+		setPadding(padding);
 	}
 	
 	@Override

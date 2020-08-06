@@ -23,7 +23,7 @@ public class GroupAssignmentControl extends AISMessage {
 		getMessageBlocks()
 				.add(new PayloadBlock(6, 7, 2, "Repeat Indicator", "repeat", "u", "As in Common Navigation Block"));
 		getMessageBlocks().add(new PayloadBlock(8, 37, 30, "MMSI", "mmsi", "u", "Unsigned Integer: 9 digits"));
-		getMessageBlocks().add(new PayloadBlock(38, 39, 2, "Spare", "", "x", "Not used"));
+		// getMessageBlocks().add(new PayloadBlock(38, 39, 2, "Spare", "", "x", "Not used"));
 		getMessageBlocks()
 				.add(new PayloadBlock(40, 57, 18, "NE Longitude", "ne_lon", "u", "Same as broadcast type 22"));
 		getMessageBlocks().add(new PayloadBlock(58, 74, 17, "NE Latitude", "ne_lat", "u", "Same as broadcast type 22"));
@@ -34,14 +34,14 @@ public class GroupAssignmentControl extends AISMessage {
 		getMessageBlocks()
 				.add(new PayloadBlock(110, 113, 4, "Station Type", "station_type", "e", "See \"Station Types\""));
 		getMessageBlocks().add(new PayloadBlock(114, 121, 8, "Ship Type", "ship_type", "e", "See \"Ship Types\""));
-		getMessageBlocks().add(new PayloadBlock(122, 143, 22, "Spare", "", "x", "Not used"));
+		// getMessageBlocks().add(new PayloadBlock(122, 143, 22, "Spare", "", "x", "Not used"));
 		getMessageBlocks()
 				.add(new PayloadBlock(144, 145, 2, "Tx/Rx Mode", "txrx", "u", "See \"Transmit/Receive Modes\""));
 		getMessageBlocks()
 				.add(new PayloadBlock(146, 149, 4, "Report Interval", "interval", "e", "See \"Station Intervals\""));
 		getMessageBlocks()
 				.add(new PayloadBlock(150, 153, 4, "Quiet Time", "quiet", "u", "0 = none, 1-15 quiet time in minutes"));
-		getMessageBlocks().add(new PayloadBlock(154, 159, 6, "Spare", "", "x", "Not used"));
+		// getMessageBlocks().add(new PayloadBlock(154, 159, 6, "Spare", "", "x", "Not used"));
 	}
 
 	public void parseMessageBlock(PayloadBlock block) throws Exception {
@@ -51,40 +51,40 @@ public class GroupAssignmentControl extends AISMessage {
 
 		switch (block.getStart()) {
 		case 0:
-			setType(unsigned_integer_decoder(block.getBits()));
+			setType(parseUINT(block.getBits()));
 			break;
 		case 6:
-			setRepeat(unsigned_integer_decoder(block.getBits()));
+			setRepeat(parseUINT(block.getBits()));
 			break;
 		case 8:
-			setMmsi(unsigned_integer_decoder(block.getBits()));
+			setMmsi(parseUINT(block.getBits()));
 			break;
 		case 40:
-			setNELongitude(float_decoder(block.getBits()) / 600f);
+			setNELongitude(parseFLOAT(block.getBits()) / 600f);
 			break;
 		case 58:
-			setNELatitude(float_decoder(block.getBits()) / 600f);
+			setNELatitude(parseFLOAT(block.getBits()) / 600f);
 			break;
 		case 75:
-			setSWLongitude(float_decoder(block.getBits()) / 600f);
+			setSWLongitude(parseFLOAT(block.getBits()) / 600f);
 			break;
 		case 93:
-			setSWLatitude(float_decoder(block.getBits()) / 600f);
+			setSWLatitude(parseFLOAT(block.getBits()) / 600f);
 			break;
 		case 110:
-			setStationType(unsigned_integer_decoder(block.getBits()));
+			setStationType(parseUINT(block.getBits()));
 			break;
 		case 114:
-			setShipType(unsigned_integer_decoder(block.getBits()));
+			setShipType(parseUINT(block.getBits()));
 			break;
 		case 144:
-			setTxRx(unsigned_integer_decoder(block.getBits()));
+			setTxRx(parseUINT(block.getBits()));
 			break;
 		case 146:
-			setInterval(unsigned_integer_decoder(block.getBits()));
+			setInterval(parseUINT(block.getBits()));
 			break;
 		case 150:
-			setQuiteTime(unsigned_integer_decoder(block.getBits()));
+			setQuiteTime(parseUINT(block.getBits()));
 			break;
 		}
 	}

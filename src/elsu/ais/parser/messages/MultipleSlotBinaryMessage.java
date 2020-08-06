@@ -30,7 +30,7 @@ public class MultipleSlotBinaryMessage extends AISMessage {
 		// w/+Destination +ApplicationId
 		getMessageBlocks()
 				.add(new PayloadBlock(40, 69, 30, 0, "Destination MMSI", "dest_mmsi", "u", "Message destination"));
-		getMessageBlocks().add(new PayloadBlock(70, 71, 2, 0, "Spare", "", "x", "Byte Alignment"));
+		// getMessageBlocks().add(new PayloadBlock(70, 71, 2, 0, "Spare", "", "x", "Byte Alignment"));
 		getMessageBlocks().add(new PayloadBlock(72, 81, 10, 0, "Designated Area Code", "dac", "u", "Unsigned integer"));
 		getMessageBlocks().add(new PayloadBlock(82, 87, 6, 0, "Functional ID", "fid", "u", "Unsigned integer"));
 		getMessageBlocks().add(new PayloadBlock(88, -20, 952, 0, "Data", "data", "d", "Binary data"));
@@ -38,7 +38,7 @@ public class MultipleSlotBinaryMessage extends AISMessage {
 		// w/Destination -ApplicationId
 		getMessageBlocks()
 				.add(new PayloadBlock(40, 69, 30, 1, "Destination MMSI", "dest_mmsi", "u", "Message destination"));
-		getMessageBlocks().add(new PayloadBlock(70, 71, 2, 1, "Spare", "", "x", "Byte Alignment"));
+		// getMessageBlocks().add(new PayloadBlock(70, 71, 2, 1, "Spare", "", "x", "Byte Alignment"));
 		getMessageBlocks().add(new PayloadBlock(72, -20, 968, 1, "Data", "data", "d", "Binary data"));
 
 		// w/-Destination +ApplicationId
@@ -64,19 +64,19 @@ public class MultipleSlotBinaryMessage extends AISMessage {
 
 		switch (block.getStart()) {
 		case 0:
-			setType(unsigned_integer_decoder(block.getBits()));
+			setType(parseUINT(block.getBits()));
 			break;
 		case 6:
-			setRepeat(unsigned_integer_decoder(block.getBits()));
+			setRepeat(parseUINT(block.getBits()));
 			break;
 		case 8:
-			setMmsi(unsigned_integer_decoder(block.getBits()));
+			setMmsi(parseUINT(block.getBits()));
 			break;
 		case 38:
-			setAddressed(boolean_decoder(block.getBits()));
+			setAddressed(parseBOOLEAN(block.getBits()));
 			break;
 		case 39:
-			setStructured(boolean_decoder(block.getBits()));
+			setStructured(parseBOOLEAN(block.getBits()));
 			break;
 		case 40:
 		case 72:
@@ -87,52 +87,52 @@ public class MultipleSlotBinaryMessage extends AISMessage {
 			if (isAddressed() && isStructured() && (block.getGroup() == 0)) {
 				switch (block.getStart()) {
 				case 40:
-					setDestinationMmsi(unsigned_integer_decoder(block.getBits()));
+					setDestinationMmsi(parseUINT(block.getBits()));
 					break;
 				case 72:
-					setDac(unsigned_integer_decoder(block.getBits()));
+					setDac(parseUINT(block.getBits()));
 					break;
 				case 82:
-					setFid(unsigned_integer_decoder(block.getBits()));
+					setFid(parseUINT(block.getBits()));
 					break;
 				case 88:
-					setData(bit_decoder(block.getBits()));
+					setData(parseBITS(block.getBits()));
 					return;
 				}
 			} else if (isAddressed() && !isStructured() && (block.getGroup() == 1)) {
 				switch (block.getStart()) {
 				case 40:
-					setDestinationMmsi(unsigned_integer_decoder(block.getBits()));
+					setDestinationMmsi(parseUINT(block.getBits()));
 					break;
 				case 72:
-					setData(bit_decoder(block.getBits()));
+					setData(parseBITS(block.getBits()));
 					return;
 				}
 			} else if (!isAddressed() && isStructured() && (block.getGroup() == 2)) {
 				switch (block.getStart()) {
 				case 40:
-					setDac(unsigned_integer_decoder(block.getBits()));
+					setDac(parseUINT(block.getBits()));
 					break;
 				case 50:
-					setFid(unsigned_integer_decoder(block.getBits()));
+					setFid(parseUINT(block.getBits()));
 					break;
 				case 56:
-					setData(bit_decoder(block.getBits()));
+					setData(parseBITS(block.getBits()));
 					return;
 				}
 			} else if (!isAddressed() && !isStructured() && (block.getGroup() == 3)) {
 				switch (block.getStart()) {
 				case 40:
-					setData(bit_decoder(block.getBits()));
+					setData(parseBITS(block.getBits()));
 					return;
 				}
 			}
 			break;
 		default:
 			if (block.getName().equals("commflag")) {
-				setCommFlag(unsigned_integer_decoder(block.getBits()));
+				setCommFlag(parseUINT(block.getBits()));
 			} else if (block.getName().equals("radio")) {
-				setRadio(unsigned_integer_decoder(block.getBits()));
+				setRadio(parseUINT(block.getBits()));
 				setCommState(block.getBits());
 			}
 			break;
@@ -241,7 +241,7 @@ public class MultipleSlotBinaryMessage extends AISMessage {
 
 	public void setData(String bits) {
 		this.data = bits;
-		this.dataRaw = text_decoder_8bit(bits);
+		this.dataRaw = parseTEXT8BIT(bits);
 	}
 
 	public int getCommFlag() {

@@ -23,7 +23,7 @@ public class DataLinkManagementMessage extends AISMessage {
 		getMessageBlocks().add(new PayloadBlock(0, 5, 6, "Message Type", "type", "u", "Constant: 20"));
 		getMessageBlocks().add(new PayloadBlock(6, 7, 2, "Repeat Indicator", "repeat", "u", "As in CNB"));
 		getMessageBlocks().add(new PayloadBlock(8, 37, 30, "MMSI", "mmsi", "u", "9 decimal digits"));
-		getMessageBlocks().add(new PayloadBlock(38, 39, 2, "Spare", "", "x", "Not used"));
+		// getMessageBlocks().add(new PayloadBlock(38, 39, 2, "Spare", "", "x", "Not used"));
 		getMessageBlocks()
 				.add(new PayloadBlock(40, 51, 12, "Offset number 1", "offset1", "u", "Reserved offset number"));
 		getMessageBlocks().add(new PayloadBlock(52, 55, 4, "Reserved slots", "number1", "u", "Consecutive slots"));
@@ -61,61 +61,61 @@ public class DataLinkManagementMessage extends AISMessage {
 
 		switch (block.getStart()) {
 		case 0:
-			setType(unsigned_integer_decoder(block.getBits()));
+			setType(parseUINT(block.getBits()));
 			break;
 		case 6:
-			setRepeat(unsigned_integer_decoder(block.getBits()));
+			setRepeat(parseUINT(block.getBits()));
 			break;
 		case 8:
-			setMmsi(unsigned_integer_decoder(block.getBits()));
+			setMmsi(parseUINT(block.getBits()));
 			break;
 		case 40:
-			setOffset1(unsigned_integer_decoder(block.getBits()));
+			setOffset1(parseUINT(block.getBits()));
 			break;
 		case 52:
-			setNumber1(unsigned_integer_decoder(block.getBits()));
+			setNumber1(parseUINT(block.getBits()));
 			break;
 		case 56:
-			setTimeout1(unsigned_integer_decoder(block.getBits()));
+			setTimeout1(parseUINT(block.getBits()));
 			break;
 		case 59:
-			setIncrement1(unsigned_integer_decoder(block.getBits()));
+			setIncrement1(parseUINT(block.getBits()));
 			break;
 		case 70:
-			setOffset2(unsigned_integer_decoder(block.getBits()));
+			setOffset2(parseUINT(block.getBits()));
 			break;
 		case 82:
-			setNumber2(unsigned_integer_decoder(block.getBits()));
+			setNumber2(parseUINT(block.getBits()));
 			break;
 		case 86:
-			setTimeout2(unsigned_integer_decoder(block.getBits()));
+			setTimeout2(parseUINT(block.getBits()));
 			break;
 		case 89:
-			setIncrement2(unsigned_integer_decoder(block.getBits()));
+			setIncrement2(parseUINT(block.getBits()));
 			break;
 		case 100:
-			setOffset3(unsigned_integer_decoder(block.getBits()));
+			setOffset3(parseUINT(block.getBits()));
 			break;
 		case 112:
-			setNumber3(unsigned_integer_decoder(block.getBits()));
+			setNumber3(parseUINT(block.getBits()));
 			break;
 		case 116:
-			setTimeout3(unsigned_integer_decoder(block.getBits()));
+			setTimeout3(parseUINT(block.getBits()));
 			break;
 		case 119:
-			setIncrement3(unsigned_integer_decoder(block.getBits()));
+			setIncrement3(parseUINT(block.getBits()));
 			break;
 		case 130:
-			setOffset4(unsigned_integer_decoder(block.getBits()));
+			setOffset4(parseUINT(block.getBits()));
 			break;
 		case 142:
-			setNumber4(unsigned_integer_decoder(block.getBits()));
+			setNumber4(parseUINT(block.getBits()));
 			break;
 		case 146:
-			setTimeout4(unsigned_integer_decoder(block.getBits()));
+			setTimeout4(parseUINT(block.getBits()));
 			break;
 		case 149:
-			setIncrement4(unsigned_integer_decoder(block.getBits()));
+			setIncrement4(parseUINT(block.getBits()));
 			break;
 		}
 	}

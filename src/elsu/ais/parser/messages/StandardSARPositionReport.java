@@ -36,7 +36,7 @@ public class StandardSARPositionReport extends AISMessage {
 		getMessageBlocks().add(new PayloadBlock(135, 141, 7, "Regional reserved", "regional", "x", "Reserved"));
 		getMessageBlocks().add(new PayloadBlock(142, 142, 1, "DTE", "dte", "u",
 				"0=Data terminal ready, 1=Data terminal not ready (default)"));
-		getMessageBlocks().add(new PayloadBlock(143, 145, 3, "Spare", "", "x", "Not used"));
+		// getMessageBlocks().add(new PayloadBlock(143, 145, 3, "Spare", "", "x", "Not used"));
 		getMessageBlocks().add(new PayloadBlock(146, 146, 1, "Assigned", "assigned", "b", "Assigned-mode flag"));
 		getMessageBlocks()
 				.add(new PayloadBlock(147, 147, 1, "RAIM flag", "raim", "b", "As for common navigation block"));
@@ -52,52 +52,52 @@ public class StandardSARPositionReport extends AISMessage {
 
 		switch (block.getStart()) {
 		case 0:
-			setType(unsigned_integer_decoder(block.getBits()));
+			setType(parseUINT(block.getBits()));
 			break;
 		case 6:
-			setRepeat(unsigned_integer_decoder(block.getBits()));
+			setRepeat(parseUINT(block.getBits()));
 			break;
 		case 8:
-			setMmsi(unsigned_integer_decoder(block.getBits()));
+			setMmsi(parseUINT(block.getBits()));
 			break;
 		case 38:
-			setAltitude(unsigned_integer_decoder(block.getBits()));
+			setAltitude(parseUINT(block.getBits()));
 			break;
 		case 50:
-			setSpeed(unsigned_float_decoder(block.getBits()));
+			setSpeed(parseUFLOAT(block.getBits()));
 			break;
 		case 60:
-			setAccuracy(boolean_decoder(block.getBits()));
+			setAccuracy(parseBOOLEAN(block.getBits()));
 			break;
 		case 61:
-			setLongitude(float_decoder(block.getBits()) / 600000f);
+			setLongitude(parseFLOAT(block.getBits()) / 600000f);
 			break;
 		case 89:
-			setLatitude(float_decoder(block.getBits()) / 600000f);
+			setLatitude(parseFLOAT(block.getBits()) / 600000f);
 			break;
 		case 116:
-			setCourse(unsigned_float_decoder(block.getBits()) / 10f);
+			setCourse(parseUFLOAT(block.getBits()) / 10f);
 			break;
 		case 128:
-			setSecond(unsigned_integer_decoder(block.getBits()));
+			setSecond(parseUINT(block.getBits()));
 			break;
 		case 134:
-			setAltitudeSensor(unsigned_integer_decoder(block.getBits()));
+			setAltitudeSensor(parseUINT(block.getBits()));
 			break;
 		case 142:
-			setDte(unsigned_integer_decoder(block.getBits()));
+			setDte(parseUINT(block.getBits()));
 			break;
 		case 146:
-			setAssigned(boolean_decoder(block.getBits()));
+			setAssigned(parseBOOLEAN(block.getBits()));
 			break;
 		case 147:
-			setRaim(boolean_decoder(block.getBits()));
+			setRaim(parseBOOLEAN(block.getBits()));
 			break;
 		case 148:
-			setCommFlag(unsigned_integer_decoder(block.getBits()));
+			setCommFlag(parseUINT(block.getBits()));
 			break;
 		case 149:
-			setRadio(unsigned_integer_decoder(block.getBits()));
+			setRadio(parseUINT(block.getBits()));
 			setCommState(block.getBits());
 			break;
 		}

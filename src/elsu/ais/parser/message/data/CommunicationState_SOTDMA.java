@@ -38,28 +38,28 @@ public class CommunicationState_SOTDMA {
 
 			switch (block.getStart()) {
 			case 0:
-				setTimeout(AISSentence.unsigned_integer_decoder(block.getBits()));
+				setTimeout(AISSentence.parseUINT(block.getBits()));
 				break;
 			case 4:
-			switch (getTimeout()) {
-			case 1:
-				int hour = AISSentence.unsigned_integer_decoder(block.getBits().substring(0, 10));
-				int minute = AISSentence.unsigned_integer_decoder(block.getBits().substring(10, 12));
-				setUtcHourMinute(hour + ":" + minute);
-				break;
-			case 2:
-			case 4:
-			case 6:
-				setSlotNumber(AISSentence.unsigned_integer_decoder(block.getBits()));
-				break;
-			case 3:
-			case 5:
-			case 7:
-				setReceivedStations(AISSentence.unsigned_integer_decoder(block.getBits()));
+				switch (getTimeout()) {
+				case 1:
+					int hour = AISSentence.parseUINT(block.getBits().substring(0, 10));
+					int minute = AISSentence.parseUINT(block.getBits().substring(10, 12));
+					setUtcHourMinute(hour + ":" + minute);
+					break;
+				case 2:
+				case 4:
+				case 6:
+					setSlotNumber(AISSentence.parseUINT(block.getBits()));
+					break;
+				case 3:
+				case 5:
+				case 7:
+					setReceivedStations(AISSentence.parseUINT(block.getBits()));
+					break;
+				}
 				break;
 			}
-			break;
-		}
 		}
 	}
 
@@ -70,7 +70,7 @@ public class CommunicationState_SOTDMA {
 		buffer.append("{");
 		buffer.append("\"accessScheme\":\"SOTDMA\"");
 		buffer.append(", \"timeout\":" + getTimeout());
-		switch(getTimeout()) {
+		switch (getTimeout()) {
 		case 0:
 			buffer.append(", \"slotOffset\":" + getSlotOffset());
 			break;

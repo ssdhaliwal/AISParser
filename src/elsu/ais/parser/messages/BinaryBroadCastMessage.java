@@ -33,7 +33,7 @@ public class BinaryBroadCastMessage extends AISMessage {
 		getMessageBlocks()
 				.add(new PayloadBlock(6, 7, 2, "Repeat Indicator", "repeat", "u", "As in Common Navigation Block"));
 		getMessageBlocks().add(new PayloadBlock(8, 37, 30, "Source MMSI", "mmsi", "u", "9 decimal digits"));
-		getMessageBlocks().add(new PayloadBlock(38, 39, 2, "Spare", "", "x", "Not used"));
+		// getMessageBlocks().add(new PayloadBlock(38, 39, 2, "Spare", "", "x", "Not used"));
 		getMessageBlocks().add(new PayloadBlock(40, 49, 10, "Designated Area Code", "dac", "u", "Unsigned integer"));
 		getMessageBlocks().add(new PayloadBlock(50, 55, 6, "Functional ID", "fid", "u", "Unsigned integer"));
 		getMessageBlocks()
@@ -47,22 +47,22 @@ public class BinaryBroadCastMessage extends AISMessage {
 
 		switch (block.getStart()) {
 		case 0:
-			setType(unsigned_integer_decoder(block.getBits()));
+			setType(parseUINT(block.getBits()));
 			break;
 		case 6:
-			setRepeat(unsigned_integer_decoder(block.getBits()));
+			setRepeat(parseUINT(block.getBits()));
 			break;
 		case 8:
-			setMmsi(unsigned_integer_decoder(block.getBits()));
+			setMmsi(parseUINT(block.getBits()));
 			break;
 		case 40:
-			setDac(unsigned_integer_decoder(block.getBits()));
+			setDac(parseUINT(block.getBits()));
 			break;
 		case 50:
-			setFid(unsigned_integer_decoder(block.getBits()));
+			setFid(parseUINT(block.getBits()));
 			break;
 		case 56:
-			setData(bit_decoder(block.getBits()));
+			setData(parseBITS(block.getBits()));
 			break;
 		}
 	}
@@ -137,7 +137,7 @@ public class BinaryBroadCastMessage extends AISMessage {
 
 	public void setData(String data) {
 		this.data = data;
-		this.dataRaw = text_decoder_8bit(data);
+		this.dataRaw = parseTEXT8BIT(data);
 	}
 
 	private int type = 0;

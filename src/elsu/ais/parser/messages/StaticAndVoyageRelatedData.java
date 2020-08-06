@@ -43,7 +43,7 @@ public class StaticAndVoyageRelatedData extends AISMessage {
 				.add(new PayloadBlock(302, 421, 120, "Destination", "destination", "t", "20 6-bit characters"));
 		getMessageBlocks()
 				.add(new PayloadBlock(422, 422, 1, "DTE", "dte", "u", "0=Data terminal ready, 1=Not ready (default)."));
-		getMessageBlocks().add(new PayloadBlock(423, 423, 1, "Spare", "", "x", "Not used"));
+		// getMessageBlocks().add(new PayloadBlock(423, 423, 1, "Spare", "", "x", "Not used"));
 	}
 
 	public void parseMessageBlock(PayloadBlock block) throws Exception {
@@ -53,55 +53,55 @@ public class StaticAndVoyageRelatedData extends AISMessage {
 
 		switch (block.getStart()) {
 		case 0:
-			setType(unsigned_integer_decoder(block.getBits()));
+			setType(parseUINT(block.getBits()));
 			break;
 		case 6:
-			setRepeat(unsigned_integer_decoder(block.getBits()));
+			setRepeat(parseUINT(block.getBits()));
 			break;
 		case 8:
-			setMmsi(unsigned_integer_decoder(block.getBits()));
+			setMmsi(parseUINT(block.getBits()));
 			break;
 		case 38:
-			setAisVersion(unsigned_integer_decoder(block.getBits()));
+			setAisVersion(parseUINT(block.getBits()));
 			break;
 		case 40:
-			setImo(unsigned_integer_decoder(block.getBits()));
+			setImo(parseUINT(block.getBits()));
 			break;
 		case 70:
-			setCallSign(text_decoder(block.getBits()));
+			setCallSign(parseTEXT(block.getBits()));
 			break;
 		case 112:
-			setShipName(text_decoder(block.getBits()));
+			setShipName(parseTEXT(block.getBits()));
 			break;
 		case 232:
-			setShipType(unsigned_integer_decoder(block.getBits()));
+			setShipType(parseUINT(block.getBits()));
 			break;
 		case 240:
 			setDimension(block.getBits());
 			break;
 		case 270:
-			setEpfd(unsigned_integer_decoder(block.getBits()));
+			setEpfd(parseUINT(block.getBits()));
 			break;
 		case 274:
-			setMonth(unsigned_integer_decoder(block.getBits()));
+			setMonth(parseUINT(block.getBits()));
 			break;
 		case 278:
-			setDay(unsigned_integer_decoder(block.getBits()));
+			setDay(parseUINT(block.getBits()));
 			break;
 		case 283:
-			setHour(unsigned_integer_decoder(block.getBits()));
+			setHour(parseUINT(block.getBits()));
 			break;
 		case 288:
-			setMinute(unsigned_integer_decoder(block.getBits()));
+			setMinute(parseUINT(block.getBits()));
 			break;
 		case 294:
-			setDraught(unsigned_float_decoder(block.getBits()) / 10f);
+			setDraught(parseUFLOAT(block.getBits()) / 10f);
 			break;
 		case 302:
-			setDestination(text_decoder(block.getBits()));
+			setDestination(parseTEXT(block.getBits()));
 			break;
 		case 422:
-			setDte(unsigned_integer_decoder(block.getBits()));
+			setDte(parseUINT(block.getBits()));
 			break;
 		}
 	}

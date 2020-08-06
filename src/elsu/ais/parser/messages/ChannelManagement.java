@@ -22,7 +22,7 @@ public class ChannelManagement extends AISMessage {
 		getMessageBlocks()
 				.add(new PayloadBlock(6, 7, 2, "Repeat Indicator", "repeat", "u", "As in Common Navigation Block"));
 		getMessageBlocks().add(new PayloadBlock(8, 37, 30, "MMSI", "mmsi", "u", "9 decimal digits"));
-		getMessageBlocks().add(new PayloadBlock(38, 39, 2, "Spare", "", "x", "Not used"));
+		// getMessageBlocks().add(new PayloadBlock(38, 39, 2, "Spare", "", "x", "Not used"));
 		getMessageBlocks().add(new PayloadBlock(40, 51, 12, "Channel A", "channel_a", "u", "Channel number"));
 		getMessageBlocks().add(new PayloadBlock(52, 63, 12, "Channel B", "channel_b", "u", "Channel number"));
 		getMessageBlocks().add(new PayloadBlock(64, 67, 4, "Tx/Rx mode", "txrx", "u", "Transmit/receive mode"));
@@ -41,7 +41,7 @@ public class ChannelManagement extends AISMessage {
 		getMessageBlocks().add(new PayloadBlock(141, 141, 1, "Channel B Band", "band_b", "b", "0=Default, 1=12.5kHz"));
 		getMessageBlocks()
 				.add(new PayloadBlock(142, 144, 3, "Zone size", "zonesize", "u", "Size of transitional zone"));
-		getMessageBlocks().add(new PayloadBlock(145, 167, 23, "Spare", "", "x", "Reserved for future use"));
+		// getMessageBlocks().add(new PayloadBlock(145, 167, 23, "Spare", "", "x", "Reserved for future use"));
 	}
 
 	public void parseMessageBlock(PayloadBlock block) throws Exception {
@@ -51,49 +51,49 @@ public class ChannelManagement extends AISMessage {
 
 		switch (block.getStart()) {
 		case 0:
-			setType(unsigned_integer_decoder(block.getBits()));
+			setType(parseUINT(block.getBits()));
 			break;
 		case 6:
-			setRepeat(unsigned_integer_decoder(block.getBits()));
+			setRepeat(parseUINT(block.getBits()));
 			break;
 		case 8:
-			setMmsi(unsigned_integer_decoder(block.getBits()));
+			setMmsi(parseUINT(block.getBits()));
 			break;
 		case 40:
-			setChannelA(unsigned_integer_decoder(block.getBits()));
+			setChannelA(parseUINT(block.getBits()));
 			break;
 		case 52:
-			setChannelB(unsigned_integer_decoder(block.getBits()));
+			setChannelB(parseUINT(block.getBits()));
 			break;
 		case 64:
-			setTxRx(unsigned_integer_decoder(block.getBits()));
+			setTxRx(parseUINT(block.getBits()));
 			break;
 		case 68:
-			setPower(boolean_decoder(block.getBits()));
+			setPower(parseBOOLEAN(block.getBits()));
 			break;
 		case 69:
-			setNELongitude(float_decoder(block.getBits()) / 600f);
+			setNELongitude(parseFLOAT(block.getBits()) / 600f);
 			break;
 		case 87:
-			setNELatitude(float_decoder(block.getBits()) / 600f);
+			setNELatitude(parseFLOAT(block.getBits()) / 600f);
 			break;
 		case 104:
-			setSWLongitude(float_decoder(block.getBits()) / 600f);
+			setSWLongitude(parseFLOAT(block.getBits()) / 600f);
 			break;
 		case 122:
-			setSWLatitude(float_decoder(block.getBits()) / 600f);
+			setSWLatitude(parseFLOAT(block.getBits()) / 600f);
 			break;
 		case 139:
-			setAddressed(boolean_decoder(block.getBits()));
+			setAddressed(parseBOOLEAN(block.getBits()));
 			break;
 		case 140:
-			setBandA(boolean_decoder(block.getBits()));
+			setBandA(parseBOOLEAN(block.getBits()));
 			break;
 		case 141:
-			setBandB(boolean_decoder(block.getBits()));
+			setBandB(parseBOOLEAN(block.getBits()));
 			break;
 		case 142:
-			setZoneSize(unsigned_integer_decoder(block.getBits()));
+			setZoneSize(parseUINT(block.getBits()));
 			break;
 		}
 	}

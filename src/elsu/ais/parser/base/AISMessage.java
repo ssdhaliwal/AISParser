@@ -26,6 +26,29 @@ public abstract class AISMessage extends AISBase {
 			break;
 		case 6:
 			sentence.setAISMessage(AddressedBinaryMessage.fromAISMessage(sentence.getBitString()));
+
+			AddressedBinaryMessage abm = (AddressedBinaryMessage) sentence.getAISMessage();
+			if ((abm.getDac() == 1) && (abm.getFid() == 0)) {
+				Type6_InternationalFunctionalMessage0 tdf = (Type6_InternationalFunctionalMessage0) Type6_InternationalFunctionalMessage0.fromAISMessage(abm,
+						sentence.getBitString());
+				sentence.setAISMessage(tdf);
+			} else if ((abm.getDac() == 1) && (abm.getFid() == 2)) {
+				Type6_InternationalFunctionalMessage2 tdf = (Type6_InternationalFunctionalMessage2) Type6_InternationalFunctionalMessage2.fromAISMessage(abm,
+						sentence.getBitString());
+				sentence.setAISMessage(tdf);
+			} else if ((abm.getDac() == 1) && (abm.getFid() == 3)) {
+				Type6_InternationalFunctionalMessage3 tdf = (Type6_InternationalFunctionalMessage3) Type6_InternationalFunctionalMessage3.fromAISMessage(abm,
+						sentence.getBitString());
+				sentence.setAISMessage(tdf);
+			} else if ((abm.getDac() == 1) && (abm.getFid() == 4)) {
+				Type6_InternationalFunctionalMessage4 tdf = (Type6_InternationalFunctionalMessage4) Type6_InternationalFunctionalMessage4.fromAISMessage(abm,
+						sentence.getBitString());
+				sentence.setAISMessage(tdf);
+			} else if ((abm.getDac() == 1) && (abm.getFid() == 12)) {
+				Type6_DangerousCargo tdf = (Type6_DangerousCargo) Type6_DangerousCargo.fromAISMessage(abm,
+						sentence.getBitString());
+				sentence.setAISMessage(tdf);
+			}
 			break;
 		case 7:
 		case 13:
@@ -84,11 +107,11 @@ public abstract class AISMessage extends AISBase {
 			sentence.setAISMessage(StaticDataReport.fromAISMessage(sentence.getBitString()));
 
 			StaticDataReport sdr = (StaticDataReport) sentence.getAISMessage();
-			if (sdr.getPartno() == 0) {
+			if (sdr.getPartNumber() == 0) {
 				StaticDataReportPartA sdrPartA = (StaticDataReportPartA) StaticDataReportPartA.fromAISMessage(sdr,
 						sentence.getBitString());
 				sentence.setAISMessage(sdrPartA);
-			} else if (sdr.getPartno() == 1) {
+			} else if (sdr.getPartNumber() == 1) {
 				StaticDataReportPartB sdrPartB = (StaticDataReportPartB) StaticDataReportPartB.fromAISMessage(sdr,
 						sentence.getBitString());
 				sentence.setAISMessage(sdrPartB);

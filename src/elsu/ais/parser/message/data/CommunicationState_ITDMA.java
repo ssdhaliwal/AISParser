@@ -39,13 +39,13 @@ public class CommunicationState_ITDMA {
 
 			switch (block.getStart()) {
 			case 0:
-				setIncrement(AISSentence.unsigned_integer_decoder(block.getBits()));
+				setIncrement(AISSentence.parseUINT(block.getBits()));
 				break;
 			case 14:
-				setSlots(AISSentence.unsigned_integer_decoder(block.getBits()));
+				setSlots(AISSentence.parseUINT(block.getBits()));
 				break;
 			case 17:
-				setKeep(AISSentence.boolean_decoder(block.getBits()));
+				setKeep(AISSentence.parseBOOLEAN(block.getBits()));
 				break;
 			}
 		}

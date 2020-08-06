@@ -39,7 +39,7 @@ public class BaseStationReport extends AISMessage {
 		getMessageBlocks().add(new PayloadBlock(134, 137, 4, "Type of EPFD", "epfd", "e", "See \"EPFD Fix Types\""));
 		getMessageBlocks()
 				.add(new PayloadBlock(138, 138, 1, "Control for Long Range Broadcast", "lrbcontrol", "u", ""));
-		getMessageBlocks().add(new PayloadBlock(139, 147, 9, "Spare", "", "x", "Not used"));
+		// getMessageBlocks().add(new PayloadBlock(139, 147, 9, "Spare", "", "x", "Not used"));
 		getMessageBlocks()
 				.add(new PayloadBlock(148, 148, 1, "RAIM flag", "raim", "b", "As for common navigation block"));
 		getMessageBlocks()
@@ -53,51 +53,51 @@ public class BaseStationReport extends AISMessage {
 
 		switch (block.getStart()) {
 		case 0:
-			setType(unsigned_integer_decoder(block.getBits()));
+			setType(parseUINT(block.getBits()));
 			break;
 		case 6:
-			setRepeat(unsigned_integer_decoder(block.getBits()));
+			setRepeat(parseUINT(block.getBits()));
 			break;
 		case 8:
-			setMmsi(unsigned_integer_decoder(block.getBits()));
+			setMmsi(parseUINT(block.getBits()));
 			break;
 		case 38:
-			setYear(unsigned_integer_decoder(block.getBits()));
+			setYear(parseUINT(block.getBits()));
 			break;
 		case 52:
-			setMonth(unsigned_integer_decoder(block.getBits()));
+			setMonth(parseUINT(block.getBits()));
 			break;
 		case 56:
-			setDay(unsigned_integer_decoder(block.getBits()));
+			setDay(parseUINT(block.getBits()));
 			break;
 		case 61:
-			setHour(unsigned_integer_decoder(block.getBits()));
+			setHour(parseUINT(block.getBits()));
 			break;
 		case 66:
-			setMinute(unsigned_integer_decoder(block.getBits()));
+			setMinute(parseUINT(block.getBits()));
 			break;
 		case 72:
-			setSecond(unsigned_integer_decoder(block.getBits()));
+			setSecond(parseUINT(block.getBits()));
 			break;
 		case 78:
-			setAccuracy(boolean_decoder(block.getBits()));
+			setAccuracy(parseBOOLEAN(block.getBits()));
 			break;
 		case 79:
-			setLongitude(float_decoder(block.getBits()) / 600000f);
+			setLongitude(parseFLOAT(block.getBits()) / 600000f);
 			break;
 		case 107:
-			setLatitude(float_decoder(block.getBits()) / 600000f);
+			setLatitude(parseFLOAT(block.getBits()) / 600000f);
 			break;
 		case 134:
-			setEpfd(unsigned_integer_decoder(block.getBits()));
+			setEpfd(parseUINT(block.getBits()));
 			break;
 		case 138:
 			break;
 		case 148:
-			setRaim(boolean_decoder(block.getBits()));
+			setRaim(parseBOOLEAN(block.getBits()));
 			break;
 		case 149:
-			setRadio(unsigned_integer_decoder(block.getBits()));
+			setRadio(parseUINT(block.getBits()));
 			setCommState(block.getBits());
 			break;
 		}

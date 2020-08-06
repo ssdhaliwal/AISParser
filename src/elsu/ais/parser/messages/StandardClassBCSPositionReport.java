@@ -61,64 +61,64 @@ public class StandardClassBCSPositionReport extends AISMessage {
 
 		switch (block.getStart()) {
 		case 0:
-			setType(unsigned_integer_decoder(block.getBits()));
+			setType(parseUINT(block.getBits()));
 			break;
 		case 6:
-			setRepeat(unsigned_integer_decoder(block.getBits()));
+			setRepeat(parseUINT(block.getBits()));
 			break;
 		case 8:
-			setMmsi(unsigned_integer_decoder(block.getBits()));
+			setMmsi(parseUINT(block.getBits()));
 			break;
 		case 46:
-			setSpeed(unsigned_float_decoder(block.getBits()) / 10f);
+			setSpeed(parseUFLOAT(block.getBits()) / 10f);
 			break;
 		case 56:
-			setAccuracy(boolean_decoder(block.getBits()));
+			setAccuracy(parseBOOLEAN(block.getBits()));
 			break;
 		case 57:
-			setLongitude(float_decoder(block.getBits()) / 600000f);
+			setLongitude(parseFLOAT(block.getBits()) / 600000f);
 			break;
 		case 85:
-			setLatitude(float_decoder(block.getBits()) / 600000f);
+			setLatitude(parseFLOAT(block.getBits()) / 600000f);
 			break;
 		case 112:
-			setCourse(unsigned_float_decoder(block.getBits()) / 10f);
+			setCourse(parseUFLOAT(block.getBits()) / 10f);
 			break;
 		case 124:
-			setHeading(unsigned_integer_decoder(block.getBits()));
+			setHeading(parseUINT(block.getBits()));
 			break;
 		case 133:
-			setSecond(unsigned_integer_decoder(block.getBits()));
+			setSecond(parseUINT(block.getBits()));
 			break;
 		case 139:
-			setRegional(unsigned_integer_decoder(block.getBits()));
+			setRegional(parseUINT(block.getBits()));
 			break;
 		case 141:
-			setCs(boolean_decoder(block.getBits()));
+			setCs(parseBOOLEAN(block.getBits()));
 			break;
 		case 142:
-			setDisplay(boolean_decoder(block.getBits()));
+			setDisplay(parseBOOLEAN(block.getBits()));
 			break;
 		case 143:
-			setDsc(boolean_decoder(block.getBits()));
+			setDsc(parseBOOLEAN(block.getBits()));
 			break;
 		case 144:
-			setBand(boolean_decoder(block.getBits()));
+			setBand(parseBOOLEAN(block.getBits()));
 			break;
 		case 145:
-			setMsg22(boolean_decoder(block.getBits()));
+			setMsg22(parseBOOLEAN(block.getBits()));
 			break;
 		case 146:
-			setAssigned(boolean_decoder(block.getBits()));
+			setAssigned(parseBOOLEAN(block.getBits()));
 			break;
 		case 147:
-			setRaim(boolean_decoder(block.getBits()));
+			setRaim(parseBOOLEAN(block.getBits()));
 			break;
 		case 148:
-			setCommFlag(unsigned_integer_decoder(block.getBits()));
+			setCommFlag(parseUINT(block.getBits()));
 			break;
 		case 149:
-			setRadio(unsigned_integer_decoder(block.getBits()));
+			setRadio(parseUINT(block.getBits()));
 			setCommState(block.getBits());
 			break;
 		}

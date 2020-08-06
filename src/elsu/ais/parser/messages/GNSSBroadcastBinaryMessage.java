@@ -24,10 +24,10 @@ public class GNSSBroadcastBinaryMessage extends AISMessage {
 		getMessageBlocks()
 				.add(new PayloadBlock(6, 7, 2, "Repeat Indicator", "repeat", "u", "As in Common Navigation Block"));
 		getMessageBlocks().add(new PayloadBlock(8, 37, 30, "Source MMSI", "mmsi", "u", "9 decimal digits"));
-		getMessageBlocks().add(new PayloadBlock(38, 39, 2, "Spare", "", "x", "Not used"));
+		// getMessageBlocks().add(new PayloadBlock(38, 39, 2, "Spare", "", "x", "Not used"));
 		getMessageBlocks().add(new PayloadBlock(40, 57, 18, "Longitude", "lon", "I1", "Signed: minutes/10"));
 		getMessageBlocks().add(new PayloadBlock(58, 74, 17, "Latitude", "lat", "I1", "Signed: minutes/10"));
-		getMessageBlocks().add(new PayloadBlock(75, 79, 5, "Spare", "", "x", "Not used - reserved"));
+		// getMessageBlocks().add(new PayloadBlock(75, 79, 5, "Spare", "", "x", "Not used - reserved"));
 		getMessageBlocks().add(new PayloadBlock(80, -1, 736, "Payload", "data", "d", "DGNSS correction data"));
 	}
 
@@ -38,22 +38,22 @@ public class GNSSBroadcastBinaryMessage extends AISMessage {
 
 		switch (block.getStart()) {
 		case 0:
-			setType(unsigned_integer_decoder(block.getBits()));
+			setType(parseUINT(block.getBits()));
 			break;
 		case 6:
-			setRepeat(unsigned_integer_decoder(block.getBits()));
+			setRepeat(parseUINT(block.getBits()));
 			break;
 		case 8:
-			setMmsi(unsigned_integer_decoder(block.getBits()));
+			setMmsi(parseUINT(block.getBits()));
 			break;
 		case 40:
-			setLongitude(AISBase.float_decoder(block.getBits()) / 600f);
+			setLongitude(AISBase.parseFLOAT(block.getBits()) / 600f);
 			break;
 		case 58:
-			setLatitude(AISBase.float_decoder(block.getBits()) / 600f);
+			setLatitude(AISBase.parseFLOAT(block.getBits()) / 600f);
 			break;
 		case 80:
-			setData(bit_decoder(block.getBits()));
+			setData(parseBITS(block.getBits()));
 			break;
 		}
 	}
@@ -137,7 +137,7 @@ public class GNSSBroadcastBinaryMessage extends AISMessage {
 
 	public void setData(String data) {
 		this.data = data;
-		this.dataRaw = text_decoder_8bit(data);
+		this.dataRaw = parseTEXT8BIT(data);
 
 		gnssMessage = GNSSMessage.fromPayload(getData());
 	}

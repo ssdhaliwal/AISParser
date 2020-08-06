@@ -39,7 +39,7 @@ public class AidToNavigationReport extends AISMessage {
 		getMessageBlocks().add(new PayloadBlock(269, 269, 1, "Virtual-aid flag", "virtual_aid", "b", "See Below"));
 		getMessageBlocks()
 				.add(new PayloadBlock(270, 270, 1, "Assigned-mode flag", "assigned", "b", "See [IALA] for details"));
-		getMessageBlocks().add(new PayloadBlock(271, 271, 1, "Spare", "", "x", "Not used"));
+		// getMessageBlocks().add(new PayloadBlock(271, 271, 1, "Spare", "", "x", "Not used"));
 		getMessageBlocks().add(new PayloadBlock(272, -1, 88, "Name Extension", "", "t", "See Below"));
 	}
 
@@ -50,64 +50,64 @@ public class AidToNavigationReport extends AISMessage {
 
 		switch (block.getStart()) {
 		case 0:
-			setType(unsigned_integer_decoder(block.getBits()));
+			setType(parseUINT(block.getBits()));
 			break;
 		case 6:
-			setRepeat(unsigned_integer_decoder(block.getBits()));
+			setRepeat(parseUINT(block.getBits()));
 			break;
 		case 8:
-			setMmsi(unsigned_integer_decoder(block.getBits()));
+			setMmsi(parseUINT(block.getBits()));
 			break;
 		case 38:
-			setAidType(unsigned_integer_decoder(block.getBits()));
+			setAidType(parseUINT(block.getBits()));
 			break;
 		case 43:
-			setName(text_decoder(block.getBits()));
+			setName(parseTEXT(block.getBits()));
 			break;
 		case 163:
-			setAccuracy(boolean_decoder(block.getBits()));
+			setAccuracy(parseBOOLEAN(block.getBits()));
 			break;
 		case 164:
-			setLongitude(float_decoder(block.getBits()) / 600000f);
+			setLongitude(parseFLOAT(block.getBits()) / 600000f);
 			break;
 		case 192:
-			setLatitude(float_decoder(block.getBits()) / 600000f);
+			setLatitude(parseFLOAT(block.getBits()) / 600000f);
 			break;
 		case 219:
-			setToBow(unsigned_integer_decoder(block.getBits()));
+			setToBow(parseUINT(block.getBits()));
 			break;
 		case 228:
-			setToStern(unsigned_integer_decoder(block.getBits()));
+			setToStern(parseUINT(block.getBits()));
 			break;
 		case 237:
-			setToPort(unsigned_integer_decoder(block.getBits()));
+			setToPort(parseUINT(block.getBits()));
 			break;
 		case 243:
-			setToStarboard(unsigned_integer_decoder(block.getBits()));
+			setToStarboard(parseUINT(block.getBits()));
 			break;
 		case 249:
-			setEpfd(unsigned_integer_decoder(block.getBits()));
+			setEpfd(parseUINT(block.getBits()));
 			break;
 		case 253:
-			setSecond(unsigned_integer_decoder(block.getBits()));
+			setSecond(parseUINT(block.getBits()));
 			break;
 		case 259:
-			setOffPosition(boolean_decoder(block.getBits()));
+			setOffPosition(parseBOOLEAN(block.getBits()));
 			break;
 		case 260:
-			setRegional(unsigned_integer_decoder(block.getBits()));
+			setRegional(parseUINT(block.getBits()));
 			break;
 		case 268:
-			setRaim(boolean_decoder(block.getBits()));
+			setRaim(parseBOOLEAN(block.getBits()));
 			break;
 		case 269:
-			setVirtualAid(boolean_decoder(block.getBits()));
+			setVirtualAid(parseBOOLEAN(block.getBits()));
 			break;
 		case 270:
-			setAssigned(boolean_decoder(block.getBits()));
+			setAssigned(parseBOOLEAN(block.getBits()));
 			break;
 		case 272:
-			setNameExtension(text_decoder(block.getBits()));
+			setNameExtension(parseTEXT(block.getBits()));
 			break;
 		}
 	}

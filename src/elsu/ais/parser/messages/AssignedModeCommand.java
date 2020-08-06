@@ -22,15 +22,14 @@ public class AssignedModeCommand extends AISMessage {
 		getMessageBlocks()
 				.add(new PayloadBlock(6, 7, 2, "Repeat Indicator", "repeat", "u", "As in Common Navigation Block"));
 		getMessageBlocks().add(new PayloadBlock(8, 37, 30, "Source MMSI", "mmsi", "u", "9 decimal digits"));
-		getMessageBlocks().add(new PayloadBlock(38, 39, 2, "Spare", "", "x", "Not used"));
+		// getMessageBlocks().add(new PayloadBlock(38, 39, 2, "Spare", "", "x", "Not used"));
 		getMessageBlocks().add(new PayloadBlock(40, 69, 30, "Destination A MMSI", "mmsi1", "u", "9 decimal digits"));
 		getMessageBlocks().add(new PayloadBlock(70, 81, 12, "Offset A", "offset1", "u", "See [IALA]"));
 		getMessageBlocks().add(new PayloadBlock(82, 91, 10, "Increment A", "increment1", "u", "See [IALA]"));
 		getMessageBlocks().add(new PayloadBlock(92, 121, 30, "Destination B MMSI", "mmsi2", "u", "9 decimal digits"));
 		getMessageBlocks().add(new PayloadBlock(122, 133, 12, "Offset B", "offset2", "u", "See [IALA]"));
 		getMessageBlocks().add(new PayloadBlock(134, 143, 10, "Increment B", "increment2", "u", "See [IALA]"));
-		getMessageBlocks()
-				.add(new PayloadBlock(144, 147, 4, "Spare", "", "x", "Spare is used for byte boundary to 96 bits"));
+		// getMessageBlocks().add(new PayloadBlock(144, 147, 4, "Spare", "", "x", "Spare is used for byte boundary to 96 bits"));
 	}
 
 	public void parseMessageBlock(PayloadBlock block) throws Exception {
@@ -44,31 +43,31 @@ public class AssignedModeCommand extends AISMessage {
 
 		switch (block.getStart()) {
 		case 0:
-			setType(unsigned_integer_decoder(block.getBits()));
+			setType(parseUINT(block.getBits()));
 			break;
 		case 6:
-			setRepeat(unsigned_integer_decoder(block.getBits()));
+			setRepeat(parseUINT(block.getBits()));
 			break;
 		case 8:
-			setMmsi(unsigned_integer_decoder(block.getBits()));
+			setMmsi(parseUINT(block.getBits()));
 			break;
 		case 40:
-			setDestinationMmsiA(unsigned_integer_decoder(block.getBits()));
+			setDestinationMmsiA(parseUINT(block.getBits()));
 			break;
 		case 70:
-			setOffsetA(unsigned_integer_decoder(block.getBits()));
+			setOffsetA(parseUINT(block.getBits()));
 			break;
 		case 82:
-			setIncrementA(unsigned_integer_decoder(block.getBits()));
+			setIncrementA(parseUINT(block.getBits()));
 			break;
 		case 92:
-			setDestinationMmsiB(unsigned_integer_decoder(block.getBits()));
+			setDestinationMmsiB(parseUINT(block.getBits()));
 			break;
 		case 122:
-			setOffsetB(unsigned_integer_decoder(block.getBits()));
+			setOffsetB(parseUINT(block.getBits()));
 			break;
 		case 134:
-			setIncrementB(unsigned_integer_decoder(block.getBits()));
+			setIncrementB(parseUINT(block.getBits()));
 			break;
 		}
 	}

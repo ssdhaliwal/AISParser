@@ -1,9 +1,13 @@
 package elsu.ais.parser.base;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.TimeZone;
 import java.util.regex.Pattern;
+
+import elsu.ais.parser.resources.PayloadBlock;
 
 public abstract class AISBase {
 
@@ -74,7 +78,7 @@ public abstract class AISBase {
 		return builder.toString();
 	}
 
-	public static String encodeMessagePayload(String bitArray) {
+	public static String encodeMessage(String bitArray) {
 		String result = "";
 
 		if (bitArray.length() > 0) {
@@ -112,55 +116,63 @@ public abstract class AISBase {
 		return 0;
 	}
 
-	public static int unsigned_integer_decoder(String bits) {
+	public static int parseUINT(String bits) {
 		return Integer.valueOf(bits, 2);
 	}
 
-	public static int integer_decoder(String bits) {
+	public static int parseINT(String bits) {
 		int result = 0;
 
 		// 2's complement for negative numbers
 		if (bits.substring(0, 1).equals("1")) {
-			String value = bits.substring(1).replace("0", "x").replace("1", "0").replace("x", "1");
-			result = -1 - unsigned_integer_decoder(value);
+			StringBuilder buffer = new StringBuilder(bits.substring(1));
+			for (int i = 1; i < bits.length(); i++) {
+				if (bits.charAt(i) == '0') {
+					buffer.setCharAt(i, '1');
+				} else {
+					buffer.setCharAt(i, '0');
+				}
+			}
+
+			String value = buffer.toString();
+			result = -1 - parseUINT(value);
+
+			// force garbage collection on first scan
+			buffer = null;
 		} else {
-			result = unsigned_integer_decoder(bits.substring(1));
+			result = parseUINT(bits.substring(1));
 		}
 
 		return result;
 	}
 
-	public static float unsigned_float_decoder(String bits) {
-		return Float.valueOf(unsigned_integer_decoder(bits));
+	public static float parseUFLOAT(String bits) {
+		return Float.valueOf(parseUINT(bits));
 	}
 
-	public static float float_decoder(String bits) {
-		return Float.valueOf(integer_decoder(bits));
+	public static float parseFLOAT(String bits) {
+		return Float.valueOf(parseINT(bits));
 	}
 
-	public static long unsigned_long_decoder(String bits) {
-		return Long.parseLong(bits, 2);
-	}
-
-	public static boolean boolean_decoder(String bits) {
-		if (bits.substring(0, 1).equals("1")) {
+	public static boolean parseBOOLEAN(String bits) {
+		if (bits.charAt(0) == '1') {
 			return true;
 		}
 
 		return false;
 	}
 
-	public static String time_decoder(String bits) {
-		int month = unsigned_integer_decoder(bits.substring(0, 4));
-		int day = unsigned_integer_decoder(bits.substring(4, 9));
-		int hour = unsigned_integer_decoder(bits.substring(9, 14));
-		int minute = unsigned_integer_decoder(bits.substring(14, 20));
+	public static String parseTIME(String bits) {
+		int month = parseUINT(bits.substring(0, 4));
+		int day = parseUINT(bits.substring(4, 9));
+		int hour = parseUINT(bits.substring(9, 14));
+		int minute = parseUINT(bits.substring(14, 20));
 
 		return ((day < 10) ? "0" + day : day) + "-" + ((month < 10) ? "0" + month : month) + " "
 				+ ((hour < 10) ? "0" + hour : hour) + ":" + ((minute < 10) ? "0" + minute : minute);
 	}
 
-	public static String text_decoder(String bits) {
+	public static String parseTEXT(String bits) {
 		StringBuffer buffer = new StringBuffer();
 
 		int len = bits.length(), index = 0;
@@ -171,7 +183,7 @@ public abstract class AISBase {
 			} else {
 				bit = bits.substring(i, i + 6);
 			}
-			index = unsigned_integer_decoder(bit);
+			index = parseUINT(bit);
 
 			buffer.append(sixbitAscii[index]);
 		}
@@ -179,7 +191,7 @@ public abstract class AISBase {
 		return buffer.toString();
 	}
 
-	public static String text_decoder_8bit(String bits) {
+	public static String parseTEXT8BIT(String bits) {
 		StringBuffer buffer = new StringBuffer();
 
 		int len = bits.length(), index = 0;
@@ -190,7 +202,7 @@ public abstract class AISBase {
 			} else {
 				bit = bits.substring(i, i + 8);
 			}
-			index = unsigned_integer_decoder(bit);
+			index = parseUINT(bit);
 
 			buffer.append(Integer.toHexString(0x100 | index).substring(1));
 		}
@@ -198,11 +210,11 @@ public abstract class AISBase {
 		return buffer.toString();
 	}
 
-	public static String bit_decoder(String bits) {
+	public static String parseBITS(String bits) {
 		return bits;
 	}
 
-	public static String getFormattedDate(int epoch) {
+	public static String formatEPOCHToUTC(int epoch) {
 		dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
 
 		Date date = new Date(Long.parseLong(epoch + "") * 1000);
@@ -210,6 +222,5 @@ public abstract class AISBase {
 	}
 
 	public static SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.sss z");
-	
 	public static boolean debug = false;
 }

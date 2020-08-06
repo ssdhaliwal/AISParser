@@ -36,7 +36,7 @@ public class StaticDataReportPartA extends StaticDataReport {
 
 		switch (block.getStart()) {
 		case 40:
-			setShipname(text_decoder(block.getBits()));
+			setShipname(parseTEXT(block.getBits()));
 			break;
 		}
 	}
@@ -51,7 +51,7 @@ public class StaticDataReportPartA extends StaticDataReport {
 		buffer.append(", \"repeat\":" + getRepeat());
 		buffer.append(", \"mmsi\":" + getMmsi());
 		buffer.append(", \"auxiliary\":" + isAuxiliary());
-		buffer.append(", \"partno\":" + getPartno());
+		buffer.append(", \"partNumber\":" + getPartNumber());
 		buffer.append(", \"shipName\":\"" + getShipName().trim() + "\"");
 		buffer.append("}");
 

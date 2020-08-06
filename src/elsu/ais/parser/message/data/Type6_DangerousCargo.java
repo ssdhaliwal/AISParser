@@ -13,7 +13,7 @@ public class Type6_DangerousCargo extends AddressedBinaryMessage {
 		if (aisMessage instanceof AddressedBinaryMessage) {
 			binaryMessage.parseMessage((AddressedBinaryMessage) aisMessage);
 		} else {
-			((AddressedBinaryMessage) binaryMessage).parseMessage(messageBits);
+			throw new Exception("parent message not parsed!; ");
 		}
 		binaryMessage.parseMessage(messageBits);
 
@@ -40,7 +40,7 @@ public class Type6_DangerousCargo extends AddressedBinaryMessage {
 		getMessageBlocks().add(new PayloadBlock(332, 344, 13, "UN Number", "unid", "u", "1-3363 UN Number"));
 		getMessageBlocks().add(new PayloadBlock(345, 354, 10, "Amount of Cargo", "amount", "u", "Unsigned integer"));
 		getMessageBlocks().add(new PayloadBlock(355, 356, 2, "Unit of Quantity", "unit", "e", "See \"Cargo Unit Codes\""));
-		getMessageBlocks().add(new PayloadBlock(357, 359, 3, "Spare", "", "x", "Not used"));
+		// getMessageBlocks().add(new PayloadBlock(357, 359, 3, "Spare", "", "x", "Not used"));
 	}
 
 	public void parseMessageBlock(PayloadBlock block) throws Exception {
@@ -49,113 +49,50 @@ public class Type6_DangerousCargo extends AddressedBinaryMessage {
 		}
 
 		switch (block.getStart()) {
-		case 56:
-			setLatitude(float_decoder(block.getBits()) / 600f);
+		case 88:
+			setLastPortOfCall(parseTEXT(block.getBits()));
 			break;
-		case 80:
-			setLongitude(float_decoder(block.getBits()) / 600f);
+		case 118:
+			setLpocETAMonth(parseUINT(block.getBits()));
 			break;
-		case 105:
-			setDay(unsigned_integer_decoder(block.getBits()));
+		case 122:
+			setLpocETADay(parseUINT(block.getBits()));
 			break;
-		case 110:
-			setHour(unsigned_integer_decoder(block.getBits()));
+		case 127:
+			setLpocETAHour(parseUINT(block.getBits()));
 			break;
-		case 115:
-			setMinute(unsigned_integer_decoder(block.getBits()));
+		case 132:
+			setLpocETAMinute(parseUINT(block.getBits()));
 			break;
-		case 121:
-			setAverageWindSpeed(unsigned_integer_decoder(block.getBits()));
+		case 138:
+			setNextPortOfCall(parseTEXT(block.getBits()));
 			break;
-		case 128:
-			setWindGust(unsigned_integer_decoder(block.getBits()));
+		case 168:
+			setNpocETAMonth(parseUINT(block.getBits()));
 			break;
-		case 135:
-			setWindDirection(unsigned_integer_decoder(block.getBits()));
+		case 172:
+			setLpocETADay(parseUINT(block.getBits()));
 			break;
-		case 144:
-			setWindGustDirection(unsigned_integer_decoder(block.getBits()));
+		case 177:
+			setLpocETAHour(parseUINT(block.getBits()));
 			break;
-		case 153:
-			setAirTemperature(unsigned_integer_decoder(block.getBits()));
+		case 182:
+			setLpocETAMinute(parseUINT(block.getBits()));
 			break;
-		case 164:
-			setRelativeHumidity(unsigned_integer_decoder(block.getBits()));
+		case 188:
+			setDangerousCargo(parseTEXT(block.getBits()));
 			break;
-		case 171:
-			setDewPoint(unsigned_integer_decoder(block.getBits()));
-			break;
-		case 181:
-			setAirPressure(unsigned_integer_decoder(block.getBits()));
-			break;
-		case 190:
-			setAirPressureTendency(unsigned_integer_decoder(block.getBits()));
-			break;
-		case 192:
-			setHorizontalVisibility(unsigned_float_decoder(block.getBits()));
-			break;
-		case 200:
-			setWaterLevel(float_decoder(block.getBits()));
-			break;
-		case 209:
-			setWaterLevelTrend(unsigned_integer_decoder(block.getBits()));
-			break;
-		case 211:
-			setSurfaceCurrentSpeed(unsigned_float_decoder(block.getBits()));
-			break;
-		case 219:
-			setSurfaceCurrentDirection(unsigned_integer_decoder(block.getBits()));
-			break;
-		case 228:
-			setCurrentSpeed2(unsigned_float_decoder(block.getBits()));
-			break;
-		case 236:
-			setCurrentDirection2(unsigned_integer_decoder(block.getBits()));
-			break;
-		case 245:
-			setCurrentMeasurementLevel2(unsigned_float_decoder(block.getBits()));
-			break;
-		case 250:
-			setCurrentSpeed3(unsigned_float_decoder(block.getBits()));
-			break;
-		case 258:
-			setCurrentDirection3(unsigned_integer_decoder(block.getBits()));
-			break;
-		case 267:
-			setCurrentSpeed3(unsigned_float_decoder(block.getBits()));
-			break;
-		case 272:
-			setSignificantWaveHeight(unsigned_float_decoder(block.getBits()));
-			break;
-		case 280:
-			setWavePeriod(unsigned_integer_decoder(block.getBits()));
-			break;
-		case 286:
-			setWaveDirection(unsigned_integer_decoder(block.getBits()));
-			break;
-		case 295:
-			setSwellHeight(unsigned_float_decoder(block.getBits()));
-			break;
-		case 303:
-			setSwellPeriod(unsigned_integer_decoder(block.getBits()));
-			break;
-		case 309:
-			setSwellDirection(unsigned_integer_decoder(block.getBits()));
-			break;
-		case 318:
-			setSeaState(unsigned_integer_decoder(block.getBits()));
-			break;
-		case 322:
-			setWaterTemperature(unsigned_float_decoder(block.getBits()));
+		case 308:
+			setImdCategory(parseTEXT(block.getBits()));
 			break;
 		case 332:
-			setPrecipitationType(unsigned_integer_decoder(block.getBits()));
+			setUNNumber(parseUINT(block.getBits()));
 			break;
-		case 335:
-			setSalinity(unsigned_float_decoder(block.getBits()));
+		case 345:
+			setAmount(parseUINT(block.getBits()));
 			break;
-		case 344:
-			setIce(unsigned_integer_decoder(block.getBits()));
+		case 355:
+			setUnitOfQuantity(parseUINT(block.getBits()));
 			break;
 		}
 	}
@@ -171,6 +108,22 @@ public class Type6_DangerousCargo extends AddressedBinaryMessage {
 		buffer.append(", \"mmsi\":" + getMmsi());
 		buffer.append(", \"dac\":" + getDac());
 		buffer.append(", \"fid\":" + getFid());
+		buffer.append(", \"lastPortOfCall\":\"" + getLastPortOfCall() + "\"");
+		buffer.append(", \"lpocETAMonth\":" + getLpocETAMonth());
+		buffer.append(", \"lpocETADay\":" + getLpocETADay());
+		buffer.append(", \"lpocETAHour\":" + getLpocETAHour());
+		buffer.append(", \"lpocETAMinute\":" + getLpocETAMinute());
+		buffer.append(", \"nextPortOfCall\":\"" + getNextPortOfCall() + "\"");
+		buffer.append(", \"npocETAMonth\":" + getNpocETAMonth());
+		buffer.append(", \"npocETADay\":" + getNpocETADay());
+		buffer.append(", \"npocETAHour\":" + getNpocETAHour());
+		buffer.append(", \"npocETAMinute\":" + getNpocETAMinute());
+		buffer.append(", \"dangerousCargo\":\"" + getDangerousCargo() + "\"");
+		buffer.append(", \"imdCategory\":\"" + getImdCategory() + "\"");
+		buffer.append(", \"UNNumber\":" + getUNNumber());
+		buffer.append(", \"amount\":" + getAmount());
+		buffer.append(", \"unitOfQuantity\":" + getUnitOfQuantity());
+		buffer.append(", \"unitOfQuantityText\":\"" + getUnitOfQuantity() + "\"");
 		buffer.append(", \"dataBits\":\"" + getData() + "\"");
 		buffer.append(", \"dataRaw\":\"" + getDataRaw() + "\"");
 		buffer.append("}");
@@ -178,19 +131,139 @@ public class Type6_DangerousCargo extends AddressedBinaryMessage {
 		return buffer.toString();
 	}
 
+	public String getLastPortOfCall() {
+		return lastPortOfCall;
+	}
+
+	public void setLastPortOfCall(String lastPortOfCall) {
+		this.lastPortOfCall = lastPortOfCall;
+	}
+
+	public int getLpocETAMonth() {
+		return lpocETAMonth;
+	}
+
+	public void setLpocETAMonth(int lpocETAMonth) {
+		this.lpocETAMonth = lpocETAMonth;
+	}
+
+	public int getLpocETADay() {
+		return lpocETADay;
+	}
+
+	public void setLpocETADay(int lpocETADay) {
+		this.lpocETADay = lpocETADay;
+	}
+
+	public int getLpocETAHour() {
+		return lpocETAHour;
+	}
+
+	public void setLpocETAHour(int lpocETAHour) {
+		this.lpocETAHour = lpocETAHour;
+	}
+
+	public int getLpocETAMinute() {
+		return lpocETAMinute;
+	}
+
+	public void setLpocETAMinute(int lpocETAMinute) {
+		this.lpocETAMinute = lpocETAMinute;
+	}
+
+	public String getNextPortOfCall() {
+		return nextPortOfCall;
+	}
+
+	public void setNextPortOfCall(String nextPortOfCall) {
+		this.nextPortOfCall = nextPortOfCall;
+	}
+
+	public int getNpocETAMonth() {
+		return npocETAMonth;
+	}
+
+	public void setNpocETAMonth(int npocETAMonth) {
+		this.npocETAMonth = npocETAMonth;
+	}
+
+	public int getNpocETADay() {
+		return npocETADay;
+	}
+
+	public void setNpocETADay(int npocETADay) {
+		this.npocETADay = npocETADay;
+	}
+
+	public int getNpocETAHour() {
+		return npocETAHour;
+	}
+
+	public void setNpocETAHour(int npocETAHour) {
+		this.npocETAHour = npocETAHour;
+	}
+
+	public int getNpocETAMinute() {
+		return npocETAMinute;
+	}
+
+	public void setNpocETAMinute(int npocETAMinute) {
+		this.npocETAMinute = npocETAMinute;
+	}
+
+	public String getDangerousCargo() {
+		return dangerousCargo;
+	}
+
+	public void setDangerousCargo(String dangerousCargo) {
+		this.dangerousCargo = dangerousCargo;
+	}
+
+	public String getImdCategory() {
+		return imdCategory;
+	}
+
+	public void setImdCategory(String imdCategory) {
+		this.imdCategory = imdCategory;
+	}
+
+	public int getUNNumber() {
+		return UNNumber;
+	}
+
+	public void setUNNumber(int UNNumber) {
+		this.UNNumber = UNNumber;
+	}
+
+	public int getAmount() {
+		return amount;
+	}
+
+	public void setAmount(int amount) {
+		this.amount = amount;
+	}
+
+	public int getUnitOfQuantity() {
+		return unitOfQuantity;
+	}
+
+	public void setUnitOfQuantity(int unitOfQuantity) {
+		this.unitOfQuantity = unitOfQuantity;
+	}
+
 	private String lastPortOfCall = "";
-	private int lpocMonth = 0;
-	private int lpocDay = 0;
-	private int lpocHour = 0;
-	private int lpocMinute = 0;
+	private int lpocETAMonth = 0;
+	private int lpocETADay = 0;
+	private int lpocETAHour = 0;
+	private int lpocETAMinute = 0;
 	private String nextPortOfCall = "";
-	private int npocMonth = 0;
-	private int npocDay = 0;
-	private int npocHour = 0;
-	private int npocMinute = 0;
-	private String dangerous = "";
-	private String imdcat = "";
-	private int unid = 0;
+	private int npocETAMonth = 0;
+	private int npocETADay = 0;
+	private int npocETAHour = 0;
+	private int npocETAMinute = 0;
+	private String dangerousCargo = "";
+	private String imdCategory = "";
+	private int UNNumber = 0;
 	private int amount = 0;
 	private int unitOfQuantity = 0;
 }

@@ -322,7 +322,7 @@ public class AISSentence extends AISBase {
 	}
 
 	private void setType() {
-		this.type = AISBase.unsigned_integer_decoder(this.bitString.substring(0, 6));
+		this.type = AISBase.parseUINT(this.bitString.substring(0, 6));
 	}
 
 	public AISMessage getAISMessage() {

@@ -45,22 +45,22 @@ public class StaticDataReportPartB extends StaticDataReport {
 
 		switch (block.getStart()) {
 		case 40:
-			setShiptype(unsigned_integer_decoder(block.getBits()));
+			setShipType(parseUINT(block.getBits()));
 			break;
 		case 48:
-			setVendorId(text_decoder(block.getBits()));
+			setVendorId(parseTEXT(block.getBits()));
 			break;
 		case 66:
-			setModel(unsigned_integer_decoder(block.getBits()));
+			setModel(parseUINT(block.getBits()));
 			break;
 		case 70:
-			setSerial(unsigned_integer_decoder(block.getBits()));
+			setSerial(parseUINT(block.getBits()));
 			break;
 		case 90:
-			setCallSign(text_decoder(block.getBits()));
+			setCallSign(parseTEXT(block.getBits()));
 			break;
 		case 162:
-			setEpfd(unsigned_integer_decoder(block.getBits()));
+			setEpfd(parseUINT(block.getBits()));
 			break;
 		}
 	}
@@ -74,9 +74,9 @@ public class StaticDataReportPartB extends StaticDataReport {
 		buffer.append(", \"repeat\":" + getRepeat());
 		buffer.append(", \"mmsi\":" + getMmsi());
 		buffer.append(", \"auxiliary\":" + isAuxiliary());
-		buffer.append(", \"partno\":" + getPartno());
-		buffer.append(", \"shipType\":" + getShiptype());
-		buffer.append(", \"shipTypeText\":\"" + LookupValues.getShipType(getShiptype()) + "\"");
+		buffer.append(", \"partno\":" + getPartNumber());
+		buffer.append(", \"shipType\":" + getShipType());
+		buffer.append(", \"shipTypeText\":\"" + LookupValues.getShipType(getShipType()) + "\"");
 		buffer.append(", \"vendorId\":\"" + getVendorId().trim() + "\"");
 		buffer.append(", \"model\":" + getModel());
 		buffer.append(", \"serial\":" + getSerial());
@@ -88,12 +88,12 @@ public class StaticDataReportPartB extends StaticDataReport {
 		return buffer.toString();
 	}
 
-	public int getShiptype() {
-		return shiptype;
+	public int getShipType() {
+		return shipType;
 	}
 
-	public void setShiptype(int shiptype) {
-		this.shiptype = shiptype;
+	public void setShipType(int shipType) {
+		this.shipType = shipType;
 	}
 
 	public String getVendorId() {
@@ -146,7 +146,7 @@ public class StaticDataReportPartB extends StaticDataReport {
 		this.epfd = epfd;
 	}
 
-	private int shiptype = 0;
+	private int shipType = 0;
 	private String vendorId = "";
 	private int model = 0;
 	private int serial = 0;

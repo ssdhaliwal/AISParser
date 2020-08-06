@@ -40,7 +40,7 @@ public class AddressedBinaryMessage extends AISMessage {
 		getMessageBlocks().add(new PayloadBlock(40, 69, 30, "Destination MMSI", "dest_mmsi", "u", "9 decimal digits"));
 		getMessageBlocks().add(new PayloadBlock(70, 70, 1, "Retransmit flag", "retransmit", "b",
 				"0 = no retransmit (default) 1 = retransmitted"));
-		getMessageBlocks().add(new PayloadBlock(71, 71, 1, "Spare", "", "x", "Not used"));
+		// getMessageBlocks().add(new PayloadBlock(71, 71, 1, "Spare", "", "x", "Not used"));
 		getMessageBlocks().add(new PayloadBlock(72, 81, 10, "Designated Area Code", "dac", "u", "Unsigned integer"));
 		getMessageBlocks().add(new PayloadBlock(82, 87, 6, "Functional ID", "fid", "u", "Unsigned integer"));
 		getMessageBlocks()
@@ -54,31 +54,31 @@ public class AddressedBinaryMessage extends AISMessage {
 
 		switch (block.getStart()) {
 		case 0:
-			setType(unsigned_integer_decoder(block.getBits()));
+			setType(parseUINT(block.getBits()));
 			break;
 		case 6:
-			setRepeat(unsigned_integer_decoder(block.getBits()));
+			setRepeat(parseUINT(block.getBits()));
 			break;
 		case 8:
-			setMmsi(unsigned_integer_decoder(block.getBits()));
+			setMmsi(parseUINT(block.getBits()));
 			break;
 		case 38:
-			setSeqno(unsigned_integer_decoder(block.getBits()));
+			setSeqno(parseUINT(block.getBits()));
 			break;
 		case 40:
-			setDestinationMmsi(unsigned_integer_decoder(block.getBits()));
+			setDestinationMmsi(parseUINT(block.getBits()));
 			break;
 		case 70:
-			setRetransmit(boolean_decoder(block.getBits()));
+			setRetransmit(parseBOOLEAN(block.getBits()));
 			break;
 		case 72:
-			setDac(unsigned_integer_decoder(block.getBits()));
+			setDac(parseUINT(block.getBits()));
 			break;
 		case 82:
-			setFid(unsigned_integer_decoder(block.getBits()));
+			setFid(parseUINT(block.getBits()));
 			break;
 		case 88:
-			setData(bit_decoder(block.getBits()));
+			setData(parseBITS(block.getBits()));
 			break;
 		}
 	}
@@ -180,7 +180,7 @@ public class AddressedBinaryMessage extends AISMessage {
 
 	public void setData(String bits) {
 		this.data = bits;
-		this.dataRaw = text_decoder_8bit(bits);
+		this.dataRaw = parseTEXT8BIT(bits);
 	}
 
 	private int type = 0;

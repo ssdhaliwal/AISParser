@@ -522,4 +522,21 @@ public class LookupValues {
 
 		return PositionLatency.get(positionLatency);
 	}
+
+	private static HashMap<Integer, String> UnitOfQuantity = new HashMap<Integer, String>() {
+		{
+			put(0, "Not available (default)");
+			put(1, "kg");
+			put(2, "metric tons");
+			put(3, "metric kilotons");
+		}
+	};
+
+	public static String getUnitOfQuantity(Integer unit) {
+		if (!UnitOfQuantity.containsKey(unit)) {
+			return "--";
+		}
+
+		return UnitOfQuantity.get(unit);
+	}
 }

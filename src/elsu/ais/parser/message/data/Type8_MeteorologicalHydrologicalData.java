@@ -103,112 +103,112 @@ public class Type8_MeteorologicalHydrologicalData extends BinaryBroadCastMessage
 
 		switch (block.getStart()) {
 		case 56:
-			setLatitude(float_decoder(block.getBits()) / 600f);
+			setLatitude(parseFLOAT(block.getBits()) / 600f);
 			break;
 		case 80:
-			setLongitude(float_decoder(block.getBits()) / 600f);
+			setLongitude(parseFLOAT(block.getBits()) / 600f);
 			break;
 		case 105:
-			setDay(unsigned_integer_decoder(block.getBits()));
+			setDay(parseUINT(block.getBits()));
 			break;
 		case 110:
-			setHour(unsigned_integer_decoder(block.getBits()));
+			setHour(parseUINT(block.getBits()));
 			break;
 		case 115:
-			setMinute(unsigned_integer_decoder(block.getBits()));
+			setMinute(parseUINT(block.getBits()));
 			break;
 		case 121:
-			setAverageWindSpeed(unsigned_integer_decoder(block.getBits()));
+			setAverageWindSpeed(parseUINT(block.getBits()));
 			break;
 		case 128:
-			setWindGust(unsigned_integer_decoder(block.getBits()));
+			setWindGust(parseUINT(block.getBits()));
 			break;
 		case 135:
-			setWindDirection(unsigned_integer_decoder(block.getBits()));
+			setWindDirection(parseUINT(block.getBits()));
 			break;
 		case 144:
-			setWindGustDirection(unsigned_integer_decoder(block.getBits()));
+			setWindGustDirection(parseUINT(block.getBits()));
 			break;
 		case 153:
-			setAirTemperature(unsigned_integer_decoder(block.getBits()));
+			setAirTemperature(parseUINT(block.getBits()));
 			break;
 		case 164:
-			setRelativeHumidity(unsigned_integer_decoder(block.getBits()));
+			setRelativeHumidity(parseUINT(block.getBits()));
 			break;
 		case 171:
-			setDewPoint(unsigned_integer_decoder(block.getBits()));
+			setDewPoint(parseUINT(block.getBits()));
 			break;
 		case 181:
-			setAirPressure(unsigned_integer_decoder(block.getBits()));
+			setAirPressure(parseUINT(block.getBits()));
 			break;
 		case 190:
-			setAirPressureTendency(unsigned_integer_decoder(block.getBits()));
+			setAirPressureTendency(parseUINT(block.getBits()));
 			break;
 		case 192:
-			setHorizontalVisibility(unsigned_float_decoder(block.getBits()));
+			setHorizontalVisibility(parseUFLOAT(block.getBits()));
 			break;
 		case 200:
-			setWaterLevel(float_decoder(block.getBits()));
+			setWaterLevel(parseFLOAT(block.getBits()));
 			break;
 		case 209:
-			setWaterLevelTrend(unsigned_integer_decoder(block.getBits()));
+			setWaterLevelTrend(parseUINT(block.getBits()));
 			break;
 		case 211:
-			setSurfaceCurrentSpeed(unsigned_float_decoder(block.getBits()));
+			setSurfaceCurrentSpeed(parseUFLOAT(block.getBits()));
 			break;
 		case 219:
-			setSurfaceCurrentDirection(unsigned_integer_decoder(block.getBits()));
+			setSurfaceCurrentDirection(parseUINT(block.getBits()));
 			break;
 		case 228:
-			setCurrentSpeed2(unsigned_float_decoder(block.getBits()));
+			setCurrentSpeed2(parseUFLOAT(block.getBits()));
 			break;
 		case 236:
-			setCurrentDirection2(unsigned_integer_decoder(block.getBits()));
+			setCurrentDirection2(parseUINT(block.getBits()));
 			break;
 		case 245:
-			setCurrentMeasurementLevel2(unsigned_float_decoder(block.getBits()));
+			setCurrentMeasurementLevel2(parseUFLOAT(block.getBits()));
 			break;
 		case 250:
-			setCurrentSpeed3(unsigned_float_decoder(block.getBits()));
+			setCurrentSpeed3(parseUFLOAT(block.getBits()));
 			break;
 		case 258:
-			setCurrentDirection3(unsigned_integer_decoder(block.getBits()));
+			setCurrentDirection3(parseUINT(block.getBits()));
 			break;
 		case 267:
-			setCurrentSpeed3(unsigned_float_decoder(block.getBits()));
+			setCurrentSpeed3(parseUFLOAT(block.getBits()));
 			break;
 		case 272:
-			setSignificantWaveHeight(unsigned_float_decoder(block.getBits()));
+			setSignificantWaveHeight(parseUFLOAT(block.getBits()));
 			break;
 		case 280:
-			setWavePeriod(unsigned_integer_decoder(block.getBits()));
+			setWavePeriod(parseUINT(block.getBits()));
 			break;
 		case 286:
-			setWaveDirection(unsigned_integer_decoder(block.getBits()));
+			setWaveDirection(parseUINT(block.getBits()));
 			break;
 		case 295:
-			setSwellHeight(unsigned_float_decoder(block.getBits()));
+			setSwellHeight(parseUFLOAT(block.getBits()));
 			break;
 		case 303:
-			setSwellPeriod(unsigned_integer_decoder(block.getBits()));
+			setSwellPeriod(parseUINT(block.getBits()));
 			break;
 		case 309:
-			setSwellDirection(unsigned_integer_decoder(block.getBits()));
+			setSwellDirection(parseUINT(block.getBits()));
 			break;
 		case 318:
-			setSeaState(unsigned_integer_decoder(block.getBits()));
+			setSeaState(parseUINT(block.getBits()));
 			break;
 		case 322:
-			setWaterTemperature(unsigned_float_decoder(block.getBits()));
+			setWaterTemperature(parseUFLOAT(block.getBits()));
 			break;
 		case 332:
-			setPrecipitationType(unsigned_integer_decoder(block.getBits()));
+			setPrecipitationType(parseUINT(block.getBits()));
 			break;
 		case 335:
-			setSalinity(unsigned_float_decoder(block.getBits()));
+			setSalinity(parseUFLOAT(block.getBits()));
 			break;
 		case 344:
-			setIce(unsigned_integer_decoder(block.getBits()));
+			setIce(parseUINT(block.getBits()));
 			break;
 		}
 	}

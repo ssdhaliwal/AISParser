@@ -33,16 +33,16 @@ public class VesselDimensions extends AISMessage {
 
 		switch (block.getStart()) {
 		case 0:
-			setToBow(unsigned_integer_decoder(block.getBits()));
+			setToBow(parseUINT(block.getBits()));
 			break;
 		case 9:
-			setToStern(unsigned_integer_decoder(block.getBits()));
+			setToStern(parseUINT(block.getBits()));
 			break;
 		case 18:
-			setToPort(unsigned_integer_decoder(block.getBits()));
+			setToPort(parseUINT(block.getBits()));
 			break;
 		case 24:
-			setToStarboard(unsigned_integer_decoder(block.getBits()));
+			setToStarboard(parseUINT(block.getBits()));
 			break;
 		}
 	}

@@ -112,7 +112,7 @@ public class SentenceTagBlock {
 		StringBuilder buffer = new StringBuilder();
 
 		buffer.append("{");
-		buffer.append("\"time\": \"" + AISBase.getFormattedDate(getTime()) + "\"");
+		buffer.append("\"time\": \"" + AISBase.formatEPOCHToUTC(getTime()) + "\"");
 		buffer.append(", \"destination\": \"" + getDestination() + "\"");
 		buffer.append(", \"group\": " + getSentenceGroup());
 		buffer.append(", \"lineCount\": " + getLinecount());

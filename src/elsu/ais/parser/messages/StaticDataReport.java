@@ -31,16 +31,16 @@ public class StaticDataReport extends AISMessage {
 
 		switch (block.getStart()) {
 		case 0:
-			setType(unsigned_integer_decoder(block.getBits()));
+			setType(parseUINT(block.getBits()));
 			break;
 		case 6:
-			setRepeat(unsigned_integer_decoder(block.getBits()));
+			setRepeat(parseUINT(block.getBits()));
 			break;
 		case 8:
-			setMmsi(unsigned_integer_decoder(block.getBits()));
+			setMmsi(parseUINT(block.getBits()));
 			break;
 		case 38:
-			setPartno(unsigned_integer_decoder(block.getBits()));
+			setPartNumber(parseUINT(block.getBits()));
 			break;
 		}
 	}
@@ -49,7 +49,7 @@ public class StaticDataReport extends AISMessage {
 		this.type = message.getType();
 		this.repeat = message.getRepeat();
 		this.mmsi = message.getMmsi();
-		this.partno = message.getPartno();
+		this.partNumber = message.getPartNumber();
 	}
 
 	@Override
@@ -62,7 +62,7 @@ public class StaticDataReport extends AISMessage {
 		buffer.append(", \"repeat\":" + getRepeat());
 		buffer.append(", \"mmsi\":" + getMmsi());
 		buffer.append(", \"auxiliary\":" + isAuxiliary());
-		buffer.append(", \"partno\":" + getPartno());
+		buffer.append(", \"partNumber\":" + getPartNumber());
 		buffer.append("}");
 
 		return buffer.toString();
@@ -93,12 +93,12 @@ public class StaticDataReport extends AISMessage {
 		this.setAuxilizary();
 	}
 
-	public int getPartno() {
-		return partno;
+	public int getPartNumber() {
+		return partNumber;
 	}
 
-	public void setPartno(int partno) {
-		this.partno = partno;
+	public void setPartNumber(int partNumber) {
+		this.partNumber = partNumber;
 	}
 
 	public boolean isAuxiliary() {
@@ -114,6 +114,6 @@ public class StaticDataReport extends AISMessage {
 	private int type = 0;
 	private int repeat = 0;
 	private int mmsi = 0;
-	private int partno = 0;
+	private int partNumber = 0;
 	private boolean auxiliary = false;
 }
