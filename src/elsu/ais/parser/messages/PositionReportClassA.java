@@ -61,7 +61,7 @@ public class PositionReportClassA extends AISMessage {
 			setStatus(unsigned_integer_decoder(block.getBits()));
 			break;
 		case 42:
-			setTurn(integer_decoder(block.getBits()));
+			setRateOfTurn(integer_decoder(block.getBits()));
 			break;
 		case 50:
 			setSpeed(unsigned_float_decoder(block.getBits()) / 10f);
@@ -109,7 +109,7 @@ public class PositionReportClassA extends AISMessage {
 		buffer.append(", \"mmsi\":" + getMmsi());
 		buffer.append(", \"status\":" + getStatus());
 		buffer.append(", \"statusText\":\"" + LookupValues.getNavigationStatus(getStatus()) + "\"");
-		buffer.append(", \"turn\":" + getTurn());
+		buffer.append(", \"rateOfTurn\":" + getRateOfTurn());
 		buffer.append(", \"speed\":" + getSpeed());
 		buffer.append(", \"accuracy\":" + isAccuracy());
 		buffer.append(", \"longitude\":" + getLongitude());
@@ -164,12 +164,24 @@ public class PositionReportClassA extends AISMessage {
 		this.status = status;
 	}
 
-	public int getTurn() {
-		return turn;
+	public double getRateOfTurn() {
+		return rateOfTurn;
 	}
 
-	public void setTurn(int turn) {
-		this.turn = turn;
+	public void setRateOfTurn(int turnRate) {
+		double rateOfTurn = 0;
+
+		if ((turnRate == -128) || (turnRate == -128) || (turnRate == -128)) {
+			rateOfTurn = turnRate;
+		} else {
+			if (turnRate < 0) {
+				rateOfTurn = -1 * Math.sqrt((-1 * turnRate) / 4.733);
+			} else {
+				rateOfTurn = Math.sqrt(turnRate / 4.733);
+			}
+		}
+		
+		this.rateOfTurn = rateOfTurn;
 	}
 
 	public float getSpeed() {
@@ -264,7 +276,7 @@ public class PositionReportClassA extends AISMessage {
 	private int repeat = 0;
 	private int mmsi = 0;
 	private int status = 0;
-	private int turn = 0;
+	private double rateOfTurn = 0;
 	private float speed = 0.0f;
 	private boolean accuracy = false;
 	private float longitude = 0f;
