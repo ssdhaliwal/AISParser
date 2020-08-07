@@ -69,6 +69,10 @@ public class Type6_InternationalFunctionalMessage0 extends AddressedBinaryMessag
 		return buffer.toString();
 	}
 
+	public String getFunctionalName() {
+		return "Type6/InternationalFunctionalMessage0";
+	}
+
 	public int getAcknowledge() {
 		return acknowledge;
 	}

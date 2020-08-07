@@ -126,11 +126,11 @@ public abstract class AISBase {
 		// 2's complement for negative numbers
 		if (bits.substring(0, 1).equals("1")) {
 			StringBuilder buffer = new StringBuilder(bits.substring(1));
-			for (int i = 1; i < bits.length(); i++) {
+			for (int i = 1; i < bits.length() - 1; i++) {
 				if (bits.charAt(i) == '0') {
-					buffer.setCharAt(i, '1');
+					buffer.setCharAt(i - 1, '1');
 				} else {
-					buffer.setCharAt(i, '0');
+					buffer.setCharAt(i - 1, '0');
 				}
 			}
 

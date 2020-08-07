@@ -65,6 +65,10 @@ public class Type6_InternationalFunctionalMessage2 extends AddressedBinaryMessag
 		return buffer.toString();
 	}
 
+	public String getFunctionalName() {
+		return "Type6/InternationalFunctionalMessage2";
+	}
+
 	public int getRequestedDAC() {
 		return requestedDAC;
 	}

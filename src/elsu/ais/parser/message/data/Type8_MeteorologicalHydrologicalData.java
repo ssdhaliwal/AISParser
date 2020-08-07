@@ -220,6 +220,7 @@ public class Type8_MeteorologicalHydrologicalData extends BinaryBroadCastMessage
 		buffer.append("{");
 		buffer.append("\"type\":" + getType());
 		buffer.append(", \"typeText\":\"" + LookupValues.getMessageType(getType()) + "\"");
+		buffer.append(", \"functionalName\":\"" + getFunctionalName() + "\"");
 		buffer.append(", \"repeat\":" + getRepeat());
 		buffer.append(", \"mmsi\":" + getMmsi());
 		buffer.append(", \"dac\":" + getDac());
@@ -267,6 +268,10 @@ public class Type8_MeteorologicalHydrologicalData extends BinaryBroadCastMessage
 		return buffer.toString();
 	}
 
+	public String getFunctionalName() {
+		return "Type8/MeteorologicalHydrologicalData";
+	}
+	
 	public float getLatitude() {
 		return latitude;
 	}

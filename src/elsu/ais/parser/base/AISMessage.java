@@ -151,6 +151,8 @@ public abstract class AISMessage extends AISBase {
 				}
 			} catch (IndexOutOfBoundsException iobe) {
 				exception = true;
+			} catch (NumberFormatException nfe) {
+				exception = true;
 			}
 			
 			block.setException(exception);

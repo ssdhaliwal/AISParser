@@ -171,7 +171,7 @@ public class PositionReportClassA extends AISMessage {
 	public void setRateOfTurn(int turnRate) {
 		double rateOfTurn = 0;
 
-		if ((turnRate == -128) || (turnRate == -128) || (turnRate == -128)) {
+		if ((turnRate == 127) || (turnRate == -127) || (turnRate == -128)) {
 			rateOfTurn = turnRate;
 		} else {
 			if (turnRate < 0) {

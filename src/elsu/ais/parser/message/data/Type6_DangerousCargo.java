@@ -131,6 +131,10 @@ public class Type6_DangerousCargo extends AddressedBinaryMessage {
 		return buffer.toString();
 	}
 
+	public String getFunctionalName() {
+		return "Type6/DangerousCargoIndication";
+	}
+
 	public String getLastPortOfCall() {
 		return lastPortOfCall;
 	}
