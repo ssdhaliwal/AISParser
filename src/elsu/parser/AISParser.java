@@ -3,7 +3,7 @@ package elsu.parser;
 import java.io.*;
 import java.util.*;
 
-import elsu.ais.base.IEventListener;
+import elsu.base.IEventListener;
 import elsu.common.*;
 import elsu.sentence.SentenceFactory;
 import elsu.sentence.SentenceBase;
@@ -58,9 +58,9 @@ public class AISParser implements IEventListener {
 	public void onError(Exception ex, Object o, String message) {
 		try {
 			if (SentenceBase.logLevel >= 1) {
-				System.out.println("error, " + ex.getMessage() + ", " + o + ", " + message);
+				System.out.println("error, " + ex.getMessage() + ", " + o);
 			}
-			result.add("error, " + ex.getMessage() + ", " + o + ", " + message);
+			result.add("error, " + ex.getMessage() + ", " + o);
 		} catch (Exception exi) {
 			System.out.println("message error notification exception; " + message);
 		}

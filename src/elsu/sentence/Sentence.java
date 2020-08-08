@@ -2,10 +2,10 @@ package elsu.sentence;
 
 import java.util.ArrayList;
 
-import elsu.ais.base.AISMessage;
+import elsu.ais.base.AISLookupValues;
+import elsu.ais.base.AISMessageBase;
 import elsu.ais.exceptions.IncompleteFragmentException;
-import elsu.ais.resources.LookupValues;
-import elsu.nmea.messages.VSISignalInformation;
+import elsu.nmea.messages.NMEAMessage;
 import elsu.sentence.tags.SentenceTagBlock;
 
 public class Sentence extends SentenceBase {
@@ -156,7 +156,7 @@ public class Sentence extends SentenceBase {
 			setBitString();
 
 			setType();
-			AISMessage.fromSentence(this);
+			AISMessageBase.fromSentence(this);
 		}
 
 		setValid(true);
@@ -192,9 +192,10 @@ public class Sentence extends SentenceBase {
 		result.append(", \"checksum\": \"" + getChecksum() + "\"");
 		result.append(", \"checksumError\": " + isChecksumError());
 		result.append(", \"type\":" + getType());
-		result.append(", \"typeText\":\"" + LookupValues.getMessageType(getType())  + "\"");
+		result.append(", \"typeText\":\"" + AISLookupValues.getMessageType(getType())  + "\"");
 		result.append(", \"aisMessage\": " + getAISMessage());
 		result.append(", \"tagBlock\": " + getTagBlock());
+		result.append(", \"tsaInfo\": " + getTSAInfo());
 		result.append(", \"vdlInfo\": " + getVDLInfo());
 		if (SentenceBase.logLevel >= 2) {
 			result.append(", \"bitString\": \"" + getBitString() + "\"");
@@ -324,11 +325,11 @@ public class Sentence extends SentenceBase {
 		this.type = SentenceBase.parseUINT(this.bitString.substring(0, 6));
 	}
 
-	public AISMessage getAISMessage() {
+	public AISMessageBase getAISMessage() {
 		return this.aisMessage;
 	}
 
-	public void setAISMessage(AISMessage message) {
+	public void setAISMessage(AISMessageBase message) {
 		this.aisMessage = message;
 	}
 
@@ -340,11 +341,19 @@ public class Sentence extends SentenceBase {
 		this.tagBlock = tagBlock;
 	}
 
-	public VSISignalInformation getVDLInfo() {
+	public NMEAMessage getTSAInfo() {
+		return this.tsaInfo;
+	}
+
+	public void setTSAInfo(NMEAMessage tsaInfo) {
+		this.tsaInfo = tsaInfo;
+	}
+
+	public NMEAMessage getVDLInfo() {
 		return this.vdlInfo;
 	}
 
-	public void setVDLInfo(VSISignalInformation vdlInfo) {
+	public void setVDLInfo(NMEAMessage vdlInfo) {
 		this.vdlInfo = vdlInfo;
 	}
 
@@ -375,6 +384,7 @@ public class Sentence extends SentenceBase {
 	private int type = 0;
 
 	private SentenceTagBlock tagBlock = null;
-	private VSISignalInformation vdlInfo = null;
-	private AISMessage aisMessage = null;
+	private NMEAMessage tsaInfo = null;
+	private NMEAMessage vdlInfo = null;
+	private AISMessageBase aisMessage = null;
 }

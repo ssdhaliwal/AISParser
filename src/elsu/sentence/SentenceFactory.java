@@ -3,11 +3,11 @@ package elsu.sentence;
 import java.util.Set;
 import java.util.concurrent.CopyOnWriteArraySet;
 import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
-import elsu.ais.base.IEventListener;
 import elsu.ais.exceptions.IncompleteFragmentException;
-import elsu.nmea.messages.VSISignalInformation;
+import elsu.base.IEventListener;
+import elsu.nmea.messages.NMEAMessage;
+//import elsu.nmea.messages.VSISignalInformation;
 import elsu.sentence.tags.SentenceTagBlock;
 
 public class SentenceFactory {
@@ -44,16 +44,21 @@ public class SentenceFactory {
 		}
 
 		// if non-supported sentence format; return error
-		if (!SentenceBase.supportedFormatsPattern.matcher(message).matches()) {
+		if (!SentenceBase.supportedTAGFormatsPattern.matcher(message).matches()
+				&& !SentenceBase.supportedNMEAFormatsPattern.matcher(message).matches()) {
 			throw new Exception("unsupported format; " + message);
+		}
+		
+		if (SentenceBase.supportedNMEAFormatsPattern.matcher(message).matches()) {
+		
 		}
 
 		// if message has no tag blocks
 		if (tagBlock == null) {
-			if (SentenceBase.messageVSIShortPattern.matcher(message).matches()) {
+			if (SentenceBase.messageVSIPattern.matcher(message).matches()) {
 				if (lastSentence != null) {
-					VSISignalInformation vsi = VSISignalInformation.fromString(message);
-					lastSentence.setVDLInfo(vsi);
+					NMEAMessage nmeaMessage = NMEAMessage.fromString(message);
+					lastSentence.setVDLInfo(nmeaMessage);
 
 					notifyUpdate(lastSentence);
 					return;
@@ -134,8 +139,8 @@ public class SentenceFactory {
 					throw new Exception("$..VSI messages with no VDO/VDM");
 				}
 
-				VSISignalInformation vsi = VSISignalInformation.fromString(tags);
-				sentence.setVDLInfo(vsi);
+				NMEAMessage nmeaMessage = NMEAMessage.fromString(message);
+				lastSentence.setVDLInfo(nmeaMessage);
 			}
 
 			// -- send complete
@@ -150,6 +155,7 @@ public class SentenceFactory {
 		// clear the existing sentence
 		sentence = null;
 		tagBlock = null;
+		tsaInfo = null;
 		vdlInfo = null;
 	}
 
@@ -196,14 +202,19 @@ public class SentenceFactory {
 		this.tagBlock = tagBlock;
 	}
 
-	public VSISignalInformation getVDLInfo() {
+	public NMEAMessage getTSAInfo() {
+		return this.tsaInfo;
+	}
+
+	public NMEAMessage getVDLInfo() {
 		return this.vdlInfo;
 	}
 
 	private Sentence lastSentence = null;
 	private Sentence sentence = null;
 	private SentenceTagBlock tagBlock = null;
-	private VSISignalInformation vdlInfo = null;
+	private NMEAMessage tsaInfo = null;
+	private NMEAMessage vdlInfo = null;
 
 	private final Set<IEventListener> listeners = new CopyOnWriteArraySet<>();
 }

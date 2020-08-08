@@ -7,7 +7,7 @@ import java.util.HashMap;
 import java.util.TimeZone;
 import java.util.regex.Pattern;
 
-import elsu.ais.resources.PayloadBlock;
+import elsu.ais.base.AISPayloadBlock;
 
 public abstract class SentenceBase {
 
@@ -56,15 +56,19 @@ public abstract class SentenceBase {
 			"\"", "#", "$", "%", "&", "'", "(", ")", "*", "+", ",", "-", ".", "/", "0", "1", "2", "3", "4", "5", "6",
 			"7", "8", "9", ":", ";", "<", "=", ">", "?" };
 
-	public static final String supportedFormatsRegex = ".*((!..VDO)|(!..VDM)|(\\$..VSI)).*";
-	public static final Pattern supportedFormatsPattern = Pattern.compile(supportedFormatsRegex);;
+	public static final String supportedNMEAFormatsRegex = ".*(([$!]..ABK)|([$!]..ACA)|([\\$!]..ACF)|([\\$!]..ACG)|([\\$!]..ACM)|([\\$!]..ACS)|([\\$!]..AFB)|([\\$!]..AGA)|([\\$!]..AID)|([\\$!]..AIR)|([\\$!]..ASN)" +
+		"|([\\$!]..BCG)|([\\$!]..BCL)|([\\$!]..CBR)|([\\$!]..DLM)|([\\$!]..ECB)|([\\$!]..FSR)|([\\$!]..LRF)|([\\$!]..LRI)|([\\$!]..LR1)|([\\$!]..LR2)|([\\$!]..LR3)" + 
+		"|([\\$!]..SPO)|([\\$!]..SSD)|([\\$!]..TFR)|([\\$!]..TPC)|([\\$!]..TSP)|([\\$!]..TSR)|([\\$!]..VSD)).*";
+	public static final Pattern supportedNMEAFormatsPattern = Pattern.compile(supportedNMEAFormatsRegex);;
+	public static final String supportedTAGFormatsRegex = ".*(([$!]..VDO)|([$!]..VDM)|([\\$!]..TSA)|([\\$!]..VSI)).*";
+	public static final Pattern supportedTAGFormatsPattern = Pattern.compile(supportedTAGFormatsRegex);;
 	public static final String headerRegex = "\\\\.*\\\\";
 	public static final Pattern headerPattern = Pattern.compile(headerRegex);
-	public static final String messageVDORegex = "!..VD[OM]\\,\\d+\\,\\d+,\\d*,[12AB]\\,[0-9:;<=>?@A-W`a-w]{1,}\\,[0-9]\\*[0-9a-zA-Z]{2}$";
+	public static final String messageVDORegex = "[\\$!]..VD[OM]\\,\\d+\\,\\d+,\\d*,[12AB]\\,[0-9:;<=>?@A-W`a-w]{1,}\\,[0-9]\\*[0-9a-zA-Z]{2}$";
 	public static final Pattern messageVDOPattern = Pattern.compile(messageVDORegex);
-	public static final String messageVSIShortRegex = "^\\$..VSI.*";
-	public static final Pattern messageVSIShortPattern = Pattern.compile(messageVSIShortRegex);
-	public static final String messageVSIRegex = "\\$..VSI\\,(\\w+(-\\w+)*)\\,\\d+\\,\\d*\\.?\\d*\\,\\d+\\,[-+]?\\d*\\.?\\d*\\,\\d+\\*[0-9a-zA-Z]{2}";
+	public static final String messageTSARegex = "^[\\$!]..TSA\\,.*\\*[0-9a-zA-Z]{2}$";
+	public static final Pattern messageTSAPattern = Pattern.compile(messageTSARegex);
+	public static final String messageVSIRegex = "^[\\$!]..VSI\\,.*\\*[0-9a-zA-Z]{2}$";
 	public static final Pattern messageVSIPattern = Pattern.compile(messageVSIRegex);
 
 	public static String decodeMessage(String message) {
