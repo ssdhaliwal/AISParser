@@ -4,7 +4,6 @@ import elsu.ais.base.AISLookupValues;
 import elsu.ais.base.AISMessageBase;
 import elsu.ais.base.AISPayloadBlock;
 import elsu.ais.messages.data.CommunicationState;
-import elsu.sentence.SentenceBase;
 
 public class T1_PositionReportClassA extends AISMessageBase {
 

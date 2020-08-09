@@ -236,7 +236,7 @@ public class T26_MultipleSlotBinaryMessage extends AISMessageBase {
 	}
 
 	public String getDataRaw() {
-		return data;
+		return dataRaw;
 	}
 
 	public void setData(String bits) {

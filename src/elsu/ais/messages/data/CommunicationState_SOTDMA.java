@@ -2,7 +2,6 @@ package elsu.ais.messages.data;
 
 import java.util.ArrayList;
 
-import elsu.ais.base.AISLookupValues;
 import elsu.ais.base.AISPayloadBlock;
 import elsu.sentence.Sentence;
 

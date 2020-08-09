@@ -1,7 +1,5 @@
 package elsu.ais.messages.data;
 
-import java.util.ArrayList;
-
 import elsu.ais.base.AISMessageBase;
 import elsu.ais.base.AISPayloadBlock;
 

@@ -215,7 +215,7 @@ public class T25_SingleSlotBinaryMessage extends AISMessageBase {
 	}
 
 	public String getDataRaw() {
-		return data;
+		return dataRaw;
 	}
 
 	public void setData(String bits) {

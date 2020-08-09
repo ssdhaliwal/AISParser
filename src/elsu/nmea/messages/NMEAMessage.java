@@ -55,7 +55,8 @@ public class NMEAMessage {
 			throw new Exception("invalid nmea messageType; " + params[0]);
 		}
 		
-		for(int i = 1; i <= definitions.size(); i++) {
+		setAttributes("typeName", definitions.get(0));
+		for(int i = 1; i < definitions.size(); i++) {
 			setAttributes(definitions.get(i), params[i]);
 		}
 	};

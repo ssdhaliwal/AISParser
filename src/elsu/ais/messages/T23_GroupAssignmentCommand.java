@@ -3,7 +3,6 @@ package elsu.ais.messages;
 import elsu.ais.base.AISLookupValues;
 import elsu.ais.base.AISMessageBase;
 import elsu.ais.base.AISPayloadBlock;
-import elsu.sentence.SentenceBase;
 
 public class T23_GroupAssignmentCommand extends AISMessageBase {
 

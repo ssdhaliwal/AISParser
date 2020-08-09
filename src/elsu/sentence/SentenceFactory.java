@@ -50,26 +50,39 @@ public class SentenceFactory {
 		}
 		
 		if (SentenceBase.supportedNMEAFormatsPattern.matcher(message).matches()) {
-		
+			NMEAMessage nmea = NMEAMessage.fromString(message);
+			notifyComplete(nmea);
+			return;
 		}
 
-		// if message has no tag blocks
+		// if message has no tag blocks (TSA preceeds VDO/VDM, VSI follows VDO/VDM)
 		if (tagBlock == null) {
-			if (SentenceBase.messageVSIPattern.matcher(message).matches()) {
-				if (lastSentence != null) {
-					NMEAMessage nmeaMessage = NMEAMessage.fromString(message);
-					lastSentence.setVDLInfo(nmeaMessage);
-
-					notifyUpdate(lastSentence);
-					return;
-				} else {
-					throw new Exception("$..VSI messages with no VDO/VDM");
+			if (SentenceBase.messageTSAPattern.matcher(message).matches()) {
+				if ((tsaInfo != null) || (sentence != null)) {
+					notifyError(new Exception("$..TSA message with no VDO/VDM"), tsaInfo, null);
 				}
+				
+				tsaInfo = NMEAMessage.fromString(message);
+				return;
 			}
 
-			if (sentence != null) {
-				if (sentence.isComplete() && sentence.isValid()) {
-					notifyComplete(sentence);
+			if (SentenceBase.messageVSIPattern.matcher(message).matches()) {
+				if (sentence != null) {
+					NMEAMessage nmeaMessage = NMEAMessage.fromString(message);
+					sentence.setVSIInfo(nmeaMessage);
+
+					if (sentence.isComplete() && sentence.isValid()) {
+						notifyUpdate(sentence);
+					} else {
+						notifyError(new Exception("incomplete message"), sentence, message);
+					}
+					
+					sentence = null;
+					tsaInfo = null;
+					vsiInfo = null;
+					return;
+				} else {
+					throw new Exception("$..VSI message with no VDO/VDM");
 				}
 			}
 
@@ -80,7 +93,14 @@ public class SentenceFactory {
 					sentence = Sentence.appendString(message, sentence);
 				} catch (IncompleteFragmentException ife) {
 					notifyError(ife, sentence, message);
+					
+					sentence = Sentence.fromString(message);
 				}
+			}
+			
+			// link TSA to the sentence
+			if (sentence != null) {
+				sentence.setTSAInfo(tsaInfo);
 			}
 
 			if (sentence.isComplete() && sentence.isValid()) {
@@ -113,11 +133,14 @@ public class SentenceFactory {
 			}
 
 			// see if there is a message as part of the tag
+			Boolean processed = false;
+			
 			// -- extract message and process it
 			hMatch = SentenceBase.messageVDOPattern.matcher(message);
 			while (hMatch.find()) {
 				tags = hMatch.group(0);
-
+				processed = true;
+				
 				if (sentence == null) {
 					sentence = Sentence.fromString(tags);
 				} else {
@@ -131,16 +154,34 @@ public class SentenceFactory {
 				sentence.setTagBlock(tagBlock);
 			}
 
-			hMatch = SentenceBase.messageVSIPattern.matcher(message);
-			while (hMatch.find()) {
-				tags = hMatch.group(0);
-
-				if (sentence == null) {
-					throw new Exception("$..VSI messages with no VDO/VDM");
+			if (!processed) {
+				hMatch = SentenceBase.messageVSIPattern.matcher(message);
+				while (hMatch.find()) {
+					tags = hMatch.group(0);
+					processed = true;
+					
+					if (sentence == null) {
+						throw new Exception("$..VSI message with no VDO/VDM");
+					}
+	
+					vsiInfo = NMEAMessage.fromString(tags);
+					sentence.setVSIInfo(vsiInfo);
 				}
+			}
 
-				NMEAMessage nmeaMessage = NMEAMessage.fromString(message);
-				lastSentence.setVDLInfo(nmeaMessage);
+			if (!processed) {
+				hMatch = SentenceBase.messageTSAPattern.matcher(message);
+				while (hMatch.find()) {
+					tags = hMatch.group(0);
+					processed = true;
+	
+					if (sentence == null) {
+						throw new Exception("$..TSA message with no VDO/VDM");
+					}
+	
+					tsaInfo = NMEAMessage.fromString(tags);
+					sentence.setTSAInfo(tsaInfo);
+				}
 			}
 
 			// -- send complete
@@ -149,14 +190,6 @@ public class SentenceFactory {
 				notifyComplete(sentence);
 			}
 		}
-	}
-
-	private void doCleanup() {
-		// clear the existing sentence
-		sentence = null;
-		tagBlock = null;
-		tsaInfo = null;
-		vdlInfo = null;
 	}
 
 	public void addEventListener(IEventListener listener) {
@@ -171,27 +204,18 @@ public class SentenceFactory {
 		for (IEventListener listener : listeners) {
 			listener.onError(ex, o, message);
 		}
-
-		this.doCleanup();
 	}
 
 	public void notifyComplete(Object o) {
 		for (IEventListener listener : listeners) {
 			listener.onComplete(o);
 		}
-
-		lastSentence = sentence;
-		this.doCleanup();
 	}
 
 	public void notifyUpdate(Object o) {
 		for (IEventListener listener : listeners) {
 			listener.onUpdate(o);
 		}
-
-		// clear the existing sentence
-		lastSentence = null;
-		sentence = null;
 	}
 
 	public SentenceTagBlock getTagBlock() {
@@ -206,15 +230,10 @@ public class SentenceFactory {
 		return this.tsaInfo;
 	}
 
-	public NMEAMessage getVDLInfo() {
-		return this.vdlInfo;
-	}
-
-	private Sentence lastSentence = null;
 	private Sentence sentence = null;
 	private SentenceTagBlock tagBlock = null;
 	private NMEAMessage tsaInfo = null;
-	private NMEAMessage vdlInfo = null;
+	private NMEAMessage vsiInfo = null;
 
 	private final Set<IEventListener> listeners = new CopyOnWriteArraySet<>();
 }

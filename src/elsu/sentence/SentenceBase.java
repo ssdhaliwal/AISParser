@@ -1,13 +1,9 @@
 package elsu.sentence;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.TimeZone;
 import java.util.regex.Pattern;
-
-import elsu.ais.base.AISPayloadBlock;
 
 public abstract class SentenceBase {
 
@@ -66,9 +62,9 @@ public abstract class SentenceBase {
 	public static final Pattern headerPattern = Pattern.compile(headerRegex);
 	public static final String messageVDORegex = "[\\$!]..VD[OM]\\,\\d+\\,\\d+,\\d*,[12AB]\\,[0-9:;<=>?@A-W`a-w]{1,}\\,[0-9]\\*[0-9a-zA-Z]{2}$";
 	public static final Pattern messageVDOPattern = Pattern.compile(messageVDORegex);
-	public static final String messageTSARegex = "^[\\$!]..TSA\\,.*\\*[0-9a-zA-Z]{2}$";
+	public static final String messageTSARegex = "[\\$!]..TSA\\,.*\\*[0-9a-zA-Z]{2}$";
 	public static final Pattern messageTSAPattern = Pattern.compile(messageTSARegex);
-	public static final String messageVSIRegex = "^[\\$!]..VSI\\,.*\\*[0-9a-zA-Z]{2}$";
+	public static final String messageVSIRegex = "[\\$!]..VSI\\,.*\\*[0-9a-zA-Z]{2}$";
 	public static final Pattern messageVSIPattern = Pattern.compile(messageVSIRegex);
 
 	public static String decodeMessage(String message) {

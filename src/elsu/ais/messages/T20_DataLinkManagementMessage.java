@@ -3,8 +3,6 @@ package elsu.ais.messages;
 import elsu.ais.base.AISLookupValues;
 import elsu.ais.base.AISMessageBase;
 import elsu.ais.base.AISPayloadBlock;
-import elsu.ais.messages.data.GNSSMessage;
-import elsu.sentence.SentenceBase;
 
 public class T20_DataLinkManagementMessage extends AISMessageBase {
 

@@ -1,7 +1,5 @@
 package elsu.sentence.tags;
 
-import java.util.Date;
-
 import elsu.sentence.SentenceBase;
 
 public class SentenceTagBlock {

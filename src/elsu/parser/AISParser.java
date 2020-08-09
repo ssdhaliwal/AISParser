@@ -10,7 +10,7 @@ import elsu.sentence.SentenceBase;
 import elsu.support.*;
 
 public class AISParser implements IEventListener {
-	ArrayList<String> result = new ArrayList();
+	ArrayList<String> result = new ArrayList<String>();
 
 	public AISParser() {
 		getSentenceFactory().addEventListener(this);
@@ -58,9 +58,9 @@ public class AISParser implements IEventListener {
 	public void onError(Exception ex, Object o, String message) {
 		try {
 			if (SentenceBase.logLevel >= 1) {
-				System.out.println("error, " + ex.getMessage() + ", " + o);
+				System.out.println("error, " + ex.getMessage() + ", " + o + ", " + message);
 			}
-			result.add("error, " + ex.getMessage() + ", " + o);
+			result.add(ex.getMessage() + ", " + o + ", " + message);
 		} catch (Exception exi) {
 			System.out.println("message error notification exception; " + message);
 		}
@@ -72,7 +72,7 @@ public class AISParser implements IEventListener {
 			if (SentenceBase.logLevel >= 2) {
 				System.out.println("complete, " + o);
 			}
-			result.add("complete, " + o);
+			result.add(o.toString());
 		} catch (Exception exi) {
 			System.out.println("message complete notification exception; ");
 		}
@@ -84,7 +84,7 @@ public class AISParser implements IEventListener {
 			if (SentenceBase.logLevel >= 2) {
 				System.out.println("update, " + o);
 			}
-			result.add("update, " + o);
+			result.add(o.toString());
 		} catch (Exception exi) {
 			System.out.println("message update notification exception; ");
 		}

@@ -32,7 +32,7 @@ public class Sentence extends SentenceBase {
 	private void validateMessage(String message) throws Exception {
 		// validate single or multiple messages
 		String[] params = message.split(",");
-		boolean valid = false, complete = false;
+		boolean complete = false;
 		String protocol = "", radioChannelCode = "", payload = "";
 		int fragments = 0, fragmentNumber = 0, sequenceNumber = 0, checksum = 0;
 
@@ -64,7 +64,6 @@ public class Sentence extends SentenceBase {
 			protocol = !params[1].isEmpty() ? params[0].replaceAll("[\\!\\$]", "") : "";
 
 			if ((protocol == null) || (protocol.length() != 5)) {
-				valid = false;
 				throw new Exception("message type is invalid; length < 5; " + message);
 			}
 
@@ -196,7 +195,7 @@ public class Sentence extends SentenceBase {
 		result.append(", \"aisMessage\": " + getAISMessage());
 		result.append(", \"tagBlock\": " + getTagBlock());
 		result.append(", \"tsaInfo\": " + getTSAInfo());
-		result.append(", \"vdlInfo\": " + getVDLInfo());
+		result.append(", \"vsiInfo\": " + getVSIInfo());
 		if (SentenceBase.logLevel >= 2) {
 			result.append(", \"bitString\": \"" + getBitString() + "\"");
 		}
@@ -349,12 +348,12 @@ public class Sentence extends SentenceBase {
 		this.tsaInfo = tsaInfo;
 	}
 
-	public NMEAMessage getVDLInfo() {
-		return this.vdlInfo;
+	public NMEAMessage getVSIInfo() {
+		return this.vsiInfo;
 	}
 
-	public void setVDLInfo(NMEAMessage vdlInfo) {
-		this.vdlInfo = vdlInfo;
+	public void setVSIInfo(NMEAMessage vsiInfo) {
+		this.vsiInfo = vsiInfo;
 	}
 
 	public boolean isChecksumError() {
@@ -385,6 +384,6 @@ public class Sentence extends SentenceBase {
 
 	private SentenceTagBlock tagBlock = null;
 	private NMEAMessage tsaInfo = null;
-	private NMEAMessage vdlInfo = null;
+	private NMEAMessage vsiInfo = null;
 	private AISMessageBase aisMessage = null;
 }

@@ -1,7 +1,5 @@
 package elsu.ais.messages.data;
 
-import elsu.ais.base.AISLookupValues;
-
 public class T6_TidalWindow_Tidals {
 
 	public T6_TidalWindow_Tidals() {

@@ -3,6 +3,7 @@ package elsu.ais.messages;
 import elsu.ais.base.AISLookupValues;
 import elsu.ais.base.AISMessageBase;
 import elsu.ais.base.AISPayloadBlock;
+import elsu.ais.messages.data.VesselDimensions;
 
 public class T21_AidToNavigationReport extends AISMessageBase {
 
@@ -26,10 +27,7 @@ public class T21_AidToNavigationReport extends AISMessageBase {
 		getMessageBlocks().add(new AISPayloadBlock(163, 163, 1, "Position Accuracy", "accuracy", "b", "As in CNB"));
 		getMessageBlocks().add(new AISPayloadBlock(164, 191, 28, "Longitude", "lon", "I4", "Minutes/10000 (as in CNB)"));
 		getMessageBlocks().add(new AISPayloadBlock(192, 218, 27, "Latitude", "lat", "I4", "Minutes/10000 (as in CNB)"));
-		getMessageBlocks().add(new AISPayloadBlock(219, 227, 9, "Dimension to Bow", "to_bow", "u", "Meters"));
-		getMessageBlocks().add(new AISPayloadBlock(228, 236, 9, "Dimension to Stern", "to_stern", "u", "Meters"));
-		getMessageBlocks().add(new AISPayloadBlock(237, 242, 6, "Dimension to Port", "to_port", "u", "Meters"));
-		getMessageBlocks().add(new AISPayloadBlock(243, 248, 6, "Dimension to Starboard", "to_starboard", "u", "Meters"));
+		getMessageBlocks().add(new AISPayloadBlock(219, 227, 30, "Vessel Dimensions", "dimension", "u", "Meters"));
 		getMessageBlocks().add(new AISPayloadBlock(249, 252, 4, "Type of EPFD", "epfd", "e", "As in Message Type 4"));
 		getMessageBlocks().add(new AISPayloadBlock(253, 258, 6, "UTC second", "second", "u", "As in Message Types 1-3"));
 		getMessageBlocks()
@@ -74,16 +72,7 @@ public class T21_AidToNavigationReport extends AISMessageBase {
 			setLatitude(parseFLOAT(block.getBits()) / 600000f);
 			break;
 		case 219:
-			setToBow(parseUINT(block.getBits()));
-			break;
-		case 228:
-			setToStern(parseUINT(block.getBits()));
-			break;
-		case 237:
-			setToPort(parseUINT(block.getBits()));
-			break;
-		case 243:
-			setToStarboard(parseUINT(block.getBits()));
+			setDimension(block.getBits());
 			break;
 		case 249:
 			setEpfd(parseUINT(block.getBits()));
@@ -127,10 +116,7 @@ public class T21_AidToNavigationReport extends AISMessageBase {
 		buffer.append(", \"accuracy\":" + isAccuracy());
 		buffer.append(", \"longitude\":" + getLongitude());
 		buffer.append(", \"latitude\":" + getLatitude());
-		buffer.append(", \"to_bow\":" + getToBow());
-		buffer.append(", \"to_stern\":" + getToStern());
-		buffer.append(", \"to_port\":" + getToPort());
-		buffer.append(", \"to_starboard\":" + getToStarboard());
+		buffer.append(", \"dimension\":" + getDimension());
 		buffer.append(", \"epfd\":" + getEpfd());
 		buffer.append(", \"epfdText\":\"" + AISLookupValues.getEPFDFixType(getEpfd()) + "\"");
 		buffer.append(", \"second\":" + getSecond());
@@ -208,36 +194,14 @@ public class T21_AidToNavigationReport extends AISMessageBase {
 		this.latitude = latitude;
 	}
 
-	public int getToBow() {
-		return to_bow;
+	public VesselDimensions getDimension() {
+		return dimension;
 	}
 
-	public void setToBow(int to_bow) {
-		this.to_bow = to_bow;
-	}
-
-	public int getToStern() {
-		return to_stern;
-	}
-
-	public void setToStern(int to_stern) {
-		this.to_stern = to_stern;
-	}
-
-	public int getToPort() {
-		return to_port;
-	}
-
-	public void setToPort(int to_port) {
-		this.to_port = to_port;
-	}
-
-	public int getToStarboard() {
-		return to_starboard;
-	}
-
-	public void setToStarboard(int to_starboard) {
-		this.to_starboard = to_starboard;
+	public void setDimension(String bits) {
+		try {
+			this.dimension = VesselDimensions.fromPayload(bits);
+		} catch (Exception exi) {}
 	}
 
 	public int getEpfd() {
@@ -308,10 +272,7 @@ public class T21_AidToNavigationReport extends AISMessageBase {
 	private boolean accuracy = false;
 	private float longitude = 0f;
 	private float latitude = 0f;
-	private int to_bow = 0;
-	private int to_stern = 0;
-	private int to_port = 0;
-	private int to_starboard = 0;
+	private VesselDimensions dimension = null;
 	private int epfd = 0;
 	private int second = 0;
 	private boolean offPosition = false;
