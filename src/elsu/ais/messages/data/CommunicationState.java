@@ -17,8 +17,6 @@ public class CommunicationState {
 		return commState;
 	}
 
-	public ArrayList<AISPayloadBlock> messageBlocks = new ArrayList<>();
-
 	public CommunicationState() {
 		initialize();
 	}
@@ -110,4 +108,6 @@ public class CommunicationState {
 	private int message = 0;
 	private CommunicationState_SOTDMA csSOTDMA = null;
 	private CommunicationState_ITDMA csITDMA = null;
+
+	private ArrayList<AISPayloadBlock> messageBlocks = new ArrayList<>();
 }

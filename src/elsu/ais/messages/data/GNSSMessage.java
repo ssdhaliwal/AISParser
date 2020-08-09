@@ -16,8 +16,6 @@ public class GNSSMessage {
 		return commState;
 	}
 
-	public ArrayList<AISPayloadBlock> messageBlocks = new ArrayList<>();
-
 	public GNSSMessage() {
 		initialize();
 	}
@@ -155,4 +153,6 @@ public class GNSSMessage {
 	private int words = 0;
 	private int health = 0;
 	private String data = "";
+
+	private ArrayList<AISPayloadBlock> messageBlocks = new ArrayList<>();
 }

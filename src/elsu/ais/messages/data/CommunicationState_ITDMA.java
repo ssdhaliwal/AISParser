@@ -15,8 +15,6 @@ public class CommunicationState_ITDMA {
 		return commState;
 	}
 
-	public ArrayList<AISPayloadBlock> messageBlocks = new ArrayList<>();
-
 	public CommunicationState_ITDMA() {
 		initialize();
 	}
@@ -91,4 +89,6 @@ public class CommunicationState_ITDMA {
 	private int increment = 0;
 	private int slots = 0;
 	private boolean keep = false;
+
+	private ArrayList<AISPayloadBlock> messageBlocks = new ArrayList<>();
 }

@@ -15,8 +15,6 @@ public class CommunicationState_SOTDMA {
 		return commState;
 	}
 
-	public ArrayList<AISPayloadBlock> messageBlocks = new ArrayList<>();
-
 	public CommunicationState_SOTDMA() {
 		initialize();
 	}
@@ -137,4 +135,6 @@ public class CommunicationState_SOTDMA {
 	private int slotNumber = 0;
 	private String utcHourMinute = "";
 	private int slotOffset = 0;
+
+	private ArrayList<AISPayloadBlock> messageBlocks = new ArrayList<>();
 }
