@@ -3,13 +3,13 @@ package elsu.parser;
 import java.io.*;
 import java.util.*;
 
-import elsu.base.IEventListener;
+import elsu.base.IAISEventListener;
 import elsu.common.*;
 import elsu.sentence.SentenceFactory;
 import elsu.sentence.SentenceBase;
 import elsu.support.*;
 
-public class AISParser implements IEventListener {
+public class AISParser implements IAISEventListener {
 	ArrayList<String> result = new ArrayList<String>();
 
 	public AISParser() {
@@ -55,7 +55,7 @@ public class AISParser implements IEventListener {
 	}
 
 	@Override
-	public void onError(Exception ex, Object o, String message) {
+	public void onAISError(Exception ex, Object o, String message) {
 		try {
 			if (SentenceBase.logLevel >= 1) {
 				System.out.println("error, " + ex.getMessage() + ", " + o + ", " + message);
@@ -67,7 +67,7 @@ public class AISParser implements IEventListener {
 	}
 
 	@Override
-	public void onComplete(Object o) {
+	public void onAISComplete(Object o) {
 		try {
 			if (SentenceBase.logLevel >= 2) {
 				System.out.println("complete, " + o);
@@ -79,7 +79,7 @@ public class AISParser implements IEventListener {
 	}
 
 	@Override
-	public void onUpdate(Object o) {
+	public void onAISUpdate(Object o) {
 		try {
 			if (SentenceBase.logLevel >= 2) {
 				System.out.println("update, " + o);

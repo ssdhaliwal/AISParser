@@ -5,7 +5,7 @@ import java.util.concurrent.CopyOnWriteArraySet;
 import java.util.regex.Matcher;
 
 import elsu.ais.exceptions.IncompleteFragmentException;
-import elsu.base.IEventListener;
+import elsu.base.IAISEventListener;
 import elsu.nmea.messages.NMEAMessage;
 //import elsu.nmea.messages.VSISignalInformation;
 import elsu.sentence.tags.SentenceTagBlock;
@@ -197,29 +197,29 @@ public class SentenceFactory {
 		}
 	}
 
-	public void addEventListener(IEventListener listener) {
+	public void addEventListener(IAISEventListener listener) {
 		listeners.add(listener);
 	}
 
-	public void removeEventListener(IEventListener listener) {
+	public void removeEventListener(IAISEventListener listener) {
 		listeners.remove(listener);
 	}
 
 	public void notifyError(Exception ex, Object o, String message) {
-		for (IEventListener listener : listeners) {
-			listener.onError(ex, o, message);
+		for (IAISEventListener listener : listeners) {
+			listener.onAISError(ex, o, message);
 		}
 	}
 
 	public void notifyComplete(Object o) {
-		for (IEventListener listener : listeners) {
-			listener.onComplete(o);
+		for (IAISEventListener listener : listeners) {
+			listener.onAISComplete(o);
 		}
 	}
 
 	public void notifyUpdate(Object o) {
-		for (IEventListener listener : listeners) {
-			listener.onUpdate(o);
+		for (IAISEventListener listener : listeners) {
+			listener.onAISUpdate(o);
 		}
 	}
 
@@ -240,5 +240,5 @@ public class SentenceFactory {
 	private NMEAMessage tsaInfo = null;
 	private NMEAMessage vsiInfo = null;
 
-	private final Set<IEventListener> listeners = new CopyOnWriteArraySet<>();
+	private final Set<IAISEventListener> listeners = new CopyOnWriteArraySet<>();
 }
