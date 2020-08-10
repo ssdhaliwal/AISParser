@@ -188,6 +188,11 @@ public class SentenceFactory {
 			if (sentence.isComplete() && sentence.isValid() && (getTagBlock().getSentenceGroup()
 					.getLinenumber() == getTagBlock().getSentenceGroup().getTotallines())) {
 				notifyComplete(sentence);
+
+				setTagBlock(null);
+				sentence = null;
+				tsaInfo = null;
+				vsiInfo = null;
 			}
 		}
 	}
