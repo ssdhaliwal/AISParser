@@ -104,7 +104,7 @@ public class T19_ExtendedClassBEquipmentPositionReport extends AISMessageBase {
 			setDte(parseUINT(block.getBits()));
 			break;
 		case 307:
-			setAssigned(parseUINT(block.getBits()));
+			setAssignedMode(parseUINT(block.getBits()));
 			break;
 		}
 	}
@@ -136,8 +136,8 @@ public class T19_ExtendedClassBEquipmentPositionReport extends AISMessageBase {
 		buffer.append(", \"raim\":" + isRaim());
 		buffer.append(", \"dte\":" + getDte());
 		buffer.append(", \"dteText\":\"" + AISLookupValues.getDte(getDte()) + "\"");
-		buffer.append(", \"assigned\":" + getAssigned());
-		buffer.append(", \"assignedText\":\"" + AISLookupValues.getAssignedMode(getAssigned()) + "\"");
+		buffer.append(", \"assignedMode\":" + getAssignedMode());
+		buffer.append(", \"assignedModeText\":\"" + AISLookupValues.getAssignedMode(getAssignedMode()) + "\"");
 		buffer.append("}");
 
 		return buffer.toString();
@@ -285,12 +285,12 @@ public class T19_ExtendedClassBEquipmentPositionReport extends AISMessageBase {
 		this.dte = dte;
 	}
 
-	public int getAssigned() {
-		return assigned;
+	public int getAssignedMode() {
+		return assignedMode;
 	}
 
-	public void setAssigned(int assigned) {
-		this.assigned = assigned;
+	public void setAssignedMode(int assignedMode) {
+		this.assignedMode = assignedMode;
 	}
 
 	private int type = 0;
@@ -310,5 +310,5 @@ public class T19_ExtendedClassBEquipmentPositionReport extends AISMessageBase {
 	private int epfd = 0;
 	private boolean raim = false;
 	private int dte = 1;
-	private int assigned = 0;
+	private int assignedMode = 0;
 }
