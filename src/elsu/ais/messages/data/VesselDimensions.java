@@ -59,6 +59,21 @@ public class VesselDimensions extends AISMessageBase {
 		return buffer.toString();
 	}
 
+	@Override
+	public int getType() {
+		return 0;
+	}
+
+	@Override
+	public int getRepeat() {
+		return 0;
+	}
+
+	@Override
+	public int getMmsi() {
+		return 0;
+	}
+
 	public int getToBow() {
 		return toBow;
 	}

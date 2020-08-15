@@ -169,6 +169,12 @@ public abstract class AISMessageBase extends SentenceBase {
 	}
 	
 	public abstract void parseMessageBlock(AISPayloadBlock block) throws Exception ;
+
+	public abstract int getType();
+
+	public abstract int getRepeat();
+
+	public abstract int getMmsi();
 	
 	public ArrayList<AISPayloadBlock> getMessageBlocks() {
 		return messageBlocks;
