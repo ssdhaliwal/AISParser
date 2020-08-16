@@ -250,8 +250,8 @@ public class T22_ChannelManagement extends AISMessageBase {
 	private int channelB = 0;
 	private int txrx = 0;
 	private boolean power = false;
-	private float neLongitude = 0f;
-	private float neLatitude = 0f;
+	private float neLongitude = 181f;
+	private float neLatitude = 91f;
 	private float swLongitude = 0f;
 	private float swLatitude = 0f;
 	private boolean addressed = false;

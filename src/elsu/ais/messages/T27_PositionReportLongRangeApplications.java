@@ -203,10 +203,10 @@ public class T27_PositionReportLongRangeApplications extends AISMessageBase {
 	private int mmsi = 0;
 	private boolean accuracy = false;
 	private boolean raim = false;
-	private int status = 0;
-	private float longitude = 0f;
-	private float latitude = 0f;
-	private float speed = 0.0f;
-	private float course = 0.0f;
+	private int status = 15;
+	private float longitude = 181f;
+	private float latitude = 91f;
+	private float speed = 63.0f;
+	private float course = 511.0f;
 	private int positionLatency = 0;
 }

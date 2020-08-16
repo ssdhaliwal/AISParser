@@ -287,8 +287,8 @@ public class T5_StaticAndVoyageRelatedData extends AISMessageBase {
 	private int epfd = 0;
 	private int month = 0;
 	private int day = 0;
-	private int hour = 0;
-	private int minute = 0;
+	private int hour = 24;
+	private int minute = 60;
 	private float draught = 0;
 	private String destination = "";
 	private int dte = 1;

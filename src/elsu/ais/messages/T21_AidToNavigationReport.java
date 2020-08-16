@@ -270,11 +270,11 @@ public class T21_AidToNavigationReport extends AISMessageBase {
 	private int aidType = 0;
 	private String name = "";
 	private boolean accuracy = false;
-	private float longitude = 0f;
-	private float latitude = 0f;
+	private float longitude = 181f;
+	private float latitude = 91f;
 	private VesselDimensions dimension = null;
 	private int epfd = 0;
-	private int second = 0;
+	private int second = 60;
 	private boolean offPosition = false;
 	private int regional = 0;
 	private boolean raim = false;

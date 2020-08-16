@@ -276,12 +276,12 @@ public class T4_BaseStationReport extends AISMessageBase {
 	private int year = 0;
 	private int month = 0;
 	private int day = 0;
-	private int hour = 0;
-	private int minute = 0;
-	private int second = 0;
+	private int hour = 24;
+	private int minute = 60;
+	private int second = 60;
 	private boolean accuracy = false;
-	private float longitude = 0.0f;
-	private float latitude = 0.0f;
+	private float longitude = 181.0f;
+	private float latitude = 91.0f;
 	private int epfd = 0;
 	private int lrbControl = 0;
 	private boolean raim = false;

@@ -3,7 +3,7 @@ package elsu.ais.messages;
 import elsu.ais.base.AISLookupValues;
 import elsu.ais.base.AISMessageBase;
 import elsu.ais.base.AISPayloadBlock;
-import elsu.ais.messages.data.GNSSMessage;
+import elsu.ais.messages.data.T17_DGNSSCorrectionData;
 import elsu.sentence.SentenceBase;
 
 public class T17_DGNSSBroadcastBinaryMessage extends AISMessageBase {
@@ -119,11 +119,11 @@ public class T17_DGNSSBroadcastBinaryMessage extends AISMessageBase {
 		this.latitude = latitude;
 	}
 
-	public GNSSMessage getGNSSMessage() {
+	public T17_DGNSSCorrectionData getGNSSMessage() {
 		return gnssMessage;
 	}
 
-	public void setGNSSMessage(GNSSMessage message) {
+	public void setGNSSMessage(T17_DGNSSCorrectionData message) {
 		this.gnssMessage = message;
 	}
 
@@ -139,15 +139,15 @@ public class T17_DGNSSBroadcastBinaryMessage extends AISMessageBase {
 		this.data = data;
 		this.dataRaw = parseTEXT8BIT(data);
 
-		gnssMessage = GNSSMessage.fromPayload(getData());
+		gnssMessage = T17_DGNSSCorrectionData.fromPayload(getData());
 	}
 
 	private int type = 0;
 	private int repeat = 0;
 	private int mmsi = 0;
-	private float longitude = 0f;
-	private float latitude = 0f;
-	private GNSSMessage gnssMessage = null;
+	private float longitude = 181f;
+	private float latitude = 91f;
+	private T17_DGNSSCorrectionData gnssMessage = null;
 	private String data = "";
 	private String dataRaw = "";
 }
