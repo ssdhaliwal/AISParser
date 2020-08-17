@@ -4,6 +4,7 @@ import elsu.ais.base.AISLookupValues;
 import elsu.ais.base.AISMessageBase;
 import elsu.ais.base.AISPayloadBlock;
 import elsu.ais.messages.data.VesselDimensions;
+import elsu.common.EncodingUtils;
 
 public class T5_StaticAndVoyageRelatedData extends AISMessageBase {
 
@@ -68,10 +69,10 @@ public class T5_StaticAndVoyageRelatedData extends AISMessageBase {
 			setImo(parseUINT(block.getBits()));
 			break;
 		case 70:
-			setCallSign(parseTEXT(block.getBits()));
+			setCallSign(EncodingUtils.encodeXML(parseTEXT(block.getBits())));
 			break;
 		case 112:
-			setShipName(parseTEXT(block.getBits()));
+			setShipName(EncodingUtils.encodeXML(parseTEXT(block.getBits())));
 			break;
 		case 232:
 			setShipType(parseUINT(block.getBits()));

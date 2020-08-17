@@ -4,6 +4,7 @@ import elsu.ais.base.AISLookupValues;
 import elsu.ais.base.AISMessageBase;
 import elsu.ais.base.AISPayloadBlock;
 import elsu.ais.messages.data.VesselDimensions;
+import elsu.common.EncodingUtils;
 
 public class T19_ExtendedClassBEquipmentPositionReport extends AISMessageBase {
 
@@ -86,7 +87,7 @@ public class T19_ExtendedClassBEquipmentPositionReport extends AISMessageBase {
 			setRegional(parseUINT(block.getBits()));
 			break;
 		case 143:
-			setShipName(parseTEXT(block.getBits()));
+			setShipName(EncodingUtils.encodeXML(parseTEXT(block.getBits())));
 			break;
 		case 263:
 			setShipType(parseUINT(block.getBits()));

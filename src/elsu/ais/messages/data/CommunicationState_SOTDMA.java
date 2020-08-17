@@ -40,8 +40,8 @@ public class CommunicationState_SOTDMA {
 			case 4:
 				switch (getTimeout()) {
 				case 1:
-					int hour = Sentence.parseUINT(block.getBits().substring(0, 10));
-					int minute = Sentence.parseUINT(block.getBits().substring(10, 12));
+					int hour = Sentence.parseUINT(block.getBits().substring(0, 5));
+					int minute = Sentence.parseUINT(block.getBits().substring(5, 12));
 					setUtcHourMinute(hour + ":" + minute);
 					break;
 				case 2:
@@ -72,7 +72,7 @@ public class CommunicationState_SOTDMA {
 			buffer.append(", \"slotOffset\":" + getSlotOffset());
 			break;
 		case 1:
-			buffer.append(", \"UTCHourMin\":" + getUtcHourMinute());
+			buffer.append(", \"UTCHourMin\":\"" + getUtcHourMinute() + "\"");
 			break;
 		case 2:
 		case 4:
