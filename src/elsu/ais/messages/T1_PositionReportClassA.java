@@ -33,10 +33,12 @@ public class T1_PositionReportClassA extends AISMessageBase {
 				"Relative to true north, to 0.1 degree precision"));
 		getMessageBlocks().add(new AISPayloadBlock(128, 136, 9, "True Heading (HDG)", "heading", "u",
 				"0 to 359 degrees, 511 = not available."));
-		getMessageBlocks().add(new AISPayloadBlock(137, 142, 6, "Time Stamp", "second", "u", "Second of UTC timestamp"));
+		getMessageBlocks()
+				.add(new AISPayloadBlock(137, 142, 6, "Time Stamp", "second", "u", "Second of UTC timestamp"));
 		getMessageBlocks()
 				.add(new AISPayloadBlock(143, 144, 2, "Maneuver Indicator", "maneuver", "e", "See Maneuver Indicator"));
-		// getMessageBlocks().add(new PayloadBlock(145, 147, 3, "Spare", "", "x", "Not used"));
+		// getMessageBlocks().add(new PayloadBlock(145, 147, 3, "Spare", "",
+		// "x", "Not used"));
 		getMessageBlocks().add(new AISPayloadBlock(148, 148, 1, "RAIM flag", "raim", "b", "See below"));
 		getMessageBlocks().add(new AISPayloadBlock(149, 167, 19, "Radio status", "radio", "u", "See below"));
 	}
@@ -179,7 +181,7 @@ public class T1_PositionReportClassA extends AISMessageBase {
 				rateOfTurn = Math.sqrt(turnRate / 4.733);
 			}
 		}
-		
+
 		this.rateOfTurn = rateOfTurn;
 	}
 

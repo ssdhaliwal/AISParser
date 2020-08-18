@@ -115,7 +115,7 @@ public class T19_ExtendedClassBEquipmentPositionReport extends AISMessageBase {
 		StringBuilder buffer = new StringBuilder();
 
 		buffer.append("{");
-		buffer.append("\"transponder\":" + getTransponderType());
+		buffer.append("\"transponder\":\"" + getTransponderType() + "\"");
 		buffer.append(", \"type\":" + getType());
 		buffer.append(", \"typeText\":\"" + AISLookupValues.getMessageType(getType()) + "\"");
 		buffer.append(", \"repeat\":" + getRepeat());
