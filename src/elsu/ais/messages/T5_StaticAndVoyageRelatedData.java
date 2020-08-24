@@ -99,7 +99,7 @@ public class T5_StaticAndVoyageRelatedData extends AISMessageBase {
 			setDraught(parseUFLOAT(block.getBits()) / 10f);
 			break;
 		case 302:
-			setDestination(parseTEXT(block.getBits()));
+			setDestination(EncodingUtils.encodeXML(parseTEXT(block.getBits())));
 			break;
 		case 422:
 			setDte(parseUINT(block.getBits()));
