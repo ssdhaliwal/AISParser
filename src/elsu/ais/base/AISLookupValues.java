@@ -31,7 +31,7 @@ public class AISLookupValues {
 			put(23, "Group assignment command");
 			put(24, "Static data report");
 			put(25, "Single slot binary message");
-			put(26, "Multiple slot binary message with Communi-cations State");
+			put(26, "Multiple slot binary message with Communications State");
 			put(27, "Position report for long-range applications");
 		}
 	};
@@ -435,8 +435,8 @@ public class AISLookupValues {
 			put(1, "Class A mobile stations only");
 			put(2, "all types of Class B mobile stations");
 			put(3, "SAR airborne mobile station");
-			put(4, "Class B “SO” mobile stations only");
-			put(5, "Class B “CS” shipborne mobile station only");
+			put(4, "Class B SO mobile stations only");
+			put(5, "Class B CS shipborne mobile station only");
 			put(6, "inland waterways");
 			put(7, "regional use");
 			put(8, "regional use");
