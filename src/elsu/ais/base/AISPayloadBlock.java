@@ -2,6 +2,8 @@ package elsu.ais.base;
 
 import java.math.BigInteger;
 
+import elsu.sentence.SentenceBase;
+
 public class AISPayloadBlock {
 
 	public AISPayloadBlock(int start, int end, int length, String description, String name, String type, String units) {
@@ -39,6 +41,16 @@ public class AISPayloadBlock {
 	
 	@Override
 	public String toString() {
+		String result = "";
+		
+		try {
+			result = SentenceBase.objectMapper.writeValueAsString(this);
+		} catch (Exception exi) {
+			result = "error, Sentence, " + exi.getMessage();
+		}
+		
+		return result;
+		/*
 		StringBuilder buffer = new StringBuilder();
 		
 		buffer.append("{");
@@ -57,6 +69,7 @@ public class AISPayloadBlock {
 		buffer.append("}");
 		
 		return buffer.toString();
+		*/
 	}
 
 	public int getStart() {

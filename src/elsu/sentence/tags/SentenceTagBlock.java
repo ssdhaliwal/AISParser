@@ -107,6 +107,16 @@ public class SentenceTagBlock {
 
 	@Override
 	public String toString() {
+		String result = "";
+		
+		try {
+			result = SentenceBase.objectMapper.writeValueAsString(this);
+		} catch (Exception exi) {
+			result = "error, Sentence, " + exi.getMessage();
+		}
+		
+		return result;
+		/*
 		StringBuilder buffer = new StringBuilder();
 
 		buffer.append("{");
@@ -123,6 +133,7 @@ public class SentenceTagBlock {
 		buffer.append("}");
 
 		return buffer.toString();
+		*/
 	}
 
 	public int getTime() {

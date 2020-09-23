@@ -54,6 +54,16 @@ public class CommunicationState {
 
 	@Override
 	public String toString() {
+		String result = "";
+		
+		try {
+			result = SentenceBase.objectMapper.writeValueAsString(this);
+		} catch (Exception exi) {
+			result = "error, Sentence, " + exi.getMessage();
+		}
+		
+		return result;
+		/*
 		StringBuilder buffer = new StringBuilder();
 
 		buffer.append("{");
@@ -70,6 +80,7 @@ public class CommunicationState {
 		buffer.append("}");
 
 		return buffer.toString();
+		*/
 	}
 
 	public int getState() {

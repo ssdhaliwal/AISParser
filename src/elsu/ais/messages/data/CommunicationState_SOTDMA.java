@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import elsu.ais.base.AISPayloadBlock;
 import elsu.sentence.Sentence;
+import elsu.sentence.SentenceBase;
 
 public class CommunicationState_SOTDMA {
 
@@ -62,6 +63,16 @@ public class CommunicationState_SOTDMA {
 
 	@Override
 	public String toString() {
+		String result = "";
+		
+		try {
+			result = SentenceBase.objectMapper.writeValueAsString(this);
+		} catch (Exception exi) {
+			result = "error, Sentence, " + exi.getMessage();
+		}
+		
+		return result;
+		/*
 		StringBuilder buffer = new StringBuilder();
 
 		buffer.append("{");
@@ -88,6 +99,7 @@ public class CommunicationState_SOTDMA {
 		buffer.append("}");
 
 		return buffer.toString();
+		*/
 	}
 
 	public int getTimeout() {

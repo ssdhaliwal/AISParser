@@ -163,6 +163,16 @@ public class Sentence extends SentenceBase {
 
 	@Override
 	public String toString() {
+		String result = "";
+		
+		try {
+			result = SentenceBase.objectMapper.writeValueAsString(this);
+		} catch (Exception exi) {
+			result = "error, Sentence, " + exi.getMessage();
+		}
+		
+		return result;
+		/*
 		StringBuilder result = new StringBuilder();
 		int counter = 0;
 
@@ -202,6 +212,7 @@ public class Sentence extends SentenceBase {
 		result.append("}");
 
 		return result.toString();
+		*/
 	}
 
 	public ArrayList<String> getMessages() {

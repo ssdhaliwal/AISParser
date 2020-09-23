@@ -74,7 +74,7 @@ public class AISParser implements IAISEventListener {
 			FileUtils.writeFile(fileOut + fileExt, result, false);
 		} else {
 			for (int i = 0; i < result.size(); i++) {
-				FileUtils.writeFile(fileOut + "_" + resultType.get(i) + fileExt, (String)result.get(i) + "\\n", false);
+				FileUtils.writeFile(fileOut + "_" + resultType.get(i) + fileExt, (String)result.get(i) + "\n", false);
 			}
 		}
 		System.out.println(".. file output msg x complete .." + (new Date()));

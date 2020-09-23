@@ -5,6 +5,9 @@ import java.util.Date;
 import java.util.TimeZone;
 import java.util.regex.Pattern;
 
+import com.fasterxml.jackson.core.*;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 public abstract class SentenceBase {
 
 	static public String[] payloadBits = new String[] {
@@ -225,6 +228,7 @@ public abstract class SentenceBase {
 		return dateFormat.format(date);
 	}
 
+	public static ObjectMapper objectMapper = new ObjectMapper();
 	public static SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.sss z");
 	public static int logLevel = 0;	// 0=ALL, 1=DEBUG, 2=INFO, 3=WARN, 4=ERROR, 5=FATAL, 6=OFF, 7=TRACE
 }

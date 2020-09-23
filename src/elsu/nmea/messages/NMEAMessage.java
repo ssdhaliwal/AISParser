@@ -63,6 +63,16 @@ public class NMEAMessage {
 
 	@Override
 	public String toString() {
+		String result = "";
+		
+		try {
+			result = SentenceBase.objectMapper.writeValueAsString(this);
+		} catch (Exception exi) {
+			result = "error, Sentence, " + exi.getMessage();
+		}
+		
+		return result;
+		/*
 		StringBuilder buffer = new StringBuilder();
 
 		buffer.append("{");
@@ -79,6 +89,7 @@ public class NMEAMessage {
 		buffer.append("}");
 
 		return buffer.toString();
+		*/
 	}
 
 	public String getType() {

@@ -3,6 +3,7 @@ package elsu.ais.messages;
 import elsu.ais.base.AISLookupValues;
 import elsu.ais.base.AISMessageBase;
 import elsu.ais.base.AISPayloadBlock;
+import elsu.sentence.SentenceBase;
 
 public class T16_AssignedModeCommand extends AISMessageBase {
 
@@ -74,6 +75,16 @@ public class T16_AssignedModeCommand extends AISMessageBase {
 
 	@Override
 	public String toString() {
+		String result = "";
+		
+		try {
+			result = SentenceBase.objectMapper.writeValueAsString(this);
+		} catch (Exception exi) {
+			result = "error, Sentence, " + exi.getMessage();
+		}
+		
+		return result;
+		/*
 		StringBuilder buffer = new StringBuilder();
 
 		buffer.append("{");
@@ -90,6 +101,7 @@ public class T16_AssignedModeCommand extends AISMessageBase {
 		buffer.append("}");
 
 		return buffer.toString();
+		*/
 	}
 
 	public int getType() {
