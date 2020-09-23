@@ -1,5 +1,7 @@
 package elsu.ais.messages.data;
 
+import com.fasterxml.jackson.databind.node.ObjectNode;
+
 import elsu.ais.base.AISLookupValues;
 import elsu.ais.base.AISMessageBase;
 import elsu.ais.base.AISPayloadBlock;
@@ -219,65 +221,66 @@ public class T8_MeteorologicalHydrologicalData extends T8_BinaryBroadCastMessage
 		String result = "";
 		
 		try {
-			result = SentenceBase.objectMapper.writeValueAsString(this);
+			// result = SentenceBase.objectMapper.writeValueAsString(this);
+			ObjectNode node = SentenceBase.objectMapper.createObjectNode();
+
+			node.put("type", getType());
+			node.put("typeText", AISLookupValues.getMessageType(getType()));
+			node.put("functionalName", getFunctionalName());
+			node.put("repeat", getRepeat());
+			node.put("mmsi", getMmsi());
+			node.put("dac", getDac());
+			node.put("fid", getFid());
+
+			node.put("latitude", getLatitude());
+			node.put("longitude", getLongitude());
+			node.put("day", getDay());
+			node.put("hour", getHour());
+			node.put("minute", getMinute());
+			node.put("averageWindSpeed", getAverageWindSpeed());
+			node.put("windGust", getWindGust());
+			node.put("windDirection", getWindDirection());
+			node.put("windGustDirection", getWindGustDirection());
+			node.put("airTemperature", getAirTemperature());
+			node.put("relativeHumidity", getRelativeHumidity());
+			node.put("dewPoint", getDewPoint());
+			node.put("airPressure", getAirPressure());
+			node.put("airPressureTrendency", getAirPressureTendency());
+			node.put("horizontalVisibility", getHorizontalVisibility());
+			node.put("waterLevel", getWaterLevel());
+			node.put("waterLevelTrend", getWaterLevelTrend());
+			node.put("surfaceCurrentSpeed", getSurfaceCurrentSpeed());
+			node.put("surfaceCurrentDirection", getSurfaceCurrentDirection());
+			node.put("currentSpeed2", getCurrentSpeed2());
+			node.put("currentDirection2", getCurrentDirection2());
+			node.put("currentMeasurementLevel2", getCurrentMeasurementLevel2());
+			node.put("currentSpeed3", getCurrentSpeed3());
+			node.put("currentDirection3", getCurrentDirection3());
+			node.put("currentMeasurementLevel3", getHorizontalVisibility());
+			node.put("significantWaveHeight", getCurrentMeasurementLevel3());
+			node.put("wavePeriod", getWavePeriod());
+			node.put("waveDirection", getWaveDirection());
+			node.put("swellHeight", getSwellHeight());
+			node.put("swellPeriod", getSwellPeriod());
+			node.put("swellDirection", getSwellDirection());
+			node.put("seaState", getSeaState());
+			node.put("waterTemperature", getWaterTemperature());
+			node.put("precipitationType", getPrecipitationType());
+			node.put("salinity", getSalinity());
+			node.put("ice", getIce());
+			
+			if (SentenceBase.logLevel >= 2) {
+				node.put("dataBits", getData());
+				node.put("dataRaw", getDataRaw());
+			}
+
+			result = SentenceBase.objectMapper.writeValueAsString(node);
+			node = null;
 		} catch (Exception exi) {
 			result = "error, Sentence, " + exi.getMessage();
 		}
 		
 		return result;
-		/*
-		StringBuilder buffer = new StringBuilder();
-
-		buffer.append("{");
-		buffer.append("\"type\":" + getType());
-		buffer.append(", \"typeText\":\"" + AISLookupValues.getMessageType(getType()) + "\"");
-		buffer.append(", \"functionalName\":\"" + getFunctionalName() + "\"");
-		buffer.append(", \"repeat\":" + getRepeat());
-		buffer.append(", \"mmsi\":" + getMmsi());
-		buffer.append(", \"dac\":" + getDac());
-		buffer.append(", \"fid\":" + getFid());
-		buffer.append(", \"dataBits\":\"" + getData() + "\"");
-		buffer.append(", \"dataRaw\":\"" + getDataRaw() + "\"");
-		buffer.append(", \"latitude\":" + getLatitude());
-		buffer.append(", \"longitude\":" + getLongitude());
-		buffer.append(", \"day\":" + getDay());
-		buffer.append(", \"hour\":" + getHour());
-		buffer.append(", \"minute\":" + getMinute());
-		buffer.append(", \"averageWindSpeed\":" + getAverageWindSpeed());
-		buffer.append(", \"windGust\":" + getWindGust());
-		buffer.append(", \"windDirection\":" + getWindDirection());
-		buffer.append(", \"windGustDirection\":" + getWindGustDirection());
-		buffer.append(", \"airTemperature\":" + getAirTemperature());
-		buffer.append(", \"relativeHumidity\":" + getRelativeHumidity());
-		buffer.append(", \"dewPoint\":" + getDewPoint());
-		buffer.append(", \"airPressure\":" + getAirPressure());
-		buffer.append(", \"airPressureTrendency\":" + getAirPressureTendency());
-		buffer.append(", \"horizontalVisibility\":" + getHorizontalVisibility());
-		buffer.append(", \"waterLevel\":" + getWaterLevel());
-		buffer.append(", \"waterLevelTrend\":" + getWaterLevelTrend());
-		buffer.append(", \"surfaceCurrentSpeed\":" + getSurfaceCurrentSpeed());
-		buffer.append(", \"surfaceCurrentDirection\":" + getSurfaceCurrentDirection());
-		buffer.append(", \"currentSpeed2\":" + getCurrentSpeed2());
-		buffer.append(", \"currentDirection2\":" + getCurrentDirection2());
-		buffer.append(", \"currentMeasurementLevel2\":" + getCurrentMeasurementLevel2());
-		buffer.append(", \"currentSpeed3\":" + getCurrentSpeed3());
-		buffer.append(", \"currentDirection3\":" + getCurrentDirection3());
-		buffer.append(", \"currentMeasurementLevel3\":" + getCurrentMeasurementLevel3());
-		buffer.append(", \"significantWaveHeight\":" + getSignificantWaveHeight());
-		buffer.append(", \"wavePeriod\":" + getWavePeriod());
-		buffer.append(", \"waveDirection\":" + getWaveDirection());
-		buffer.append(", \"swellHeight\":" + getSwellHeight());
-		buffer.append(", \"swellPeriod\":" + getSwellPeriod());
-		buffer.append(", \"swellDirection\":" + getSwellDirection());
-		buffer.append(", \"seaState\":" + getSeaState());
-		buffer.append(", \"waterTemperature\":" + getWaterTemperature());
-		buffer.append(", \"precipitationType\":" + getPrecipitationType());
-		buffer.append(", \"salinity\":" + getSalinity());
-		buffer.append(", \"ice\":" + getIce());
-		buffer.append("}");
-
-		return buffer.toString();
-		*/
 	}
 
 	public String getFunctionalName() {

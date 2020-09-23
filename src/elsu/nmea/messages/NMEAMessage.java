@@ -2,6 +2,9 @@ package elsu.nmea.messages;
 
 import java.util.*;
 
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+
 import elsu.nmea.base.NMEAMessageBase;
 import elsu.sentence.SentenceBase;
 
@@ -66,30 +69,26 @@ public class NMEAMessage {
 		String result = "";
 		
 		try {
-			result = SentenceBase.objectMapper.writeValueAsString(this);
+			// result = SentenceBase.objectMapper.writeValueAsString(this);
+			ObjectNode node = SentenceBase.objectMapper.createObjectNode();
+
+			node.put("type", getType());
+
+			for (String key : getAttributes().keySet()) {
+				node.put(key, getAttributes().get(key));
+			}
+
+			node.put("checksum", getChecksum());
+			node.put("checksumError", isChecksumError());
+			node.put("exceptions", getExceptions());
+
+			result = SentenceBase.objectMapper.writeValueAsString(node);
+			node = null;
 		} catch (Exception exi) {
 			result = "error, Sentence, " + exi.getMessage();
 		}
 		
 		return result;
-		/*
-		StringBuilder buffer = new StringBuilder();
-
-		buffer.append("{");
-		buffer.append("\"type\": \"" + getType() + "\"");
-		
-		for (String key : getAttributes().keySet())  
-		{
-		   buffer.append(", \"" + key + "\": \"" + getAttributes().get(key) + "\"");
-		}
-		
-		buffer.append(", \"checksum\": \"" + getChecksum() + "\"");
-		buffer.append(", \"checksumError\": " + isChecksumError());
-		buffer.append(", \"exceptions\": \"" + getExceptions() + "\"");
-		buffer.append("}");
-
-		return buffer.toString();
-		*/
 	}
 
 	public String getType() {

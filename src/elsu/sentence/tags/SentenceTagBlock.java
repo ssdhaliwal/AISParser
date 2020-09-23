@@ -1,5 +1,7 @@
 package elsu.sentence.tags;
 
+import com.fasterxml.jackson.databind.node.ObjectNode;
+
 import elsu.sentence.SentenceBase;
 
 public class SentenceTagBlock {
@@ -108,32 +110,29 @@ public class SentenceTagBlock {
 	@Override
 	public String toString() {
 		String result = "";
-		
+
 		try {
-			result = SentenceBase.objectMapper.writeValueAsString(this);
+			// result = SentenceBase.objectMapper.writeValueAsString(this);
+			ObjectNode node = SentenceBase.objectMapper.createObjectNode();
+
+			node.put("time", SentenceBase.formatEPOCHToUTC(getTime()));
+			node.put("destination", getDestination());
+			node.put("group", SentenceBase.objectMapper.readTree(((getSentenceGroup() != null) ? getSentenceGroup().toString() : "")));
+			node.put("lineCount", getLinecount());
+			node.put("relativeTime", getRelativetime());
+			node.put("source", getSource());
+			node.put("text", getText());
+			node.put("checksum", getChecksum());
+			node.put("checksumError", isChecksumError());
+			node.put("exceptions", getExceptions());
+
+			result = SentenceBase.objectMapper.writeValueAsString(node);
+			node = null;
 		} catch (Exception exi) {
 			result = "error, Sentence, " + exi.getMessage();
 		}
-		
+
 		return result;
-		/*
-		StringBuilder buffer = new StringBuilder();
-
-		buffer.append("{");
-		buffer.append("\"time\": \"" + SentenceBase.formatEPOCHToUTC(getTime()) + "\"");
-		buffer.append(", \"destination\": \"" + getDestination() + "\"");
-		buffer.append(", \"group\": " + getSentenceGroup());
-		buffer.append(", \"lineCount\": " + getLinecount());
-		buffer.append(", \"relativeTime\": " + getRelativetime());
-		buffer.append(", \"source\": \"" + getSource() + "\"");
-		buffer.append(", \"text\": \"" + getText() + "\"");
-		buffer.append(", \"checksum\": \"" + getChecksum() + "\"");
-		buffer.append(", \"checksumError\": " + isChecksumError());
-		buffer.append(", \"exceptions\": \"" + getExceptions() + "\"");
-		buffer.append("}");
-
-		return buffer.toString();
-		*/
 	}
 
 	public int getTime() {

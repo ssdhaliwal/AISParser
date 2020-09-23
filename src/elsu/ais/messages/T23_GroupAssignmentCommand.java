@@ -1,5 +1,7 @@
 package elsu.ais.messages;
 
+import com.fasterxml.jackson.databind.node.ObjectNode;
+
 import elsu.ais.base.AISLookupValues;
 import elsu.ais.base.AISMessageBase;
 import elsu.ais.base.AISPayloadBlock;
@@ -94,35 +96,33 @@ public class T23_GroupAssignmentCommand extends AISMessageBase {
 		String result = "";
 		
 		try {
-			result = SentenceBase.objectMapper.writeValueAsString(this);
+			// result = SentenceBase.objectMapper.writeValueAsString(this);
+			ObjectNode node = SentenceBase.objectMapper.createObjectNode();
+
+			node.put("type", getType());
+			node.put("typeText", AISLookupValues.getMessageType(getType()));
+			node.put("repeat", getRepeat());
+			
+			node.put("neLongitude", getNELongitude());
+			node.put("neLatitude", getNELatitude());
+			node.put("swLongitude", getSWLongitude());
+			node.put("swLatitude", getSWLatitude());
+			node.put("stationType", getStationType());
+			node.put("stationTypeText", AISLookupValues.getStationType(getStationType()));
+			node.put("shipType", getShipType());
+			node.put("shipTypeText", AISLookupValues.getShipType(getShipType()));
+			node.put("TxRx", getTxRx());
+			node.put("interval", getInterval());
+			node.put("intervalText", AISLookupValues.getReportingInterval(getInterval()));
+			node.put("quiteTime", getQuiteTime());
+
+			result = SentenceBase.objectMapper.writeValueAsString(node);
+			node = null;
 		} catch (Exception exi) {
 			result = "error, Sentence, " + exi.getMessage();
 		}
 		
 		return result;
-		/*
-		StringBuilder buffer = new StringBuilder();
-
-		buffer.append("{");
-		buffer.append("\"type\":" + getType());
-		buffer.append(", \"typeText\":\"" + AISLookupValues.getMessageType(getType()) + "\"");
-		buffer.append(", \"repeat\":" + getRepeat());
-		buffer.append(", \"neLongitude\":" + getNELongitude());
-		buffer.append(", \"neLatitude\":" + getNELatitude());
-		buffer.append(", \"swLongitude\":" + getSWLongitude());
-		buffer.append(", \"swLatitude\":" + getSWLatitude());
-		buffer.append(", \"stationType\":" + getStationType());
-		buffer.append(", \"stationTypeText\":\"" + AISLookupValues.getStationType(getStationType()) + "\"");
-		buffer.append(", \"shipType\":" + getShipType());
-		buffer.append(", \"shipTypeText\":\"" + AISLookupValues.getShipType(getShipType()) + "\"");
-		buffer.append(", \"TxRx\":" + getTxRx());
-		buffer.append(", \"interval\":" + getInterval());
-		buffer.append(", \"intervalText\":\"" + AISLookupValues.getReportingInterval(getInterval()) + "\"");
-		buffer.append(", \"quiteTime\":" + getQuiteTime());
-		buffer.append("}");
-
-		return buffer.toString();
-		*/
 	}
 
 	public int getType() {

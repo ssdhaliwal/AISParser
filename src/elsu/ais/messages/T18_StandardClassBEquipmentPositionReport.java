@@ -1,5 +1,7 @@
 package elsu.ais.messages;
 
+import com.fasterxml.jackson.databind.node.ObjectNode;
+
 import elsu.ais.base.AISLookupValues;
 import elsu.ais.base.AISMessageBase;
 import elsu.ais.base.AISPayloadBlock;
@@ -130,45 +132,43 @@ public class T18_StandardClassBEquipmentPositionReport extends AISMessageBase {
 		String result = "";
 		
 		try {
-			result = SentenceBase.objectMapper.writeValueAsString(this);
+			// result = SentenceBase.objectMapper.writeValueAsString(this);
+			ObjectNode node = SentenceBase.objectMapper.createObjectNode();
+
+			node.put("transponder", getTransponderType());
+			node.put("type", getType());
+			node.put("typeText", AISLookupValues.getMessageType(getType()));
+			node.put("repeat", getRepeat());
+			node.put("mmsi", getMmsi());
+			
+			node.put("speed", getSpeed());
+			node.put("accuracy", isAccuracy());
+			node.put("longitude", getLongitude());
+			node.put("latitude", getLatitude());
+			node.put("course", getCourse());
+			node.put("heading", getHeading());
+			node.put("second", getSecond());
+			node.put("regional", getRegional());
+			node.put("cs", isCs());
+			node.put("display", isDisplay());
+			node.put("dsc", isDsc());
+			node.put("band", isBand());
+			node.put("msg22", isMsg22());
+			node.put("assigned", isAssigned());
+			node.put("raim", isRaim());
+			node.put("commFlag", getCommFlag());
+			node.put("commFlagText", AISLookupValues.getCommunicationFlag(getCommFlag()));
+			node.put("radio", getRadio());
+			node.set("commState", SentenceBase.objectMapper.readTree(((getCommState() != null) ? getCommState().toString() : "")));
+			node.put("commtech", AISLookupValues.getCommunicationTechnology(getType()));
+
+			result = SentenceBase.objectMapper.writeValueAsString(node);
+			node = null;
 		} catch (Exception exi) {
 			result = "error, Sentence, " + exi.getMessage();
 		}
 		
 		return result;
-		/*
-		StringBuilder buffer = new StringBuilder();
-
-		buffer.append("{");
-		buffer.append("\"transponder\":\"" + getTransponderType() + "\"");
-		buffer.append(", \"type\":" + getType());
-		buffer.append(", \"typeText\":\"" + AISLookupValues.getMessageType(getType()) + "\"");
-		buffer.append(", \"repeat\":" + getRepeat());
-		buffer.append(", \"mmsi\":" + getMmsi());
-		buffer.append(", \"speed\":" + getSpeed());
-		buffer.append(", \"accuracy\":" + isAccuracy());
-		buffer.append(", \"longitude\":" + getLongitude());
-		buffer.append(", \"latitude\":" + getLatitude());
-		buffer.append(", \"course\":" + getCourse());
-		buffer.append(", \"heading\":" + getHeading());
-		buffer.append(", \"second\":" + getSecond());
-		buffer.append(", \"regional\":" + getRegional());
-		buffer.append(", \"cs\":" + isCs());
-		buffer.append(", \"display\":" + isDisplay());
-		buffer.append(", \"dsc\":" + isDsc());
-		buffer.append(", \"band\":" + isBand());
-		buffer.append(", \"msg22\":" + isMsg22());
-		buffer.append(", \"assigned\":" + isAssigned());
-		buffer.append(", \"raim\":" + isRaim());
-		buffer.append(", \"commFlag\":" + getCommFlag());
-		buffer.append(", \"commFlagText\":\"" + AISLookupValues.getCommunicationFlag(getCommFlag()) + "\"");
-		buffer.append(", \"radio\":" + getRadio());
-		buffer.append(", \"commState\":" + getCommState());
-		buffer.append(", \"commtech\":\"" + AISLookupValues.getCommunicationTechnology(getType()) + "\"");
-		buffer.append("}");
-
-		return buffer.toString();
-		*/
 	}
 
 	public String getTransponderType() {

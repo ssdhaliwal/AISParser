@@ -1,5 +1,7 @@
 package elsu.ais.messages;
 
+import com.fasterxml.jackson.databind.node.ObjectNode;
+
 import elsu.ais.base.AISLookupValues;
 import elsu.ais.base.AISMessageBase;
 import elsu.ais.base.AISPayloadBlock;
@@ -107,39 +109,37 @@ public class T21_AidToNavigationReport extends AISMessageBase {
 		String result = "";
 		
 		try {
-			result = SentenceBase.objectMapper.writeValueAsString(this);
+			// result = SentenceBase.objectMapper.writeValueAsString(this);
+			ObjectNode node = SentenceBase.objectMapper.createObjectNode();
+
+			node.put("type", getType());
+			node.put("typeText", AISLookupValues.getMessageType(getType()));
+			node.put("repeat", getRepeat());
+			node.put("mmsi", getMmsi());
+			
+			node.put("aidType", getAidType());
+			node.put("aidTypeText", AISLookupValues.getNavAidType(getAidType()));
+			node.put("name", getName().trim());
+			node.put("accuracy", isAccuracy());
+			node.put("longitude", getLongitude());
+			node.put("latitude", getLatitude());
+			node.set("dimension", SentenceBase.objectMapper.readTree(((getDimension() != null) ? getDimension().toString() : "")));
+			node.put("epfd", getEpfd());
+			node.put("epfdText", AISLookupValues.getEPFDFixType(getEpfd()));
+			node.put("second", getSecond());
+			node.put("offPosition", isOffPosition());
+			node.put("regional", getRegional());
+			node.put("raim", isRaim());
+			node.put("virtualAid", isVirtualAid());
+			node.put("assigned", isAssigned());
+
+			result = SentenceBase.objectMapper.writeValueAsString(node);
+			node = null;
 		} catch (Exception exi) {
 			result = "error, Sentence, " + exi.getMessage();
 		}
 		
 		return result;
-		/*
-		StringBuilder buffer = new StringBuilder();
-
-		buffer.append("{");
-		buffer.append("\"type\":" + getType());
-		buffer.append(", \"typeText\":\"" + AISLookupValues.getMessageType(getType()) + "\"");
-		buffer.append(", \"repeat\":" + getRepeat());
-		buffer.append(", \"mmsi\":" + getMmsi());
-		buffer.append(", \"aidType\":" + getAidType());
-		buffer.append(", \"aidTypeText\":\"" + AISLookupValues.getNavAidType(getAidType()) + "\"");
-		buffer.append(", \"name\":\"" + getName().trim() + "\"");
-		buffer.append(", \"accuracy\":" + isAccuracy());
-		buffer.append(", \"longitude\":" + getLongitude());
-		buffer.append(", \"latitude\":" + getLatitude());
-		buffer.append(", \"dimension\":" + getDimension());
-		buffer.append(", \"epfd\":" + getEpfd());
-		buffer.append(", \"epfdText\":\"" + AISLookupValues.getEPFDFixType(getEpfd()) + "\"");
-		buffer.append(", \"second\":" + getSecond());
-		buffer.append(", \"offPosition\":" + isOffPosition());
-		buffer.append(", \"regional\":" + getRegional());
-		buffer.append(", \"raim\":" + isRaim());
-		buffer.append(", \"virtualAid\":" + isVirtualAid());
-		buffer.append(", \"assigned\":" + isAssigned());
-		buffer.append("}");
-
-		return buffer.toString();
-		*/
 	}
 
 	public int getType() {

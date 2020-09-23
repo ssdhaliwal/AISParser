@@ -2,6 +2,8 @@ package elsu.ais.messages.data;
 
 import java.util.ArrayList;
 
+import com.fasterxml.jackson.databind.node.ObjectNode;
+
 import elsu.ais.base.AISPayloadBlock;
 import elsu.sentence.Sentence;
 import elsu.sentence.SentenceBase;
@@ -54,24 +56,21 @@ public class CommunicationState_ITDMA {
 		String result = "";
 		
 		try {
-			result = SentenceBase.objectMapper.writeValueAsString(this);
+			// result = SentenceBase.objectMapper.writeValueAsString(this);
+			ObjectNode node = SentenceBase.objectMapper.createObjectNode();
+
+			node.put("accessScheme", "ITDMA");
+			node.put("increment", getIncrement());
+			node.put("slots", getSlots());
+			node.put("keep", isKeep());
+
+			result = SentenceBase.objectMapper.writeValueAsString(node);
+			node = null;
 		} catch (Exception exi) {
 			result = "error, Sentence, " + exi.getMessage();
 		}
 		
 		return result;
-		/*
-		StringBuilder buffer = new StringBuilder();
-
-		buffer.append("{");
-		buffer.append("\"accessScheme\":\"ITDMA\"");
-		buffer.append(", \"increment\":" + getIncrement());
-		buffer.append(", \"slots\":" + getSlots());
-		buffer.append(", \"keep\":" + isKeep());
-		buffer.append("}");
-
-		return buffer.toString();
-		*/
 	}
 
 	public int getIncrement() {

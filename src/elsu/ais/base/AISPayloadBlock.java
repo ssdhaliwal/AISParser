@@ -2,6 +2,8 @@ package elsu.ais.base;
 
 import java.math.BigInteger;
 
+import com.fasterxml.jackson.databind.node.ObjectNode;
+
 import elsu.sentence.SentenceBase;
 
 public class AISPayloadBlock {
@@ -44,32 +46,29 @@ public class AISPayloadBlock {
 		String result = "";
 		
 		try {
-			result = SentenceBase.objectMapper.writeValueAsString(this);
+			// result = SentenceBase.objectMapper.writeValueAsString(this);
+			ObjectNode node = SentenceBase.objectMapper.createObjectNode();
+
+			node.put("start", getStart());
+			node.put("end", getEnd());
+			node.put("length", getLength());
+			node.put("group", getGroup());
+			node.put("description", getDescription());
+			node.put("name", getName());
+			node.put("type", getType());
+			node.put("units", getUnits());
+			node.put("bits", getBits());
+			node.put("hexValue", getHexValue());
+			node.put("padding", isPadding());
+			node.put("exception", isException());
+
+			result = SentenceBase.objectMapper.writeValueAsString(node);
+			node = null;
 		} catch (Exception exi) {
 			result = "error, Sentence, " + exi.getMessage();
 		}
 		
 		return result;
-		/*
-		StringBuilder buffer = new StringBuilder();
-		
-		buffer.append("{");
-		buffer.append("\"start\":" + getStart());
-		buffer.append(", \"end\":" + getEnd());
-		buffer.append(", \"length\":" + getLength());
-		buffer.append(", \"group\":" + getGroup());
-		buffer.append(", \"description\":\"" + getDescription() + "\"");
-		buffer.append(", \"name\":\"" + getName() + "\"");
-		buffer.append(", \"type\":\"" + getType() + "\"");
-		buffer.append(", \"units\":\"" + getUnits() + "\"");
-		buffer.append(", \"bits\":\"" + getBits() + "\"");
-		buffer.append(", \"hexValue\":\"" + getHexValue() + "\"");
-		buffer.append(", \"padding\":\"" + isPadding() + "\"");
-		buffer.append(", \"exception\":\"" + isException() + "\"");
-		buffer.append("}");
-		
-		return buffer.toString();
-		*/
 	}
 
 	public int getStart() {

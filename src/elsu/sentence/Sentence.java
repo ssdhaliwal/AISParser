@@ -2,6 +2,9 @@ package elsu.sentence;
 
 import java.util.ArrayList;
 
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+
 import elsu.ais.base.AISLookupValues;
 import elsu.ais.base.AISMessageBase;
 import elsu.ais.exceptions.IncompleteFragmentException;
@@ -166,53 +169,46 @@ public class Sentence extends SentenceBase {
 		String result = "";
 		
 		try {
-			result = SentenceBase.objectMapper.writeValueAsString(this);
+			// result = SentenceBase.objectMapper.writeValueAsString(this);
+			ObjectNode node = SentenceBase.objectMapper.createObjectNode();
+
+			node.put("complete", isComplete());
+			node.put("valid", isValid());
+			
+			ArrayNode nodeArray = SentenceBase.objectMapper.createArrayNode();
+			for (String message : getMessages()) {
+				nodeArray.add(message);
+			}
+			node.set("messages", nodeArray);
+			
+			node.put("fieldCount", getFieldCount());
+			node.put("header", getHeader());
+			node.put("protocol", getProtocol());
+			node.put("fragments", getFragments());
+			node.put("fragmentNumber", getFragmentNumber());
+			node.put("sequenceNumber", getSequenceNumber());
+			node.put("radioChannelCode", getRadioChannelCode());
+			node.put("payload", getPayload());
+			node.put("checksum", getChecksum());
+			node.put("checksumError", isChecksumError());
+			node.put("type", getType());
+			node.put("typeText", AISLookupValues.getMessageType(getType()));
+			node.set("aisMessage", SentenceBase.objectMapper.readTree(((getAISMessage() != null) ? getAISMessage().toString() : "")));
+			node.set("tagBlock", SentenceBase.objectMapper.readTree(((getTagBlock() != null) ? getTagBlock().toString() : "")));
+			node.set("tsaInfo", SentenceBase.objectMapper.readTree(((getTSAInfo() != null) ? getTSAInfo().toString() : "")));
+			node.set("vsiInfo", SentenceBase.objectMapper.readTree(((getVSIInfo() != null) ? getVSIInfo().toString() : "")));
+
+			if (SentenceBase.logLevel >= 2) {
+				node.put("bitString", getBitString());
+			}
+			
+			result = SentenceBase.objectMapper.writeValueAsString(node);
+			node = null;
 		} catch (Exception exi) {
 			result = "error, Sentence, " + exi.getMessage();
 		}
 		
 		return result;
-		/*
-		StringBuilder result = new StringBuilder();
-		int counter = 0;
-
-		result.append("{");
-		result.append("\"complete\": " + isComplete());
-		result.append(", \"valid\": " + isValid());
-		result.append(", \"messages\": [");
-
-		counter = 0;
-		for (String message : getMessages()) {
-			if (counter > 0) {
-				result.append(",");
-			}
-			result.append("\"" + message + "\"");
-			counter++;
-		}
-
-		result.append("], \"fieldCount\": " + getFieldCount());
-		result.append(", \"header\": \"" + getHeader() + "\"");
-		result.append(", \"protocol\": \"" + getProtocol() + "\"");
-		result.append(", \"fragments\": " + getFragments());
-		result.append(", \"fragmentNumber\": " + getFragmentNumber());
-		result.append(", \"sequenceNumber\": " + getSequenceNumber());
-		result.append(", \"radioChannelCode\": \"" + getRadioChannelCode() + "\"");
-		result.append(", \"payload\": \"" + getPayload() + "\"");
-		result.append(", \"checksum\": \"" + getChecksum() + "\"");
-		result.append(", \"checksumError\": " + isChecksumError());
-		result.append(", \"type\":" + getType());
-		result.append(", \"typeText\":\"" + AISLookupValues.getMessageType(getType())  + "\"");
-		result.append(", \"aisMessage\": " + getAISMessage());
-		result.append(", \"tagBlock\": " + getTagBlock());
-		result.append(", \"tsaInfo\": " + getTSAInfo());
-		result.append(", \"vsiInfo\": " + getVSIInfo());
-		if (SentenceBase.logLevel >= 2) {
-			result.append(", \"bitString\": \"" + getBitString() + "\"");
-		}
-		result.append("}");
-
-		return result.toString();
-		*/
 	}
 
 	public ArrayList<String> getMessages() {

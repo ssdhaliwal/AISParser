@@ -1,5 +1,7 @@
 package elsu.ais.messages;
 
+import com.fasterxml.jackson.databind.node.ObjectNode;
+
 import elsu.ais.base.AISLookupValues;
 import elsu.ais.base.AISMessageBase;
 import elsu.ais.base.AISPayloadBlock;
@@ -78,30 +80,28 @@ public class T16_AssignedModeCommand extends AISMessageBase {
 		String result = "";
 		
 		try {
-			result = SentenceBase.objectMapper.writeValueAsString(this);
+			// result = SentenceBase.objectMapper.writeValueAsString(this);
+			ObjectNode node = SentenceBase.objectMapper.createObjectNode();
+
+			node.put("type", getType());
+			node.put("typeText", AISLookupValues.getMessageType(getType()));
+			node.put("repeat", getRepeat());
+			node.put("mmsi", getMmsi());
+			
+			node.put("destinationMmsiA", getDestinationMmsiA());
+			node.put("offsetA", getOffsetA());
+			node.put("incrementA", getIncrementA());
+			node.put("destinationMmsiB", getDestinationMmsiB());
+			node.put("offsetB", getOffsetB());
+			node.put("incrementB", getIncrementB());
+
+			result = SentenceBase.objectMapper.writeValueAsString(node);
+			node = null;
 		} catch (Exception exi) {
 			result = "error, Sentence, " + exi.getMessage();
 		}
 		
 		return result;
-		/*
-		StringBuilder buffer = new StringBuilder();
-
-		buffer.append("{");
-		buffer.append("\"type\":" + getType());
-		buffer.append(", \"typeText\":\"" + AISLookupValues.getMessageType(getType()) + "\"");
-		buffer.append(", \"repeat\":" + getRepeat());
-		buffer.append(", \"mmsi\":" + getMmsi());
-		buffer.append(", \"destinationMmsiA\":" + getDestinationMmsiA());
-		buffer.append(", \"offsetA\":" + getOffsetA());
-		buffer.append(", \"incrementA\":" + getIncrementA());
-		buffer.append(", \"destinationMmsiB\":" + getDestinationMmsiB());
-		buffer.append(", \"offsetB\":" + getOffsetB());
-		buffer.append(", \"incrementB\":" + getIncrementB());
-		buffer.append("}");
-
-		return buffer.toString();
-		*/
 	}
 
 	public int getType() {

@@ -2,6 +2,8 @@ package elsu.ais.messages.data;
 
 import java.util.ArrayList;
 
+import com.fasterxml.jackson.databind.node.ObjectNode;
+
 import elsu.ais.base.AISLookupValues;
 import elsu.ais.base.AISPayloadBlock;
 import elsu.sentence.Sentence;
@@ -75,30 +77,28 @@ public class T17_DGNSSCorrectionData {
 		String result = "";
 		
 		try {
-			result = SentenceBase.objectMapper.writeValueAsString(this);
+			// result = SentenceBase.objectMapper.writeValueAsString(this);
+			ObjectNode node = SentenceBase.objectMapper.createObjectNode();
+
+			node.put("type", getType());
+			node.put("typeText", AISLookupValues.getGNSSMessageType(getType()));
+			node.put("stationId", getStationId());
+			node.put("zCount", getZCount());
+			node.put("seqno", getSeqno());
+			node.put("words", getWords());
+			node.put("health", getHealth());
+
+			if (SentenceBase.logLevel >= 2) {
+				node.put("dataBits", getData());
+			}
+			
+			result = SentenceBase.objectMapper.writeValueAsString(node);
+			node = null;
 		} catch (Exception exi) {
 			result = "error, Sentence, " + exi.getMessage();
 		}
 		
 		return result;
-		/*
-		StringBuilder buffer = new StringBuilder();
-
-		buffer.append("{");
-		buffer.append(", \"type\":" + getType());
-		buffer.append(", \"typeText\":\"" + AISLookupValues.getGNSSMessageType(getType()) + "\"");
-		buffer.append(", \"stationId\":" + getStationId());
-		buffer.append(", \"zCount\":" + getZCount());
-		buffer.append(", \"seqno\":" + getSeqno());
-		buffer.append(", \"words\":" + getWords());
-		buffer.append(", \"health\":" + getHealth());
-		if (SentenceBase.logLevel >= 2) {
-			buffer.append(", \"dataBits\":\"" + getData() + "\"");
-		}
-		buffer.append("}");
-
-		return buffer.toString();
-		*/
 	}
 
 	public int getType() {

@@ -2,6 +2,8 @@ package elsu.ais.messages.data;
 
 import java.util.ArrayList;
 
+import com.fasterxml.jackson.databind.node.ObjectNode;
+
 import elsu.ais.base.AISLookupValues;
 import elsu.ais.base.AISPayloadBlock;
 import elsu.sentence.Sentence;
@@ -57,30 +59,29 @@ public class CommunicationState {
 		String result = "";
 		
 		try {
-			result = SentenceBase.objectMapper.writeValueAsString(this);
+			// result = SentenceBase.objectMapper.writeValueAsString(this);
+			ObjectNode node = SentenceBase.objectMapper.createObjectNode();
+
+			node.put("syncState", getState());
+			node.put("syncStateText", AISLookupValues.getCommunicationSyncState(getState()));
+
+			if (SentenceBase.logLevel >= 2) {
+				node.put("message", getMessage());
+			}
+			
+			if (getCommStateSOTDMA() != null) { // SOTDMA
+				node.set("csSOTDMA", SentenceBase.objectMapper.readTree(getCommStateSOTDMA().toString()));
+			} else if (getCommStateITDMA() != null) { // ITDMA
+				node.set("csITDMA", SentenceBase.objectMapper.readTree(getCommStateITDMA().toString()));
+			}
+
+			result = SentenceBase.objectMapper.writeValueAsString(node);
+			node = null;
 		} catch (Exception exi) {
 			result = "error, Sentence, " + exi.getMessage();
 		}
 		
 		return result;
-		/*
-		StringBuilder buffer = new StringBuilder();
-
-		buffer.append("{");
-		buffer.append("\"syncState\":" + getState());
-		buffer.append(", \"syncStateText\":\"" + AISLookupValues.getCommunicationSyncState(getState()) + "\"");
-		if (SentenceBase.logLevel >= 2) {
-			buffer.append(", \"message\":" + getMessage());
-		}
-		if (getCommStateSOTDMA() != null) { // SOTDMA
-			buffer.append(", \"csSOTDMA\":" + getCommStateSOTDMA().toString());
-		} else if (getCommStateITDMA() != null) { // ITDMA
-			buffer.append(", \"csITDMA\":" + getCommStateITDMA().toString());
-		}
-		buffer.append("}");
-
-		return buffer.toString();
-		*/
 	}
 
 	public int getState() {

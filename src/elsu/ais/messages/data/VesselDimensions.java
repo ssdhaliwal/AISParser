@@ -1,5 +1,7 @@
 package elsu.ais.messages.data;
 
+import com.fasterxml.jackson.databind.node.ObjectNode;
+
 import elsu.ais.base.AISMessageBase;
 import elsu.ais.base.AISPayloadBlock;
 import elsu.sentence.SentenceBase;
@@ -51,24 +53,21 @@ public class VesselDimensions extends AISMessageBase {
 		String result = "";
 		
 		try {
-			result = SentenceBase.objectMapper.writeValueAsString(this);
+			// result = SentenceBase.objectMapper.writeValueAsString(this);
+			ObjectNode node = SentenceBase.objectMapper.createObjectNode();
+
+			node.put("toBow", getToBow());
+			node.put("toStern", getToStern());
+			node.put("toPort", getToPort());
+			node.put("toStarboard", getToStarboard());
+
+			result = SentenceBase.objectMapper.writeValueAsString(node);
+			node = null;
 		} catch (Exception exi) {
 			result = "error, Sentence, " + exi.getMessage();
 		}
 		
 		return result;
-		/*
-		StringBuilder buffer = new StringBuilder();
-
-		buffer.append("{");
-		buffer.append("\"toBow\":" + getToBow());
-		buffer.append(", \"toStern\":" + getToStern());
-		buffer.append(", \"toPort\":" + getToPort());
-		buffer.append(", \"toStarboard\":" + getToStarboard());
-		buffer.append("}");
-
-		return buffer.toString();
-		*/
 	}
 
 	@Override

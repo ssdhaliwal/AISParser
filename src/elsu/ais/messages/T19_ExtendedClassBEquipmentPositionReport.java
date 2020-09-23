@@ -1,5 +1,7 @@
 package elsu.ais.messages;
 
+import com.fasterxml.jackson.databind.node.ObjectNode;
+
 import elsu.ais.base.AISLookupValues;
 import elsu.ais.base.AISMessageBase;
 import elsu.ais.base.AISPayloadBlock;
@@ -116,44 +118,42 @@ public class T19_ExtendedClassBEquipmentPositionReport extends AISMessageBase {
 		String result = "";
 		
 		try {
-			result = SentenceBase.objectMapper.writeValueAsString(this);
+			// result = SentenceBase.objectMapper.writeValueAsString(this);
+			ObjectNode node = SentenceBase.objectMapper.createObjectNode();
+
+			node.put("transponder", getTransponderType());
+			node.put("type", getType());
+			node.put("typeText", AISLookupValues.getMessageType(getType()));
+			node.put("repeat", getRepeat());
+			node.put("mmsi", getMmsi());
+			
+			node.put("speed", getSpeed());
+			node.put("accuracy", isAccuracy());
+			node.put("longitude", getLongitude());
+			node.put("latitude", getLatitude());
+			node.put("course", getCourse());
+			node.put("heading", getHeading());
+			node.put("second", getSpeed());
+			node.put("regional", getRegional());
+			node.put("shipName", getShipName().trim());
+			node.put("shipType", getShipType());
+			node.put("shipTypeText", AISLookupValues.getShipType(getShipType()));
+			node.set("dimension", SentenceBase.objectMapper.readTree(((getDimension() != null) ? getDimension().toString() : "")));
+			node.put("epfd", getEpfd());
+			node.put("epfdText", AISLookupValues.getEPFDFixType(getEpfd()));
+			node.put("raim", isRaim());
+			node.put("dte", getDte());
+			node.put("dteText", AISLookupValues.getDte(getDte()));
+			node.put("assignedMode", getAssignedMode());
+			node.put("assignedModeText", AISLookupValues.getAssignedMode(getAssignedMode()));
+
+			result = SentenceBase.objectMapper.writeValueAsString(node);
+			node = null;
 		} catch (Exception exi) {
 			result = "error, Sentence, " + exi.getMessage();
 		}
 		
 		return result;
-		/*
-		StringBuilder buffer = new StringBuilder();
-
-		buffer.append("{");
-		buffer.append("\"transponder\":\"" + getTransponderType() + "\"");
-		buffer.append(", \"type\":" + getType());
-		buffer.append(", \"typeText\":\"" + AISLookupValues.getMessageType(getType()) + "\"");
-		buffer.append(", \"repeat\":" + getRepeat());
-		buffer.append(", \"mmsi\":" + getMmsi());
-		buffer.append(", \"speed\":" + getSpeed());
-		buffer.append(", \"accuracy\":" + isAccuracy());
-		buffer.append(", \"longitude\":" + getLongitude());
-		buffer.append(", \"latitude\":" + getLatitude());
-		buffer.append(", \"course\":" + getCourse());
-		buffer.append(", \"heading\":" + getHeading());
-		buffer.append(", \"second\":" + getSecond());
-		buffer.append(", \"regional\":" + getRegional());
-		buffer.append(", \"shipName\":\"" + getShipName().trim() + "\"");
-		buffer.append(", \"shipType\":" + getShipType());
-		buffer.append(", \"shipTypeText\":\"" + AISLookupValues.getShipType(getShipType()) + "\"");
-		buffer.append(", \"dimension\":" + getDimension());
-		buffer.append(", \"epfd\":" + getEpfd());
-		buffer.append(", \"epfdText\":\"" + AISLookupValues.getEPFDFixType(getEpfd()) + "\"");
-		buffer.append(", \"raim\":" + isRaim());
-		buffer.append(", \"dte\":" + getDte());
-		buffer.append(", \"dteText\":\"" + AISLookupValues.getDte(getDte()) + "\"");
-		buffer.append(", \"assignedMode\":" + getAssignedMode());
-		buffer.append(", \"assignedModeText\":\"" + AISLookupValues.getAssignedMode(getAssignedMode()) + "\"");
-		buffer.append("}");
-
-		return buffer.toString();
-		*/
 	}
 
 	public String getTransponderType() {

@@ -2,6 +2,8 @@ package elsu.ais.messages.data;
 
 import java.util.ArrayList;
 
+import com.fasterxml.jackson.databind.node.ObjectNode;
+
 import elsu.ais.base.AISPayloadBlock;
 import elsu.sentence.Sentence;
 import elsu.sentence.SentenceBase;
@@ -66,40 +68,38 @@ public class CommunicationState_SOTDMA {
 		String result = "";
 		
 		try {
-			result = SentenceBase.objectMapper.writeValueAsString(this);
+			// result = SentenceBase.objectMapper.writeValueAsString(this);
+			ObjectNode node = SentenceBase.objectMapper.createObjectNode();
+
+			node.put("accessScheme", "SOTDMA");
+			node.put("timeout", getTimeout());
+			
+			switch (getTimeout()) {
+			case 0:
+				node.put("slotOffset", getSlotOffset());
+				break;
+			case 1:
+				node.put("UTCHourMin", getUtcHourMinute());
+				break;
+			case 2:
+			case 4:
+			case 6:
+				node.put("slotNumber", getSlotNumber());
+				break;
+			case 3:
+			case 5:
+			case 7:
+				node.put("receivedStations", getReceivedStations());
+				break;
+			}
+
+			result = SentenceBase.objectMapper.writeValueAsString(node);
+			node = null;
 		} catch (Exception exi) {
 			result = "error, Sentence, " + exi.getMessage();
 		}
 		
 		return result;
-		/*
-		StringBuilder buffer = new StringBuilder();
-
-		buffer.append("{");
-		buffer.append("\"accessScheme\":\"SOTDMA\"");
-		buffer.append(", \"timeout\":" + getTimeout());
-		switch (getTimeout()) {
-		case 0:
-			buffer.append(", \"slotOffset\":" + getSlotOffset());
-			break;
-		case 1:
-			buffer.append(", \"UTCHourMin\":\"" + getUtcHourMinute() + "\"");
-			break;
-		case 2:
-		case 4:
-		case 6:
-			buffer.append(", \"slotNumber\":" + getSlotNumber());
-			break;
-		case 3:
-		case 5:
-		case 7:
-			buffer.append(", \"receivedStations\":" + getReceivedStations());
-			break;
-		}
-		buffer.append("}");
-
-		return buffer.toString();
-		*/
 	}
 
 	public int getTimeout() {

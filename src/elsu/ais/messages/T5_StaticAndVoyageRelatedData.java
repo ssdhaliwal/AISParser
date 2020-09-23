@@ -1,5 +1,7 @@
 package elsu.ais.messages;
 
+import com.fasterxml.jackson.databind.node.ObjectNode;
+
 import elsu.ais.base.AISLookupValues;
 import elsu.ais.base.AISMessageBase;
 import elsu.ais.base.AISPayloadBlock;
@@ -113,33 +115,40 @@ public class T5_StaticAndVoyageRelatedData extends AISMessageBase {
 		String result = "";
 		
 		try {
-			result = SentenceBase.objectMapper.writeValueAsString(this);
+			// result = SentenceBase.objectMapper.writeValueAsString(this);
+			ObjectNode node = SentenceBase.objectMapper.createObjectNode();
+
+			node.put("type", getType());
+			node.put("typeText", AISLookupValues.getMessageType(getType()));
+			node.put("repeat", getRepeat());
+			node.put("mmsi", getMmsi());
+			
+			node.put("aisVersion", getAisVersion());
+			node.put("imo", getImo());
+			node.put("callSign", getCallSign().trim());
+			node.put("shipName", getShipName().trim());
+			node.put("shipType", getShipType());
+			node.put("shipTypeText", AISLookupValues.getShipType(getShipType()));
+			node.set("dimension", SentenceBase.objectMapper.readTree(((getDimension() != null) ? getDimension().toString() : "")));
+			node.put("epfd", AISLookupValues.getEPFDFixType(getEpfd()));
+			node.put("epfdText", AISLookupValues.getEPFDFixType(getEpfd()));
+			node.put("month", getMonth());
+			node.put("hour", getHour());
+			node.put("day", getDay());
+			node.put("minute", getMinute());
+			node.put("draught", getDraught());
+			node.put("destination", getDestination().trim());
+			node.put("dte", getDte());
+			node.put("dteText", AISLookupValues.getDte(getDte()));
+
+			result = SentenceBase.objectMapper.writeValueAsString(node);
+			node = null;
 		} catch (Exception exi) {
 			result = "error, Sentence, " + exi.getMessage();
 		}
 		
 		return result;
 		/*
-		StringBuilder buffer = new StringBuilder();
-
-		buffer.append("{");
-		buffer.append("\"type\":" + getType());
-		buffer.append(", \"typeText\":\"" + AISLookupValues.getMessageType(getType()) + "\"");
-		buffer.append(", \"repeat\":" + getRepeat());
-		buffer.append(", \"mmsi\":" + getMmsi());
-		buffer.append(", \"aisVersion\":" + getAisVersion());
-		buffer.append(", \"imo\":" + getImo());
-		buffer.append(", \"callSign\":\"" + getCallSign().trim() + "\"");
-		buffer.append(", \"shipName\":\"" + getShipName().trim() + "\"");
-		buffer.append(", \"shipType\":" + getShipType());
-		buffer.append(", \"shipTypeText\":\"" + AISLookupValues.getShipType(getShipType()) + "\"");
-		buffer.append(", \"dimension\":" + getDimension());
-		buffer.append(", \"epfd\":" + getEpfd());
-		buffer.append(", \"epfdText\":\"" + AISLookupValues.getEPFDFixType(getEpfd()) + "\"");
-		buffer.append(", \"month\":" + getMonth());
-		buffer.append(", \"hour\":" + getHour());
-		buffer.append(", \"day\":" + getDay());
-		buffer.append(", \"minute\":" + getMinute());
 		buffer.append(", \"draught\":" + getDraught());
 		buffer.append(", \"destination\":\"" + getDestination().trim() + "\"");
 		buffer.append(", \"dte\":" + getDte());

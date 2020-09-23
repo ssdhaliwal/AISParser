@@ -1,5 +1,7 @@
 package elsu.sentence.tags;
 
+import com.fasterxml.jackson.databind.node.ObjectNode;
+
 import elsu.sentence.SentenceBase;
 
 public class SentenceGroup {
@@ -49,24 +51,21 @@ public class SentenceGroup {
 		String result = "";
 		
 		try {
-			result = SentenceBase.objectMapper.writeValueAsString(this);
+			// result = SentenceBase.objectMapper.writeValueAsString(this);
+			ObjectNode node = SentenceBase.objectMapper.createObjectNode();
+
+			node.put("lineNumber", getLinenumber());
+			node.put("totalLines", getTotallines());
+			node.put("code", getCode());
+			node.put("exceptions", getExceptions());
+
+			result = SentenceBase.objectMapper.writeValueAsString(node);
+			node = null;
 		} catch (Exception exi) {
 			result = "error, Sentence, " + exi.getMessage();
 		}
 		
 		return result;
-		/*
-		StringBuilder buffer = new StringBuilder();
-		
-		buffer.append("{");
-		buffer.append("\"lineNumber\": " + getLinenumber());
-		buffer.append(", \"totalLines\": " + getTotallines());
-		buffer.append(", \"code\": \"" + getCode() + "\"");
-		buffer.append(", \"exceptions\": \"" + getExceptions() + "\"");
-		buffer.append("}");
-		
-		return buffer.toString();
-		*/
 	}
 	
 	public int getLinenumber() {

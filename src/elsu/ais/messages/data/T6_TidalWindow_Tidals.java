@@ -1,5 +1,8 @@
 package elsu.ais.messages.data;
 
+import com.fasterxml.jackson.databind.node.ObjectNode;
+
+import elsu.ais.base.AISLookupValues;
 import elsu.sentence.SentenceBase;
 
 public class T6_TidalWindow_Tidals {
@@ -12,28 +15,25 @@ public class T6_TidalWindow_Tidals {
 		String result = "";
 		
 		try {
-			result = SentenceBase.objectMapper.writeValueAsString(this);
+			// result = SentenceBase.objectMapper.writeValueAsString(this);
+			ObjectNode node = SentenceBase.objectMapper.createObjectNode();
+
+			node.put("latitide", getLatitude());
+			node.put("longitude", getLongitude());
+			node.put("fromHour", getFromHour());
+			node.put("fromMinute", getFromMinute());
+			node.put("toHour", getToHour());
+			node.put("toMinute", getToMinute());
+			node.put("currentDirection", getCurrentDirection());
+			node.put("currentSpeed", getCurrentSpeed());
+
+			result = SentenceBase.objectMapper.writeValueAsString(node);
+			node = null;
 		} catch (Exception exi) {
 			result = "error, Sentence, " + exi.getMessage();
 		}
 		
 		return result;
-		/*
-		StringBuilder buffer = new StringBuilder();
-
-		buffer.append("{");
-		buffer.append("\"latitide\":" + getLatitude());
-		buffer.append(", \"longitude\":" + getLongitude());
-		buffer.append(", \"fromHour\":" + getFromHour());
-		buffer.append(", \"fromMinute\":" + getFromMinute());
-		buffer.append(", \"toHour\":" + getToHour());
-		buffer.append(", \"toMinute\":" + getToMinute());
-		buffer.append(", \"currentDirection\":" + getCurrentDirection());
-		buffer.append(", \"currentSpeed\":" + getCurrentSpeed());
-		buffer.append("}");
-
-		return buffer.toString();
-		*/
 	}
 	
 	public float getLatitude() {

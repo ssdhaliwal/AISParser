@@ -1,5 +1,7 @@
 package elsu.ais.messages;
 
+import com.fasterxml.jackson.databind.node.ObjectNode;
+
 import elsu.ais.base.AISLookupValues;
 import elsu.ais.base.AISMessageBase;
 import elsu.ais.base.AISPayloadBlock;
@@ -128,33 +130,32 @@ public class T25_SingleSlotBinaryMessage extends AISMessageBase {
 		String result = "";
 		
 		try {
-			result = SentenceBase.objectMapper.writeValueAsString(this);
+			// result = SentenceBase.objectMapper.writeValueAsString(this);
+			ObjectNode node = SentenceBase.objectMapper.createObjectNode();
+
+			node.put("type", getType());
+			node.put("typeText", AISLookupValues.getMessageType(getType()));
+			node.put("repeat", getRepeat());
+			node.put("mmsi", getMmsi());
+			
+			node.put("addressed", isAddressed());
+			node.put("structured", isStructured());
+			node.put("destinationMmsi", getDestinationMmsi());
+			node.put("dac", getDac());
+			node.put("fid", getFid());
+			
+			if (SentenceBase.logLevel >= 2) {
+				node.put("dataBits", getData());
+				node.put("data", getDataRaw());
+			}
+
+			result = SentenceBase.objectMapper.writeValueAsString(node);
+			node = null;
 		} catch (Exception exi) {
 			result = "error, Sentence, " + exi.getMessage();
 		}
 		
 		return result;
-		/*
-		StringBuilder buffer = new StringBuilder();
-
-		buffer.append("{");
-		buffer.append("\"type\":" + getType());
-		buffer.append(", \"typeText\":\"" + AISLookupValues.getMessageType(getType()) + "\"");
-		buffer.append(", \"repeat\":" + getRepeat());
-		buffer.append(", \"mmsi\":" + getMmsi());
-		buffer.append(", \"addressed\":" + isAddressed());
-		buffer.append(", \"strictured\":" + isStructured());
-		buffer.append(", \"destinationMmsi\":" + getDestinationMmsi());
-		buffer.append(", \"dac\":" + getDac());
-		buffer.append(", \"fid\":" + getFid());
-		if (SentenceBase.logLevel >= 2) {
-			buffer.append(", \"dataBits\":\"" + getData() + "\"");
-		}
-		buffer.append(", \"data\":\"" + getDataRaw() + "\"");
-		buffer.append("}");
-
-		return buffer.toString();
-		*/
 	}
 
 	public int getType() {

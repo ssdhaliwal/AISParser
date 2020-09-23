@@ -1,5 +1,7 @@
 package elsu.ais.messages;
 
+import com.fasterxml.jackson.databind.node.ObjectNode;
+
 import elsu.ais.base.AISLookupValues;
 import elsu.ais.base.AISMessageBase;
 import elsu.ais.base.AISPayloadBlock;
@@ -124,40 +126,38 @@ public class T20_DataLinkManagementMessage extends AISMessageBase {
 		String result = "";
 		
 		try {
-			result = SentenceBase.objectMapper.writeValueAsString(this);
+			// result = SentenceBase.objectMapper.writeValueAsString(this);
+			ObjectNode node = SentenceBase.objectMapper.createObjectNode();
+
+			node.put("type", getType());
+			node.put("typeText", AISLookupValues.getMessageType(getType()));
+			node.put("repeat", getRepeat());
+			node.put("mmsi", getMmsi());
+			
+			node.put("offset1", getOffset1());
+			node.put("number1", getNumber1());
+			node.put("timeout1", getTimeout1());
+			node.put("increment1", getIncrement1());
+			node.put("offset2", getOffset2());
+			node.put("number2", getNumber2());
+			node.put("timeout2", getTimeout2());
+			node.put("increment2", getIncrement2());
+			node.put("offset3", getOffset3());
+			node.put("number3", getNumber3());
+			node.put("timeout3", getTimeout3());
+			node.put("increment3", getIncrement3());
+			node.put("offset4", getOffset4());
+			node.put("number4", getNumber4());
+			node.put("timeout4", getTimeout4());
+			node.put("increment4", getIncrement4());
+
+			result = SentenceBase.objectMapper.writeValueAsString(node);
+			node = null;
 		} catch (Exception exi) {
 			result = "error, Sentence, " + exi.getMessage();
 		}
 		
 		return result;
-		/*
-		StringBuilder buffer = new StringBuilder();
-
-		buffer.append("{");
-		buffer.append("\"type\":" + getType());
-		buffer.append(", \"typeText\":\"" + AISLookupValues.getMessageType(getType()) + "\"");
-		buffer.append(", \"repeat\":" + getRepeat());
-		buffer.append(", \"mmsi\":" + getMmsi());
-		buffer.append(", \"offset1\":" + getOffset1());
-		buffer.append(", \"number1\":" + getNumber1());
-		buffer.append(", \"timeout1\":" + getTimeout1());
-		buffer.append(", \"increment1\":" + getIncrement1());
-		buffer.append(", \"offset2\":" + getOffset2());
-		buffer.append(", \"number2\":" + getNumber2());
-		buffer.append(", \"timeout2\":" + getTimeout2());
-		buffer.append(", \"increment2\":" + getIncrement2());
-		buffer.append(", \"offset3\":" + getOffset3());
-		buffer.append(", \"number3\":" + getNumber3());
-		buffer.append(", \"timeout3\":" + getTimeout3());
-		buffer.append(", \"increment3\":" + getIncrement3());
-		buffer.append(", \"offset4\":" + getOffset4());
-		buffer.append(", \"number4\":" + getNumber4());
-		buffer.append(", \"timeout4\":" + getTimeout4());
-		buffer.append(", \"increment4\":" + getIncrement4());
-		buffer.append("}");
-
-		return buffer.toString();
-		*/
 	}
 
 	public int getType() {
