@@ -87,8 +87,8 @@ public class T8_BinaryBroadCastMessage extends AISMessageBase {
 
 			if (SentenceBase.logLevel >= 2) {
 				node.put("dataBits", getData());
+				node.put("dataRaw", getDataRaw());
 			}
-			node.put("dataRaw", getDataRaw());
 
 			result = SentenceBase.objectMapper.writeValueAsString(node);
 			node = null;

@@ -106,8 +106,8 @@ public class T6_BinaryAddressedMessage extends AISMessageBase {
 
 			if (SentenceBase.logLevel >= 2) {
 				node.put("dataBits", getData());
+				node.put("dataRaw", getDataRaw());
 			}
-			node.put("dataRaw", getDataRaw());
 
 			result = SentenceBase.objectMapper.writeValueAsString(node);
 			node = null;
