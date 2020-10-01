@@ -38,7 +38,7 @@ public class Sentence extends SentenceBase {
 		boolean complete = false;
 		String protocol = "", radioChannelCode = "", payload = "";
 		int fragments = 0, fragmentNumber = 0, sequenceNumber = 0, checksum = 0;
-
+		
 		// check message fields
 		if (!message.matches(messageVDORegex)) {
 			throw new Exception("message field length is < 7; " + message);
@@ -94,7 +94,7 @@ public class Sentence extends SentenceBase {
 
 			// check if partial fragment is invalid?
 			if ((fragmentNumber == 1) && (fragments == 1)) {
-				if (getMessages().size() != 0) {
+				if ((getMessages().size() != 0) && !isComplete()) {
 					throw new IncompleteFragmentException("message fragment missing; ");
 				}
 
@@ -106,13 +106,12 @@ public class Sentence extends SentenceBase {
 
 				complete = true;
 			} else {
-				if (fragmentNumber < getFragmentNumber()) {
-					throw new IncompleteFragmentException("message fragment out of sequence; ");
-				} else if (fragmentNumber != getMessages().size() + 1) {
-					throw new IncompleteFragmentException("message fragment out of sequence; ");
-				}
-
 				complete = false;
+			}
+			
+			// clear message list if new message
+			if (fragmentNumber == 1) {
+				clearMessage();
 			}
 		} catch (IncompleteFragmentException ife) {
 			throw ife;
@@ -213,6 +212,10 @@ public class Sentence extends SentenceBase {
 
 	public ArrayList<String> getMessages() {
 		return this.messages;
+	}
+
+	protected void clearMessage() {
+		this.messages.clear();
 	}
 
 	protected void setMessage(String message) {

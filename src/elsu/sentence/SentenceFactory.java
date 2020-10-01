@@ -36,7 +36,7 @@ public class SentenceFactory {
 		// if message has tag blocks
 		String tags = "";
 		SentenceTagBlock tagBlock = null;
-
+		
 		Matcher hMatch = SentenceBase.headerPattern.matcher(message);
 		while (hMatch.find()) {
 			tags = hMatch.group(0).replaceAll("\\\\", "");
@@ -56,7 +56,7 @@ public class SentenceFactory {
 		}
 
 		// if message has no tag blocks (TSA preceeds VDO/VDM, VSI follows VDO/VDM)
-		if (tagBlock == null) {
+		if ((tagBlock == null) || (tagBlock.getSentenceGroup() == null)) {
 			if (SentenceBase.messageTSAPattern.matcher(message).matches()) {
 				if ((tsaInfo != null) || (sentence != null)) {
 					notifyError(new Exception("$..TSA message with no VDO/VDM"), tsaInfo, null);
@@ -86,15 +86,19 @@ public class SentenceFactory {
 				}
 			}
 
-			if (sentence == null) {
-				sentence = Sentence.fromString(message);
-			} else {
-				try {
-					sentence = Sentence.appendString(message, sentence);
-				} catch (IncompleteFragmentException ife) {
-					notifyError(ife, sentence, message);
-					
-					sentence = Sentence.fromString(message);
+			// -- extract message and process it
+			hMatch = SentenceBase.messageVDOPattern.matcher(message);
+			while (hMatch.find()) {
+				tags = hMatch.group(0);
+				
+				if (sentence == null) {
+					sentence = Sentence.fromString(tags);
+				} else {
+					try {
+						sentence = Sentence.appendString(tags, sentence);
+					} catch (IncompleteFragmentException ife) {
+						notifyError(ife, sentence, message);
+					}
 				}
 			}
 			
@@ -116,20 +120,24 @@ public class SentenceFactory {
 			if (getTagBlock() == null) {
 				setTagBlock(tagBlock);
 			} else {
-				if ((getTagBlock().getSentenceGroup().getTotallines() != tagBlock.getSentenceGroup().getTotallines())
-						|| (!getTagBlock().getSentenceGroup().getCode().equals(tagBlock.getSentenceGroup().getCode()))
-						|| ((getTagBlock().getSentenceGroup().getLinenumber() + 1) != tagBlock.getSentenceGroup()
-								.getLinenumber())) {
-					notifyError(new Exception("tag mis-match"), sentence, message);
-
-					if (tagBlock.getSentenceGroup().getLinenumber() == 1) {
-						setTagBlock(tagBlock);
-					} else {
-						throw new Exception("new tag sequence invalid");
+				try {
+					if ((getTagBlock().getSentenceGroup().getTotallines() != tagBlock.getSentenceGroup().getTotallines())
+							|| (!getTagBlock().getSentenceGroup().getCode().equals(tagBlock.getSentenceGroup().getCode()))
+							|| ((getTagBlock().getSentenceGroup().getLinenumber() + 1) != tagBlock.getSentenceGroup()
+									.getLinenumber())) {
+						notifyError(new Exception("tag mis-match"), sentence, message);
+	
+						if (tagBlock.getSentenceGroup().getLinenumber() == 1) {
+							setTagBlock(tagBlock);
+						} else {
+							throw new Exception("new tag sequence invalid");
+						}
 					}
+	
+					getTagBlock().getSentenceGroup().setLinenumber(tagBlock.getSentenceGroup().getLinenumber());
+				} catch (Exception exi) {
+					throw new Exception("new tag sequence invalid - tag block invalid");
 				}
-
-				getTagBlock().getSentenceGroup().setLinenumber(tagBlock.getSentenceGroup().getLinenumber());
 			}
 
 			// see if there is a message as part of the tag
