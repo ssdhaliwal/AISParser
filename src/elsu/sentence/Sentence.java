@@ -216,6 +216,7 @@ public class Sentence extends SentenceBase {
 
 	protected void clearMessage() {
 		this.messages.clear();
+		this.payload = "";
 	}
 
 	protected void setMessage(String message) {
