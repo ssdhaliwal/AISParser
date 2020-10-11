@@ -103,7 +103,12 @@ public class T8_MeteorologicalHydrologicalData extends T8_BinaryBroadCastMessage
 		if (block.isException()) {
 			throw new Exception("parsing error; " + block);
 		}
-
+		
+		// this is to ignore the master block which created the child data
+		if (block.getEnd() == -1) {
+			return;
+		}
+		
 		switch (block.getStart()) {
 		case 56:
 			setLatitude(parseFLOAT(block.getBits()) / 600f);

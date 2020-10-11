@@ -37,6 +37,11 @@ public class T6_InternationalFunctionalMessage4 extends T6_BinaryAddressedMessag
 		if (block.isException()) {
 			throw new Exception("parsing error; " + block);
 		}
+		
+		// this is to ignore the master block which created the child data
+		if (block.getEnd() == -1) {
+			return;
+		}
 
 		switch (block.getStart()) {
 		case 88:

@@ -64,6 +64,11 @@ public class T6_TidalWindow extends T6_BinaryAddressedMessage {
 				throw new Exception("parsing error; " + block);
 			}
 		}
+		
+		// this is to ignore the master block which created the child data
+		if (block.getEnd() == -1) {
+			return;
+		}
 
 		switch (block.getStart()) {
 		case 88:

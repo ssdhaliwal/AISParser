@@ -153,6 +153,9 @@ public abstract class AISMessageBase extends SentenceBase {
 					block.setBits(message.substring(block.getStart(), block.getEnd() + 1));
 				} else if (block.getStart() < 0) {
 					block.setStart(message.length() + block.getStart());
+					if (block.getEnd() == 0) {
+						block.setEnd(block.getStart() + block.getLength() - 1);
+					}
 					block.setBits(message.substring(block.getStart(), block.getEnd() + 1));
 				} else {
 					block.setBits(message.substring(block.getStart(), block.getEnd() + 1));
