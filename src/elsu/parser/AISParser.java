@@ -23,7 +23,7 @@ public class AISParser implements IAISEventListener {
 
 		BufferedReader reader = null;
 		try {
-			System.out.println(".. parser start .." + (new Date()));
+			System.out.println(getClass().toString() + ", " + "parseMessageFile(), parser start, " + (new Date()));
 
 			// InputStream (is) must be set and initialized before
 			reader = new BufferedReader(new InputStreamReader(stream));
@@ -38,7 +38,7 @@ public class AISParser implements IAISEventListener {
 			}
 		} catch (Exception ex) {
 			// Do something
-			System.out.println(ex.getMessage());
+			System.out.println(getClass().toString() + ", " + "parseMessageFile(), " + ex.getMessage());
 		} finally {
 			try {
 				if (reader != null) {
@@ -50,17 +50,17 @@ public class AISParser implements IAISEventListener {
 
 			// save the output to file
 			try {
-				System.out.println(".. parser complete .." + (new Date()));
+				System.out.println(getClass().toString() + ", " + "parseMessageFile(), parser complete, " + (new Date()));
 				saveRecordsToFile(fileOut, collate);
-				System.out.println("Total Records: " + result.size());
+				System.out.println(getClass().toString() + ", " + "parseMessageFile(), total records: " + result.size());
 			} catch (Exception ex) {
-				System.out.println(ex.getMessage());
+				System.out.println(getClass().toString() + ", " + "parseMessageFile(), " + ex.getMessage());
 			}
 		}
 	}
 
 	private void saveRecordsToFile(String fileOut, boolean collate) throws Exception {
-		System.out.println(".. file output start .." + (new Date()));
+		System.out.println(getClass().toString() + ", " + "saveRecordsToFile(), " + "file output start, " + (new Date()));
 
 		String fileExt = "";
 		int index = fileOut.lastIndexOf(".");
@@ -69,7 +69,7 @@ public class AISParser implements IAISEventListener {
 		}
 		fileOut = fileOut.replaceAll(fileExt, "");
 
-		System.out.println(".. file output msg x start .." + (new Date()));
+		System.out.println(getClass().toString() + ", " + "saveRecordsToFile(), " + "file output msg x start, " + (new Date()));
 		if (!collate) {
 			FileUtils.writeFile(fileOut + fileExt, result, false);
 		} else {
@@ -77,19 +77,19 @@ public class AISParser implements IAISEventListener {
 				FileUtils.writeFile(fileOut + "_" + resultType.get(i) + fileExt, (String)result.get(i) + "\n", false);
 			}
 		}
-		System.out.println(".. file output msg x complete .." + (new Date()));
+		System.out.println(getClass().toString() + ", " + "saveRecordsToFile(), " + "file output msg x complete, " + (new Date()));
 	}
 
 	@Override
 	public void onAISError(Exception ex, Object o, String message) {
 		try {
 			if (SentenceBase.logLevel >= 2) {
-				System.out.println("error, " + ex.getMessage() + ", " + o + ", " + message);
+				System.out.println(getClass().toString() + ", " + "onAISError(), " + ex.getMessage() + ", " + o + ", " + message);
 			}
 			result.add(ex.getMessage() + ", " + o + ", " + message);
 			resultType.add(0);
 		} catch (Exception exi) {
-			System.out.println("message error notification exception; " + message);
+			System.out.println(getClass().toString() + ", " + "onAISError(), " + "message error notification exception, " + exi.getMessage());
 		}
 	}
 
@@ -97,7 +97,7 @@ public class AISParser implements IAISEventListener {
 	public void onAISComplete(Object o) {
 		try {
 			if (SentenceBase.logLevel >= 4) {
-				System.out.println("complete, " + o);
+				System.out.println(getClass().toString() + ", " + "onAISComplete(), " + "complete, " + o);
 			}
 			result.add(o.toString());
 			if (o instanceof Sentence) {
@@ -106,7 +106,7 @@ public class AISParser implements IAISEventListener {
 				resultType.add(99);
 			}
 		} catch (Exception exi) {
-			System.out.println("message complete notification exception; ");
+			System.out.println(getClass().toString() + ", " + "onAISComplete(), " + "message complete notification exception, " + exi.getMessage());
 		}
 	}
 
@@ -114,7 +114,7 @@ public class AISParser implements IAISEventListener {
 	public void onAISUpdate(Object o) {
 		try {
 			if (SentenceBase.logLevel >= 4) {
-				System.out.println("update, " + o);
+				System.out.println(getClass().toString() + ", " + "onAISComplete(), " + "update, " + o);
 			}
 			result.add(o.toString());
 			if (o instanceof Sentence) {
@@ -123,7 +123,7 @@ public class AISParser implements IAISEventListener {
 				resultType.add(99);
 			}
 		} catch (Exception exi) {
-			System.out.println("message update notification exception; ");
+			System.out.println(getClass().toString() + ", " + "onAISError(), " + "message error notification exception, " + exi.getMessage());
 		}
 	}
 
@@ -179,7 +179,7 @@ public class AISParser implements IAISEventListener {
 		try {
 			config = new ConfigLoader("config/app.config", null);
 		} catch (Exception ex) {
-			throw new Exception("config resource not found: config/app.config");
+			throw new Exception("elsu.parser, " + "main(), " + "config resource not found: config/app.config");
 		}
 
 		AISParser aisparser = new AISParser();
@@ -194,7 +194,7 @@ public class AISParser implements IAISEventListener {
 			fileIn = args[1];
 			fileOut = args[2];
 
-			System.out.println(".. start .." + (new Date()));
+			System.out.println("elsu.parser, " + "main(), start, " + (new Date()));
 			for (int i = 3; i < args.length; i++){
 				tArg = args[i].toLowerCase();
 				boolean result = new parseArgs().parseArg(tArg);
@@ -210,9 +210,9 @@ public class AISParser implements IAISEventListener {
 			InputStream targetStream = new FileInputStream(initialFile);
 
 			aisparser.parseMessageFile(config, targetStream, path + "/" + fileOut, collate);
-			System.out.println(".. complete .." + (new Date()));
+			System.out.println("elsu.parser, " + "main(), complete, " + (new Date()));
 		} catch (Exception ex) {
-			System.out.println(ex.getMessage());
+			System.out.println("elsu.parser, " + "main(), unknown, " + ex.getMessage());
 		}
 	}
 }
