@@ -1,5 +1,6 @@
 package elsu.sentence;
 
+import java.util.ArrayList;
 import java.util.Set;
 import java.util.concurrent.CopyOnWriteArraySet;
 import java.util.regex.Matcher;
@@ -29,6 +30,12 @@ public class SentenceFactory {
 			 */
 		} catch (Exception ex) {
 			notifyError(ex, sentence, message);
+		}
+	}
+
+	public void parseSentence(ArrayList<String> messages) {
+		for(String message : messages) {
+			parseSentence(message);
 		}
 	}
 
