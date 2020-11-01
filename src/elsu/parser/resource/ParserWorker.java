@@ -32,11 +32,8 @@ public class ParserWorker implements Runnable {
 			try {
 				messages = this.messageQueue.take();
 				
-				if ((messages != null) && (messages.size() > 0)) {
-					if (messages.get(0).equals("!!EOF!!")) {
-					} else {
-						getSentenceFactory().parseSentence(messages);
-					}
+				if (messages != null) {
+					getSentenceFactory().parseSentence(messages);
 				}
 				
 				Thread.yield();

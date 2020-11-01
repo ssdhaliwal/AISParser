@@ -72,12 +72,8 @@ public abstract class ConnectorBase extends Thread {
 	
 	public void sendTermination() {
 		// terminate workers
-		ArrayList<String> messages = new ArrayList<String>();
-		messages.add("!!EOF!!");
-
 		for(int i = 0; i < getMaxThreads(); i++) {
 			(getWorkers()[i]).isShutdown = true;
-			messageQueue.add(messages);
 		}
 	}
 	
