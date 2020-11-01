@@ -39,7 +39,7 @@ public class StreamSocketConnector extends ConnectorBase {
 	private long monitorRecordCounter = 0L;
 	private Socket clientSocket = null;
 	private String fileMask = "";
-	//private volatile FileChannelTextWriter messageWriter = null;
+	private volatile FileChannelTextWriter messageWriter = null;
 	
 	private int max_threads = 10;
 	
@@ -96,13 +96,13 @@ public class StreamSocketConnector extends ConnectorBase {
 
 		// open the writer channels; don't use equipment id it is included in
 		// the message in the file
-		// messageWriter = new FileChannelTextWriter(String.format(fileMask, "%s", "MSG"),
-		// 		localStorePath + "incomming/", rolloverPeriodicity);
-		// messageWriter.setRolloverFrequency(rolloverFrequency);
+		messageWriter = new FileChannelTextWriter(String.format(fileMask, "%s", "MSG"),
+				localStorePath + "incomming/", rolloverPeriodicity);
+		messageWriter.setRolloverFrequency(rolloverFrequency);
 	}
 
 	public void sendError(String error) throws Exception {
-		// messageWriter.write(error + GlobalStack.LINESEPARATOR);
+		messageWriter.write(error + GlobalStack.LINESEPARATOR);
 		super.sendError(error);
 	}
 
@@ -296,12 +296,11 @@ public class StreamSocketConnector extends ConnectorBase {
 			isRunning = false;
 
 			// close local writer
-			// if (messageWriter != null) {
-			// 	try {
-			// 		messageWriter.close();
-			// 	} catch (Exception exi) {
-			// 	}
-			// }
+			if (messageWriter != null) {
+			 	try {
+			 		messageWriter.close();
+			 	} catch (Exception exi) { }
+			 }
 
 			// log message
 			sendTermination();
