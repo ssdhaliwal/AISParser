@@ -96,6 +96,7 @@ public class StreamFileConnector extends ConnectorBase {
 
 						// process the message and fire the events
 						try {
+							int totalMsgNbr = 0, fragmentNbr = 0;
 							if (line.matches("(?s).*!..VD[OM].*")) {
 								hMatch = SentenceBase.messageVDOPattern.matcher(line);
 								while (hMatch.find()) {
@@ -103,18 +104,20 @@ public class StreamFileConnector extends ConnectorBase {
 
 									// if complete message
 									message = sentence.split(",");
-									if (message[1].equals(message[2])) {
+									totalMsgNbr = Integer.valueOf(message[1]);
+									fragmentNbr = Integer.valueOf(message[2]);
+									if (fragmentNbr <= totalMsgNbr) {
 										messages.add(sentence);
 
-										if (messages.size() == Integer.valueOf(message[1])) {
+										if (messages.size() == totalMsgNbr) {
 											sendMessage(messages);
 											messages = new ArrayList<String>();
-										} else {
+										} else if (fragmentNbr > messages.size()) {
 											sendError("partial fragment, pending queue cleared, ["
 													+ CollectionUtils.ArrayListToString(messages) + "]");
 											messages = new ArrayList<String>();
 										}
-									} else if (Integer.valueOf(message[2]) == 1) {
+									} else if (fragmentNbr == 1) {
 										if (messages.size() > 0) {
 											sendError("partial fragment, pending queue cleared, ["
 													+ CollectionUtils.ArrayListToString(messages) + "]");
