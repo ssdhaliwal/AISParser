@@ -51,9 +51,9 @@ public class AISParser implements IAISEventListener {
 		String[] connections = connectionList.split(",");
 		for (String connection : connections) {
 			if (config.getProperty("application.services.service." + connection + ".attributes.key.type").toString().equals("file")) {
-				connector = new StreamFileConnector(config, connection, "", 0);
+				connector = new StreamFileConnector(config, connection);
 			} else {
-				connector = new StreamSocketConnector(config, connection, "", 0, "", "");
+				connector = new StreamSocketConnector(config, connection);
 			}
 			
 			connector.start();

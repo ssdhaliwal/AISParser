@@ -19,7 +19,7 @@ public class StreamFileConnector extends ConnectorBase {
 	
 	private int max_threads = 10;
 
-	public StreamFileConnector(ConfigLoader config, String connName, String filename, int interval) throws Exception {
+	public StreamFileConnector(ConfigLoader config, String connName) throws Exception {
 		super();
 		
 		// load the config params else override from constructor
@@ -30,18 +30,13 @@ public class StreamFileConnector extends ConnectorBase {
 		initializeThreadPool(max_threads);
 
 		// load the config params else override from constructor
-		if (connName != null) {
-			this.filename = config.getProperty("application.services.service." + connName + ".attributes.key.filename")
-					.toString();
-			this.interval = Integer.parseInt(config
-					.getProperty("application.services.service." + connName + ".attributes.key.interval").toString());
-			if (config
-					.getProperty("application.services.service." + connName + ".attributes.key.loop").toString().equals("true")) {
-				this.loop = true;
-			}
-		} else {
-			this.filename = filename;
-			this.interval = interval;
+		this.filename = config.getProperty("application.services.service." + connName + ".attributes.key.filename")
+				.toString();
+		this.interval = Integer.parseInt(config
+				.getProperty("application.services.service." + connName + ".attributes.key.interval").toString());
+		if (config
+				.getProperty("application.services.service." + connName + ".attributes.key.loop").toString().equals("true")) {
+			this.loop = true;
 		}
 
 		System.out.println(getClass().toString() + ", StreamFileConnector(), " + "client config loaded, " + "filename: "
