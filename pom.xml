@@ -4,7 +4,7 @@
 
 	<groupId>elsu.ais</groupId>
 	<artifactId>AISParser</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>1.0.0</version>
 	<packaging>jar</packaging>
 
 	<name>AISParser</name>
@@ -125,7 +125,7 @@
 		<dependency>
 			<groupId>elsu.foundation</groupId>
 			<artifactId>ElsuFoundation</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
+			<version>1.0.0</version>
 		</dependency>
 
 		<!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-core -->
