@@ -24,7 +24,7 @@ public class StreamSocketConnector extends ConnectorBase {
 	public String siteId = "306";
 	public String siteName = "SITESVR1";
 	public boolean isShutdown = false;
-	
+
 	private boolean isRunning = false;
 	private boolean isMonitorRunning = false;
 	private long recordCounter = 0L;
@@ -36,42 +36,45 @@ public class StreamSocketConnector extends ConnectorBase {
 	public String logPath = "";
 	public String logClass = "";
 	private Log4JManager log4JManager = null;
-	
+
 	private int max_threads = 10;
-	
+
 	public StreamSocketConnector(ConfigLoader config, String connName) throws Exception {
 		super();
-		
+
 		// load the config params else override from constructor
 		max_threads = 10;
 		max_threads = Integer.parseInt(config.getProperty("application.services.key.processing.threads").toString());
-		
+
 		// initialize the threadpool from bass class
 		initializeThreadPool(max_threads);
-		
-		hostUri = config.getProperty("application.services.service." + connName + ".attributes.key.site.host").toString();
-		hostPort = Integer.parseInt(config.getProperty("application.services.service." + connName + ".attributes.key.site.port").toString());
-		noDataTimeout = Integer.parseInt(config.getProperty("application.services.service." + connName + ".attributes.key.monitor.noDataTimeout").toString());
-		retryWaitTime = Integer.parseInt(config.getProperty("application.services.service." + connName + ".attributes.key.monitor.idleTimeout").toString());
+
+		hostUri = config.getProperty("application.services.service." + connName + ".attributes.key.site.host")
+				.toString();
+		hostPort = Integer.parseInt(config
+				.getProperty("application.services.service." + connName + ".attributes.key.site.port").toString());
+		noDataTimeout = Integer.parseInt(
+				config.getProperty("application.services.service." + connName + ".attributes.key.monitor.noDataTimeout")
+						.toString());
+		retryWaitTime = Integer.parseInt(
+				config.getProperty("application.services.service." + connName + ".attributes.key.monitor.idleTimeout")
+						.toString());
 		logPath = config.getProperty("application.framework.attributes.key.log.path").toString();
 		siteId = config.getProperty("application.services.service." + connName + ".attributes.key.site.id").toString();
-		siteName = config.getProperty("application.services.service." + connName + ".attributes.key.site.name").toString();
-		
-		System.out.println(getClass().toString() + ", StreamNetworkConnector(), " + "client config loaded, " +
-			"hostUri: " + hostUri + ", " +
-			"hostPort: " + hostPort + ", " +
-			"noDataTimeout: " + noDataTimeout + ", " +
-			"retryWaitTime: " + retryWaitTime + ", " +
-			"logPath: " + logPath + ", " +
-			"siteId: " + siteId + ", " +
-			"siteName: " + siteName );
+		siteName = config.getProperty("application.services.service." + connName + ".attributes.key.site.name")
+				.toString();
+
+		System.out.println(getClass().toString() + ", StreamNetworkConnector(), " + "client config loaded, "
+				+ "hostUri: " + hostUri + ", " + "hostPort: " + hostPort + ", " + "noDataTimeout: " + noDataTimeout
+				+ ", " + "retryWaitTime: " + retryWaitTime + ", " + "logPath: " + logPath + ", " + "siteId: " + siteId
+				+ ", " + "siteName: " + siteName);
 
 		// initialize logger for connector
 		String logConfig = config.getProperty("application.framework.attributes.key.log.config").toString();
-		logClass = config.getProperty("application.services.service." + connName + ".attributes.key.log.class").toString();
+		logClass = config.getProperty("application.services.service." + connName + ".attributes.key.log.class")
+				.toString();
 
-		log4JManager = new Log4JManager(logConfig, 
-				logClass, logPath + siteId + "_" + siteName + ".log");
+		log4JManager = new Log4JManager(logConfig, logClass, logPath + siteId + "_" + siteName + ".log");
 	}
 
 	public void sendError(String error) throws Exception {
@@ -119,7 +122,7 @@ public class StreamSocketConnector extends ConnectorBase {
 						@Override
 						public void run() {
 							isMonitorRunning = true;
-							
+
 							System.out.println("client monitor started...");
 							while (isRunning && isMonitorRunning && !isShutdown) {
 								try {
@@ -137,7 +140,8 @@ public class StreamSocketConnector extends ConnectorBase {
 										// force close the connections and
 										// restart
 										try {
-											sendError("client monitor error, no data received, resetting connection...");
+											sendError(
+													"client monitor error, no data received, resetting connection...");
 											clientSocket.close();
 										} catch (Exception exi) {
 										} finally {
@@ -150,11 +154,12 @@ public class StreamSocketConnector extends ConnectorBase {
 									try {
 										sendError("client monitor error, " + exi.getMessage());
 									} catch (Exception ex) {
-										System.out.println(getClass().toString() + ", run(), " + "network monitor-2, " + ex.getMessage());
+										System.out.println(getClass().toString() + ", run(), " + "network monitor-2, "
+												+ ex.getMessage());
 									}
 								}
 							}
-							
+
 							System.out.println("client monitor stopped...");
 							isMonitorRunning = false;
 						}
@@ -163,7 +168,7 @@ public class StreamSocketConnector extends ConnectorBase {
 					// start the thread to create connection for the service.
 					tMonitor.start();
 				}
-				
+
 				// start the connection data collection
 				if (isRunning && !isShutdown) {
 					// local parameter for reader thread access, passes the
@@ -177,86 +182,92 @@ public class StreamSocketConnector extends ConnectorBase {
 					ArrayList<String> messages = new ArrayList<String>();
 					Matcher hMatch = null;
 					int systemGCCounter = 0;
-					try (BufferedReader in = new BufferedReader(
-							  new InputStreamReader(clientSocket.getInputStream(), StandardCharsets.UTF_8))) {
-						
-						while (isRunning && !isShutdown) {
-							// read line from the socket stream
-							line = in.readLine();
+					try {
+						try (BufferedReader in = new BufferedReader(
+								new InputStreamReader(clientSocket.getInputStream(), StandardCharsets.UTF_8))) {
 
-							if ((line != null) && (!line.isEmpty())) {
-								// increment record trackers
-								lifetimeCounter++;
-								monitorRecordCounter++;
-								
-								// process the message and fire the events
-								try {
-									int totalMsgNbr = 0, fragmentNbr = 0;
-									if (line.matches("(?s).*!..VD[OM].*")) {
-										hMatch = SentenceBase.messageVDOPattern.matcher(line);
-										while (hMatch.find()) {
-											sentence = hMatch.group(0);
-											
-											// if complete message
-											message = sentence.split(",");
-											totalMsgNbr = Integer.valueOf(message[1]);
-											fragmentNbr = Integer.valueOf(message[2]);
-											if (fragmentNbr <= totalMsgNbr) {
-												messages.add(sentence);
+							while (isRunning && !isShutdown) {
+								// read line from the socket stream
+								line = in.readLine();
 
-												if (messages.size() == totalMsgNbr) {
-													sendMessage(messages);
-													messages = new ArrayList<String>();
-												} else if (fragmentNbr > messages.size()) {
-													sendError("partial fragment, pending queue cleared, ["
-															+ CollectionUtils.ArrayListToString(messages) + "]");
-													messages = new ArrayList<String>();
+								if ((line != null) && (!line.isEmpty())) {
+									// increment record trackers
+									lifetimeCounter++;
+									monitorRecordCounter++;
+
+									// process the message and fire the events
+									try {
+										int totalMsgNbr = 0, fragmentNbr = 0;
+										if (line.matches("(?s).*!..VD[OM].*")) {
+											hMatch = SentenceBase.messageVDOPattern.matcher(line);
+											while (hMatch.find()) {
+												sentence = hMatch.group(0);
+
+												// if complete message
+												message = sentence.split(",");
+												totalMsgNbr = Integer.valueOf(message[1]);
+												fragmentNbr = Integer.valueOf(message[2]);
+												if (fragmentNbr <= totalMsgNbr) {
+													messages.add(sentence);
+
+													if (messages.size() == totalMsgNbr) {
+														sendMessage(messages);
+														messages = new ArrayList<String>();
+													} else if (fragmentNbr > messages.size()) {
+														sendError("partial fragment, pending queue cleared, ["
+																+ CollectionUtils.ArrayListToString(messages) + "]");
+														messages = new ArrayList<String>();
+													}
+												} else if (fragmentNbr == 1) {
+													if (messages.size() > 0) {
+														sendError("partial fragment, pending queue cleared, ["
+																+ CollectionUtils.ArrayListToString(messages) + "]");
+														messages = new ArrayList<String>();
+													}
+													messages.add(sentence);
 												}
-											} else if (fragmentNbr == 1) {
-												if (messages.size() > 0) {
-													sendError("partial fragment, pending queue cleared, ["
-															+ CollectionUtils.ArrayListToString(messages) + "]");
-													messages = new ArrayList<String>();
-												}
-												messages.add(sentence);
 											}
 										}
-									}
 
-									systemGCCounter++;
-									if (systemGCCounter >= 50000) {
-										systemGCCounter = 0;
-										System.gc();
-										
-										System.out.println(">> queue count / " + getMessageQueue().size() + " of " + recordCounter + " (" + lifetimeCounter + ") <<");
-									}
+										systemGCCounter++;
+										if (systemGCCounter >= 50000) {
+											systemGCCounter = 0;
+											System.gc();
 
-									Thread.yield();
-								} catch (Exception exi) {
-									sendError("client collector error, sending message, (" + line + "), " + exi.getMessage());
+											System.out.println(">> queue count / " + getMessageQueue().size() + " of "
+													+ recordCounter + " (" + lifetimeCounter + ") <<");
+										}
+
+										Thread.yield();
+									} catch (Exception exi) {
+										sendError("client collector error, sending message, (" + line + "), "
+												+ exi.getMessage());
+									}
 								}
+
+								line = null;
 							}
-							
-							line = null;
-						}
-					} catch (Exception ex) {
-						// log error for tracking
-						isRunning = false;
-						try {
-							sendError("client collector error, " + ex.getMessage());
-						} catch (Exception exi) {
-							sendError("client collector error, sending error, " + exi.getMessage());
-						}
-					} finally {
-						// close out all open in/out streams.
-						try {
+						} catch (Exception ex) {
+							// log error for tracking
+							isRunning = false;
 							try {
-								out.flush();
+								sendError("client collector error, " + ex.getMessage());
+							} catch (Exception exi) {
+								sendError("client collector error, sending error, " + exi.getMessage());
+							}
+						} finally {
+							// close out all open in/out streams.
+							try {
+								try {
+									out.flush();
+								} catch (Exception exi) {
+								}
+								out.close();
 							} catch (Exception exi) {
 							}
-							out.close();
-						} catch (Exception exi) {
 						}
+					} catch (Exception exi) {
+						sendError("client collector error - critical, sending error, " + exi.getMessage());
 					}
 				}
 			}
@@ -268,7 +279,6 @@ public class StreamSocketConnector extends ConnectorBase {
 				System.out.println(getClass().toString() + ", run(), " + "network connector, " + ex2.getMessage());
 			}
 		} finally {
-			isShutdown = true;
 			isRunning = false;
 
 			// log message
