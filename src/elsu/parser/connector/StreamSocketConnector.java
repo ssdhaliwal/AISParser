@@ -78,14 +78,23 @@ public class StreamSocketConnector extends ConnectorBase {
 	}
 
 	public void sendError(String error) throws Exception {
-		log4JManager.getLogger().error(error);
+		try {
+			log4JManager.getLogger().error(error);
+		} catch (Exception ex) {
+			sendError("client collector error - logger, sendError(), " + error + ", " + ex.getMessage());
+		}
+
 		super.sendError(error);
 	}
 
 	public void sendMessage(ArrayList<String> messages) throws Exception {
 		recordCounter++;
 
-		log4JManager.getLogger().info(messages);
+		try {
+			log4JManager.getLogger().info(messages);
+		} catch (Exception ex) {
+			sendError("client collector error - logger, sendMessage(), " + messages + ", " + ex.getMessage());
+		}
 		super.sendMessage(messages);
 	}
 
