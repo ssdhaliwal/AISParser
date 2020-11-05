@@ -13,43 +13,43 @@ public abstract class ConnectorBase extends Thread {
 
 	public ConnectorBase() {
 	}
-	
+
 	protected void initializeThreadPool(int max_threads) {
 		setMaxThreads(max_threads);
 		workers = new ParserWorker[getMaxThreads()];
-		
+
 		// create thread pool for # of parsers
 		workerPool = Executors.newFixedThreadPool(getMaxThreads());
 
 		// create workers
-		for(int i = 0; i < getMaxThreads(); i++) {
+		for (int i = 0; i < getMaxThreads(); i++) {
 			getWorkers()[i] = new ParserWorker("aisworker_" + i, getMessageQueue());
 			workerPool.execute(getWorkers()[i]);
 		}
-	
+
 		workerPool.shutdown();
 	}
-	
+
 	public ExecutorService getWorkerPool() {
 		return workerPool;
 	}
-	
+
 	public ParserWorker[] getWorkers() {
 		return workers;
 	}
-	
+
 	public LinkedBlockingQueue<ArrayList<String>> getMessageQueue() {
 		return messageQueue;
 	}
-	
+
 	public void addListener(IAISEventListener listener) {
-		for(int i = 0; i < getMaxThreads(); i++) {
+		for (int i = 0; i < getMaxThreads(); i++) {
 			(getWorkers()[i]).getSentenceFactory().addEventListener(listener);
 		}
 	}
 
 	public void removeListener(IAISEventListener listener) {
-		for(int i = 0; i < getMaxThreads(); i++) {
+		for (int i = 0; i < getMaxThreads(); i++) {
 			(getWorkers()[i]).getSentenceFactory().removeEventListener(listener);
 		}
 	}
@@ -69,18 +69,18 @@ public abstract class ConnectorBase extends Thread {
 			sendError("error processing message, " + message + ", " + ex.getMessage());
 		}
 	}
-	
+
 	public void sendTermination() {
 		// terminate workers
-		for(int i = 0; i < getMaxThreads(); i++) {
+		for (int i = 0; i < getMaxThreads(); i++) {
 			(getWorkers()[i]).isShutdown = true;
 		}
 	}
-	
+
 	public int getMaxThreads() {
 		return max_threads;
 	}
-	
+
 	public void setMaxThreads(int max_threads) {
 		this.max_threads = max_threads;
 	}

@@ -15,33 +15,14 @@ import elsu.sentence.SentenceBase;
 import elsu.support.ConfigLoader;
 import elsu.support.Log4JManager;
 
-public class StreamSocketConnector extends ConnectorBase {
-
-	public String hostUri = "";
-	public int hostPort = 0;
-	public int noDataTimeout = 30000;
-	public int retryWaitTime = 5000;
-	public String siteId = "306";
-	public String siteName = "SITESVR1";
-	public boolean isShutdown = false;
-
-	private boolean isRunning = false;
-	private boolean isMonitorRunning = false;
-	private long recordCounter = 0L;
-	private long lifetimeCounter = 0L;
-	private long monitorRecordCounter = 0L;
-	private Socket clientSocket = null;
-
-	public String logConfig = "";
-	public String logPath = "";
-	public String logClass = "";
-	private Log4JManager log4JManager = null;
-
-	private int max_threads = 10;
+public class StreamSocketConnector extends ConnectorKeepAliveBase {
 
 	public StreamSocketConnector(ConfigLoader config, String connName) throws Exception {
-		super();
+		super(config, connName);
+		initialize(config, connName);
+	}
 
+	private void initialize(ConfigLoader config, String connName) throws Exception {
 		// load the config params else override from constructor
 		max_threads = 10;
 		max_threads = Integer.parseInt(config.getProperty("application.services.key.processing.threads").toString());
@@ -53,12 +34,6 @@ public class StreamSocketConnector extends ConnectorBase {
 				.toString();
 		hostPort = Integer.parseInt(config
 				.getProperty("application.services.service." + connName + ".attributes.key.site.port").toString());
-		noDataTimeout = Integer.parseInt(
-				config.getProperty("application.services.service." + connName + ".attributes.key.monitor.noDataTimeout")
-						.toString());
-		retryWaitTime = Integer.parseInt(
-				config.getProperty("application.services.service." + connName + ".attributes.key.monitor.idleTimeout")
-						.toString());
 		logPath = config.getProperty("application.framework.attributes.key.log.path").toString();
 		siteId = config.getProperty("application.services.service." + connName + ".attributes.key.site.id").toString();
 		siteName = config.getProperty("application.services.service." + connName + ".attributes.key.site.name")
@@ -98,11 +73,23 @@ public class StreamSocketConnector extends ConnectorBase {
 		super.sendMessage(messages);
 	}
 
+	protected void resetConnection() {
+		// force close the connections and
+		// restart
+		try {
+			sendError(
+					"client monitor error, no data received, resetting connection...");
+			clientSocket.close();
+		} catch (Exception exi) {
+		} finally {
+			clientSocket = null;
+			isRunning = false;
+		}
+	}
+	
 	@Override
 	public void run() {
 		try {
-			Thread tMonitor = null;
-
 			while (!Thread.currentThread().isInterrupted() && !isShutdown) {
 				// if socket is not running, try to start it
 				if (!isRunning) {
@@ -122,61 +109,8 @@ public class StreamSocketConnector extends ConnectorBase {
 					}
 				}
 
-				// if thread monitor is not running, try to start it
-				if (!isMonitorRunning && !isShutdown) {
-					monitorRecordCounter = 0L;
-
-					// start no data monitor thread
-					tMonitor = new Thread(new Runnable() {
-						@Override
-						public void run() {
-							isMonitorRunning = true;
-
-							System.out.println("client monitor started...");
-							while (isRunning && isMonitorRunning && !isShutdown) {
-								try {
-									// yield processing to other threads
-									// for specified
-									// time, any exceptions are ignored
-									try {
-										monitorRecordCounter = 0L;
-										Thread.sleep(noDataTimeout);
-									} catch (Exception exi) {
-									}
-
-									// check the data count
-									if (monitorRecordCounter == 0L) {
-										// force close the connections and
-										// restart
-										try {
-											sendError(
-													"client monitor error, no data received, resetting connection...");
-											clientSocket.close();
-										} catch (Exception exi) {
-										} finally {
-											clientSocket = null;
-											isRunning = false;
-										}
-									}
-								} catch (Exception exi) {
-									isMonitorRunning = false;
-									try {
-										sendError("client monitor error, " + exi.getMessage());
-									} catch (Exception ex) {
-										System.out.println(getClass().toString() + ", run(), " + "network monitor-2, "
-												+ ex.getMessage());
-									}
-								}
-							}
-
-							System.out.println("client monitor stopped...");
-							isMonitorRunning = false;
-						}
-					});
-
-					// start the thread to create connection for the service.
-					tMonitor.start();
-				}
+				// check if monitor is still running; if not restrart it
+				checkKeepAlive();
 
 				// start the connection data collection
 				if (isRunning && !isShutdown) {
@@ -278,6 +212,8 @@ public class StreamSocketConnector extends ConnectorBase {
 					} catch (Exception exi) {
 						sendError("client collector error - critical, sending error, " + exi.getMessage());
 					}
+				} else {
+					Thread.sleep(500);
 				}
 			}
 		} catch (Exception ex) {
@@ -299,4 +235,18 @@ public class StreamSocketConnector extends ConnectorBase {
 			}
 		}
 	}
+
+	private int max_threads = 10;
+
+	public String logConfig = "";
+	public String logPath = "";
+	public String logClass = "";
+	private Log4JManager log4JManager = null;
+
+	public String hostUri = "";
+	public int hostPort = 0;
+	public String siteId = "306";
+	public String siteName = "SITESVR1";
+	private long recordCounter = 0L;
+	private Socket clientSocket = null;
 }

@@ -10,32 +10,26 @@ import elsu.support.ConfigLoader;
 
 public class StreamFileConnector extends ConnectorBase {
 
-	public String filename = "";
-	public int interval = 100;
-	public boolean loop = false;
-	public boolean isShutdown = false;
-	private long recordCounter = 0L;
-	private long lifetimeCounter = 0L;
-	
-	private int max_threads = 10;
-
 	public StreamFileConnector(ConfigLoader config, String connName) throws Exception {
 		super();
-		
+		initialize(config, connName);
+	}
+
+	private void initialize(ConfigLoader config, String connName) throws Exception {
 		// load the config params else override from constructor
 		max_threads = 10;
 		max_threads = Integer.parseInt(config.getProperty("application.services.key.processing.threads").toString());
-		
+
 		// initialize the threadpool from bass class
 		initializeThreadPool(max_threads);
 
 		// load the config params else override from constructor
 		this.filename = config.getProperty("application.services.service." + connName + ".attributes.key.filename")
 				.toString();
-		this.interval = Integer.parseInt(config
-				.getProperty("application.services.service." + connName + ".attributes.key.interval").toString());
-		if (config
-				.getProperty("application.services.service." + connName + ".attributes.key.loop").toString().equals("true")) {
+		this.interval = Integer.parseInt(
+				config.getProperty("application.services.service." + connName + ".attributes.key.interval").toString());
+		if (config.getProperty("application.services.service." + connName + ".attributes.key.loop").toString()
+				.equals("true")) {
 			this.loop = true;
 		}
 
@@ -83,7 +77,7 @@ public class StreamFileConnector extends ConnectorBase {
 								lines.add(l);
 							}
 						}
-						
+
 						lineSize = lines.size();
 					} else if ((line != null) && (!line.isEmpty())) {
 						// increment record trackers
@@ -169,4 +163,15 @@ public class StreamFileConnector extends ConnectorBase {
 			}
 		}
 	}
+
+	private int max_threads = 10;
+
+	public String filename = "";
+	public int interval = 100;
+	public boolean loop = false;
+
+	private long recordCounter = 0L;
+	private long lifetimeCounter = 0L;
+
+	public boolean isShutdown = false;
 }
