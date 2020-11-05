@@ -6,7 +6,7 @@
 		</Console>
 
 		<RollingFile name="RollingFile" fileName="${sys:log4j.log.filename}"
-			filePattern="${sys:log4j.log.filename}-%d{yyyyMMdd-HHmm}.log"
+			filePattern="${sys:log4j.log.filename}-%d{yyyyMMdd-HHmm}"
 			immediateFlush="false">
 			<PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss} [%t] %-5p %c{1}:%L - %msg%n" />
 			<Policies>
