@@ -25,9 +25,12 @@ public class Sentence extends SentenceBase {
 	}
 
 	public Sentence() {
+		super();
 	}
 
 	public Sentence(String message) throws Exception {
+		super();
+		
 		validateMessage(message);
 		setMessage(message);
 	}

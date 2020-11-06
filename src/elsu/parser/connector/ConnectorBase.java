@@ -1,6 +1,8 @@
 package elsu.parser.connector;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -84,10 +86,16 @@ public abstract class ConnectorBase extends Thread {
 	public void setMaxThreads(int max_threads) {
 		this.max_threads = max_threads;
 	}
+	
+	public String getDateTimeUTC() {
+		Date date = new Date();
+		return dateFormat.format(date);
+	}
 
 	private int max_threads = 1;
 	private ExecutorService workerPool = null;
 	private ParserWorker[] workers = null;
 	private LinkedBlockingQueue<ArrayList<String>> messageQueue = new LinkedBlockingQueue<ArrayList<String>>();
 	private SentenceFactory sentenceFactory = new SentenceFactory();
+	private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.sss z");
 }

@@ -178,7 +178,7 @@ public class StreamSocketConnector extends ConnectorKeepAliveBase {
 											System.gc();
 
 											System.out.println(">> queue count / " + getMessageQueue().size() + " of "
-													+ recordCounter + " (" + lifetimeCounter + ") <<");
+													+ recordCounter + " (" + lifetimeCounter + ") << / " + getDateTimeUTC());
 										}
 
 										Thread.yield();

@@ -9,6 +9,10 @@ import com.fasterxml.jackson.core.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 public abstract class SentenceBase {
+	
+	public SentenceBase() {
+		dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
+	}
 
 	static public String[] payloadBits = new String[] {
 			/*
@@ -222,8 +226,6 @@ public abstract class SentenceBase {
 	}
 
 	public static String formatEPOCHToUTC(int epoch) {
-		dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
-
 		Date date = new Date(Long.parseLong(epoch + "") * 1000);
 		return dateFormat.format(date);
 	}

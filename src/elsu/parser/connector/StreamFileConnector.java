@@ -123,7 +123,7 @@ public class StreamFileConnector extends ConnectorBase {
 								System.gc();
 
 								System.out.println(">> queue count / " + getMessageQueue().size() + " of "
-										+ recordCounter + " (" + lifetimeCounter + ") <<");
+										+ recordCounter + " (" + lifetimeCounter + ") << / " + getDateTimeUTC());
 							}
 
 							Thread.yield();
