@@ -39,10 +39,15 @@ public class StreamSocketConnector extends ConnectorKeepAliveBase {
 		siteName = config.getProperty("application.services.service." + connName + ".attributes.key.site.name")
 				.toString();
 
+		logRaw = Boolean.parseBoolean(config.getProperty("application.services.key.processing.debug.raw")
+				.toString());
+		logCorrelated = Boolean.parseBoolean(config.getProperty("application.services.key.processing.debug.correlated")
+				.toString());
+		
 		System.out.println(getClass().toString() + ", StreamNetworkConnector(), " + "client config loaded, "
 				+ "hostUri: " + hostUri + ", " + "hostPort: " + hostPort + ", " + "noDataTimeout: " + noDataTimeout
-				+ ", " + "retryWaitTime: " + retryWaitTime + ", " + "logPath: " + logPath + ", " + "siteId: " + siteId
-				+ ", " + "siteName: " + siteName);
+				+ ", " + "retryWaitTime: " + retryWaitTime + ", " + "logPath: " + logPath + ", " + "logRaw: " + logRaw
+				 + ", " + "logCorrelated: " + logCorrelated+ ", " + "siteId: " + siteId + ", " + "siteName: " + siteName);
 
 		// initialize logger for connector
 		String logConfig = config.getProperty("application.framework.attributes.key.log.config").toString();
@@ -65,10 +70,12 @@ public class StreamSocketConnector extends ConnectorKeepAliveBase {
 	public void sendMessage(ArrayList<String> messages) throws Exception {
 		recordCounter++;
 
-		try {
-			log4JManager.getLogger().info(messages);
-		} catch (Exception ex) {
-			sendError("client collector error - logger, sendMessage(), " + messages + ", " + ex.getMessage());
+		if (logCorrelated) {
+			try {
+				log4JManager.getLogger().info(messages);
+			} catch (Exception ex) {
+				sendError("client collector error - logger, sendMessage(), " + messages + ", " + ex.getMessage());
+			}
 		}
 		super.sendMessage(messages);
 	}
@@ -134,6 +141,14 @@ public class StreamSocketConnector extends ConnectorKeepAliveBase {
 								line = in.readLine();
 
 								if ((line != null) && (!line.isEmpty())) {
+									if (logRaw) {
+										try {
+											log4JManager.getLogger().info(line);
+										} catch (Exception ex) {
+											sendError("client collector error - logger, sendMessage(), " + messages + ", " + ex.getMessage());
+										}
+									}
+
 									// increment record trackers
 									lifetimeCounter++;
 									monitorRecordCounter++;
@@ -242,6 +257,8 @@ public class StreamSocketConnector extends ConnectorKeepAliveBase {
 	public String logPath = "";
 	public String logClass = "";
 	private Log4JManager log4JManager = null;
+	private boolean logRaw = false;
+	private boolean logCorrelated = false;
 
 	public String hostUri = "";
 	public int hostPort = 0;
