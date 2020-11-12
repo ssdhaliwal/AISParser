@@ -39,10 +39,10 @@ public class StreamSocketConnector extends ConnectorKeepAliveBase {
 		siteName = config.getProperty("application.services.service." + connName + ".attributes.key.site.name")
 				.toString();
 
-		logType = config.getProperty("application.services.key.processing.debug.connector").toString();
+		logType = config.getProperty("application.services.service." + connName + ".attributes.key.log.type").toString();
 		if (logType.equals("raw")) {
 			logTypeRaw = true;
-		} else if (logTypeMatched.equals("matched")) {
+		} else if (logType.equals("matched")) {
 			logTypeMatched = true;
 		}
 

@@ -12,6 +12,9 @@ public abstract class AISMessageBase extends SentenceBase {
 	public static Sentence fromSentence(Sentence sentence) throws Exception {
 		// call appropriate message class
 		switch (sentence.getType()) {
+		case 0:
+			// sentence.setAISMessage(T0_FunctionalMessage.fromAISMessage(sentence.getBitString()));
+			break;
 		case 1:
 			sentence.setAISMessage(T1_PositionReportClassA.fromAISMessage(sentence.getBitString()));
 			break;
