@@ -58,7 +58,7 @@ public class AISPayloadBlock {
 			node.put("type", getType());
 			node.put("units", getUnits());
 			node.put("bits", getBits());
-			node.put("hexValue", getHexValue());
+			// node.put("hexValue", getHexValue());
 			node.put("padding", isPadding());
 			node.put("exception", isException());
 
@@ -147,7 +147,7 @@ public class AISPayloadBlock {
 			this.bits = bits;
 		}
 		
-		this.hex_value = new BigInteger(bits, 2).toString(16);
+		// this.hex_value = new BigInteger(bits, 2).toString(16);
 	}
 
 	public boolean isPadding() {
@@ -158,9 +158,9 @@ public class AISPayloadBlock {
 		this.padding = padding;
 	}
 
-	public String getHexValue() {
-		return this.hex_value;
-	}
+	// public String getHexValue() {
+	// 	return this.hex_value;
+	// }
 
 	public boolean isException() {
 		return exception;
@@ -179,7 +179,7 @@ public class AISPayloadBlock {
 	private String type = "";
 	private String units = "";
 	private String bits = "";
-	private String hex_value = "";
+	// private String hex_value = "";
 	private boolean padding = false;
 	private boolean exception = false; 
 }

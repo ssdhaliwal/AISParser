@@ -39,15 +39,17 @@ public class StreamSocketConnector extends ConnectorKeepAliveBase {
 		siteName = config.getProperty("application.services.service." + connName + ".attributes.key.site.name")
 				.toString();
 
-		logRaw = Boolean.parseBoolean(config.getProperty("application.services.key.processing.debug.raw")
-				.toString());
-		logCorrelated = Boolean.parseBoolean(config.getProperty("application.services.key.processing.debug.correlated")
-				.toString());
-		
+		logType = config.getProperty("application.services.key.processing.debug.connector").toString();
+		if (logType.equals("raw")) {
+			logTypeRaw = true;
+		} else if (logTypeMatched.equals("matched")) {
+			logTypeMatched = true;
+		}
+
 		System.out.println(getClass().toString() + ", StreamNetworkConnector(), " + "client config loaded, "
 				+ "hostUri: " + hostUri + ", " + "hostPort: " + hostPort + ", " + "noDataTimeout: " + noDataTimeout
-				+ ", " + "retryWaitTime: " + retryWaitTime + ", " + "logPath: " + logPath + ", " + "logRaw: " + logRaw
-				 + ", " + "logCorrelated: " + logCorrelated+ ", " + "siteId: " + siteId + ", " + "siteName: " + siteName);
+				+ ", " + "retryWaitTime: " + retryWaitTime + ", " + "logPath: " + logPath + ", " + "logType: " + logType
+				+ ", " + "siteId: " + siteId + ", " + "siteName: " + siteName);
 
 		// initialize logger for connector
 		String logConfig = config.getProperty("application.framework.attributes.key.log.config").toString();
@@ -70,7 +72,7 @@ public class StreamSocketConnector extends ConnectorKeepAliveBase {
 	public void sendMessage(ArrayList<String> messages) throws Exception {
 		recordCounter++;
 
-		if (logCorrelated) {
+		if (logTypeMatched) {
 			try {
 				log4JManager.getLogger().info(messages);
 			} catch (Exception ex) {
@@ -84,8 +86,7 @@ public class StreamSocketConnector extends ConnectorKeepAliveBase {
 		// force close the connections and
 		// restart
 		try {
-			sendError(
-					"client monitor error, no data received, resetting connection...");
+			sendError("client monitor error, no data received, resetting connection...");
 			clientSocket.close();
 		} catch (Exception exi) {
 		} finally {
@@ -93,7 +94,7 @@ public class StreamSocketConnector extends ConnectorKeepAliveBase {
 			isRunning = false;
 		}
 	}
-	
+
 	@Override
 	public void run() {
 		try {
@@ -141,11 +142,12 @@ public class StreamSocketConnector extends ConnectorKeepAliveBase {
 								line = in.readLine();
 
 								if ((line != null) && (!line.isEmpty())) {
-									if (logRaw) {
+									if (logTypeRaw) {
 										try {
 											log4JManager.getLogger().info(line);
 										} catch (Exception ex) {
-											sendError("client collector error - logger, sendMessage(), " + messages + ", " + ex.getMessage());
+											sendError("client collector error - logger, sendMessage(), " + messages
+													+ ", " + ex.getMessage());
 										}
 									}
 
@@ -193,7 +195,8 @@ public class StreamSocketConnector extends ConnectorKeepAliveBase {
 											System.gc();
 
 											System.out.println(">> queue count / " + getMessageQueue().size() + " of "
-													+ recordCounter + " (" + lifetimeCounter + ") << / " + getDateTimeUTC());
+													+ recordCounter + " (" + lifetimeCounter + ") << / "
+													+ getDateTimeUTC());
 										}
 
 										Thread.yield();
@@ -257,8 +260,9 @@ public class StreamSocketConnector extends ConnectorKeepAliveBase {
 	public String logPath = "";
 	public String logClass = "";
 	private Log4JManager log4JManager = null;
-	private boolean logRaw = false;
-	private boolean logCorrelated = false;
+	private String logType = "none";
+	private Boolean logTypeRaw = false;
+	private Boolean logTypeMatched = false;
 
 	public String hostUri = "";
 	public int hostPort = 0;

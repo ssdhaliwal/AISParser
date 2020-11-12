@@ -78,7 +78,6 @@ public abstract class SentenceBase {
 		StringBuilder builder = new StringBuilder();
 
 		// encoded to bit string
-		builder = new StringBuilder();
 		byte[] encodedBytes = message.getBytes();
 		byte index = 0;
 		for (byte eb : encodedBytes) {
