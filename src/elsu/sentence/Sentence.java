@@ -160,11 +160,15 @@ public class Sentence extends SentenceBase {
 			setBitString();
 
 			setType();
-			try {
-				this.aisMessage = null;
-				AISMessageBase.fromSentence(this);
-			} catch (Exception exi) {
-				throw exi;
+			if (SentenceFactory.isValidMessage(getType())) {
+				try {
+					this.aisMessage = null;
+					AISMessageBase.fromSentence(this);
+				} catch (Exception exi) {
+					throw exi;
+				}
+			} else {
+				setIgnore(true);
 			}
 		}
 
@@ -245,6 +249,14 @@ public class Sentence extends SentenceBase {
 
 	public void setComplete(boolean complete) {
 		this.complete = complete;
+	}
+
+	public boolean isIgnore() {
+		return ignore;
+	}
+
+	public void setIgnore(boolean ignore) {
+		this.ignore = ignore;
 	}
 
 	public int getFieldCount() {
@@ -388,6 +400,7 @@ public class Sentence extends SentenceBase {
 
 	private boolean complete = false;
 	private boolean valid = false;
+	private boolean ignore = false;
 	private int fieldCount = 0;
 	private String header = "";
 	private String protocol = "";

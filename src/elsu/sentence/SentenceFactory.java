@@ -16,15 +16,15 @@ public class SentenceFactory {
 
 	public SentenceFactory() {
 		// (default) messages to parse
-		processMessages = new Boolean[max_messages]; 
-		for (int i = 0; i < max_messages; i++) {
-			processMessages[i] = true;
+		SentenceFactory.processMessages = new Boolean[SentenceFactory.max_messages];
+		for (int i = 0; i < SentenceFactory.max_messages; i++) {
+			SentenceFactory.processMessages[i] = true;
 		}
 	}
-	
+
 	public SentenceFactory(String messagesToProcess) {
 		this();
-		
+
 		String messages = messagesToProcess;
 		if (!messages.equals("*")) {
 			for (int i = 0; i < getMaxMessages(); i++) {
@@ -58,7 +58,7 @@ public class SentenceFactory {
 	}
 
 	public void parseSentence(ArrayList<String> messages) {
-		for(String message : messages) {
+		for (String message : messages) {
 			parseSentence(message);
 		}
 	}
@@ -67,7 +67,7 @@ public class SentenceFactory {
 		// if message has tag blocks
 		String tags = "";
 		SentenceTagBlock tagBlock = null;
-		
+
 		Matcher hMatch = SentenceBase.headerPattern.matcher(message);
 		while (hMatch.find()) {
 			tags = hMatch.group(0).replaceAll("\\\\", "");
@@ -79,20 +79,21 @@ public class SentenceFactory {
 				&& !SentenceBase.supportedNMEAFormatsPattern.matcher(message).matches()) {
 			throw new Exception("unsupported format; " + message);
 		}
-		
+
 		if (SentenceBase.supportedNMEAFormatsPattern.matcher(message).matches()) {
 			NMEAMessage nmea = NMEAMessage.fromString(message);
 			notifyComplete(nmea);
 			return;
 		}
 
-		// if message has no tag blocks (TSA preceeds VDO/VDM, VSI follows VDO/VDM)
+		// if message has no tag blocks (TSA preceeds VDO/VDM, VSI follows
+		// VDO/VDM)
 		if ((tagBlock == null) || (tagBlock.getSentenceGroup() == null)) {
 			if (SentenceBase.messageTSAPattern.matcher(message).matches()) {
 				if ((tsaInfo != null) || (sentence != null)) {
 					notifyError(new Exception("$..TSA message with no VDO/VDM"), tsaInfo, null);
 				}
-				
+
 				tsaInfo = NMEAMessage.fromString(message);
 				return;
 			}
@@ -107,7 +108,7 @@ public class SentenceFactory {
 					} else {
 						notifyError(new Exception("incomplete message"), sentence, message);
 					}
-					
+
 					sentence = null;
 					tsaInfo = null;
 					vsiInfo = null;
@@ -121,7 +122,7 @@ public class SentenceFactory {
 			hMatch = SentenceBase.messageVDOPattern.matcher(message);
 			while (hMatch.find()) {
 				tags = hMatch.group(0);
-				
+
 				if (sentence == null) {
 					sentence = Sentence.fromString(tags);
 				} else {
@@ -132,14 +133,21 @@ public class SentenceFactory {
 					}
 				}
 			}
-			
+
 			// link TSA to the sentence
 			if (sentence != null) {
 				sentence.setTSAInfo(tsaInfo);
 			}
 
 			if (sentence.isComplete() && sentence.isValid()) {
-				notifyComplete(sentence);
+				if (!sentence.isIgnore()) {
+					notifyComplete(sentence);
+				}
+
+				setTagBlock(null);
+				sentence = null;
+				tsaInfo = null;
+				vsiInfo = null;
 			}
 		}
 		// tag block parsing and validation
@@ -152,19 +160,21 @@ public class SentenceFactory {
 				setTagBlock(tagBlock);
 			} else {
 				try {
-					if ((getTagBlock().getSentenceGroup().getTotallines() != tagBlock.getSentenceGroup().getTotallines())
-							|| (!getTagBlock().getSentenceGroup().getCode().equals(tagBlock.getSentenceGroup().getCode()))
+					if ((getTagBlock().getSentenceGroup().getTotallines() != tagBlock.getSentenceGroup()
+							.getTotallines())
+							|| (!getTagBlock().getSentenceGroup().getCode()
+									.equals(tagBlock.getSentenceGroup().getCode()))
 							|| ((getTagBlock().getSentenceGroup().getLinenumber() + 1) != tagBlock.getSentenceGroup()
 									.getLinenumber())) {
 						notifyError(new Exception("tag mis-match"), sentence, message);
-	
+
 						if (tagBlock.getSentenceGroup().getLinenumber() == 1) {
 							setTagBlock(tagBlock);
 						} else {
 							throw new Exception("new tag sequence invalid");
 						}
 					}
-	
+
 					getTagBlock().getSentenceGroup().setLinenumber(tagBlock.getSentenceGroup().getLinenumber());
 				} catch (Exception exi) {
 					throw new Exception("new tag sequence invalid - tag block invalid");
@@ -173,13 +183,13 @@ public class SentenceFactory {
 
 			// see if there is a message as part of the tag
 			Boolean processed = false;
-			
+
 			// -- extract message and process it
 			hMatch = SentenceBase.messageVDOPattern.matcher(message);
 			while (hMatch.find()) {
 				tags = hMatch.group(0);
 				processed = true;
-				
+
 				if (sentence == null) {
 					sentence = Sentence.fromString(tags);
 				} else {
@@ -198,11 +208,11 @@ public class SentenceFactory {
 				while (hMatch.find()) {
 					tags = hMatch.group(0);
 					processed = true;
-					
+
 					if (sentence == null) {
 						throw new Exception("$..VSI message with no VDO/VDM");
 					}
-	
+
 					vsiInfo = NMEAMessage.fromString(tags);
 					sentence.setVSIInfo(vsiInfo);
 				}
@@ -213,11 +223,11 @@ public class SentenceFactory {
 				while (hMatch.find()) {
 					tags = hMatch.group(0);
 					processed = true;
-	
+
 					if (sentence == null) {
 						throw new Exception("$..TSA message with no VDO/VDM");
 					}
-	
+
 					tsaInfo = NMEAMessage.fromString(tags);
 					sentence.setTSAInfo(tsaInfo);
 				}
@@ -226,7 +236,9 @@ public class SentenceFactory {
 			// -- send complete
 			if (sentence.isComplete() && sentence.isValid() && (getTagBlock().getSentenceGroup()
 					.getLinenumber() == getTagBlock().getSentenceGroup().getTotallines())) {
-				notifyComplete(sentence);
+				if (!sentence.isIgnore()) {
+					notifyComplete(sentence);
+				}
 
 				setTagBlock(null);
 				sentence = null;
@@ -251,18 +263,22 @@ public class SentenceFactory {
 	}
 
 	public void notifyComplete(Object o) {
-		if ((o instanceof Sentence) && (isValidMessage(((Sentence)o).getAISMessage()))) {
-			for (IAISEventListener listener : listeners) {
-				listener.onAISComplete(o);
-			}
+		if ((o instanceof Sentence) && ((Sentence)o).isIgnore()) {
+			return;
+		}
+
+		for (IAISEventListener listener : listeners) {
+			listener.onAISComplete(o);
 		}
 	}
 
 	public void notifyUpdate(Object o) {
-		if ((o instanceof Sentence) && (isValidMessage(((Sentence)o).getAISMessage()))) {
-			for (IAISEventListener listener : listeners) {
-				listener.onAISUpdate(o);
-			}
+		if ((o instanceof Sentence) && ((Sentence)o).isIgnore()) {
+			return;
+		}
+
+		for (IAISEventListener listener : listeners) {
+			listener.onAISUpdate(o);
 		}
 	}
 
@@ -277,27 +293,38 @@ public class SentenceFactory {
 	public NMEAMessage getTSAInfo() {
 		return this.tsaInfo;
 	}
-	
-	public int getMaxMessages() {
-		return max_messages;
+
+	public static int getMaxMessages() {
+		return SentenceFactory.max_messages;
 	}
-	
-	public Boolean[] getProcessMessages() {
-		return this.processMessages;
+
+	public static Boolean[] getProcessMessages() {
+		return SentenceFactory.processMessages;
 	}
-	
-	public Boolean isValidMessage(AISMessageBase message) {
+
+	public static Boolean isValidMessage(int msgType) {
 		Boolean result = false;
 
-		if ((message != null) && processMessages[message.getType()]) {
+		if ((msgType >= 0) && (msgType < SentenceFactory.getMaxMessages()) && 
+				(SentenceFactory.getProcessMessages()[msgType])) {
 			result = true;
 		}
-		
+
 		return result;
 	}
 
-	private int max_messages = 28;	// include zero message type (0-27)
-	private Boolean[] processMessages = null;
+	public static Boolean isValidMessage(AISMessageBase message) {
+		Boolean result = false;
+
+		if ((message != null) && SentenceFactory.getProcessMessages()[message.getType()]) {
+			result = true;
+		}
+
+		return result;
+	}
+
+	private static int max_messages = 28; // include zero message type (0-27)
+	private static Boolean[] processMessages = null;
 
 	private Sentence sentence = null;
 	private SentenceTagBlock tagBlock = null;
