@@ -21,7 +21,8 @@ public class StreamFileConnector extends ConnectorBase {
 		max_threads = Integer.parseInt(config.getProperty("application.services.key.processing.threads").toString());
 
 		// initialize the threadpool from bass class
-		initializeThreadPool(max_threads);
+		String messagesToProcess = config.getProperty("application.services.key.processing.messages").toString();
+		initializeThreadPool(max_threads, messagesToProcess);
 
 		// load the config params else override from constructor
 		this.filename = config.getProperty("application.services.service." + connName + ".attributes.key.filename")

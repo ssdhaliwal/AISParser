@@ -28,7 +28,8 @@ public class StreamSocketConnector extends ConnectorKeepAliveBase {
 		max_threads = Integer.parseInt(config.getProperty("application.services.key.processing.threads").toString());
 
 		// initialize the threadpool from bass class
-		initializeThreadPool(max_threads);
+		String messagesToProcess = config.getProperty("application.services.key.processing.messages").toString();
+		initializeThreadPool(max_threads, messagesToProcess);
 
 		hostUri = config.getProperty("application.services.service." + connName + ".attributes.key.site.host")
 				.toString();

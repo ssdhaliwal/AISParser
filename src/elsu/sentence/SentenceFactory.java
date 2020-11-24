@@ -5,6 +5,7 @@ import java.util.Set;
 import java.util.concurrent.CopyOnWriteArraySet;
 import java.util.regex.Matcher;
 
+import elsu.ais.base.AISMessageBase;
 import elsu.ais.exceptions.IncompleteFragmentException;
 import elsu.base.IAISEventListener;
 import elsu.nmea.messages.NMEAMessage;
@@ -14,6 +15,29 @@ import elsu.sentence.tags.SentenceTagBlock;
 public class SentenceFactory {
 
 	public SentenceFactory() {
+		// (default) messages to parse
+		processMessages = new Boolean[max_messages]; 
+		for (int i = 0; i < max_messages; i++) {
+			processMessages[i] = true;
+		}
+	}
+	
+	public SentenceFactory(String messagesToProcess) {
+		this();
+		
+		String messages = messagesToProcess;
+		if (!messages.equals("*")) {
+			for (int i = 0; i < getMaxMessages(); i++) {
+				getProcessMessages()[i] = false;
+			}
+
+			String[] msgs = messages.split(",");
+			Integer msgNumber = 0;
+			for (String msg : msgs) {
+				msgNumber = Integer.valueOf(msg);
+				getProcessMessages()[msgNumber] = true;
+			}
+		}
 	}
 
 	public void parseSentence(String message) {
@@ -227,14 +251,18 @@ public class SentenceFactory {
 	}
 
 	public void notifyComplete(Object o) {
-		for (IAISEventListener listener : listeners) {
-			listener.onAISComplete(o);
+		if ((o instanceof Sentence) && (isValidMessage(((Sentence)o).getAISMessage()))) {
+			for (IAISEventListener listener : listeners) {
+				listener.onAISComplete(o);
+			}
 		}
 	}
 
 	public void notifyUpdate(Object o) {
-		for (IAISEventListener listener : listeners) {
-			listener.onAISUpdate(o);
+		if ((o instanceof Sentence) && (isValidMessage(((Sentence)o).getAISMessage()))) {
+			for (IAISEventListener listener : listeners) {
+				listener.onAISUpdate(o);
+			}
 		}
 	}
 
@@ -249,6 +277,27 @@ public class SentenceFactory {
 	public NMEAMessage getTSAInfo() {
 		return this.tsaInfo;
 	}
+	
+	public int getMaxMessages() {
+		return max_messages;
+	}
+	
+	public Boolean[] getProcessMessages() {
+		return this.processMessages;
+	}
+	
+	public Boolean isValidMessage(AISMessageBase message) {
+		Boolean result = false;
+
+		if ((message != null) && processMessages[message.getType()]) {
+			result = true;
+		}
+		
+		return result;
+	}
+
+	private int max_messages = 28;	// include zero message type (0-27)
+	private Boolean[] processMessages = null;
 
 	private Sentence sentence = null;
 	private SentenceTagBlock tagBlock = null;

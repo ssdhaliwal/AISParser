@@ -24,7 +24,8 @@ public class T20_DataLinkManagementMessage extends AISMessageBase {
 		getMessageBlocks().add(new AISPayloadBlock(0, 5, 6, "Message Type", "type", "u", "Constant: 20"));
 		getMessageBlocks().add(new AISPayloadBlock(6, 7, 2, "Repeat Indicator", "repeat", "u", "As in CNB"));
 		getMessageBlocks().add(new AISPayloadBlock(8, 37, 30, "MMSI", "mmsi", "u", "9 decimal digits"));
-		// getMessageBlocks().add(new PayloadBlock(38, 39, 2, "Spare", "", "x", "Not used"));
+		// getMessageBlocks().add(new PayloadBlock(38, 39, 2, "Spare", "", "x",
+		// "Not used"));
 		getMessageBlocks()
 				.add(new AISPayloadBlock(40, 51, 12, "Offset number 1", "offset1", "u", "Reserved offset number"));
 		getMessageBlocks().add(new AISPayloadBlock(52, 55, 4, "Reserved slots", "number1", "u", "Consecutive slots"));
@@ -52,7 +53,12 @@ public class T20_DataLinkManagementMessage extends AISMessageBase {
 	}
 
 	public void parseMessageBlock(AISPayloadBlock block) throws Exception {
-		if (block.isException()) {
+		// special processing, if second message is empty
+		if (block.getBits().length() == 0) {
+			if (block.getStart() >= 70) {
+				return;
+			}
+		} else if (block.isException()) {
 			if (block.getStart() >= 70) {
 				return;
 			} else {
@@ -124,7 +130,7 @@ public class T20_DataLinkManagementMessage extends AISMessageBase {
 	@Override
 	public String toString() {
 		String result = "";
-		
+
 		try {
 			// result = SentenceBase.objectMapper.writeValueAsString(this);
 			ObjectNode node = SentenceBase.objectMapper.createObjectNode();
@@ -133,7 +139,7 @@ public class T20_DataLinkManagementMessage extends AISMessageBase {
 			node.put("typeText", AISLookupValues.getMessageType(getType()));
 			node.put("repeat", getRepeat());
 			node.put("mmsi", getMmsi());
-			
+
 			node.put("offset1", getOffset1());
 			node.put("number1", getNumber1());
 			node.put("timeout1", getTimeout1());
@@ -156,7 +162,7 @@ public class T20_DataLinkManagementMessage extends AISMessageBase {
 		} catch (Exception exi) {
 			result = "error, Sentence, " + exi.getMessage();
 		}
-		
+
 		return result;
 	}
 

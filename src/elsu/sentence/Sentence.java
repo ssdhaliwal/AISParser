@@ -160,7 +160,12 @@ public class Sentence extends SentenceBase {
 			setBitString();
 
 			setType();
-			AISMessageBase.fromSentence(this);
+			try {
+				this.aisMessage = null;
+				AISMessageBase.fromSentence(this);
+			} catch (Exception exi) {
+				throw exi;
+			}
 		}
 
 		setValid(true);

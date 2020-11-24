@@ -3,9 +3,9 @@ package elsu.parser.connector;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.LinkedBlockingQueue;
 
 import elsu.base.IAISEventListener;
 import elsu.parser.resource.ParserWorker;
@@ -16,16 +16,16 @@ public abstract class ConnectorBase extends Thread {
 	public ConnectorBase() {
 	}
 
-	protected void initializeThreadPool(int max_threads) {
+	protected void initializeThreadPool(int max_threads, String messagesToProcess) {
 		setMaxThreads(max_threads);
 		workers = new ParserWorker[getMaxThreads()];
 
 		// create thread pool for # of parsers
 		workerPool = Executors.newFixedThreadPool(getMaxThreads());
-
+		
 		// create workers
 		for (int i = 0; i < getMaxThreads(); i++) {
-			getWorkers()[i] = new ParserWorker("aisworker_" + i, getMessageQueue());
+			getWorkers()[i] = new ParserWorker("aisworker_" + i, getMessageQueue(), messagesToProcess);
 			workerPool.execute(getWorkers()[i]);
 		}
 
@@ -40,7 +40,7 @@ public abstract class ConnectorBase extends Thread {
 		return workers;
 	}
 
-	public LinkedBlockingQueue<ArrayList<String>> getMessageQueue() {
+	public ConcurrentLinkedQueue<ArrayList<String>> getMessageQueue() {
 		return messageQueue;
 	}
 
@@ -95,7 +95,7 @@ public abstract class ConnectorBase extends Thread {
 	private int max_threads = 1;
 	private ExecutorService workerPool = null;
 	private ParserWorker[] workers = null;
-	private LinkedBlockingQueue<ArrayList<String>> messageQueue = new LinkedBlockingQueue<ArrayList<String>>();
+	private ConcurrentLinkedQueue<ArrayList<String>> messageQueue = new ConcurrentLinkedQueue<ArrayList<String>>();
 	private SentenceFactory sentenceFactory = new SentenceFactory();
 	private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.sss z");
 }

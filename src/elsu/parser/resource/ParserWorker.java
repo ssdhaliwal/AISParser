@@ -1,15 +1,24 @@
 package elsu.parser.resource;
 
 import java.util.ArrayList;
-import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 import elsu.common.CollectionUtils;
 import elsu.sentence.SentenceFactory;
 
 public class ParserWorker implements Runnable {
-	public ParserWorker(String name, LinkedBlockingQueue<ArrayList<String>> messageQueue) {
+	public ParserWorker(String name, ConcurrentLinkedQueue<ArrayList<String>> messageQueue) {
 		setName(name);
 		this.messageQueue = messageQueue;
+		sentenceFactory = new SentenceFactory();
+	}
+
+	public ParserWorker(String name, ConcurrentLinkedQueue<ArrayList<String>> messageQueue,
+			String messagesToProcess) {
+		setName(name);
+		this.messageQueue = messageQueue;
+		
+		sentenceFactory = new SentenceFactory(messagesToProcess);
 	}
 	
 	public String getName() {
@@ -30,13 +39,16 @@ public class ParserWorker implements Runnable {
 		while (!Thread.currentThread().isInterrupted() && !isShutdown)
 		{
 			try {
-				messages = this.messageQueue.take();
+				messages = this.messageQueue.poll();
 				
 				if (messages != null) {
 					getSentenceFactory().parseSentence(messages);
+				} else {
+					Thread.sleep(1);
 				}
 				
 				Thread.yield();
+				messages = null;
 			} catch (Exception ex) {
 				getSentenceFactory().notifyError(null, null, "error processing message, " + this.name + ", [" + CollectionUtils.ArrayListToString(messages) + "], " + ex.getMessage());
 			}
@@ -45,6 +57,6 @@ public class ParserWorker implements Runnable {
 
 	private String name = "";
 	public boolean isShutdown = false;
-	private LinkedBlockingQueue<ArrayList<String>> messageQueue = null;
-	private SentenceFactory sentenceFactory = new SentenceFactory();
+	private ConcurrentLinkedQueue<ArrayList<String>> messageQueue = null;
+	private SentenceFactory sentenceFactory = null;
 }

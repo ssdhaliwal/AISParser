@@ -25,24 +25,38 @@ public class T15_Interrogation extends AISMessageBase {
 		getMessageBlocks()
 				.add(new AISPayloadBlock(6, 7, 2, "Repeat Indicator", "repeat", "u", "As in Common Navigation Block"));
 		getMessageBlocks().add(new AISPayloadBlock(8, 37, 30, "Source MMSI", "mmsi", "u", "9 decimal digits"));
-		// getMessageBlocks().add(new PayloadBlock(38, 39, 2, "Spare", "", "x", "Not used"));
+		// getMessageBlocks().add(new PayloadBlock(38, 39, 2, "Spare", "", "x",
+		// "Not used"));
 		getMessageBlocks().add(new AISPayloadBlock(40, 69, 30, "Interrogated MMSI", "mmsi1", "u", "9 decimal digits"));
-		getMessageBlocks().add(new AISPayloadBlock(70, 75, 6, "First message type", "type1_1", "u", "Unsigned integer"));
-		getMessageBlocks().add(new AISPayloadBlock(76, 87, 12, "First slot offset", "offset1_1", "u", "Unsigned integer"));
-		// getMessageBlocks().add(new PayloadBlock(88, 89, 2, "Spare", "", "x", "Not used"));
-		getMessageBlocks().add(new AISPayloadBlock(90, 95, 6, "Second message type", "type1_2", "u", "Unsigned integer"));
+		getMessageBlocks()
+				.add(new AISPayloadBlock(70, 75, 6, "First message type", "type1_1", "u", "Unsigned integer"));
+		getMessageBlocks()
+				.add(new AISPayloadBlock(76, 87, 12, "First slot offset", "offset1_1", "u", "Unsigned integer"));
+		// getMessageBlocks().add(new PayloadBlock(88, 89, 2, "Spare", "", "x",
+		// "Not used"));
+		getMessageBlocks()
+				.add(new AISPayloadBlock(90, 95, 6, "Second message type", "type1_2", "u", "Unsigned integer"));
 		getMessageBlocks()
 				.add(new AISPayloadBlock(96, 107, 12, "Second slot offset", "offset1_2", "u", "Unsigned integer"));
-		// getMessageBlocks().add(new PayloadBlock(108, 109, 2, "Spare", "", "x", "Not used"));
-		getMessageBlocks().add(new AISPayloadBlock(110, 139, 30, "Interrogated MMSI", "mmsi2", "u", "9 decimal digits"));
-		getMessageBlocks().add(new AISPayloadBlock(140, 145, 6, "First message type", "type2_1", "u", "Unsigned integer"));
+		// getMessageBlocks().add(new PayloadBlock(108, 109, 2, "Spare", "",
+		// "x", "Not used"));
+		getMessageBlocks()
+				.add(new AISPayloadBlock(110, 139, 30, "Interrogated MMSI", "mmsi2", "u", "9 decimal digits"));
+		getMessageBlocks()
+				.add(new AISPayloadBlock(140, 145, 6, "First message type", "type2_1", "u", "Unsigned integer"));
 		getMessageBlocks()
 				.add(new AISPayloadBlock(146, 157, 12, "First slot offset", "offset2_1", "u", "Unsigned integer"));
-		// getMessageBlocks().add(new PayloadBlock(158, 159, 2, "Spare", "", "x", "Not used"));
+		// getMessageBlocks().add(new PayloadBlock(158, 159, 2, "Spare", "",
+		// "x", "Not used"));
 	}
 
 	public void parseMessageBlock(AISPayloadBlock block) throws Exception {
-		if (block.isException()) {
+		// special processing, if second message is empty
+		if (block.getBits().length() == 0) {
+			if (block.getStart() >= 90) {
+				return;
+			}
+		} else if (block.isException()) {
 			if (block.getStart() >= 76) {
 				return;
 			} else {
@@ -90,7 +104,7 @@ public class T15_Interrogation extends AISMessageBase {
 	@Override
 	public String toString() {
 		String result = "";
-		
+
 		try {
 			// result = SentenceBase.objectMapper.writeValueAsString(this);
 			ObjectNode node = SentenceBase.objectMapper.createObjectNode();
@@ -99,7 +113,7 @@ public class T15_Interrogation extends AISMessageBase {
 			node.put("typeText", AISLookupValues.getMessageType(getType()));
 			node.put("repeat", getRepeat());
 			node.put("mmsi", getMmsi());
-			
+
 			node.put("mmsi1", getMmsi1());
 			node.put("type11", getType11());
 			node.put("offset11", getOffset11());
@@ -114,7 +128,7 @@ public class T15_Interrogation extends AISMessageBase {
 		} catch (Exception exi) {
 			result = "error, Sentence, " + exi.getMessage();
 		}
-		
+
 		return result;
 	}
 
